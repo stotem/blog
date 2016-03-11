@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>建均笔记</title>
+  <subtitle>不积跬步 无以至千里</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://blog.cnvip.hk/"/>
+  <updated>2016-03-11T09:17:19.000Z</updated>
+  <id>http://blog.cnvip.hk/</id>
+  
+  <author>
+    <name>建均笔记</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>关于电商系统业务模块猜想</title>
+    <link href="http://blog.cnvip.hk/2016/03/11/e-bussiness-architecture/"/>
+    <id>http://blog.cnvip.hk/2016/03/11/e-bussiness-architecture/</id>
+    <published>2016-03-11T07:30:07.000Z</published>
+    <updated>2016-03-11T09:17:19.000Z</updated>
+    
+    <content type="html">&lt;h5 id=&quot;电商四大体系&quot;&gt;&lt;a href=&quot;#电商四大体系&quot; class=&quot;headerlink&quot; title=&quot;电商四大体系&quot;&gt;&lt;/a&gt;电商四大体系&lt;/h5&gt;&lt;ul&gt;
+&lt;li&gt;企业信息化&lt;/li&gt;
+&lt;li&gt;电商网络体系&lt;/li&gt;
+&lt;li&gt;线上监控体系&lt;/li&gt;
+&lt;li&gt;数据分析体系&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;/images/四大体系.png&quot; alt=&quot;电商四大体系&quot;&gt;&lt;/p&gt;
+&lt;h5 id=&quot;电商业务模块&quot;&gt;&lt;a href=&quot;#电商业务模块&quot; class=&quot;headerlink&quot; title=&quot;电商业务模块&quot;&gt;&lt;/a&gt;电商业务模块&lt;/h5&gt;&lt;p&gt;经过与朋友们的讨论，笔者着手总结电商应包含的模块如下：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/电商业务模块总览.png&quot; alt=&quot;电商业务模块总览&quot;&gt;&lt;/p&gt;
+&lt;p&gt;笔者认为电商门户建设应从企业信息化建设入手，逐步加入电商元素，最终形成企业电商。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;观点仅代表自己，期待你的留言。&lt;/em&gt;&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h5 id=&quot;电商四大体系&quot;&gt;&lt;a href=&quot;#电商四大体系&quot; class=&quot;headerlink&quot; title=&quot;电商四大体系&quot;&gt;&lt;/a&gt;电商四大体系&lt;/h5&gt;&lt;ul&gt;
+&lt;li&gt;企业信息化&lt;/li&gt;
+&lt;li&gt;电商网络体系&lt;/li&gt;
+&lt;li&gt;线上监控体系&lt;/li&gt;
+&lt;li&gt;数
+    
+    </summary>
+    
+    
+      <category term="随笔" scheme="http://blog.cnvip.hk/tags/%E9%9A%8F%E7%AC%94/"/>
+    
+      <category term="电商" scheme="http://blog.cnvip.hk/tags/%E7%94%B5%E5%95%86/"/>
+    
+      <category term="架构" scheme="http://blog.cnvip.hk/tags/%E6%9E%B6%E6%9E%84/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>博客站开写啦</title>
+    <link href="http://blog.cnvip.hk/2016/03/10/hello-world/"/>
+    <id>http://blog.cnvip.hk/2016/03/10/hello-world/</id>
+    <published>2016-03-10T08:46:19.000Z</published>
+    <updated>2016-03-10T09:41:46.000Z</updated>
+    
+    <content type="html">&lt;p&gt;经过两天的努力总算搭建一个属于自己的博客站，不得不感叹自己真的是太懒了，原本很早以前就想做的事情偏偏等到现在才来完成，懒！懒！懒！&lt;/p&gt;
+&lt;p&gt;为了让自己形成坚持记录的习惯，理清工作中千丝万缕的思路，让瞬间的“天马行空”留下痕迹。&lt;/p&gt;
+&lt;p&gt;我决定以后坚持写博客，并开通评论功能接收各位朋友的褒贬建议。&lt;/p&gt;
+&lt;p&gt;不积跬步，无以至千里；不积小流，无以成江海。坚持写作，观点仅代表自己，加油！！！&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;经过两天的努力总算搭建一个属于自己的博客站，不得不感叹自己真的是太懒了，原本很早以前就想做的事情偏偏等到现在才来完成，懒！懒！懒！&lt;/p&gt;
+&lt;p&gt;为了让自己形成坚持记录的习惯，理清工作中千丝万缕的思路，让瞬间的“天马行空”留下痕迹。&lt;/p&gt;
+&lt;p&gt;我决定以后坚持写博客，并开
+    
+    </summary>
+    
+    
+      <category term="随笔" scheme="http://blog.cnvip.hk/tags/%E9%9A%8F%E7%AC%94/"/>
+    
+  </entry>
+  
+</feed>

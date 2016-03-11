@@ -1,38 +1,14 @@
 ---
-title: Hello World
+title: 博客站开写啦
+tags:
+  - 随笔
+date: 2016-03-10 16:46:19
 ---
-Welcome to [Hexo](https://hexo.io/)! This is your very first post. Check [documentation](https://hexo.io/docs/) for more info. If you get any problems when using Hexo, you can find the answer in [troubleshooting](https://hexo.io/docs/troubleshooting.html) or you can ask me on [GitHub](https://github.com/hexojs/hexo/issues).
+经过两天的努力总算搭建一个属于自己的博客站，不得不感叹自己真的是太懒了，原本很早以前就想做的事情偏偏等到现在才来完成，懒！懒！懒！
 
-## Quick Start
+为了让自己形成坚持记录的习惯，理清工作中千丝万缕的思路，让瞬间的“天马行空”留下痕迹。
 
-### Create a new post
+我决定以后坚持写博客，并开通评论功能接收各位朋友的褒贬建议。
 
-``` bash
-$ hexo new "My New Post"
-```
+不积跬步，无以至千里；不积小流，无以成江海。坚持写作，观点仅代表自己，加油！！！
 
-More info: [Writing](https://hexo.io/docs/writing.html)
-
-### Run server
-
-``` bash
-$ hexo server
-```
-
-More info: [Server](https://hexo.io/docs/server.html)
-
-### Generate static files
-
-``` bash
-$ hexo generate
-```
-
-More info: [Generating](https://hexo.io/docs/generating.html)
-
-### Deploy to remote sites
-
-``` bash
-$ hexo deploy
-```
-
-More info: [Deployment](https://hexo.io/docs/deployment.html)
