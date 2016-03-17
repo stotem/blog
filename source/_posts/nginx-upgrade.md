@@ -1,6 +1,7 @@
 ---
 title: Nginx不停止服务下升级与Nginx服务监控
 tags:
+  - 原创
   - Nginx
 date: 2016-03-16 11:29:07
 ---

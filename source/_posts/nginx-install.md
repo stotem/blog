@@ -1,6 +1,7 @@
 ---
 title: Nginx在CentOS7上源码编译安装
 tags:
+  - 原创
   - Nginx
 date: 2016-03-14 11:32:15
 ---
