@@ -1,5 +1,5 @@
 ---
-title: Nginx反射代理不同域名配置
+title: Nginx反向代理多个域名
 tags:
   - 原创
   - Nginx
