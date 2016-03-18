@@ -1,7 +1,7 @@
 ---
 title: {{ title }}
 date: {{ date }}
-tags: ["Java"]
+tags: ["Java","原创"]
 ---
 
 

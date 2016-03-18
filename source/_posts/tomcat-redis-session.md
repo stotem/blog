@@ -1,5 +1,5 @@
 ---
-title: Nginx+tomcat+redis集群与session共享
+title: Nginx+tomcat+redis集群之session共享
 tags:
   - 原创
   - Nginx
@@ -58,6 +58,7 @@ http {
         #配置Nginx动静分离，定义的静态页面直接从Nginx发布目录读取。
         location ~ .*\.(html|htm|gif|jpg|jpeg|bmp|png|ico|txt|js|css)$ {
             root /data/;
+            gzip_static on; #开启压缩静态资源
         }
         
         location / {
