@@ -63,6 +63,19 @@ nginx: configuration file /usr/local/nginx/conf/nginx.conf test is successful
 
 由于http_stub_status_module模块监控的状态项非常有限，建议使用nginx-module-vts模块对nginx进行更全面的运行状态监控。
 ![Nginx VTS](/images/vts.png)
+
+nginx.conf
+```
+http {
+	vhost_traffic_status_zone;
+	server {
+		location /vts {
+           vhost_traffic_status_display;
+           vhost_traffic_status_display_format html;
+        }
+	}
+}
+```
 ### 三、提高nginx监控页面的安全性
 由于nginx的运行状态为非常重要的数据，所以只允许有特定权限的人员才能有权访问，所以我们可以通过http_auth_basic_module模块来进行身份的验证。更为关键的是http_auth_basic_module模块默认已安装。
 
@@ -92,8 +105,17 @@ Adding password for user admin
 ```
 在conf/nginx.conf的location status节点内添加以下身份验证配置
 ```
-auth_basic "Restricted";
-auth_basic_user_file ../nginx.auth;
+http {
+	vhost_traffic_status_zone;
+	server {
+		location /vts {
+           auth_basic "Restricted";
+           auth_basic_user_file ../nginx.auth;
+           vhost_traffic_status_display;
+           vhost_traffic_status_display_format html;
+        }
+	}
+}
 ```
 重新热更新一下配置，再次通过浏览器访问时就会弹框提示你输入用户名和密码了。
 ```
