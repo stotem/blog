@@ -26,6 +26,10 @@ date: 2016-03-29 15:41:52
 
 __注意：__在loadView方法自定义实现中由于view未进行初始化，如果使用self.view获取值，由会再次触发调用loadView方法造成loadView的递归调用。在ios9.3环境下通过self.view进行赋值则不存在此情况。
 
+
+附一张UIViewController生命周期图：
+![](/images/uiviewcontroller-lifecycle.jpg)
+
 -----
 
 *观点仅代表自己，期待你的留言。*
