@@ -1,5 +1,5 @@
 ---
-title: nxing+php-fpm替代apache服务器
+title: Nginx+php-fpm替代apache服务器
 tags:
   - 转载
   - php-fpm
