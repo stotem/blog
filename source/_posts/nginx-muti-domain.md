@@ -44,6 +44,15 @@ server {
 ```
 http {
 	include reverse-proxy.conf;
+
+    #按server段顺序匹配，如果没有匹配到则可通过泛域名匹配返回错误码或错误页
+    server {
+        listen 80;
+        server_name *.vip.com;
+        location /{
+            return 404;
+        }
+    }
 }
 ```
 ## 测试生效
