@@ -24,6 +24,7 @@ rss: /atom.xml
 excerpt_link: more
 fancybox: true
 mathjax: true
+highlight: true
 
 # 是否开启动画效果
 animate: true
