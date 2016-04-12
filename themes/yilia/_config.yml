@@ -43,7 +43,7 @@ share_jia: true
 share_addthis: false
 #是否开启多说评论，填写你在多说申请的项目名称 duoshuo: duoshuo-key
 #若使用disqus，请在博客config文件中填写disqus_shortname，并关闭多说评论
-duoshuo: cnvip
+duoshuo: false #cnvip
 #是否开启有言评论,如需开启填写有言uid,如需关闭填写false
 uyan: false
 #是否开启云标签
@@ -51,11 +51,12 @@ tagcloud: true
 
 #是否开启友情链接
 #不开启——
-friends: false
+#friends: false
 #开启——
-#friends:
- # 奥巴马的博客: http://localhost:4000/
-
+friends:
+  andylee1988的博客: http://andylee1988.github.io
+  devtll的博客: http://devtll.github.io
+  esnake0的博客: http://esnake0.github.io
 #是否开启“关于我”。
 #不开启——
 aboutme: false
