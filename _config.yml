@@ -74,15 +74,15 @@ deploy:
 
 #Plugins
 Plugins:
-- hexo-generator-sitemap
 - hexo-generator-baidu-sitemap
+- hexo-generator-sitemap
 - hexo-generator-feed
 #Feed Atom
 feed:
 type: atom
 path: atom.xml
 limit: 20
+#baidusitemap: 
+#path: baidusitemap.xml
 sitemap: 
- path: sitemap.xml
-baidusitemap: 
- path: baidusitemap.xml
+  path: sitemap.xml
