@@ -131,6 +131,9 @@ Run a command in a new container
 sudo docker run -t -i ouruser/sinatra:v2 /bin/bash
 sudo docker run -d ubuntu:14.04 /bin/sh -c "while true; do echo hello world; sleep 1; done" #守护态运行
 ```
+
+在执行 docker run 的时候如果添加 --rm 标记，则容器在终止后会立刻删除。注意，--rm 和 -d 参数不能同时使用。
+
 ### docker logs
 `说明：`获取容器输出的信息，适用于守护态运行docker容器。
 ```
@@ -378,6 +381,17 @@ Return low-level information on a container or image
   --help             Print usage
   -s, --size         Display total file sizes if the type is container
   --type             Return JSON for specified type, (e.g image or container)
+```
+### docker port
+`说明：`来查看当前映射的端口配置，也可以查看到绑定的地址。
+```
+[root@localhost ~]# docker port --help
+
+Usage:  docker port [OPTIONS] CONTAINER [PRIVATE_PORT[/PROTO]]
+
+List port mappings or a specific mapping for the CONTAINER
+
+  --help             Print usage
 ```
 
 -----
