@@ -2,7 +2,7 @@
 title: Nginx+tomcat+redis集群之session跟踪（nginx_upstream_jvm_route）
 tags:
   - 原创
-  - nginx
+  - Nginx
 date: 2016-03-18 09:35:55
 ---
 ## 实验环境
