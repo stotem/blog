@@ -3,7 +3,7 @@ title: Nginx+php-fpm替代apache服务器
 tags:
   - 转载
   - php-fpm
-  - nginx
+  - Nginx
 date: 2016-03-21 15:01:31
 ---
 
