@@ -23,13 +23,13 @@ SELECT @@GLOBAL.tx_isolation, @@tx_isolation;
 
 |事务A     											|    事务B
 |------------------------------------------------------------------------------------------------------------
-| start TRANSACTION;								| 
-| select * from t1;(查询出2条数据)	                | 
+| start TRANSACTION;								|  
+| select * from t1;(查询出2条数据)	                |  
 |               									| start TRANSACTION;
 |               									| insert into t1 values(null,'v222');
-| select * from t1;(查询出2条数据)	                |
+| select * from t1;(查询出2条数据)	                | 
 |               									| commit;(__这一步很关键，它标识了事务B的完成__)
-| select * from t1;(查询出3条数据)	                |
+| select * from t1;(查询出3条数据)	                | 
 
 `InnoDB存储引擎在REPEATABLE-READ的隔离级别下解决了幻读情况，所以会造成以上的情况。`
 
@@ -38,7 +38,7 @@ SELECT @@GLOBAL.tx_isolation, @@tx_isolation;
 |事务A     											|    事务B
 |------------------------------------------------------------------------------------------------------------
 | start TRANSACTION;								| start TRANSACTION;
-| update t1 SET da='v1111' where id=1;              |
+| update t1 SET da='v1111' where id=1;              | 
 |               									| update t1 SET da='v1111' where id=1;(此时会等待事务A执行完成 OR 等待超时)
 
 ### 并发事务更新时只要被更新的数据存在交集，那么就会存在__阻塞等待__另一事务完成的现象
@@ -49,7 +49,7 @@ SELECT @@GLOBAL.tx_isolation, @@tx_isolation;
 | select * from t1;(查询出2条数据)	                | 
 |               									| start TRANSACTION;
 |               									| insert into t1 values(null,'v222');
-| update t1 set da='updated'(此时会等事务B的完成)		|
+| update t1 set da='updated'(此时会等事务B的完成)		| 
 |               									| commit;
 
 
@@ -61,7 +61,7 @@ SELECT @@GLOBAL.tx_isolation, @@tx_isolation;
 | select * from t1;(查询出2条数据)	                						| 
 |               															| start TRANSACTION;
 |               															| update t1 SET da='v1113333331' where id=1
-| update t1 set da='updated' where da like '%0000%'(此时会等事务B的完成)		|
+| update t1 set da='updated' where da like '%0000%'(此时会等事务B的完成)		| 
 |               															| commit;
 
 
