@@ -1,7 +1,7 @@
 ---
 title: docker数据卷与网络配置
 tags:
-  - Java
+  - Docker
   - 原创
 date: 2016-04-18 11:33:08
 ---
