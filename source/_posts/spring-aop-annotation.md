@@ -159,7 +159,7 @@ ExampleServiceImpl.test-->104ms
 
 ### 共享通用切入点定义
 
-通过@Pointcut先定义好切入点,当通知类型可以通过被@Pointcut标识的方法名直接共享其切入点配置。
+通过@Pointcut先定义好切入点, 当通知类型可以通过被 @Pointcut 标识的方法名直接共享其切入点配置。
 
 示例：
 ```
