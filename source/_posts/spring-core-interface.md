@@ -8,6 +8,8 @@ keywords:
   - spring DisposableBean
 tags:
   - 原创
+toc: true
+list_number: false
 date: 2016-08-29 11:17:18
 ---
 

@@ -26,10 +26,10 @@
         <%- post.excerpt %>
       <% } else { %>
               <% if (!index){ %>
-           <% if (toc(post.content)){ %>            
+           <% if (post.toc != false){ %>            
              <div id="toc" class="article-toc">
              <h2><%= __('sidebar.toc') %></h2>
-               <%- toc(post.content) %>  
+               <%- toc(post.content, {list_number: post.list_number!=false}) %>  
              </div>
              <script type="text/javascript">
                var _article = document.getElementsByClassName('article')[0];

@@ -72,7 +72,6 @@ deploy:
   repo: 
     github: https://github.com/stotem/blog.git,gh-pages
     coding: https://git.coding.net/WuJianjun/blog.git,gh-pages
-  #branch: gh-pages
 
 #Plugins
 Plugins:
