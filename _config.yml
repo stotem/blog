@@ -69,8 +69,10 @@ disqus_shortname: blogcnvip
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repo: https://github.com/stotem/blog.git
-  branch: gh-pages
+  repo: 
+    github: https://github.com/stotem/blog.git,gh-pages
+    coding: https://git.coding.net/WuJianjun/blog.git,gh-pages
+  #branch: gh-pages
 
 #Plugins
 Plugins:
