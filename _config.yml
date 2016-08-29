@@ -71,7 +71,7 @@ deploy:
   type: git
   repo: 
     github: https://github.com/stotem/blog.git,gh-pages
-    coding: https://git.coding.net/WuJianjun/blog.git,gh-pages
+    coding: https://git.coding.net/WuJianjun/wujianjun.git,master
 
 #Plugins
 Plugins:
