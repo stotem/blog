@@ -3,7 +3,7 @@ title: 关于我
 date: 2016-03-09 16:54:19
 ---
 
-标准程序员，2009年在重庆参加工作，目前在四川成都，前6年以Java语言开发为生，2004年转入iPhone开发。
+标准程序员，2009年在重庆参加工作，目前在四川成都，前6年以Java语言开发为生，2014年转入iPhone开发。
 
 原博客地址: [http://wujianjun.iteye.com/](http://wujianjun.iteye.com/)
 
