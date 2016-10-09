@@ -68,6 +68,33 @@ _tomcat-users.xml_
 </tomcat-users>
 ```
 
+--[更新] 发现更简便配置,详细如下：---
+将maven的pom.xml中将server节点直接替换成username与password节点，这样就不需要在setting.xml中进行配置了。
+_pom.xml_
+```
+<?xml version='1.0' encoding='utf-8'?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <build> 
+      <plugins> 
+        <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <path>/</path>
+                    <port>8080</port>
+                    <uriEncoding>UTF-8</uriEncoding>
+                    <username>abc</username>
+                    <password>xxx</password>
+                    <url>http://deploy.dev.com/manager</url>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+```
+
 ## 远程发布依赖库jar
 _pom.xml_
 ```
