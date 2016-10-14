@@ -10,7 +10,7 @@ date: 2016-10-09 18:43:51
 so.. 配置linux开机自启动
 
 ## 配置
-_/etc/rc.local_
+在_/etc/rc.local_文件末尾增加以下内容
 ```
 #!/bin/sh
 #
@@ -18,8 +18,6 @@ _/etc/rc.local_
 # You can put your own initialization stuff in here if you don't
 # want to do the full Sys V style init stuff.
 
-touch /var/lock/subsys/local
-PATH=/home/tomcat/apache-tomcat-6.0.43/bin:/usr/java/jdk1.7.0_60/bin:/usr/lib64/qt-3.3/bin:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin:/diliapp/servers/jdk1.7.0_60/bin
 O_Path=`pwd`
 cd /myapps/servers/apache-tomcat-6.0.43/bin/
 sh startup.sh
