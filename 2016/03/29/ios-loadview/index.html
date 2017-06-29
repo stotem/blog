@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>iOS中UIViewController初始化过程及LoadView默认实现 | 建均笔记</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Xib或者Storyboard方式初始化UIViewController1、系统会通过 (instancetype)initWithCoder:(NSCoder *)aDecoder创建Controller对象实例。2、当需要将UIController的View添加到父级View时则会通过loadViewIfRequired方法来先判断self.view对象是否为nil    如果为nil则会调用">
+<meta name="keywords" content="原创,iOS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS中UIViewController初始化过程及LoadView默认实现">
+<meta property="og:url" content="http://www.wujianjun.org/2016/03/29/ios-loadview/index.html">
+<meta property="og:site_name" content="建均笔记">
+<meta property="og:description" content="Xib或者Storyboard方式初始化UIViewController1、系统会通过 (instancetype)initWithCoder:(NSCoder *)aDecoder创建Controller对象实例。2、当需要将UIController的View添加到父级View时则会通过loadViewIfRequired方法来先判断self.view对象是否为nil    如果为nil则会调用">
+<meta property="og:image" content="http://www.wujianjun.org/images/xib_init.png">
+<meta property="og:image" content="http://www.wujianjun.org/images/code_init.png">
+<meta property="og:image" content="http://www.wujianjun.org/images/def_loadview.png">
+<meta property="og:image" content="http://www.wujianjun.org/images/uiviewcontroller-lifecycle.jpg">
+<meta property="og:updated_time" content="2017-06-29T03:00:50.724Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS中UIViewController初始化过程及LoadView默认实现">
+<meta name="twitter:description" content="Xib或者Storyboard方式初始化UIViewController1、系统会通过 (instancetype)initWithCoder:(NSCoder *)aDecoder创建Controller对象实例。2、当需要将UIController的View添加到父级View时则会通过loadViewIfRequired方法来先判断self.view对象是否为nil    如果为nil则会调用">
+<meta name="twitter:image" content="http://www.wujianjun.org/images/xib_init.png">
+  
+    <link rel="alternative" href="/atom.xml" title="建均笔记" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?7df7e966d1df272aa1f1cd8d993698f3";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<script>
+(function(){
+    var bp = document.createElement('script');
+    bp.src = '//push.zhanzhang.baidu.com/push.js';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css" />
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="/img/avatar.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">建均笔记</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">不积跬步 无以至千里</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="/about">关于我</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/stotem" title="github">github</a>
+					        
+								<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+					        
+								<a class="mail" target="_blank" href="mailto:china.wujianjun@icloud.com" title="mail">mail</a>
+					        
+						</div>
+						<div>
+							<i class="fa fa-line-chart"></i>
+							本站访问量<span id="busuanzi_value_site_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Docker/" style="font-size: 14px;">Docker</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/Maven/" style="font-size: 12px;">Maven</a> <a href="/tags/Nginx/" style="font-size: 16px;">Nginx</a> <a href="/tags/Redis/" style="font-size: 12px;">Redis</a> <a href="/tags/iOS/" style="font-size: 18px;">iOS</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/php-fpm/" style="font-size: 10px;">php-fpm</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/关键笔记/" style="font-size: 10px;">关键笔记</a> <a href="/tags/原创/" style="font-size: 20px;">原创</a> <a href="/tags/操作系统/" style="font-size: 10px;">操作系统</a> <a href="/tags/架构/" style="font-size: 10px;">架构</a> <a href="/tags/电商/" style="font-size: 10px;">电商</a> <a href="/tags/转发/" style="font-size: 10px;">转发</a> <a href="/tags/转载/" style="font-size: 18px;">转载</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://andylee1988.github.io">andylee1988的博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://devtll.github.io">devtll的博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://esnake0.github.io">esnake0的博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.shaofan.org">少凡的独立博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.csdn.net/liuguofeng719?viewmode=list">guofeng的博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://witchan.com">WitChan的技术博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.csdn.net/kelanq">kelanQ的博客</a><br />
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+		
+	</header>				
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">建均笔记</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+			
+				<img lazy-src="/img/avatar.jpg" class="js-avatar">
+			
+			</div>
+			<hgroup>
+			  <h1 class="header-author">建均笔记</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">不积跬步 无以至千里</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/about">关于我</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/stotem" title="github">github</a>
+			        
+						<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+			        
+						<a class="mail" target="_blank" href="mailto:china.wujianjun@icloud.com" title="mail">mail</a>
+			        
+				</div>
+				<div style="text-align: center;">
+					<i class="fa fa-line-chart"></i>
+					本站访问量<span id="busuanzi_value_site_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap"><article id="post-ios-loadview" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/03/29/ios-loadview/" class="article-date">
+  	<time datetime="2016-03-29T07:41:52.000Z" itemprop="datePublished">2016-03-29</time>
+</a>
+      <div class="analysis-container">
+	<i class="fa fa-line-chart"></i>
+	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
+</div>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      iOS中UIViewController初始化过程及LoadView默认实现
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li></ul>
+	</div>
+
+        
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+              
+                       
+             <div id="toc" class="article-toc">
+             <h2>文章目录</h2>
+               <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Xib或者Storyboard方式初始化UIViewController"><span class="toc-number">1.</span> <span class="toc-text">Xib或者Storyboard方式初始化UIViewController</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#编码的方式初始化UIViewController"><span class="toc-number">2.</span> <span class="toc-text">编码的方式初始化UIViewController</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#系统默认loadView实现"><span class="toc-number">3.</span> <span class="toc-text">系统默认loadView实现</span></a></li></ol>  
+             </div>
+             <script type="text/javascript">
+               var _article = document.getElementsByClassName('article')[0];
+               <!-- setTimeout("_article.style.marginRight = '211px'",0);  -->
+               setTimeout("_article.className += ' article2'",0); 
+               setTimeout("document.getElementById('toc').style.right = '15px'", 0);                
+             </script>
+           
+         
+        <h2 id="Xib或者Storyboard方式初始化UIViewController"><a href="#Xib或者Storyboard方式初始化UIViewController" class="headerlink" title="Xib或者Storyboard方式初始化UIViewController"></a>Xib或者Storyboard方式初始化UIViewController</h2><p>1、系统会通过 (instancetype)initWithCoder:(NSCoder *)aDecoder创建Controller对象实例。<br>2、当需要将UIController的View添加到父级View时则会通过loadViewIfRequired方法来先判断self.view对象是否为nil<br>    如果为nil则会调用 (void)loadView进行view的初始化。然后会调用viewDidLoad方法</p>
+<p><img src="/images/xib_init.png" alt=""></p>
+<h2 id="编码的方式初始化UIViewController"><a href="#编码的方式初始化UIViewController" class="headerlink" title="编码的方式初始化UIViewController"></a>编码的方式初始化UIViewController</h2><p>[[UIViewController alloc] init]，系统会调用[[UIViewController alloc] initWithNibName:(NSString <em>)nibNameOrNil bundle:(NSBundle </em>)nibBundleOrNil]创建实例对象<br><img src="/images/code_init.png" alt=""></p>
+<h2 id="系统默认loadView实现"><a href="#系统默认loadView实现" class="headerlink" title="系统默认loadView实现"></a>系统默认loadView实现</h2><p>通过initWithNibName保存的nibName来加载对应的nib资源并赋值于self.view, 如果nibName为空，则创建一个空的UIView实例赋值。</p>
+<p><img src="/images/def_loadview.png" alt=""></p>
+<p><strong>注意：</strong>在loadView方法自定义实现中由于view未进行初始化，如果使用self.view获取值，由会再次触发调用loadView方法造成loadView的递归调用。在ios9.3环境下通过self.view进行赋值则不存在此情况。</p>
+<p>附一张UIViewController生命周期图：<br><img src="/images/uiviewcontroller-lifecycle.jpg" alt=""></p>
+<hr>
+<p><em>观点仅代表自己，期待你的留言。</em></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/03/29/ios-load-initialize/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          NSObject的+load与+initialize方法的区别
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/03/24/ios-hitTest/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">iOS-hitTest:withEvent与pointInside:withEvent</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+    <a class="jiathis_button_twitter"></a>
+    <a class="jiathis_button_plus"></a> 
+    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+
+
+
+
+
+<section id="comments">
+  <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'blogcnvip'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2017 建均笔记
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+
+<link href="//cdn.bootcss.com/highlight.js/8.0/styles/tomorrow-night-bright.min.css" rel="stylesheet">  
+<script src="//cdn.bootcss.com/highlight.js/8.0/highlight.min.js"></script>  
+<script> 
+jQuery('td.code pre').each(function(i, block) {
+  hljs.highlightBlock(block);
+});
+</script>
+
+
+  </div>
+</body>
+</html>
