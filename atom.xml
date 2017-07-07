@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.wujianjun.org/"/>
-  <updated>2017-06-29T10:02:27.681Z</updated>
+  <updated>2017-07-07T07:15:18.902Z</updated>
   <id>http://www.wujianjun.org/</id>
   
   <author>
@@ -14,6 +14,74 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>分布式系统下并发读取不重复数据</title>
+    <link href="http://www.wujianjun.org/2017/07/07/multi-process-read/"/>
+    <id>http://www.wujianjun.org/2017/07/07/multi-process-read/</id>
+    <published>2017-07-07T02:02:57.000Z</published>
+    <updated>2017-07-07T07:15:18.902Z</updated>
+    
+    <content type="html">&lt;h2 id=&quot;问题背景&quot;&gt;&lt;a href=&quot;#问题背景&quot; class=&quot;headerlink&quot; title=&quot;问题背景&quot;&gt;&lt;/a&gt;问题背景&lt;/h2&gt;&lt;p&gt;分布式系统模块存在定时任务，当模块被部署多个实例时，不同实例的定时任务在运行时就存在从数据源中获取相同数据的情况，&lt;br&gt;虽然通过乐观锁(数据记录增加version,每次update则set verion+=1 where version=?)的处理方式可以避免多实例更新数据造成脏数据入库的问题，&lt;br&gt;但这无疑是降低了分布式系统部署的初衷（通过横向部署多实例增加系统的处理能力）。&lt;/p&gt;
+&lt;p&gt;经过分析，总结如下几种处理方式。&lt;/p&gt;
+&lt;h2 id=&quot;处理方式&quot;&gt;&lt;a href=&quot;#处理方式&quot; class=&quot;headerlink&quot; title=&quot;处理方式&quot;&gt;&lt;/a&gt;处理方式&lt;/h2&gt;&lt;h3 id=&quot;1、数据置标识位&quot;&gt;&lt;a href=&quot;#1、数据置标识位&quot; class=&quot;headerlink&quot; title=&quot;1、数据置标识位&quot;&gt;&lt;/a&gt;1、数据置标识位&lt;/h3&gt;&lt;p&gt;在数据库记录中增加flag，当数据被读取后则更改flag的值，避免记录被再次读取。&lt;/p&gt;
+&lt;p&gt;具体步骤如下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;锁定分布式锁&lt;/li&gt;
+&lt;li&gt;查询指定数量的数据&lt;/li&gt;
+&lt;li&gt;更新已查询出数据的标识位&lt;/li&gt;
+&lt;li&gt;释放分布式锁&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;当处理完成时: 增加数据version,重置标识位&lt;/p&gt;
+&lt;h3 id=&quot;2、单实例读取，多实例处理&quot;&gt;&lt;a href=&quot;#2、单实例读取，多实例处理&quot; class=&quot;headerlink&quot; title=&quot;2、单实例读取，多实例处理&quot;&gt;&lt;/a&gt;2、单实例读取，多实例处理&lt;/h3&gt;&lt;p&gt;读取数据Job：利用Redis的分布式锁保障一个实例拥有读取数据的步骤，读取出来的数据再存放到Redis中的需处理数据队列。&lt;/p&gt;
+&lt;p&gt;处理业务Job：所有部署实例通过监控Redis的需处理数据队列如果有数据则take一个数据出来进行业务处理。&lt;/p&gt;
+&lt;p&gt;具体步骤如下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;检查需要处理的数据队列是否为空，如为空，则跳过当前读取任务。&lt;/li&gt;
+&lt;li&gt;锁定分布式锁&lt;/li&gt;
+&lt;li&gt;获取需要处理的数据并存入Redis的处理队列中&lt;/li&gt;
+&lt;li&gt;释放分布式锁&lt;br&gt;&lt;em&gt;由于读取数据的步骤由单进程来获取，所以就避免了并发读取数据的问题&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;3、利用自增ID&quot;&gt;&lt;a href=&quot;#3、利用自增ID&quot; class=&quot;headerlink&quot; title=&quot;3、利用自增ID&quot;&gt;&lt;/a&gt;3、利用自增ID&lt;/h3&gt;&lt;p&gt;利用分布式锁+Redis存储已处理ID+数据的自增ID来获取数据数据。&lt;/p&gt;
+&lt;p&gt;具体步骤如下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;锁定分布式锁&lt;/li&gt;
+&lt;li&gt;从Redis中取出已处理数据的最大ID值(此处用x代替)&lt;/li&gt;
+&lt;li&gt;从数据库中取出大于x获取出y(固定数据量)的数据&lt;/li&gt;
+&lt;li&gt;更新Redis已处理的数据最大ID值&lt;/li&gt;
+&lt;li&gt;释放分布式锁&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&quot;存在的问题&quot;&gt;&lt;a href=&quot;#存在的问题&quot; class=&quot;headerlink&quot; title=&quot;存在的问题&quot;&gt;&lt;/a&gt;存在的问题&lt;/h4&gt;&lt;p&gt;&lt;strong&gt;问题描述：&lt;/strong&gt; 数据任务在进行业务处理的过程中，如处理失败则再也不会被以上步骤再次获取。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;解决方法1：&lt;/strong&gt; 当业务处理失败时，在Redis中记录下失败的数据ID。在获取数据步骤中增加获取失败数据的步骤。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;解决方法2：&lt;/strong&gt; 当业务处理失败时，在Redis中记录下失败的数据信息。在业务处理环节增加处理已失败的数据重试步骤。&lt;/p&gt;
+&lt;h3 id=&quot;4、数据取余&quot;&gt;&lt;a href=&quot;#4、数据取余&quot; class=&quot;headerlink&quot; title=&quot;4、数据取余&quot;&gt;&lt;/a&gt;4、数据取余&lt;/h3&gt;&lt;p&gt;利用zk获取到总实例数，计算模块实例需要处理的余值。&lt;/p&gt;
+&lt;p&gt;具体步骤如下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;模块启动注册到zk，并计算当前实例需要处理的余值为x (当前实例index % 总实例数)&lt;/li&gt;
+&lt;li&gt;从数据库取数据时，将数据主键%总实例数，如果余值为x，则取出数据，否则忽略此数据。&lt;/li&gt;
+&lt;li&gt;当模块总实例数变化时，重新计算当前实例需要处理的余值。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;em&gt;风险：&lt;/em&gt; 由于模块实例所需要处理的数据固定，当数据取余后的值可能会命名同一个实例，造成模块各实例处理压力不平均。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;观点仅代表自己，期待你的留言。&lt;/em&gt;&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;问题背景&quot;&gt;&lt;a href=&quot;#问题背景&quot; class=&quot;headerlink&quot; title=&quot;问题背景&quot;&gt;&lt;/a&gt;问题背景&lt;/h2&gt;&lt;p&gt;分布式系统模块存在定时任务，当模块被部署多个实例时，不同实例的定时任务在运行时就存在从数据源中获取相同数据的情况，&lt;br&gt;虽
+    
+    </summary>
+    
+    
+      <category term="原创" scheme="http://www.wujianjun.org/tags/%E5%8E%9F%E5%88%9B/"/>
+    
+      <category term="分布式" scheme="http://www.wujianjun.org/tags/%E5%88%86%E5%B8%83%E5%BC%8F/"/>
+    
+      <category term="多进程" scheme="http://www.wujianjun.org/tags/%E5%A4%9A%E8%BF%9B%E7%A8%8B/"/>
+    
+      <category term="并发" scheme="http://www.wujianjun.org/tags/%E5%B9%B6%E5%8F%91/"/>
+    
+  </entry>
   
   <entry>
     <title>机场航站楼三字码四字码信息数据库</title>
@@ -1029,40 +1097,6 @@
     
     
       <category term="原创" scheme="http://www.wujianjun.org/tags/%E5%8E%9F%E5%88%9B/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Maven应用远程部署</title>
-    <link href="http://www.wujianjun.org/2016/05/26/maven-deploy/"/>
-    <id>http://www.wujianjun.org/2016/05/26/maven-deploy/</id>
-    <published>2016-05-26T08:51:51.000Z</published>
-    <updated>2017-06-29T03:00:50.724Z</updated>
-    
-    <content type="html">&lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;在程序开发的过程中对研发环境服务器应用部署将会非常的频繁，而通过tomcat-maven-plugin的deploy很容易实现web应用的远程发布。&lt;br&gt;而针对jar的发布一般会搭建maven私服，同样在研发阶段也会发布的非常频繁通过maven的deploy也非常容易实现maven私服的jar提交。&lt;/p&gt;
-&lt;h2 id=&quot;远程发布Web应用&quot;&gt;&lt;a href=&quot;#远程发布Web应用&quot; class=&quot;headerlink&quot; title=&quot;远程发布Web应用&quot;&gt;&lt;/a&gt;远程发布Web应用&lt;/h2&gt;&lt;p&gt;以tomcat-maven-plugin为例，具体配置如下：&lt;br&gt;&lt;em&gt;pom.xml&lt;/em&gt;&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;?xml version=&amp;apos;1.0&amp;apos; encoding=&amp;apos;utf-8&amp;apos;?&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;project xmlns=&amp;quot;http://maven.apache.org/POM/4.0.0&amp;quot; xmlns:xsi=&amp;quot;http://www.w3.org/2001/XMLSchema-instance&amp;quot;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;         xsi:schemaLocation=&amp;quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&amp;quot;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;lt;build&amp;gt;	&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    	&amp;lt;plugins&amp;gt;	&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    		&amp;lt;plugin&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &amp;lt;groupId&amp;gt;org.apache.tomcat.maven&amp;lt;/groupId&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &amp;lt;artifactId&amp;gt;tomcat7-maven-plugin&amp;lt;/artifactId&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &amp;lt;version&amp;gt;2.2&amp;lt;/version&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &amp;lt;configuration&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                    &amp;lt;path&amp;gt;/&amp;lt;/path&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                    &amp;lt;port&amp;gt;8080&amp;lt;/port&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                    &amp;lt;uriEncoding&amp;gt;UTF-8&amp;lt;/uriEncoding&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                    &amp;lt;server&amp;gt;DevServer&amp;lt;/server&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                    &amp;lt;url&amp;gt;http://deploy.dev.com/manager&amp;lt;/url&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &amp;lt;/configuration&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;lt;/plugin&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;lt;/plugins&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;lt;/build&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;/project&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;说明:&lt;/strong&gt;&lt;br&gt;server: 为settings.xml中配置的server节点ID，用于上传鉴权。&lt;br&gt;url：发布到的服务器的tomcat/manager工程访问地址。&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;settings.xml&lt;/em&gt;&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;?xml version=&amp;apos;1.0&amp;apos; encoding=&amp;apos;utf-8&amp;apos;?&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;settings xsi:schemaLocation=&amp;quot;http://maven.apache.org/SETTINGS/1.1.0 http://maven.apache.org/xsd/settings-1.1.0.xsd&amp;quot; xmlns=&amp;quot;http://maven.apache.org/SETTINGS/1.1.0&amp;quot;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    xmlns:xsi=&amp;quot;http://www.w3.org/2001/XMLSchema-instance&amp;quot;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;lt;servers&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	    &amp;lt;server&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	    	&amp;lt;id&amp;gt;DevServer&amp;lt;/id&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	      	&amp;lt;username&amp;gt;abc&amp;lt;/username&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	        &amp;lt;password&amp;gt;xxx&amp;lt;/password&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	    &amp;lt;/server&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;lt;/servers&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;/settings&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;tomcat-users.xml&lt;/em&gt;&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;?xml version=&amp;apos;1.0&amp;apos; encoding=&amp;apos;utf-8&amp;apos;?&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;tomcat-users&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;role rolename=&amp;quot;manager-gui&amp;quot; /&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;role rolename=&amp;quot;manager-script&amp;quot; /&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;user username=&amp;quot;abc&amp;quot; password=&amp;quot;xxx&amp;quot; roles=&amp;quot;manager-gui,manager-script&amp;quot;/&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;/tomcat-users&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;–[更新] 发现更简便配置,详细如下：—&lt;br&gt;将maven的pom.xml中将server节点直接替换成username与password节点，这样就不需要在setting.xml中进行配置了。&lt;br&gt;&lt;em&gt;pom.xml&lt;/em&gt;&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;?xml version=&amp;apos;1.0&amp;apos; encoding=&amp;apos;utf-8&amp;apos;?&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;project xmlns=&amp;quot;http://maven.apache.org/POM/4.0.0&amp;quot; xmlns:xsi=&amp;quot;http://www.w3.org/2001/XMLSchema-instance&amp;quot;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;         xsi:schemaLocation=&amp;quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&amp;quot;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;lt;build&amp;gt; &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      &amp;lt;plugins&amp;gt; &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;lt;plugin&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &amp;lt;groupId&amp;gt;org.apache.tomcat.maven&amp;lt;/groupId&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &amp;lt;artifactId&amp;gt;tomcat7-maven-plugin&amp;lt;/artifactId&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &amp;lt;version&amp;gt;2.2&amp;lt;/version&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &amp;lt;configuration&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                    &amp;lt;path&amp;gt;/&amp;lt;/path&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                    &amp;lt;port&amp;gt;8080&amp;lt;/port&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                    &amp;lt;uriEncoding&amp;gt;UTF-8&amp;lt;/uriEncoding&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                    &amp;lt;username&amp;gt;abc&amp;lt;/username&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                    &amp;lt;password&amp;gt;xxx&amp;lt;/password&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                    &amp;lt;url&amp;gt;http://deploy.dev.com/manager&amp;lt;/url&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &amp;lt;/configuration&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;lt;/plugin&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;lt;/plugins&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;lt;/build&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;/project&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-&lt;h2 id=&quot;远程发布依赖库jar&quot;&gt;&lt;a href=&quot;#远程发布依赖库jar&quot; class=&quot;headerlink&quot; title=&quot;远程发布依赖库jar&quot;&gt;&lt;/a&gt;远程发布依赖库jar&lt;/h2&gt;&lt;p&gt;&lt;em&gt;pom.xml&lt;/em&gt;&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;?xml version=&amp;apos;1.0&amp;apos; encoding=&amp;apos;utf-8&amp;apos;?&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;project xmlns=&amp;quot;http://maven.apache.org/POM/4.0.0&amp;quot; xmlns:xsi=&amp;quot;http://www.w3.org/2001/XMLSchema-instance&amp;quot;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;         xsi:schemaLocation=&amp;quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&amp;quot;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;lt;distributionManagement&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;lt;snapshotRepository&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;lt;id&amp;gt;snapshots&amp;lt;/id&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;lt;name&amp;gt;libs-snapshot&amp;lt;/name&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;lt;url&amp;gt;http://mvn.code.com/artifactory/libs-snapshot-local&amp;lt;/url&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;lt;/snapshotRepository&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;lt;/distributionManagement&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;/project&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;说明:&lt;/strong&gt;&lt;br&gt;id: 表示配置的用户名和密码，这个ID在settings.xml里配置&lt;br&gt;url: 为私服上传地址。&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;settings.xml&lt;/em&gt;&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;?xml version=&amp;apos;1.0&amp;apos; encoding=&amp;apos;utf-8&amp;apos;?&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;settings xsi:schemaLocation=&amp;quot;http://maven.apache.org/SETTINGS/1.1.0 http://maven.apache.org/xsd/settings-1.1.0.xsd&amp;quot; xmlns=&amp;quot;http://maven.apache.org/SETTINGS/1.1.0&amp;quot;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    xmlns:xsi=&amp;quot;http://www.w3.org/2001/XMLSchema-instance&amp;quot;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;lt;servers&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	    &amp;lt;server&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	    	&amp;lt;id&amp;gt;snapshots&amp;lt;/id&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	      	&amp;lt;username&amp;gt;abc&amp;lt;/username&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	        &amp;lt;password&amp;gt;xxx&amp;lt;/password&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	    &amp;lt;/server&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;lt;/servers&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;/settings&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;配置完成之后执行&lt;code&gt;maven deploy&lt;/code&gt;就OK啦。&lt;/p&gt;
-&lt;hr&gt;
-&lt;p&gt;&lt;em&gt;观点仅代表自己，期待你的留言。&lt;/em&gt;&lt;/p&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;在程序开发的过程中对研发环境服务器应用部署将会非常的频繁，而通过tomcat-maven-plugin的deploy很容易实现web应用的远
-    
-    </summary>
-    
-    
-      <category term="原创" scheme="http://www.wujianjun.org/tags/%E5%8E%9F%E5%88%9B/"/>
-    
-      <category term="Maven" scheme="http://www.wujianjun.org/tags/Maven/"/>
     
   </entry>
   

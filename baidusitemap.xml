@@ -3,6 +3,29 @@
 
     
   <url>
+    <loc>http://www.wujianjun.org/2017/07/07/multi-process-read/</loc>
+    <lastmod>2017-07-07T07:15:18.902Z</lastmod>
+    <data>
+        <display>
+        <title>分布式系统下并发读取不重复数据</title>
+        <pubTime>2017-07-07T02:02:57.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+        <tag>分布式 </tag>
+         
+        <tag>多进程 </tag>
+         
+        <tag>并发 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://www.wujianjun.org/2017/06/29/airport-terminal-code/</loc>
     <lastmod>2017-06-29T10:02:27.681Z</lastmod>
     <data>
@@ -40,23 +63,6 @@
 
     
   <url>
-    <loc>http://www.wujianjun.org/2016/05/27/transaction-isolation-levels/</loc>
-    <lastmod>2017-06-29T03:00:50.728Z</lastmod>
-    <data>
-        <display>
-        <title>数据库事务隔离级别与并发事务控制（悲观锁与乐观锁）</title>
-        <pubTime>2016-05-27T13:34:55.000Z</pubTime>
-        
-        <tag>原创 </tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://www.wujianjun.org/2016/03/17/tomcat-redis-session/</loc>
     <lastmod>2017-06-29T03:00:50.728Z</lastmod>
     <data>
@@ -71,6 +77,23 @@
         <tag>tomcat </tag>
          
         <tag>redis </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2016/05/27/transaction-isolation-levels/</loc>
+    <lastmod>2017-06-29T03:00:50.728Z</lastmod>
+    <data>
+        <display>
+        <title>数据库事务隔离级别与并发事务控制（悲观锁与乐观锁）</title>
+        <pubTime>2016-05-27T13:34:55.000Z</pubTime>
+        
+        <tag>原创 </tag>
          
          
            
@@ -97,16 +120,16 @@
 
     
   <url>
-    <loc>http://www.wujianjun.org/2016/04/19/docker-dockerfile/</loc>
+    <loc>http://www.wujianjun.org/2016/03/18/linux-strace/</loc>
     <lastmod>2017-06-29T03:00:50.724Z</lastmod>
     <data>
         <display>
-        <title>docker-dockerfile</title>
-        <pubTime>2016-04-19T02:30:45.000Z</pubTime>
+        <title>linux-strace跟踪运行中进程对系统资源的访问</title>
+        <pubTime>2016-03-18T07:40:02.000Z</pubTime>
         
-        <tag>Docker </tag>
+        <tag>转发 </tag>
          
-        <tag>转载 </tag>
+        <tag>linux </tag>
          
          
            
@@ -126,23 +149,6 @@
         <tag>原创 </tag>
          
         <tag>Docker </tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://www.wujianjun.org/2016/08/16/cas-attribute/</loc>
-    <lastmod>2017-06-29T03:00:50.724Z</lastmod>
-    <data>
-        <display>
-        <title>开源SSO项目cas认证返回更多的attribute信息</title>
-        <pubTime>2016-08-16T10:41:39.000Z</pubTime>
-        
-        <tag>原创 </tag>
          
          
            
@@ -412,12 +418,12 @@
 
     
   <url>
-    <loc>http://www.wujianjun.org/2016/08/17/cas-shiro-auth-flow/</loc>
+    <loc>http://www.wujianjun.org/2016/09/22/jvm-tools-jstat/</loc>
     <lastmod>2017-06-29T03:00:50.724Z</lastmod>
     <data>
         <display>
-        <title>Shiro与Cas集成后的登录流程时序图</title>
-        <pubTime>2016-08-17T08:44:13.000Z</pubTime>
+        <title>查看jvm堆内GC情况利器 - jstat</title>
+        <pubTime>2016-09-22T09:30:09.000Z</pubTime>
         
         <tag>原创 </tag>
          
@@ -429,12 +435,12 @@
 
     
   <url>
-    <loc>http://www.wujianjun.org/2016/10/09/linux-autostart/</loc>
+    <loc>http://www.wujianjun.org/2016/08/16/cas-attribute/</loc>
     <lastmod>2017-06-29T03:00:50.724Z</lastmod>
     <data>
         <display>
-        <title>Linux开机自动启动Tomcat应用</title>
-        <pubTime>2016-10-09T10:43:51.000Z</pubTime>
+        <title>开源SSO项目cas认证返回更多的attribute信息</title>
+        <pubTime>2016-08-16T10:41:39.000Z</pubTime>
         
         <tag>原创 </tag>
          
@@ -446,16 +452,16 @@
 
     
   <url>
-    <loc>http://www.wujianjun.org/2016/03/18/linux-strace/</loc>
+    <loc>http://www.wujianjun.org/2016/05/31/distributed-redis-locked-queue/</loc>
     <lastmod>2017-06-29T03:00:50.724Z</lastmod>
     <data>
         <display>
-        <title>linux-strace跟踪运行中进程对系统资源的访问</title>
-        <pubTime>2016-03-18T07:40:02.000Z</pubTime>
+        <title>Redis实现分布式锁和分布式队列</title>
+        <pubTime>2016-05-31T03:56:20.000Z</pubTime>
         
-        <tag>转发 </tag>
+        <tag>原创 </tag>
          
-        <tag>linux </tag>
+        <tag>Redis </tag>
          
          
            
@@ -509,6 +515,23 @@
         <display>
         <title>Maven打包source与javadoc</title>
         <pubTime>2016-06-12T10:30:13.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2016/08/17/cas-shiro-auth-flow/</loc>
+    <lastmod>2017-06-29T03:00:50.724Z</lastmod>
+    <data>
+        <display>
+        <title>Shiro与Cas集成后的登录流程时序图</title>
+        <pubTime>2016-08-17T08:44:13.000Z</pubTime>
         
         <tag>原创 </tag>
          
@@ -613,6 +636,25 @@
 
     
   <url>
+    <loc>http://www.wujianjun.org/2016/05/26/os-port-forward/</loc>
+    <lastmod>2017-06-29T03:00:50.724Z</lastmod>
+    <data>
+        <display>
+        <title>使用端口转发解决80端口使用问题</title>
+        <pubTime>2016-05-26T03:07:35.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+        <tag>操作系统 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://www.wujianjun.org/2016/03/21/php-fpm/</loc>
     <lastmod>2017-06-29T03:00:50.724Z</lastmod>
     <data>
@@ -625,25 +667,6 @@
         <tag>Nginx </tag>
          
         <tag>php-fpm </tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://www.wujianjun.org/2016/05/26/os-port-forward/</loc>
-    <lastmod>2017-06-29T03:00:50.724Z</lastmod>
-    <data>
-        <display>
-        <title>使用端口转发解决80端口使用问题</title>
-        <pubTime>2016-05-26T03:07:35.000Z</pubTime>
-        
-        <tag>原创 </tag>
-         
-        <tag>操作系统 </tag>
          
          
            
@@ -774,25 +797,6 @@
 
     
   <url>
-    <loc>http://www.wujianjun.org/2016/05/31/distributed-redis-locked-queue/</loc>
-    <lastmod>2017-06-29T03:00:50.724Z</lastmod>
-    <data>
-        <display>
-        <title>Redis实现分布式锁和分布式队列</title>
-        <pubTime>2016-05-31T03:56:20.000Z</pubTime>
-        
-        <tag>原创 </tag>
-         
-        <tag>Redis </tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://www.wujianjun.org/2016/04/15/docker-cmd-summarize/</loc>
     <lastmod>2017-06-29T03:00:50.724Z</lastmod>
     <data>
@@ -831,12 +835,31 @@
 
     
   <url>
-    <loc>http://www.wujianjun.org/2016/09/22/jvm-tools-jstat/</loc>
+    <loc>http://www.wujianjun.org/2016/04/19/docker-dockerfile/</loc>
     <lastmod>2017-06-29T03:00:50.724Z</lastmod>
     <data>
         <display>
-        <title>查看jvm堆内GC情况利器 - jstat</title>
-        <pubTime>2016-09-22T09:30:09.000Z</pubTime>
+        <title>docker-dockerfile</title>
+        <pubTime>2016-04-19T02:30:45.000Z</pubTime>
+        
+        <tag>Docker </tag>
+         
+        <tag>转载 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2016/10/09/linux-autostart/</loc>
+    <lastmod>2017-06-29T03:00:50.724Z</lastmod>
+    <data>
+        <display>
+        <title>Linux开机自动启动Tomcat应用</title>
+        <pubTime>2016-10-09T10:43:51.000Z</pubTime>
         
         <tag>原创 </tag>
          

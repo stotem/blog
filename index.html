@@ -133,7 +133,7 @@ var _hmt = _hmt || [];
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/Docker/" style="font-size: 14px;">Docker</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/Maven/" style="font-size: 12px;">Maven</a> <a href="/tags/Nginx/" style="font-size: 16px;">Nginx</a> <a href="/tags/Redis/" style="font-size: 12px;">Redis</a> <a href="/tags/iOS/" style="font-size: 18px;">iOS</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/php-fpm/" style="font-size: 10px;">php-fpm</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/关键笔记/" style="font-size: 10px;">关键笔记</a> <a href="/tags/原创/" style="font-size: 20px;">原创</a> <a href="/tags/操作系统/" style="font-size: 10px;">操作系统</a> <a href="/tags/架构/" style="font-size: 10px;">架构</a> <a href="/tags/电商/" style="font-size: 10px;">电商</a> <a href="/tags/转发/" style="font-size: 10px;">转发</a> <a href="/tags/转载/" style="font-size: 18px;">转载</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
+						<a href="/tags/Docker/" style="font-size: 14px;">Docker</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/Maven/" style="font-size: 12px;">Maven</a> <a href="/tags/Nginx/" style="font-size: 16px;">Nginx</a> <a href="/tags/Redis/" style="font-size: 12px;">Redis</a> <a href="/tags/iOS/" style="font-size: 18px;">iOS</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/php-fpm/" style="font-size: 10px;">php-fpm</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/关键笔记/" style="font-size: 10px;">关键笔记</a> <a href="/tags/分布式/" style="font-size: 10px;">分布式</a> <a href="/tags/原创/" style="font-size: 20px;">原创</a> <a href="/tags/多进程/" style="font-size: 10px;">多进程</a> <a href="/tags/并发/" style="font-size: 10px;">并发</a> <a href="/tags/操作系统/" style="font-size: 10px;">操作系统</a> <a href="/tags/架构/" style="font-size: 10px;">架构</a> <a href="/tags/电商/" style="font-size: 10px;">电商</a> <a href="/tags/转发/" style="font-size: 10px;">转发</a> <a href="/tags/转载/" style="font-size: 18px;">转载</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
 					</div>
 				</section>
 				
@@ -219,6 +219,111 @@ var _hmt = _hmt || [];
 </nav>
 
       <div class="body-wrap">
+  
+    <article id="post-multi-process-read" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/07/07/multi-process-read/" class="article-date">
+  	<time datetime="2017-07-07T02:02:57.000Z" itemprop="datePublished">2017-07-07</time>
+</a>
+      <div class="analysis-container">
+	<i class="fa fa-line-chart"></i>
+	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
+</div>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/07/07/multi-process-read/">分布式系统下并发读取不重复数据</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+              
+        <h2 id="问题背景"><a href="#问题背景" class="headerlink" title="问题背景"></a>问题背景</h2><p>分布式系统模块存在定时任务，当模块被部署多个实例时，不同实例的定时任务在运行时就存在从数据源中获取相同数据的情况，<br>虽然通过乐观锁(数据记录增加version,每次update则set verion+=1 where version=?)的处理方式可以避免多实例更新数据造成脏数据入库的问题，<br>但这无疑是降低了分布式系统部署的初衷（通过横向部署多实例增加系统的处理能力）。</p>
+<p>经过分析，总结如下几种处理方式。</p>
+<h2 id="处理方式"><a href="#处理方式" class="headerlink" title="处理方式"></a>处理方式</h2><h3 id="1、数据置标识位"><a href="#1、数据置标识位" class="headerlink" title="1、数据置标识位"></a>1、数据置标识位</h3><p>在数据库记录中增加flag，当数据被读取后则更改flag的值，避免记录被再次读取。</p>
+<p>具体步骤如下：</p>
+<ul>
+<li>锁定分布式锁</li>
+<li>查询指定数量的数据</li>
+<li>更新已查询出数据的标识位</li>
+<li>释放分布式锁</li>
+</ul>
+<p>当处理完成时: 增加数据version,重置标识位</p>
+<h3 id="2、单实例读取，多实例处理"><a href="#2、单实例读取，多实例处理" class="headerlink" title="2、单实例读取，多实例处理"></a>2、单实例读取，多实例处理</h3><p>读取数据Job：利用Redis的分布式锁保障一个实例拥有读取数据的步骤，读取出来的数据再存放到Redis中的需处理数据队列。</p>
+<p>处理业务Job：所有部署实例通过监控Redis的需处理数据队列如果有数据则take一个数据出来进行业务处理。</p>
+<p>具体步骤如下：</p>
+<ul>
+<li>检查需要处理的数据队列是否为空，如为空，则跳过当前读取任务。</li>
+<li>锁定分布式锁</li>
+<li>获取需要处理的数据并存入Redis的处理队列中</li>
+<li>释放分布式锁<br><em>由于读取数据的步骤由单进程来获取，所以就避免了并发读取数据的问题</em></li>
+</ul>
+<h3 id="3、利用自增ID"><a href="#3、利用自增ID" class="headerlink" title="3、利用自增ID"></a>3、利用自增ID</h3><p>利用分布式锁+Redis存储已处理ID+数据的自增ID来获取数据数据。</p>
+<p>具体步骤如下：</p>
+<ul>
+<li>锁定分布式锁</li>
+<li>从Redis中取出已处理数据的最大ID值(此处用x代替)</li>
+<li>从数据库中取出大于x获取出y(固定数据量)的数据</li>
+<li>更新Redis已处理的数据最大ID值</li>
+<li>释放分布式锁</li>
+</ul>
+<h4 id="存在的问题"><a href="#存在的问题" class="headerlink" title="存在的问题"></a>存在的问题</h4><p><strong>问题描述：</strong> 数据任务在进行业务处理的过程中，如处理失败则再也不会被以上步骤再次获取。</p>
+<p><strong>解决方法1：</strong> 当业务处理失败时，在Redis中记录下失败的数据ID。在获取数据步骤中增加获取失败数据的步骤。</p>
+<p><strong>解决方法2：</strong> 当业务处理失败时，在Redis中记录下失败的数据信息。在业务处理环节增加处理已失败的数据重试步骤。</p>
+<h3 id="4、数据取余"><a href="#4、数据取余" class="headerlink" title="4、数据取余"></a>4、数据取余</h3><p>利用zk获取到总实例数，计算模块实例需要处理的余值。</p>
+<p>具体步骤如下：</p>
+<ul>
+<li>模块启动注册到zk，并计算当前实例需要处理的余值为x (当前实例index % 总实例数)</li>
+<li>从数据库取数据时，将数据主键%总实例数，如果余值为x，则取出数据，否则忽略此数据。</li>
+<li>当模块总实例数变化时，重新计算当前实例需要处理的余值。</li>
+</ul>
+<p><em>风险：</em> 由于模块实例所需要处理的数据固定，当数据取余后的值可能会命名同一个实例，造成模块各实例处理压力不平均。</p>
+<hr>
+<p><em>观点仅代表自己，期待你的留言。</em></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/分布式/">分布式</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/多进程/">多进程</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/并发/">并发</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+
+
   
     <article id="post-airport-terminal-code" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -987,77 +1092,6 @@ var _hmt = _hmt || [];
 <p><code>提示：</code>配置了密码方式之后，所有配置文件或数据库中所存储的密码则应修改为密文。</p>
 <h2 id="重要发现"><a href="#重要发现" class="headerlink" title="重要发现"></a>重要发现</h2><p>用户登录验证采用的AuthenticationHandler接口的子类实现，当我们自定义实现类完成验证时，不要妄想在通过HandlerResult的getPrincipal()获取到Principal然后给它设置attribute,因为cas在调用认证方式后会针对Principal的数据进行name的复制，所以即使你的认证方式进行了attribute的设置，在进行对象复制时也会丢掉。</p>
 <p>详见：PolicyBasedAuthenticationManager的authenticateInternal方法中的逻辑。<br><img src="/images/QQ20160817-0.png" alt="PolicyBasedAuthenticationManager-authenticateInternal"></p>
-<hr>
-<p><em>观点仅代表自己，期待你的留言。</em></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-spring-compositeCacheManager" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/07/19/spring-compositeCacheManager/" class="article-date">
-  	<time datetime="2016-07-19T08:47:23.000Z" itemprop="datePublished">2016-07-19</time>
-</a>
-      <div class="analysis-container">
-	<i class="fa fa-line-chart"></i>
-	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
-</div>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/07/19/spring-compositeCacheManager/">妙用Spring中的CompositeCacheManager</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-              
-        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Spring提供了@Cacheable，@CacheEvict,@CachePut等注解很方便有实现数据的缓存，而CompositeCacheManager主要用于集合多个CacheManager实例，在使用多种缓存容器时特别有用。</p>
-<h2 id="fallbackToNoOpCache属性的真实意义"><a href="#fallbackToNoOpCache属性的真实意义" class="headerlink" title="fallbackToNoOpCache属性的真实意义"></a>fallbackToNoOpCache属性的真实意义</h2><p>经过查看Spring 4.1.9.RELEASE的源码,当CompositeCacheManager的fallbackToNoOpCache属性设置为true时，CompositeCacheManager会在已配置的cacheManagers末尾添加一个NoOpCacheManager。<br>当通过代码中指定的缓存容器（@Cacheable等注解设置的value）没有在cacheManagers中都找到时，则会进入到NoOpCacheManager中，此时就相当于禁用掉了缓存，而不抛出相应的异常。</p>
-<p>网络上有朋友在说，当设置fallbackToNoOpCache属性设置为true时，则可以解决缓存容器没有准备好时自动禁用缓存的效果，经过查看Spring源码，并未实现。<br>不过，经测试以下方法可以实现通过配置禁用缓存。</p>
-<h2 id="通过配置禁用缓存"><a href="#通过配置禁用缓存" class="headerlink" title="通过配置禁用缓存"></a>通过配置禁用缓存</h2><p>利用CompositeCacheManager + NoOpCacheManager还能解决当缓存容器没有准备好（缓存容器崩溃，网络不可用等）或者需要暂时去掉缓存的需求。</p>
-<p>只需要将cacheManagers的list值的第一个元素设置为NoOpCacheManager就OK了。</p>
-<p><strong>spring.xml</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;cacheManager&quot; class=&quot;org.springframework.cache.support.CompositeCacheManager&quot;&gt;</span><br><span class="line">    &lt;property name=&quot;cacheManagers&quot;&gt;</span><br><span class="line">        &lt;list&gt;</span><br><span class="line">        	&lt;bean class=&quot;org.springframework.cache.support.NoOpCacheManager&quot; /&gt;</span><br><span class="line">            &lt;ref bean=&quot;simpleCacheManager&quot; /&gt;</span><br><span class="line">        &lt;/list&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property name=&quot;fallbackToNoOpCache&quot; value=&quot;true&quot; /&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure></p>
 <hr>
 <p><em>观点仅代表自己，期待你的留言。</em></p>
 
