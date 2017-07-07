@@ -2,6 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
     
+    
   <url>
     <loc>http://www.wujianjun.org/2017/07/07/multi-process-read/</loc>
     <lastmod>2017-07-07T07:15:18.902Z</lastmod>
@@ -41,7 +42,6 @@
     </data>
     </url>
 
-    
     
   <url>
     <loc>http://www.wujianjun.org/2016/04/13/string-format/</loc>
@@ -543,6 +543,23 @@
 
     
   <url>
+    <loc>http://www.wujianjun.org/2016/05/30/mysql-lock-transaction/</loc>
+    <lastmod>2017-06-29T03:00:50.724Z</lastmod>
+    <data>
+        <display>
+        <title>关于MariaDB事务阻塞等待及锁的实验笔记</title>
+        <pubTime>2016-05-30T10:00:50.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://www.wujianjun.org/2016/03/14/nginx-install/</loc>
     <lastmod>2017-06-29T03:00:50.724Z</lastmod>
     <data>
@@ -828,23 +845,6 @@
         <tag>Docker </tag>
          
         <tag>转载 </tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://www.wujianjun.org/2016/05/30/mysql-lock-transaction/</loc>
-    <lastmod>2017-06-29T03:00:50.724Z</lastmod>
-    <data>
-        <display>
-        <title>关于MariaDB事务阻塞等待及锁的实验笔记</title>
-        <pubTime>2016-05-30T10:00:50.000Z</pubTime>
-        
-        <tag>原创 </tag>
          
          
            

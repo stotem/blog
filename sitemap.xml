@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.wujianjun.org/about/index.html</loc>
+    
+    <lastmod>2017-07-07T07:26:07.184Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.wujianjun.org/2017/07/07/multi-process-read/</loc>
     
     <lastmod>2017-07-07T07:15:18.902Z</lastmod>
@@ -12,13 +19,6 @@
     <loc>http://www.wujianjun.org/2017/06/29/airport-terminal-code/</loc>
     
     <lastmod>2017-06-29T10:02:27.681Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.wujianjun.org/about/index.html</loc>
-    
-    <lastmod>2017-06-29T09:58:26.257Z</lastmod>
     
   </url>
   
@@ -212,6 +212,13 @@
   </url>
   
   <url>
+    <loc>http://www.wujianjun.org/2016/05/30/mysql-lock-transaction/</loc>
+    
+    <lastmod>2017-06-29T03:00:50.724Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.wujianjun.org/2016/03/14/nginx-install/</loc>
     
     <lastmod>2017-06-29T03:00:50.724Z</lastmod>
@@ -318,13 +325,6 @@
   
   <url>
     <loc>http://www.wujianjun.org/2016/04/19/docker-dockerfile/</loc>
-    
-    <lastmod>2017-06-29T03:00:50.724Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.wujianjun.org/2016/05/30/mysql-lock-transaction/</loc>
     
     <lastmod>2017-06-29T03:00:50.724Z</lastmod>
     
