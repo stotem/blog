@@ -1,6 +1,6 @@
 ---
 title: Spring ApplicationContext与常用接口笔记
-keywords: 
+keywords:
   - spring applicationContext
   - spring InitializingBean
   - spring FactoryBean
@@ -23,7 +23,7 @@ WebApplicationContext通过getParent()获取到ApplicationContext，而Applicati
 
 ## 二、Spring常用接口
 ### org.springframework.beans.factory.InitializingBean
-InitializingBean表示为spring管理的初始类，当Bean初始时进行属性注入完成后调用afterPropertiesSet进行初始处理。
+InitializingBean表示为spring管理的初始类，当Bean初始时进行属性注入完成后调用afterPropertiesSet进行初始处理。( [趟坑笔记 add by 2017-07-18](/2017/07/18/spring-initializingbean/))
 
 ### org.springframework.beans.factory.FactoryBean<T>
 FactoryBean 是创建 复杂的bean，一般的bean 直接用xml配置即可，如果一个bean的创建过程中涉及到很多其他的bean 和复杂的逻辑，用xml配置比较困难，这时可以考虑用FactoryBean。
