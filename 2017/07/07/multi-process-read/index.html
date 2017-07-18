@@ -15,7 +15,7 @@
 <meta property="og:site_name" content="建均笔记">
 <meta property="og:description" content="问题背景分布式系统模块存在定时任务，当模块被部署多个实例时，不同实例的定时任务在运行时就存在从数据源中获取相同数据的情况，虽然通过乐观锁(数据记录增加version,每次update则set verion+=1 where version=?)的处理方式可以避免多实例更新数据造成脏数据入库的问题，但这无疑是降低了分布式系统部署的初衷（通过横向部署多实例增加系统的处理能力）。
 经过分析，总结如下几种">
-<meta property="og:updated_time" content="2017-07-07T07:15:18.902Z">
+<meta property="og:updated_time" content="2017-07-14T02:12:53.275Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="分布式系统下并发读取不重复数据">
 <meta name="twitter:description" content="问题背景分布式系统模块存在定时任务，当模块被部署多个实例时，不同实例的定时任务在运行时就存在从数据源中获取相同数据的情况，虽然通过乐观锁(数据记录增加version,每次update则set verion+=1 where version=?)的处理方式可以避免多实例更新数据造成脏数据入库的问题，但这无疑是降低了分布式系统部署的初衷（通过横向部署多实例增加系统的处理能力）。
@@ -328,6 +328,15 @@ var _hmt = _hmt || [];
   
     
 <nav id="article-nav">
+  
+    <a href="/2017/07/18/spring-initializingbean/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          Spring InitializingBean趟坑笔记
+        
+      </div>
+    </a>
   
   
     <a href="/2017/06/29/airport-terminal-code/" id="article-nav-older" class="article-nav-link-wrap">

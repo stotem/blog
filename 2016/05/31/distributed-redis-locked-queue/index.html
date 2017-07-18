@@ -19,7 +19,7 @@ SET key value [EX seconds] [PX mill">
  注：
 
 SET key value [EX seconds] [PX mill">
-<meta property="og:updated_time" content="2017-06-29T03:00:50.724Z">
+<meta property="og:updated_time" content="2017-07-14T02:12:53.147Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis实现分布式锁和分布式队列">
 <meta name="twitter:description" content="分布式锁通过Redis做分布式系统的共享内存实现方案中，可以实现分布式锁的功能。实现方法就是用 SET NX 命令设置一个设定了存活周期 TTL 的 Key 来获取锁，通过删除 Key 来释放锁，通过存活周期来保证避免死锁。如：SET resource_name my_random_value NX PX 30000

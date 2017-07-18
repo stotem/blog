@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.wujianjun.org/"/>
-  <updated>2017-07-07T07:15:18.902Z</updated>
+  <updated>2017-07-18T10:42:05.602Z</updated>
   <id>http://www.wujianjun.org/</id>
   
   <author>
@@ -16,11 +16,37 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Spring InitializingBean趟坑笔记</title>
+    <link href="http://www.wujianjun.org/2017/07/18/spring-initializingbean/"/>
+    <id>http://www.wujianjun.org/2017/07/18/spring-initializingbean/</id>
+    <published>2017-07-18T09:59:12.000Z</published>
+    <updated>2017-07-18T10:42:05.602Z</updated>
+    
+    <content type="html">&lt;h2 id=&quot;问题现象&quot;&gt;&lt;a href=&quot;#问题现象&quot; class=&quot;headerlink&quot; title=&quot;问题现象&quot;&gt;&lt;/a&gt;问题现象&lt;/h2&gt;&lt;p&gt;在Spring完成上下文初始化完成后, InitializingBean的实现类中重写的&lt;code&gt;afterPropertiesSet&lt;/code&gt;方法并未执行.&lt;/p&gt;
+&lt;h2 id=&quot;一、类对象延迟初始&quot;&gt;&lt;a href=&quot;#一、类对象延迟初始&quot; class=&quot;headerlink&quot; title=&quot;一、类对象延迟初始&quot;&gt;&lt;/a&gt;一、类对象延迟初始&lt;/h2&gt;&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;InitializingBean&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      * Invoked by a BeanFactory after it has set all bean properties supplied&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      * (and satisfied BeanFactoryAware and ApplicationContextAware).&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      * &amp;lt;p&amp;gt;This method allows the bean instance to perform initialization only&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      * possible when all bean properties have been set and to throw an&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      * exception in the event of misconfiguration.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      * &lt;span class=&quot;doctag&quot;&gt;@throws&lt;/span&gt; Exception in the event of misconfiguration (such&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      * as failure to set an essential property) or if initialization fails.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      */&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;     &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;afterPropertiesSet&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;throws&lt;/span&gt; Exception&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;由于此接口的方法afterPropertiesSet是在对象的所有属性被初始化后才会调用。当Spring的配置文件中设置类初始默认为”延迟初始”（&lt;code&gt;default-lazy-init=&amp;quot;true&amp;quot;&lt;/code&gt;，此值默认为false）时，&lt;br&gt;类对象如果不被使用，则不会实例化该类对象。所以 InitializingBean子类不能用于在容器启动时进行初始化的工作，则应使用Spring提供的&lt;code&gt;ApplicationListener&lt;/code&gt;接口来进行程序的初始化工作。&lt;/p&gt;
+&lt;p&gt;另外，如果需要InitializingBean子类对象在Spring容器启动时就初始化并则容器调用afterPropertiesSet方法则需要在类上增加&lt;code&gt;org.springframework.context.annotation.Lazy&lt;/code&gt;注解并设置为false即可（也可通过spring配置bean时添加&lt;code&gt;lazy-init=&amp;quot;false&amp;quot;&lt;/code&gt;)。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;观点仅代表自己，期待你的留言。&lt;/em&gt;&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;问题现象&quot;&gt;&lt;a href=&quot;#问题现象&quot; class=&quot;headerlink&quot; title=&quot;问题现象&quot;&gt;&lt;/a&gt;问题现象&lt;/h2&gt;&lt;p&gt;在Spring完成上下文初始化完成后, InitializingBean的实现类中重写的&lt;code&gt;afterPropert
+    
+    </summary>
+    
+    
+      <category term="原创" scheme="http://www.wujianjun.org/tags/%E5%8E%9F%E5%88%9B/"/>
+    
+  </entry>
+  
+  <entry>
     <title>分布式系统下并发读取不重复数据</title>
     <link href="http://www.wujianjun.org/2017/07/07/multi-process-read/"/>
     <id>http://www.wujianjun.org/2017/07/07/multi-process-read/</id>
     <published>2017-07-07T02:02:57.000Z</published>
-    <updated>2017-07-07T07:15:18.902Z</updated>
+    <updated>2017-07-14T02:12:53.275Z</updated>
     
     <content type="html">&lt;h2 id=&quot;问题背景&quot;&gt;&lt;a href=&quot;#问题背景&quot; class=&quot;headerlink&quot; title=&quot;问题背景&quot;&gt;&lt;/a&gt;问题背景&lt;/h2&gt;&lt;p&gt;分布式系统模块存在定时任务，当模块被部署多个实例时，不同实例的定时任务在运行时就存在从数据源中获取相同数据的情况，&lt;br&gt;虽然通过乐观锁(数据记录增加version,每次update则set verion+=1 where version=?)的处理方式可以避免多实例更新数据造成脏数据入库的问题，&lt;br&gt;但这无疑是降低了分布式系统部署的初衷（通过横向部署多实例增加系统的处理能力）。&lt;/p&gt;
 &lt;p&gt;经过分析，总结如下几种处理方式。&lt;/p&gt;
@@ -88,7 +114,7 @@
     <link href="http://www.wujianjun.org/2017/06/29/airport-terminal-code/"/>
     <id>http://www.wujianjun.org/2017/06/29/airport-terminal-code/</id>
     <published>2017-06-29T09:23:50.000Z</published>
-    <updated>2017-06-29T10:02:27.681Z</updated>
+    <updated>2017-07-14T02:12:53.407Z</updated>
     
     <content type="html">&lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;由于携程航班号查询取消了起止城市信息的返回，为了补全信息，特从网络爬取了8644条机场航站楼对应三字码四字码信息，共享于网络供有需要的朋友使用。&lt;/p&gt;
 &lt;p&gt;数据抓取源: &lt;a href=&quot;https://airportcode.51240.com&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;便民查询网&lt;/a&gt;&lt;/p&gt;
@@ -113,7 +139,7 @@
     <link href="http://www.wujianjun.org/2016/10/09/linux-autostart/"/>
     <id>http://www.wujianjun.org/2016/10/09/linux-autostart/</id>
     <published>2016-10-09T10:43:51.000Z</published>
-    <updated>2017-06-29T03:00:50.724Z</updated>
+    <updated>2017-07-14T02:12:53.736Z</updated>
     
     <content type="html">&lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;刚过国庆长假，工作机房断电，重回工作岗位发现N多的应用需要手动启动。感觉烦燥？&lt;br&gt;so.. 配置linux开机自启动&lt;/p&gt;
 &lt;h2 id=&quot;配置&quot;&gt;&lt;a href=&quot;#配置&quot; class=&quot;headerlink&quot; title=&quot;配置&quot;&gt;&lt;/a&gt;配置&lt;/h2&gt;&lt;p&gt;在&lt;em&gt;/etc/rc.local&lt;/em&gt;文件末尾增加以下内容&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;#!/bin/sh&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;# This script will be executed *after* all the other init scripts.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;# You can put your own initialization stuff in here if you don&amp;apos;t&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;# want to do the full Sys V style init stuff.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;O_Path=`pwd`&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;cd /myapps/servers/apache-tomcat-6.0.43/bin/&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;sh startup.sh&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;cd $O_Path&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
@@ -146,7 +172,7 @@
     <link href="http://www.wujianjun.org/2016/09/22/jvm-tools-jstat/"/>
     <id>http://www.wujianjun.org/2016/09/22/jvm-tools-jstat/</id>
     <published>2016-09-22T09:30:09.000Z</published>
-    <updated>2017-06-29T03:00:50.724Z</updated>
+    <updated>2017-07-14T02:12:53.515Z</updated>
     
     <content type="html">&lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;jstat是JDK自带的一个轻量级小工具。全称“Java Virtual Machine statistics monitoring tool”，主要利用JVM内建的指令对Java应用程序的资源和性能进行实时的命令行的监控，包括了对Heap size和垃圾回收状况的监控。&lt;br&gt;以命令行方式运行对系统资源占用很小，在大压力下很少影响性能。并且运行要求低，只要通过Telnet或SSH等方式远程登录到服务器所在机器，就可以进行监控。在与jstat、jstack等工具结合使用时非常方便。&lt;/p&gt;
 &lt;h2 id=&quot;命令安装&quot;&gt;&lt;a href=&quot;#命令安装&quot; class=&quot;headerlink&quot; title=&quot;命令安装&quot;&gt;&lt;/a&gt;命令安装&lt;/h2&gt;&lt;ol&gt;
@@ -229,7 +255,7 @@
     <link href="http://www.wujianjun.org/2016/09/21/jvm-tools-jmap/"/>
     <id>http://www.wujianjun.org/2016/09/21/jvm-tools-jmap/</id>
     <published>2016-09-21T06:21:51.000Z</published>
-    <updated>2017-06-29T03:00:50.724Z</updated>
+    <updated>2017-07-14T02:12:53.543Z</updated>
     
     <content type="html">&lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;Oracle将jmap描述为一种“输出进程、核心文件、远程调试服务器的共享对象内存映射和堆内存细节”的程序。&lt;br&gt;通过它可以查看内存中对象实例，从而解决程序出现不正常的高内存负载、频繁无响应或内存溢出等问题。&lt;/p&gt;
 &lt;h2 id=&quot;命令安装&quot;&gt;&lt;a href=&quot;#命令安装&quot; class=&quot;headerlink&quot; title=&quot;命令安装&quot;&gt;&lt;/a&gt;命令安装&lt;/h2&gt;&lt;ol&gt;
@@ -332,7 +358,7 @@
     <link href="http://www.wujianjun.org/2016/09/01/china-city-data/"/>
     <id>http://www.wujianjun.org/2016/09/01/china-city-data/</id>
     <published>2016-09-01T10:27:21.000Z</published>
-    <updated>2017-06-29T03:00:50.724Z</updated>
+    <updated>2017-07-14T02:12:53.760Z</updated>
     
     <content type="html">&lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;最近整理的中国全国城市数据库信息，共享于网络。&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;/data/t_city.sql&quot;&gt;城市数据库附件，点击下载&lt;/a&gt;&lt;/p&gt;
@@ -357,7 +383,7 @@
     <link href="http://www.wujianjun.org/2016/08/29/spring-core-interface/"/>
     <id>http://www.wujianjun.org/2016/08/29/spring-core-interface/</id>
     <published>2016-08-29T03:17:18.000Z</published>
-    <updated>2017-06-29T03:00:50.724Z</updated>
+    <updated>2017-07-18T10:41:21.586Z</updated>
     
     <content type="html">&lt;h2 id=&quot;一、在Web项目中的ApplicationContext&quot;&gt;&lt;a href=&quot;#一、在Web项目中的ApplicationContext&quot; class=&quot;headerlink&quot; title=&quot;一、在Web项目中的ApplicationContext&quot;&gt;&lt;/a&gt;一、在Web项目中的ApplicationContext&lt;/h2&gt;&lt;p&gt;在web 项目中（spring mvc），系统会存在两个容器，一个是ApplicationContext,另一个就是我们自己的WebApplicationContext（作为ApplicationContext的子容器）。&lt;/p&gt;
 &lt;ul&gt;
@@ -365,7 +391,7 @@
 &lt;li&gt;WebApplicationContext: 默认配置文件名xxx-servlet.xml，xxx为DispatcherServlet配置的servlet-name, 通过org.springframework.web.servlet.DispatcherServlet进行加载并初始化。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;WebApplicationContext通过getParent()获取到ApplicationContext，而ApplicationContext的getParent()将获取到null（ApplicationContext没有父容器）。&lt;/p&gt;
-&lt;h2 id=&quot;二、Spring常用接口&quot;&gt;&lt;a href=&quot;#二、Spring常用接口&quot; class=&quot;headerlink&quot; title=&quot;二、Spring常用接口&quot;&gt;&lt;/a&gt;二、Spring常用接口&lt;/h2&gt;&lt;h3 id=&quot;org-springframework-beans-factory-InitializingBean&quot;&gt;&lt;a href=&quot;#org-springframework-beans-factory-InitializingBean&quot; class=&quot;headerlink&quot; title=&quot;org.springframework.beans.factory.InitializingBean&quot;&gt;&lt;/a&gt;org.springframework.beans.factory.InitializingBean&lt;/h3&gt;&lt;p&gt;InitializingBean表示为spring管理的初始类，当Bean初始时进行属性注入完成后调用afterPropertiesSet进行初始处理。&lt;/p&gt;
+&lt;h2 id=&quot;二、Spring常用接口&quot;&gt;&lt;a href=&quot;#二、Spring常用接口&quot; class=&quot;headerlink&quot; title=&quot;二、Spring常用接口&quot;&gt;&lt;/a&gt;二、Spring常用接口&lt;/h2&gt;&lt;h3 id=&quot;org-springframework-beans-factory-InitializingBean&quot;&gt;&lt;a href=&quot;#org-springframework-beans-factory-InitializingBean&quot; class=&quot;headerlink&quot; title=&quot;org.springframework.beans.factory.InitializingBean&quot;&gt;&lt;/a&gt;org.springframework.beans.factory.InitializingBean&lt;/h3&gt;&lt;p&gt;InitializingBean表示为spring管理的初始类，当Bean初始时进行属性注入完成后调用afterPropertiesSet进行初始处理。( &lt;a href=&quot;/2017/07/18/spring-initializingbean/&quot;&gt;趟坑笔记 add by 2017-07-18&lt;/a&gt;)&lt;/p&gt;
 &lt;h3 id=&quot;org-springframework-beans-factory-FactoryBean&quot;&gt;&lt;a href=&quot;#org-springframework-beans-factory-FactoryBean&quot; class=&quot;headerlink&quot; title=&quot;org.springframework.beans.factory.FactoryBean&quot;&gt;&lt;/a&gt;org.springframework.beans.factory.FactoryBean&lt;t&gt;&lt;/t&gt;&lt;/h3&gt;&lt;p&gt;FactoryBean 是创建 复杂的bean，一般的bean 直接用xml配置即可，如果一个bean的创建过程中涉及到很多其他的bean 和复杂的逻辑，用xml配置比较困难，这时可以考虑用FactoryBean。&lt;/p&gt;
 &lt;p&gt;spring配置时会自动调用getObject来获取注入对象。&lt;/p&gt;
 &lt;p&gt;@see org.springframework.web.accept.ContentNegotiationManagerFactoryBean&lt;/p&gt;
@@ -392,7 +418,7 @@
     <link href="http://www.wujianjun.org/2016/08/22/ggcode-lib/"/>
     <id>http://www.wujianjun.org/2016/08/22/ggcode-lib/</id>
     <published>2016-08-22T10:15:58.000Z</published>
-    <updated>2017-06-29T03:00:50.724Z</updated>
+    <updated>2017-07-14T02:12:53.600Z</updated>
     
     <content type="html">&lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;通过近期的努力，将编写的源代码生成器进行0.0.1版本的封版，代码生成器按数据表自动生成源代码包含简单业务的（增，删，改，查，分页等）。&lt;br&gt;部分集成的开源框架已通过配置文件进行开关配置，方便按业务进行开启和关闭。欢迎大家使用。&lt;br&gt;Github地址：&lt;a href=&quot;https://github.com/stotem/GGCode&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/stotem/GGCode&lt;/a&gt;&lt;/p&gt;
 &lt;h3 id=&quot;基础框架&quot;&gt;&lt;a href=&quot;#基础框架&quot; class=&quot;headerlink&quot; title=&quot;基础框架&quot;&gt;&lt;/a&gt;基础框架&lt;/h3&gt;&lt;p&gt;源代码生成框架: &lt;a href=&quot;https://code.google.com/archive/p/rapid-framework/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;rapid-framework&lt;/a&gt;&lt;/p&gt;
@@ -446,7 +472,7 @@
     <link href="http://www.wujianjun.org/2016/08/17/cas-shiro-auth-flow/"/>
     <id>http://www.wujianjun.org/2016/08/17/cas-shiro-auth-flow/</id>
     <published>2016-08-17T08:44:13.000Z</published>
-    <updated>2017-06-29T03:00:50.724Z</updated>
+    <updated>2017-07-14T02:12:52.943Z</updated>
     
     <content type="html">&lt;h2 id=&quot;框架介绍&quot;&gt;&lt;a href=&quot;#框架介绍&quot; class=&quot;headerlink&quot; title=&quot;框架介绍&quot;&gt;&lt;/a&gt;框架介绍&lt;/h2&gt;&lt;p&gt;Shiro是apache开源项目，主要用户客户端管理登录用户权限提示非常方式的认证接口及丰富的注解。&lt;br&gt;CAS （ Central Authentication Service ）是Yale大学发起的一个企业级的、开源的项目，旨在为 Web 应用系统提供一种可靠的单点登录解决方案（属于Web SSO）。主要用于用户登录认证与登录有效期认证。&lt;/p&gt;
 &lt;h2 id=&quot;调用时序&quot;&gt;&lt;a href=&quot;#调用时序&quot; class=&quot;headerlink&quot; title=&quot;调用时序&quot;&gt;&lt;/a&gt;调用时序&lt;/h2&gt;&lt;p&gt;&lt;img src=&quot;/images/cas-shiro-auth-flow.png&quot; alt=&quot;集成cas与shiro后的用户登录时序图&quot;&gt;&lt;/p&gt;
@@ -470,7 +496,7 @@
     <link href="http://www.wujianjun.org/2016/08/16/cas-attribute/"/>
     <id>http://www.wujianjun.org/2016/08/16/cas-attribute/</id>
     <published>2016-08-16T10:41:39.000Z</published>
-    <updated>2017-06-29T03:00:50.724Z</updated>
+    <updated>2017-07-14T02:12:53.820Z</updated>
     
     <content type="html">&lt;h2 id=&quot;CAS项目介绍&quot;&gt;&lt;a href=&quot;#CAS项目介绍&quot; class=&quot;headerlink&quot; title=&quot;CAS项目介绍&quot;&gt;&lt;/a&gt;CAS项目介绍&lt;/h2&gt;&lt;p&gt;介绍网址： &lt;a href=&quot;https://github.com/apereo/cas&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/apereo/cas&lt;/a&gt;&lt;br&gt;github地址：&lt;a href=&quot;https://github.com/apereo/cas.git&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/apereo/cas.git&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;默认情况下，当用户认证成功后，客户端代码中只能获取到用户的登录名称，不能获取到其它的信息（如：手机号，所属角色，已有授权等），好在提供了一个attribute的map可以进行其它信息的返回。&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;AttributePrincipal ap = AssertionHolder.getAssertion().getPrincipal();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;String name = ap.getName();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Map&amp;lt;String,Object&amp;gt; attribute = ap.getAttributes();&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
@@ -504,7 +530,7 @@
     <link href="http://www.wujianjun.org/2016/07/19/spring-compositeCacheManager/"/>
     <id>http://www.wujianjun.org/2016/07/19/spring-compositeCacheManager/</id>
     <published>2016-07-19T08:47:23.000Z</published>
-    <updated>2017-06-29T03:00:50.724Z</updated>
+    <updated>2017-07-14T02:12:53.199Z</updated>
     
     <content type="html">&lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;Spring提供了@Cacheable，@CacheEvict,@CachePut等注解很方便有实现数据的缓存，而CompositeCacheManager主要用于集合多个CacheManager实例，在使用多种缓存容器时特别有用。&lt;/p&gt;
 &lt;h2 id=&quot;fallbackToNoOpCache属性的真实意义&quot;&gt;&lt;a href=&quot;#fallbackToNoOpCache属性的真实意义&quot; class=&quot;headerlink&quot; title=&quot;fallbackToNoOpCache属性的真实意义&quot;&gt;&lt;/a&gt;fallbackToNoOpCache属性的真实意义&lt;/h2&gt;&lt;p&gt;经过查看Spring 4.1.9.RELEASE的源码,当CompositeCacheManager的fallbackToNoOpCache属性设置为true时，CompositeCacheManager会在已配置的cacheManagers末尾添加一个NoOpCacheManager。&lt;br&gt;当通过代码中指定的缓存容器（@Cacheable等注解设置的value）没有在cacheManagers中都找到时，则会进入到NoOpCacheManager中，此时就相当于禁用掉了缓存，而不抛出相应的异常。&lt;/p&gt;
@@ -532,7 +558,7 @@
     <link href="http://www.wujianjun.org/2016/07/12/google-pagination-note/"/>
     <id>http://www.wujianjun.org/2016/07/12/google-pagination-note/</id>
     <published>2016-07-12T08:08:37.000Z</published>
-    <updated>2017-06-29T03:00:50.724Z</updated>
+    <updated>2017-07-14T02:12:52.763Z</updated>
     
     <content type="html">&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;29&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;30&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;31&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;32&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;33&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;34&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;35&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;36&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;37&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;38&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;39&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;40&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;41&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;42&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;public class Pagination &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    @Test&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    public void getPagination() &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        final int[] paginationRegion = getPaginationRegion(6, 5, 10);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        // 进行页码输出&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        System.out.println(Arrays.toString(paginationRegion));&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        for (int i=paginationRegion[0]; i&amp;lt;= paginationRegion[1];i++) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            //....&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    /**&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;     * 类Google分页 - 获取需要显示的闭区间页码范围&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;     * @param currPage 当前页码&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;     * @param showNum 显示条数，为保持当前页码居中，建议为单数值&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;     * @param totalPage 总页数&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;     * @return 闭区间 页码范围&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;     */&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    private static int[] getPaginationRegion(int currPage, int showNum, int totalPage) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        // 先进行基础运算&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        int startNum = currPage - showNum/2;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        int endNum = currPage + showNum/2;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        if (endNum &amp;gt; totalPage) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            endNum = totalPage;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        if (startNum &amp;lt; 1) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            startNum = 1;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        // 如果显示页码数量不够则进行补数&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        if(endNum - startNum &amp;lt; showNum) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            int tmp;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            if ((tmp = endNum - showNum + 1) &amp;gt; 0) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                startNum = tmp;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            else if((tmp = startNum + showNum - 1) &amp;lt; totalPage) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                endNum = tmp;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        return new int[]&amp;#123;startNum, endNum&amp;#125;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;&lt;code&gt;注意：&lt;/code&gt;输入的为闭区间(包含两端页码值)范围。&lt;/p&gt;
@@ -556,7 +582,7 @@
     <link href="http://www.wujianjun.org/2016/06/30/spring-aop-annotation/"/>
     <id>http://www.wujianjun.org/2016/06/30/spring-aop-annotation/</id>
     <published>2016-06-30T07:29:18.000Z</published>
-    <updated>2017-06-29T03:00:50.724Z</updated>
+    <updated>2017-07-14T02:12:52.983Z</updated>
     
     <content type="html">&lt;h2 id=&quot;AOP概念&quot;&gt;&lt;a href=&quot;#AOP概念&quot; class=&quot;headerlink&quot; title=&quot;AOP概念&quot;&gt;&lt;/a&gt;AOP概念&lt;/h2&gt;&lt;p&gt;AOP术语:&lt;/p&gt;
 &lt;ul&gt;
@@ -629,7 +655,7 @@
     <link href="http://www.wujianjun.org/2016/06/29/spring-mutiview/"/>
     <id>http://www.wujianjun.org/2016/06/29/spring-mutiview/</id>
     <published>2016-06-29T07:56:16.000Z</published>
-    <updated>2017-06-29T03:00:50.724Z</updated>
+    <updated>2017-07-14T02:12:52.903Z</updated>
     
     <content type="html">&lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;在MVC架构中，Controller被用于连接Model与View，同时控制View的显示与跳转。在以往的开发实践中常常是直接将View与Controller放置在同一个Project中，如果此时想要真正实现Controller与View的分离，View与Controller的交互就只能通过HTTP+数据格式或者ajax实现。那么Controller所需要做的就是将数据通过api的方式提供给View。此时针对Controller就需要将数据进行api和view的两种完全不同的视图呈现。好在Spring已经给我们提供了&lt;code&gt;org.springframework.web.servlet.view.ContentNegotiatingViewResolver&lt;/code&gt;来实现。&lt;/p&gt;
 &lt;h2 id=&quot;Spring多视图配置&quot;&gt;&lt;a href=&quot;#Spring多视图配置&quot; class=&quot;headerlink&quot; title=&quot;Spring多视图配置&quot;&gt;&lt;/a&gt;Spring多视图配置&lt;/h2&gt;&lt;p&gt;&lt;em&gt;spring-web.xml&lt;/em&gt;&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;29&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;30&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;31&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;32&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;33&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;34&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;35&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;36&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;37&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;38&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;39&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;40&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;41&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;42&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;43&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;44&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;45&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;46&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;47&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;48&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;49&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;50&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;51&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;52&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;53&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;54&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;!--配置消息转换器--&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;mvc:annotation-driven&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;lt;mvc:message-converters register-defaults=&amp;quot;true&amp;quot;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;lt;bean class=&amp;quot;org.springframework.http.converter.StringHttpMessageConverter&amp;quot;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;lt;constructor-arg value=&amp;quot;UTF-8&amp;quot;/&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;lt;property name=&amp;quot;supportedMediaTypes&amp;quot;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;               &amp;lt;list&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                   &amp;lt;value&amp;gt;application/xml;charset=UTF-8&amp;lt;/value&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                   &amp;lt;value&amp;gt;text/html;charset=UTF-8&amp;lt;/value&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                   &amp;lt;value&amp;gt;text/plain;charset=UTF-8&amp;lt;/value&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                   &amp;lt;value&amp;gt;application/json;charset=UTF-8&amp;lt;/value&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;               &amp;lt;/list&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;           &amp;lt;/property&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;lt;/bean&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;lt;bean class=&amp;quot;org.springframework.http.converter.json.MappingJackson2HttpMessageConverter&amp;quot;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;lt;property name=&amp;quot;prettyPrint&amp;quot; value=&amp;quot;true&amp;quot;/&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;lt;/bean&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;lt;/mvc:message-converters&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;/mvc:annotation-driven&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;!--多视图解析配置--&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;bean class=&amp;quot;org.springframework.web.servlet.view.ContentNegotiatingViewResolver&amp;quot;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;lt;property name=&amp;quot;defaultContentType&amp;quot; value=&amp;quot;text/html;charset=UTF-8&amp;quot; /&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;lt;!-- not by accept header --&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;lt;property name=&amp;quot;ignoreAcceptHeader&amp;quot; value=&amp;quot;true&amp;quot;/&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;lt;property name=&amp;quot;favorPathExtension&amp;quot; value=&amp;quot;true&amp;quot;/&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;lt;property name=&amp;quot;favorParameter&amp;quot; value=&amp;quot;true&amp;quot;/&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;lt;property name=&amp;quot;useNotAcceptableStatusCode&amp;quot; value=&amp;quot;true&amp;quot; /&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;lt;!-- by extension --&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;lt;property name=&amp;quot;mediaTypes&amp;quot;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		&amp;lt;map&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		    &amp;lt;entry key=&amp;quot;xml&amp;quot; value=&amp;quot;application/xml&amp;quot; /&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;			&amp;lt;entry key=&amp;quot;json&amp;quot; value=&amp;quot;application/json&amp;quot; /&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;lt;entry key=&amp;quot;httl&amp;quot; value=&amp;quot;text/html&amp;quot; /&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		&amp;lt;/map&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;lt;/property&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;lt;property name=&amp;quot;viewResolvers&amp;quot;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		&amp;lt;list&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;lt;ref bean=&amp;quot;httlViewResolver&amp;quot;/&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		&amp;lt;/list&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;lt;/property&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		&amp;lt;property name=&amp;quot;defaultViews&amp;quot;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		&amp;lt;list&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;lt;bean class=&amp;quot;org.springframework.web.servlet.view.json.MappingJackson2JsonView&amp;quot; /&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;           	&amp;lt;bean class=&amp;quot;org.springframework.web.servlet.view.xml.MappingJackson2XmlView&amp;quot; /&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		&amp;lt;/list&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;lt;/property&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;/bean&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;!-- 视图解析器配置 --&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;bean id=&amp;quot;httlViewResolver&amp;quot; class=&amp;quot;httl.web.springmvc.HttlViewResolver&amp;quot;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;lt;property name=&amp;quot;suffix&amp;quot; value=&amp;quot;.view&amp;quot;/&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;lt;property name=&amp;quot;contentType&amp;quot; value=&amp;quot;text/html;charset=UTF-8&amp;quot;/&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;lt;property name=&amp;quot;attributesMap&amp;quot; ref=&amp;quot;viewTools&amp;quot; /&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;/bean&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
@@ -671,7 +697,7 @@
     <link href="http://www.wujianjun.org/2016/06/12/maven-source-doc/"/>
     <id>http://www.wujianjun.org/2016/06/12/maven-source-doc/</id>
     <published>2016-06-12T10:30:13.000Z</published>
-    <updated>2017-06-29T03:00:50.724Z</updated>
+    <updated>2017-07-14T02:12:53.287Z</updated>
     
     <content type="html">&lt;p&gt;&lt;em&gt;pom.xml&lt;/em&gt;&lt;br&gt;&lt;figure class=&quot;highlight xml&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;29&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;30&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;31&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;32&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;33&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;34&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;project&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;xmlns&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;http://maven.apache.org/POM/4.0.0&quot;&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;xmlns:xsi&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;xsi:schemaLocation&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;build&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;plugins&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;plugin&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;groupId&lt;/span&gt;&amp;gt;&lt;/span&gt;org.apache.maven.plugins&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;groupId&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;artifactId&lt;/span&gt;&amp;gt;&lt;/span&gt;maven-source-plugin&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;artifactId&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;version&lt;/span&gt;&amp;gt;&lt;/span&gt;2.2.1&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;version&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;executions&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                    &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;execution&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                        &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;id&lt;/span&gt;&amp;gt;&lt;/span&gt;create-source&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;id&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;comment&quot;&gt;&amp;lt;!--指定一个名字--&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                        &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;phase&lt;/span&gt;&amp;gt;&lt;/span&gt;compile&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;phase&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;comment&quot;&gt;&amp;lt;!--在编译阶段生成source包--&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                        &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;goals&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                            &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;goal&lt;/span&gt;&amp;gt;&lt;/span&gt;jar&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;goal&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;comment&quot;&gt;&amp;lt;!--指定生成的文件为jar包--&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                        &lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;goals&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                    &lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;execution&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;executions&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;plugin&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;plugin&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;groupId&lt;/span&gt;&amp;gt;&lt;/span&gt;org.apache.maven.plugins&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;groupId&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;artifactId&lt;/span&gt;&amp;gt;&lt;/span&gt;maven-javadoc-plugin&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;artifactId&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;version&lt;/span&gt;&amp;gt;&lt;/span&gt;2.9.1&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;version&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;executions&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                    &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;execution&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                        &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;id&lt;/span&gt;&amp;gt;&lt;/span&gt;create-doc&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;id&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;comment&quot;&gt;&amp;lt;!--指定一个名字--&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                        &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;phase&lt;/span&gt;&amp;gt;&lt;/span&gt;compile&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;phase&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;comment&quot;&gt;&amp;lt;!--在编译阶段生成javadoc包--&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                        &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;goals&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                            &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;goal&lt;/span&gt;&amp;gt;&lt;/span&gt;jar&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;goal&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;comment&quot;&gt;&amp;lt;!--指定生成的文件为jar包--&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                        &lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;goals&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                    &lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;execution&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;executions&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;plugin&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;plugins&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;build&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;name&quot;&gt;project&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;结论：&lt;/code&gt;由于指定插件在phase=compile时期生成源码与Javadoc，当执行完成编译后，会在target目录下生成三个文件,xxx.jar,xxx-javadoc.jar,xxx-sources.jar&lt;/p&gt;
@@ -695,7 +721,7 @@
     <link href="http://www.wujianjun.org/2016/06/03/zookeeper-note/"/>
     <id>http://www.wujianjun.org/2016/06/03/zookeeper-note/</id>
     <published>2016-06-03T10:32:58.000Z</published>
-    <updated>2017-06-29T03:00:50.728Z</updated>
+    <updated>2017-07-14T02:12:53.227Z</updated>
     
     <content type="html">&lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;Zookeeper 分布式服务框架是 Apache Hadoop 的一个子项目，它主要是用来解决分布式应用中经常遇到的一些数据管理问题，如：统一命名服务、状态同步服务、集群管理、分布式应用配置项的管理等。&lt;/p&gt;
 &lt;p&gt;Zookeeper的数据存储模型：ZK会维护一个具有层次关系的数据结构，它非常类似于一个标准的文件系统。&lt;br&gt;&lt;img src=&quot;/images/zk_data_model.gif&quot; alt=&quot;Zookeeper的数据存储模型&quot;&gt;&lt;/p&gt;
@@ -754,7 +780,7 @@
     <link href="http://www.wujianjun.org/2016/05/31/redis-cluster-note/"/>
     <id>http://www.wujianjun.org/2016/05/31/redis-cluster-note/</id>
     <published>2016-05-31T10:16:13.000Z</published>
-    <updated>2017-06-29T03:00:50.724Z</updated>
+    <updated>2017-07-14T02:12:53.459Z</updated>
     
     <content type="html">&lt;h2 id=&quot;介绍&quot;&gt;&lt;a href=&quot;#介绍&quot; class=&quot;headerlink&quot; title=&quot;介绍&quot;&gt;&lt;/a&gt;介绍&lt;/h2&gt;&lt;ol&gt;
 &lt;li&gt;Redis集群是一个可以在多个Redis节点之间进行数据共享的设施（installation）。&lt;/li&gt;
@@ -790,7 +816,7 @@
     <link href="http://www.wujianjun.org/2016/05/31/distributed-redis-locked-queue/"/>
     <id>http://www.wujianjun.org/2016/05/31/distributed-redis-locked-queue/</id>
     <published>2016-05-31T03:56:20.000Z</published>
-    <updated>2017-06-29T03:00:50.724Z</updated>
+    <updated>2017-07-14T02:12:53.147Z</updated>
     
     <content type="html">&lt;h2 id=&quot;分布式锁&quot;&gt;&lt;a href=&quot;#分布式锁&quot; class=&quot;headerlink&quot; title=&quot;分布式锁&quot;&gt;&lt;/a&gt;分布式锁&lt;/h2&gt;&lt;p&gt;通过Redis做分布式系统的共享内存实现方案中，可以实现分布式锁的功能。实现方法就是用 SET NX 命令设置一个设定了存活周期 TTL 的 Key 来获取锁，通过删除 Key 来释放锁，通过存活周期来保证避免死锁。&lt;br&gt;如：&lt;code&gt;SET resource_name my_random_value NX PX 30000&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt; &lt;em&gt;注：&lt;/em&gt;&lt;/p&gt;
@@ -882,7 +908,7 @@
     <link href="http://www.wujianjun.org/2016/05/30/mysql-lock-transaction/"/>
     <id>http://www.wujianjun.org/2016/05/30/mysql-lock-transaction/</id>
     <published>2016-05-30T10:00:50.000Z</published>
-    <updated>2017-06-29T03:00:50.724Z</updated>
+    <updated>2017-07-14T02:12:53.091Z</updated>
     
     <content type="html">&lt;h2 id=&quot;实验环境&quot;&gt;&lt;a href=&quot;#实验环境&quot; class=&quot;headerlink&quot; title=&quot;实验环境&quot;&gt;&lt;/a&gt;实验环境&lt;/h2&gt;&lt;p&gt;Server Version: 10.0.24-MariaDB&lt;br&gt;SET GLOBAL tx_isolation=’REPEATABLE-READ’;&lt;br&gt;SET SESSION tx_isolation=’REPEATABLE-READ’;&lt;br&gt;SET @@autocommit=0;&lt;/p&gt;
 &lt;p&gt;SHOW VARIABLES like ‘autocommit’;&lt;br&gt;SELECT @@GLOBAL.tx_isolation, @@tx_isolation;&lt;/p&gt;
@@ -1011,87 +1037,6 @@
     <summary type="html">
     
       &lt;h2 id=&quot;实验环境&quot;&gt;&lt;a href=&quot;#实验环境&quot; class=&quot;headerlink&quot; title=&quot;实验环境&quot;&gt;&lt;/a&gt;实验环境&lt;/h2&gt;&lt;p&gt;Server Version: 10.0.24-MariaDB&lt;br&gt;SET GLOBAL tx_isolation=’RE
-    
-    </summary>
-    
-    
-      <category term="原创" scheme="http://www.wujianjun.org/tags/%E5%8E%9F%E5%88%9B/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>数据库事务隔离级别与并发事务控制（悲观锁与乐观锁）</title>
-    <link href="http://www.wujianjun.org/2016/05/27/transaction-isolation-levels/"/>
-    <id>http://www.wujianjun.org/2016/05/27/transaction-isolation-levels/</id>
-    <published>2016-05-27T13:34:55.000Z</published>
-    <updated>2017-06-29T03:00:50.728Z</updated>
-    
-    <content type="html">&lt;h2 id=&quot;事务特性&quot;&gt;&lt;a href=&quot;#事务特性&quot; class=&quot;headerlink&quot; title=&quot;事务特性&quot;&gt;&lt;/a&gt;事务特性&lt;/h2&gt;&lt;p&gt;事务具有4个属性：原子性、一致性、隔离性、持久性。这四个属性通常称为ACID特性。&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;原子性（Atomicity）：事务作为一个整体被执行，包含在其中的对数据库的操作要么全部被执行，要么都不执行。&lt;/li&gt;
-&lt;li&gt;一致性（Consistency）：事务应确保数据库的状态从一个一致状态转变为另一个一致状态。一致状态的含义是数据库中的数据应满足完整性约束。&lt;/li&gt;
-&lt;li&gt;隔离性（Isolation）：多个事务并发执行时，一个事务的执行不应影响其他事务的执行。&lt;/li&gt;
-&lt;li&gt;持久性（Durability）：一个事务一旦提交，他对数据库的修改应该永久保存在数据库中。&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2 id=&quot;事务的隔离级别&quot;&gt;&lt;a href=&quot;#事务的隔离级别&quot; class=&quot;headerlink&quot; title=&quot;事务的隔离级别&quot;&gt;&lt;/a&gt;事务的隔离级别&lt;/h2&gt;&lt;p&gt;由于事务的隔离性允许多个事务同时处理同一数据，所以，在多个事务并发操作的过程中，如果控制不好隔离级别，就有可能产生&lt;em&gt;脏读&lt;/em&gt;、&lt;em&gt;不可重复读&lt;/em&gt;或者&lt;em&gt;幻读&lt;/em&gt;等现象。因此在操作数据的过程中需要合理利用数据库锁机制或者多版本并发控制机制获取更高的隔离等级，但是，随着数据库隔离级别的提高，数据的并发能力也会有所下降。所以，如何在并发性和隔离性之间做一个很好的权衡就成了一个至关重要的问题。&lt;/p&gt;
-&lt;p&gt;ANSI/ISO SQL定义的标准隔离级别从高到低依次为：可串行化(Serializable)、可重复读(Repeatable reads)、提交读(Read committed)、未提交读(Read uncommitted)。&lt;/p&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;隔离级别&lt;/th&gt;
-&lt;th&gt;脏读（Dirty Read）&lt;/th&gt;
-&lt;th&gt;不可重复读（NonRepeatable Read）&lt;/th&gt;
-&lt;th&gt;幻读（Phantom Read）&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;未提交读（Read uncommitted）&lt;/td&gt;
-&lt;td&gt;可能&lt;/td&gt;
-&lt;td&gt;可能&lt;/td&gt;
-&lt;td&gt;可能&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;提交读（Read committed）&lt;/td&gt;
-&lt;td&gt;不可能&lt;/td&gt;
-&lt;td&gt;可能&lt;/td&gt;
-&lt;td&gt;可能&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;可重复读（Repeatable Read）&lt;/td&gt;
-&lt;td&gt;不可能&lt;/td&gt;
-&lt;td&gt;不可能&lt;/td&gt;
-&lt;td&gt;可能&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;可串行化（Serializable）&lt;/td&gt;
-&lt;td&gt;不可能&lt;/td&gt;
-&lt;td&gt;不可能&lt;/td&gt;
-&lt;td&gt;不可能&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;p&gt;===========================================================================================&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;未提交读(Read Uncommitted)：允许脏读，也就是可能读取到其他会话中未提交事务修改的数据。&lt;/li&gt;
-&lt;li&gt;提交读(Read Committed)：被读取的数据可以被其他事务修改。这样就可能导致不可重复读。也就是说，事务的读取数据的时候获取读锁，但是读完之后立即释放（不需要等到事务结束），而写锁则是事务提交之后才释放。释放读锁之后，就可能被其他事物修改数据。Oracle等多数数据库默认都是该级别 (不重复读)&lt;/li&gt;
-&lt;li&gt;可重复读(Repeated Read)：所有被Select获取的数据都不能被修改，这样就可以避免一个事务前后读取数据不一致的情况。但是却没有办法控制幻读，因为这个时候其他事务不能更改所选的数据，但是可以增加数据，因为前一个事务没有范围锁。Mysql的InnoDB引擎默认隔离级别。&lt;/li&gt;
-&lt;li&gt;可串行化(Serializable)：所有事务都一个接一个地串行执行，这样可以避免幻读（phantom reads）,每次读都需要获得表级共享锁，读写相互都会阻塞。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&quot;数据库并发控制&quot;&gt;&lt;a href=&quot;#数据库并发控制&quot; class=&quot;headerlink&quot; title=&quot;数据库并发控制&quot;&gt;&lt;/a&gt;数据库并发控制&lt;/h2&gt;&lt;p&gt;虽然将事务串形化可以保证数据在多事务并发处理下不存在数据不一致的问题，但串行执行使得数据库的处理性能大幅度地下降，常常是你接受不了的。所以，一般来说，数据库的隔离级别都会设置为read committed（只能读取其他事务已提交的数据），然后由应用程序使用&lt;strong&gt;乐观锁/悲观锁&lt;/strong&gt;来弥补数据不一致的问题。&lt;/p&gt;
-&lt;h3 id=&quot;乐观锁&quot;&gt;&lt;a href=&quot;#乐观锁&quot; class=&quot;headerlink&quot; title=&quot;乐观锁&quot;&gt;&lt;/a&gt;乐观锁&lt;/h3&gt;&lt;p&gt;虽然名字中带“锁”，但是乐观锁并不锁住任何东西，而是在提交事务时检查自己上次读取这条记录后，是否有其他事务修改了这条记录，如果没有则提交，如果被修改了则回滚。如果并发的可能性并不大，那么锁定策略带来的性能消耗是非常小的。&lt;/p&gt;
-&lt;p&gt;常见实现方式：在数据表增加version字段，每次事务开始时将取出version字段值，而后在更新数据的同时version增加1（如：&lt;code&gt;update xxx set data=#{data},version=version+1 where version=#{version}&lt;/code&gt;），如没有数据被更新，那么说明数据由其它的事务进行了更新，此时就可以判断当前事务所操作的历史快照数据。&lt;/p&gt;
-&lt;h3 id=&quot;悲观锁&quot;&gt;&lt;a href=&quot;#悲观锁&quot; class=&quot;headerlink&quot; title=&quot;悲观锁&quot;&gt;&lt;/a&gt;悲观锁&lt;/h3&gt;&lt;p&gt;和乐观锁相比，悲观锁则是一把真正的锁了，它通过SQL语句“select for update”锁住select出的那批数据，这时如果其他事务来更新这批数据时会等待。&lt;/p&gt;
-&lt;p&gt;总的来说，悲观锁相对乐观锁更安全一些，但是开销也更大，甚至可能出现数据库死锁的情况，建议只在乐观锁无法工作时才使用。&lt;/p&gt;
-&lt;hr&gt;
-&lt;p&gt;&lt;em&gt;观点仅代表自己，期待你的留言。&lt;/em&gt;&lt;/p&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;事务特性&quot;&gt;&lt;a href=&quot;#事务特性&quot; class=&quot;headerlink&quot; title=&quot;事务特性&quot;&gt;&lt;/a&gt;事务特性&lt;/h2&gt;&lt;p&gt;事务具有4个属性：原子性、一致性、隔离性、持久性。这四个属性通常称为ACID特性。&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;原子性（Ato
     
     </summary>
     

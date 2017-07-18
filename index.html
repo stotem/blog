@@ -220,6 +220,75 @@ var _hmt = _hmt || [];
 
       <div class="body-wrap">
   
+    <article id="post-spring-initializingbean" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/07/18/spring-initializingbean/" class="article-date">
+  	<time datetime="2017-07-18T09:59:12.000Z" itemprop="datePublished">2017-07-18</time>
+</a>
+      <div class="analysis-container">
+	<i class="fa fa-line-chart"></i>
+	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
+</div>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/07/18/spring-initializingbean/">Spring InitializingBean趟坑笔记</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+              
+        <h2 id="问题现象"><a href="#问题现象" class="headerlink" title="问题现象"></a>问题现象</h2><p>在Spring完成上下文初始化完成后, InitializingBean的实现类中重写的<code>afterPropertiesSet</code>方法并未执行.</p>
+<h2 id="一、类对象延迟初始"><a href="#一、类对象延迟初始" class="headerlink" title="一、类对象延迟初始"></a>一、类对象延迟初始</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">InitializingBean</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span><br><span class="line">      * Invoked by a BeanFactory after it has set all bean properties supplied</span><br><span class="line">      * (and satisfied BeanFactoryAware and ApplicationContextAware).</span><br><span class="line">      * &lt;p&gt;This method allows the bean instance to perform initialization only</span><br><span class="line">      * possible when all bean properties have been set and to throw an</span><br><span class="line">      * exception in the event of misconfiguration.</span><br><span class="line">      * <span class="doctag">@throws</span> Exception in the event of misconfiguration (such</span><br><span class="line">      * as failure to set an essential property) or if initialization fails.</span><br><span class="line">      */</span></span><br><span class="line">     <span class="function"><span class="keyword">void</span> <span class="title">afterPropertiesSet</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>由于此接口的方法afterPropertiesSet是在对象的所有属性被初始化后才会调用。当Spring的配置文件中设置类初始默认为”延迟初始”（<code>default-lazy-init=&quot;true&quot;</code>，此值默认为false）时，<br>类对象如果不被使用，则不会实例化该类对象。所以 InitializingBean子类不能用于在容器启动时进行初始化的工作，则应使用Spring提供的<code>ApplicationListener</code>接口来进行程序的初始化工作。</p>
+<p>另外，如果需要InitializingBean子类对象在Spring容器启动时就初始化并则容器调用afterPropertiesSet方法则需要在类上增加<code>org.springframework.context.annotation.Lazy</code>注解并设置为false即可（也可通过spring配置bean时添加<code>lazy-init=&quot;false&quot;</code>)。</p>
+<hr>
+<p><em>观点仅代表自己，期待你的留言。</em></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+
+
+  
     <article id="post-multi-process-read" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -844,7 +913,7 @@ var _hmt = _hmt || [];
 <li>WebApplicationContext: 默认配置文件名xxx-servlet.xml，xxx为DispatcherServlet配置的servlet-name, 通过org.springframework.web.servlet.DispatcherServlet进行加载并初始化。</li>
 </ul>
 <p>WebApplicationContext通过getParent()获取到ApplicationContext，而ApplicationContext的getParent()将获取到null（ApplicationContext没有父容器）。</p>
-<h2 id="二、Spring常用接口"><a href="#二、Spring常用接口" class="headerlink" title="二、Spring常用接口"></a>二、Spring常用接口</h2><h3 id="org-springframework-beans-factory-InitializingBean"><a href="#org-springframework-beans-factory-InitializingBean" class="headerlink" title="org.springframework.beans.factory.InitializingBean"></a>org.springframework.beans.factory.InitializingBean</h3><p>InitializingBean表示为spring管理的初始类，当Bean初始时进行属性注入完成后调用afterPropertiesSet进行初始处理。</p>
+<h2 id="二、Spring常用接口"><a href="#二、Spring常用接口" class="headerlink" title="二、Spring常用接口"></a>二、Spring常用接口</h2><h3 id="org-springframework-beans-factory-InitializingBean"><a href="#org-springframework-beans-factory-InitializingBean" class="headerlink" title="org.springframework.beans.factory.InitializingBean"></a>org.springframework.beans.factory.InitializingBean</h3><p>InitializingBean表示为spring管理的初始类，当Bean初始时进行属性注入完成后调用afterPropertiesSet进行初始处理。( <a href="/2017/07/18/spring-initializingbean/">趟坑笔记 add by 2017-07-18</a>)</p>
 <h3 id="org-springframework-beans-factory-FactoryBean"><a href="#org-springframework-beans-factory-FactoryBean" class="headerlink" title="org.springframework.beans.factory.FactoryBean"></a>org.springframework.beans.factory.FactoryBean<t></t></h3><p>FactoryBean 是创建 复杂的bean，一般的bean 直接用xml配置即可，如果一个bean的创建过程中涉及到很多其他的bean 和复杂的逻辑，用xml配置比较困难，这时可以考虑用FactoryBean。</p>
 <p>spring配置时会自动调用getObject来获取注入对象。</p>
 <p>@see org.springframework.web.accept.ContentNegotiationManagerFactoryBean</p>
@@ -1015,83 +1084,6 @@ var _hmt = _hmt || [];
               
         <h2 id="框架介绍"><a href="#框架介绍" class="headerlink" title="框架介绍"></a>框架介绍</h2><p>Shiro是apache开源项目，主要用户客户端管理登录用户权限提示非常方式的认证接口及丰富的注解。<br>CAS （ Central Authentication Service ）是Yale大学发起的一个企业级的、开源的项目，旨在为 Web 应用系统提供一种可靠的单点登录解决方案（属于Web SSO）。主要用于用户登录认证与登录有效期认证。</p>
 <h2 id="调用时序"><a href="#调用时序" class="headerlink" title="调用时序"></a>调用时序</h2><p><img src="/images/cas-shiro-auth-flow.png" alt="集成cas与shiro后的用户登录时序图"></p>
-<hr>
-<p><em>观点仅代表自己，期待你的留言。</em></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-cas-attribute" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/08/16/cas-attribute/" class="article-date">
-  	<time datetime="2016-08-16T10:41:39.000Z" itemprop="datePublished">2016-08-16</time>
-</a>
-      <div class="analysis-container">
-	<i class="fa fa-line-chart"></i>
-	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
-</div>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/08/16/cas-attribute/">开源SSO项目cas认证返回更多的attribute信息</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-              
-        <h2 id="CAS项目介绍"><a href="#CAS项目介绍" class="headerlink" title="CAS项目介绍"></a>CAS项目介绍</h2><p>介绍网址： <a href="https://github.com/apereo/cas" target="_blank" rel="external">https://github.com/apereo/cas</a><br>github地址：<a href="https://github.com/apereo/cas.git" target="_blank" rel="external">https://github.com/apereo/cas.git</a></p>
-<p>默认情况下，当用户认证成功后，客户端代码中只能获取到用户的登录名称，不能获取到其它的信息（如：手机号，所属角色，已有授权等），好在提供了一个attribute的map可以进行其它信息的返回。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">AttributePrincipal ap = AssertionHolder.getAssertion().getPrincipal();</span><br><span class="line">String name = ap.getName();</span><br><span class="line">Map&lt;String,Object&gt; attribute = ap.getAttributes();</span><br></pre></td></tr></table></figure></p>
-<h2 id="增加attribute信息返回"><a href="#增加attribute信息返回" class="headerlink" title="增加attribute信息返回"></a>增加attribute信息返回</h2><h3 id="修改ticket验证接口返回的xml信息"><a href="#修改ticket验证接口返回的xml信息" class="headerlink" title="修改ticket验证接口返回的xml信息"></a>修改ticket验证接口返回的xml信息</h3><p>找到WEB-INF/view/jsp/protocol/2.0/casServiceValidationSuccess.jsp，在节点之前添加以下内容。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;cas:serviceResponse xmlns:cas=&apos;http://www.yale.edu/tp/cas&apos;&gt;</span><br><span class="line">    &lt;cas:authenticationSuccess&gt;</span><br><span class="line">    	//...原有信息..//</span><br><span class="line">		&lt;c:if test=&quot;$&#123;fn:length(assertion.chainedAuthentications[fn:length(assertion.chainedAuthentications)-1].principal.attributes) &gt; 0&#125;&quot;&gt;</span><br><span class="line">            &lt;cas:attributes&gt;</span><br><span class="line">                &lt;c:forEach var=&quot;attr&quot; items=&quot;$&#123;assertion.chainedAuthentications[fn:length(assertion.chainedAuthentications)-1].principal.attributes&#125;&quot;&gt;</span><br><span class="line">                    &lt;cas:attribute&gt;</span><br><span class="line">                        &lt;cas:$&#123;fn:escapeXml(attr.key)&#125;&gt;$&#123;fn:escapeXml(attr.value)&#125;&lt;/cas:$&#123;fn:escapeXml(attr.key)&#125;&gt;</span><br><span class="line">                    &lt;/cas:attribute&gt;</span><br><span class="line">                &lt;/c:forEach&gt;</span><br><span class="line">            &lt;/cas:attributes&gt;</span><br><span class="line">        &lt;/c:if&gt;</span><br><span class="line">    &lt;/cas:authenticationSuccess&gt;</span><br><span class="line">&lt;/cas:serviceResponse&gt;</span><br></pre></td></tr></table></figure></p>
-<h3 id="在用户登录验证时增加attribute关联"><a href="#在用户登录验证时增加attribute关联" class="headerlink" title="在用户登录验证时增加attribute关联"></a>在用户登录验证时增加attribute关联</h3><p>在deployerConfigContext.xml配置文件中，默认采用AcceptUsersAuthenticationHandler类的users属性（以key为登录名value为密码）进行系统用户的设定。<br>而通过PersonDirectoryPrincipalResolver的attributeRepository属性进行attribute映射和配置。默认由NamedStubPersonAttributeDao类的backingMap属性进行key-value配置，针对所有的用户都生效。<br>提示：IPersonAttributeDao有很多的子类实现，可以通过源码查看各自实现的方式，我这里主要介绍json,xml和数据库三种方式实现。</p>
-<h4 id="json配置的方式"><a href="#json配置的方式" class="headerlink" title="json配置的方式"></a>json配置的方式</h4><p>而在实际业务系统设计中针对不同的用户需要返回不同的attribute这个需求似乎不太适用，经过查看可能配置JsonBackedComplexStubPersonAttributeDao来在json中针对单个用户attribute进行配置。<code>指定init-method为init方法</code><br>配置如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;attributeRepository&quot; class=&quot;org.jasig.services.persondir.support.JsonBackedComplexStubPersonAttributeDao&quot; init-method=&quot;init&quot;&gt;</span><br><span class="line">    &lt;constructor-arg index=&quot;0&quot; value=&quot;classpath:users.json&quot; /&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure></p>
-<p><em>users.json</em><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;user1&quot;:&#123;</span><br><span class="line">    &quot;id&quot;:[&quot;1001&quot;],</span><br><span class="line">    &quot;firstName&quot;:[&quot;View&quot;],</span><br><span class="line">    &quot;lastName&quot;:[&quot;Jack&quot;],</span><br><span class="line">    &quot;roles&quot;:[&quot;view&quot;],</span><br><span class="line">    &quot;permissions&quot;:[&quot;support:*:view&quot;]</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;user2&quot;:&#123;</span><br><span class="line">    &quot;id&quot;:[&quot;1002&quot;],</span><br><span class="line">    &quot;firstName&quot;:[&quot;Admin&quot;],</span><br><span class="line">    &quot;lastName&quot;:[&quot;One&quot;],</span><br><span class="line">    &quot;roles&quot;:[&quot;admin&quot;],</span><br><span class="line">    &quot;permissions&quot;:[&quot;support&quot;]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h4 id="xml配置的方式"><a href="#xml配置的方式" class="headerlink" title="xml配置的方式"></a>xml配置的方式</h4><p>配置attributeRepository为XmlPersonAttributeDao来在xml中针对单个用户的attribute进行配置。<br>配置如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;attributeRepository&quot; class=&quot;org.jasig.services.persondir.support.xml.XmlPersonAttributeDao&quot;&gt;</span><br><span class="line">    &lt;property name=&quot;mappedXmlResource&quot; value=&quot;classpath:users.xml&quot; /&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure></p>
-<h4 id="database读取的方式"><a href="#database读取的方式" class="headerlink" title="database读取的方式"></a>database读取的方式</h4><p>配置attributeRepository为NamedParameterJdbcPersonAttributeDao来在数据库按用户名进行attribute的配置加载。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;attributeRepository&quot; class=&quot;org.jasig.services.persondir.support.jdbc.SingleRowJdbcPersonAttributeDao&quot;&gt;</span><br><span class="line">    &lt;property name=&quot;dataSource&quot; ref=&quot;datasource&quot; /&gt;</span><br><span class="line">    &lt;property name=&quot;sql&quot; value=&quot;select email,name,username,password from cas_user where &#123;0&#125;&quot; /&gt;</span><br><span class="line">    &lt;!-- 组装sql用的查询条件属性 --&gt;	</span><br><span class="line">	&lt;property name=&quot;queryAttributeMapping&quot;&gt;</span><br><span class="line">		&lt;map&gt;</span><br><span class="line">		    &lt;!-- key必须是uername而且是小写否则会导致取不到用户的其它信息，value对应数据库用户名字段,系统会自己匹配 --&gt;</span><br><span class="line">			&lt;entry key=&quot;username&quot; value=&quot;username&quot; /&gt;</span><br><span class="line">		&lt;/map&gt;</span><br><span class="line">	&lt;/property&gt;</span><br><span class="line">	&lt;property name=&quot;resultAttributeMapping&quot;&gt;</span><br><span class="line">		&lt;map&gt;</span><br><span class="line">		    &lt;!-- key为对应的数据库字段名称，value为提供给客户端获取的属性名字，系统会自动填充值 --&gt;</span><br><span class="line">			&lt;entry key=&quot;username&quot; value=&quot;username&quot; /&gt;</span><br><span class="line">			&lt;entry key=&quot;email&quot; value=&quot;email&quot; /&gt;</span><br><span class="line">			&lt;entry key=&quot;name&quot; value=&quot;name&quot; /&gt;</span><br><span class="line">			&lt;entry key=&quot;password&quot; value=&quot;password&quot; /&gt;</span><br><span class="line">		&lt;/map&gt;</span><br><span class="line">	&lt;/property&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure></p>
-<h2 id="密码加密方式配置"><a href="#密码加密方式配置" class="headerlink" title="密码加密方式配置"></a>密码加密方式配置</h2><p>在实际开发中不能任由密码明文进行传输，一般来讲会进行加密。而cas可直接通过配置的方式进行加密方式的确定。<br>在配置的AcceptUsersAuthenticationHandler中继承了父类中的一个名为passwordEncoder的PasswordEncoder类型属性。通过给这个属性配置加密方式值就能实现。默认为PlainTextPasswordEncoder加密方式。<br>如配置md5的方式：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;primaryAuthenticationHandler&quot; class=&quot;org.jasig.cas.authentication.AcceptUsersAuthenticationHandler&quot;&gt;</span><br><span class="line">	&lt;property name=&quot;passwordEncoder&quot; ref=&quot;passwordEncoder&quot; /&gt;</span><br><span class="line">	&lt;property name=&quot;users&quot;&gt;</span><br><span class="line">        &lt;map&gt;</span><br><span class="line">            &lt;entry key=&quot;user1&quot; value=&quot;123&quot; /&gt;</span><br><span class="line">            &lt;entry key=&quot;user2&quot; value=&quot;123&quot; /&gt;</span><br><span class="line">        &lt;/map&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">&lt;/bean&gt;</span><br><span class="line">&lt;bean id=&quot;passwordEncoder&quot; class=&quot;org.jasig.cas.authentication.handler.DefaultPasswordEncoder&quot;&gt;</span><br><span class="line">	&lt;property name=&quot;characterEncoding&quot; value=&quot;utf-8&quot; /&gt;</span><br><span class="line">	&lt;property name=&quot;encodingAlgorithm&quot; value=&quot;MD5&quot; /&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure></p>
-<p><code>提示：</code>配置了密码方式之后，所有配置文件或数据库中所存储的密码则应修改为密文。</p>
-<h2 id="重要发现"><a href="#重要发现" class="headerlink" title="重要发现"></a>重要发现</h2><p>用户登录验证采用的AuthenticationHandler接口的子类实现，当我们自定义实现类完成验证时，不要妄想在通过HandlerResult的getPrincipal()获取到Principal然后给它设置attribute,因为cas在调用认证方式后会针对Principal的数据进行name的复制，所以即使你的认证方式进行了attribute的设置，在进行对象复制时也会丢掉。</p>
-<p>详见：PolicyBasedAuthenticationManager的authenticateInternal方法中的逻辑。<br><img src="/images/QQ20160817-0.png" alt="PolicyBasedAuthenticationManager-authenticateInternal"></p>
 <hr>
 <p><em>观点仅代表自己，期待你的留言。</em></p>
 
