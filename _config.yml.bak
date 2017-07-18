@@ -70,8 +70,8 @@ disqus_shortname: blogcnvip
 deploy:
   type: git
   repo: 
-    github: git@github.com:stotem/blog.git,gh-pages
-    coding: git@git.coding.net:WuJianjun/wujianjun.git,master
+    github: https://stotem@github.com/stotem/blog.git,gh-pages
+    coding: https://wujianjun@git.coding.net/WuJianjun/wujianjun.git,master
 
 #Plugins
 Plugins:
