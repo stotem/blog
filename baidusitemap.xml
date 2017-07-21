@@ -3,6 +3,50 @@
 
     
   <url>
+    <loc>http://www.wujianjun.org/2017/07/21/transaction-mark-rollbackonly/</loc>
+    <lastmod>2017-07-21T10:51:04.911Z</lastmod>
+    <data>
+        <display>
+        <title>问题分析 之 Transaction marked as rollbackOnly</title>
+        <pubTime>2017-07-21T09:01:27.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+        <tag>spring </tag>
+         
+        <tag>transaction </tag>
+         
+        <tag>Transaction marked as rollbackOnly </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2017/07/21/no-transaction/</loc>
+    <lastmod>2017-07-21T10:50:58.959Z</lastmod>
+    <data>
+        <display>
+        <title>问题分析 之 no transaction is in progress</title>
+        <pubTime>2017-07-21T09:55:05.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+        <tag>spring </tag>
+         
+        <tag>transaction </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://www.wujianjun.org/2017/07/18/spring-initializingbean/</loc>
     <lastmod>2017-07-18T10:42:05.602Z</lastmod>
     <data>

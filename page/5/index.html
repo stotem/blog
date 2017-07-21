@@ -133,7 +133,7 @@ var _hmt = _hmt || [];
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/Docker/" style="font-size: 14px;">Docker</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/Maven/" style="font-size: 12px;">Maven</a> <a href="/tags/Nginx/" style="font-size: 16px;">Nginx</a> <a href="/tags/Redis/" style="font-size: 12px;">Redis</a> <a href="/tags/iOS/" style="font-size: 18px;">iOS</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/php-fpm/" style="font-size: 10px;">php-fpm</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/关键笔记/" style="font-size: 10px;">关键笔记</a> <a href="/tags/分布式/" style="font-size: 10px;">分布式</a> <a href="/tags/原创/" style="font-size: 20px;">原创</a> <a href="/tags/多进程/" style="font-size: 10px;">多进程</a> <a href="/tags/并发/" style="font-size: 10px;">并发</a> <a href="/tags/操作系统/" style="font-size: 10px;">操作系统</a> <a href="/tags/架构/" style="font-size: 10px;">架构</a> <a href="/tags/电商/" style="font-size: 10px;">电商</a> <a href="/tags/转发/" style="font-size: 10px;">转发</a> <a href="/tags/转载/" style="font-size: 18px;">转载</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
+						<a href="/tags/Docker/" style="font-size: 14px;">Docker</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/Maven/" style="font-size: 12px;">Maven</a> <a href="/tags/Nginx/" style="font-size: 16px;">Nginx</a> <a href="/tags/Redis/" style="font-size: 12px;">Redis</a> <a href="/tags/Transaction-marked-as-rollbackOnly/" style="font-size: 10px;">Transaction marked as rollbackOnly</a> <a href="/tags/iOS/" style="font-size: 18px;">iOS</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/php-fpm/" style="font-size: 10px;">php-fpm</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/spring/" style="font-size: 12px;">spring</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/transaction/" style="font-size: 12px;">transaction</a> <a href="/tags/关键笔记/" style="font-size: 10px;">关键笔记</a> <a href="/tags/分布式/" style="font-size: 10px;">分布式</a> <a href="/tags/原创/" style="font-size: 20px;">原创</a> <a href="/tags/多进程/" style="font-size: 10px;">多进程</a> <a href="/tags/并发/" style="font-size: 10px;">并发</a> <a href="/tags/操作系统/" style="font-size: 10px;">操作系统</a> <a href="/tags/架构/" style="font-size: 10px;">架构</a> <a href="/tags/电商/" style="font-size: 10px;">电商</a> <a href="/tags/转发/" style="font-size: 10px;">转发</a> <a href="/tags/转载/" style="font-size: 18px;">转载</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
 					</div>
 				</section>
 				
@@ -219,6 +219,162 @@ var _hmt = _hmt || [];
 </nav>
 
       <div class="body-wrap">
+  
+    <article id="post-header-version" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/03/21/header-version/" class="article-date">
+  	<time datetime="2016-03-21T09:02:06.000Z" itemprop="datePublished">2016-03-21</time>
+</a>
+      <div class="analysis-container">
+	<i class="fa fa-line-chart"></i>
+	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
+</div>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/03/21/header-version/">开放平台Api的版本控制方案</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+              
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>做开放平台供外部调用的Api理论上变化越少针对调用者来讲越有利，随着开放平台的功能不断完善（优化）不可避免的需要添加新的资源，或者修改现有资源。因此Api的更新升级必不可少，但是，对于开放平台来讲从一开始就应该将对外提供的Api加入版本管理。一个长期稳定可用的开放平台才能被越来越多的用户使用。<br>同理，Native的App与服务器Api也存在同样的关系，Native App安装在不同的移动设备上，如果Api变动都需要提示用户进行强制更新来适配新版本的Api接口，那么，App用户将异常烦躁甚至于将App从设备中Uninstall掉。</p>
+<p>查看众多论坛与博客，总结出目前实现有三种方式：</p>
+<ul>
+<li>URI<br>在访问Api中增加version段来告诉服务器所使用的Api版本（如：<a href="http://xxxx/api/customers/v1.1/1234" target="_blank" rel="external">http://xxxx/api/customers/v1.1/1234</a>  ）。 这种方式正是由于在uri中增加了version段，破坏掉了Api的统一访问URL。</li>
+<li>Request Parameter<br>在Api后增加请求参数来告诉服务器所使用的Api版本（如：<a href="http://xxxx/api/customers/1234?v=1.1" target="_blank" rel="external">http://xxxx/api/customers/1234?v=1.1</a> ）这种方式与第一种URI的方式类似。</li>
+<li>Request Header<br>在请求Api时在Request的请求头中增加Version值来告诉服务器所使用的Api版本。这种方式保留了Api统一访问的URL，版本号传递更隐秘。但需要客户端在请求时增加此参数来完成，所以需要App在开发之初就需要增加版本号的传递。</li>
+</ul>
+<p>综上所述，个人认为第三种 Request Header的传递方式具有统一了URL和Version段隐秘的优点，为最适合的传递方式。</p>
+<h2 id="Request-Header方式实现版本控制"><a href="#Request-Header方式实现版本控制" class="headerlink" title="Request Header方式实现版本控制"></a>Request Header方式实现版本控制</h2><p>说完了客户端传递版本号的方式之后，我们来看一下服务端的处理。按流行的MVC的方式来看，个人觉得应该在控制层之前增加Api的版本控制层来先对客户端的请求Api进行版本的预判。</p>
+<p><img src="/images/QQ20160321-0.png" alt=""></p>
+<p>个人总结了一下，有以下几种预判结果：<br>1: Api为所有版本提供服务。<br>2: Api提供了最低版本，为大于此最低版本的请求提供服务。<br>3: Api提供了服务的版本范围，为大于最低版本且小于最高版本的请求提供服务。<br>4: Api已过期，由其它的Api代替。<br>5: Api已废弃不再提供服务。</p>
+<p>按以上思路，按Java实现为例。可以通过 自定义注解（Annotation）+ 过滤器（Filter）实现。<br>相似的方案还有：自定义注解 + 拦截器， 自定义注解 + Spring AOP<br>同理，其它的语言均有类似技术可以实现。</p>
+<p>接下来我将在 <a href="https://github.com/stotem/header-version-filter.git" target="_blank" rel="external">https://github.com/stotem/header-version-filter.git</a> 中公布我的Annotation+Filter实现。</p>
+<hr>
+<p><em>观点仅代表自己，期待你的留言。</em></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-php-fpm" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/03/21/php-fpm/" class="article-date">
+  	<time datetime="2016-03-21T07:01:31.000Z" itemprop="datePublished">2016-03-21</time>
+</a>
+      <div class="analysis-container">
+	<i class="fa fa-line-chart"></i>
+	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
+</div>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/03/21/php-fpm/">Nginx+php-fpm替代apache服务器</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+              
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>nginx本身不能处理PHP，它只是个web服务器，当接收到请求后，如果是php请求，则发给php解释器处理，并把结果返回给客户端。</p>
+<p>nginx一般是把请求发fastcgi管理进程处理，fascgi管理进程选择cgi子进程处理结果并返回被nginx</p>
+<p>本文以php-fpm为例介绍如何使nginx支持PHP<br>一、编译安装php-fpm</p>
+<p>什么是PHP-FPM</p>
+<p>PHP-FPM是一个PHP FastCGI管理器，是只用于PHP的,可以在 <a href="http://php-fpm.org/download" target="_blank" rel="external">http://php-fpm.org/download</a> 下载得到.</p>
+<p>PHP-FPM其实是PHP源代码的一个补丁，旨在将FastCGI进程管理整合进PHP包中。必须将它patch到你的PHP源代码中，在编译安装PHP后才可以使用。</p>
+<p>新版PHP已经集成php-fpm了，不再是第三方的包了，推荐使用。PHP-FPM提供了更好的PHP进程管理方式，可以有效控制内存和进程、可以平滑重载PHP配置，比spawn-fcgi具有更多有点，所以被PHP官方收录了。在./configure的时候带 –enable-fpm参数即可开启PHP-FPM。</p>
+<p>新版php-fpm安装(推荐安装方式)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">wget http://cn2.php.net/distributions/php-5.4.7.tar.gz</span><br><span class="line">tar zvxf php-5.4.7.tar.gz</span><br><span class="line">cd php-5.4.7</span><br><span class="line">./configure --prefix=/usr/local/php --enable-fastcgi --enable-fpm --with-mcrypt --with-zlib --enable-mbstring --disable-pdo --with-curl --disable-debug --enable-pic --disable-rpath --enable-inline-optimization --with-bz2 --with-xml --with-zlib --enable-sockets --enable-sysvsem --enable-sysvshm --enable-pcntl --enable-mbregex --with-mhash --enable-xslt --enable-memcache --enable-zip --with-pcre-regex --with-mysql</span><br><span class="line">make all install</span><br></pre></td></tr></table></figure></p>
+<p>旧版手动打补丁php-fpm安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">wget http://cn2.php.net/get/php-5.2.17.tar.gz</span><br><span class="line">wget http://php-fpm.org/downloads/php-5.2.17-fpm-0.5.14.diff.gz</span><br><span class="line"></span><br><span class="line">tar zvxf php-5.2.17.tar.gz</span><br><span class="line">gzip -cd php-5.2.17-fpm-0.5.14.diff.gz | patch -d php-5.2.17 -p1</span><br><span class="line">cd php-5.2.17</span><br><span class="line">./configure --prefix=/usr/local/php  --enable-fpm --with-mcrypt --enable-mbstring --disable-pdo --with-curl --disable-debug  --disable-rpath --enable-inline-optimization --with-bz2  --with-zlib --enable-sockets --enable-sysvsem --enable-sysvshm --enable-pcntl --enable-mbregex --with-mhash --enable-zip --with-pcre-regex --with-mysql --with-mysqli --with-gd --with-jpeg-dir</span><br><span class="line">make all install</span><br><span class="line">cd /usr/local/php</span><br><span class="line">cp etc/php-fpm.conf.default etc/php-fpm.conf</span><br><span class="line">/usr/local/php/sbin/php-fpm</span><br></pre></td></tr></table></figure></p>
+<p>以上两种方式都可以安装php-fpm，安装后内容放在/usr/local/php目录下</p>
+<p>二、修改nginx配置文件以支持php-fpm<br>nginx安装完成后，修改nginx配置文件为,nginx.conf</p>
+<p>其中server段增加如下配置，注意标红内容配置，否则会出现No input file specified.错误</p>
+<p>#pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">location ~ \.php$ &#123;</span><br><span class="line">root html;</span><br><span class="line">fastcgi_pass 127.0.0.1:9000;</span><br><span class="line">fastcgi_index index.php;</span><br><span class="line">fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;</span><br><span class="line">include fastcgi_params;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>转自：<a href="http://www.cnblogs.com/hujiong/archive/2013/02/20/2918509.html" target="_blank" rel="external">http://www.cnblogs.com/hujiong/archive/2013/02/20/2918509.html</a> </p>
+<hr>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nginx/">Nginx</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php-fpm/">php-fpm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/转载/">转载</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+
+
   
     <article id="post-nginx-muti-domain" class="article article-type-post" itemscope itemprop="blogPost">
   

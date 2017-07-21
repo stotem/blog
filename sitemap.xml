@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.wujianjun.org/2017/07/21/transaction-mark-rollbackonly/</loc>
+    
+    <lastmod>2017-07-21T10:51:04.911Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.wujianjun.org/2017/07/21/no-transaction/</loc>
+    
+    <lastmod>2017-07-21T10:50:58.959Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.wujianjun.org/2017/07/18/spring-initializingbean/</loc>
     
     <lastmod>2017-07-18T10:42:05.602Z</lastmod>
