@@ -3,6 +3,29 @@
 
     
   <url>
+    <loc>http://www.wujianjun.org/2017/07/07/multi-process-read/</loc>
+    <lastmod>2017-08-11T04:10:20.568Z</lastmod>
+    <data>
+        <display>
+        <title>分布式系统下并发读取不重复数据</title>
+        <pubTime>2017-07-07T02:02:57.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+        <tag>分布式 </tag>
+         
+        <tag>多进程 </tag>
+         
+        <tag>并发 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://www.wujianjun.org/2017/07/21/transaction-mark-rollbackonly/</loc>
     <lastmod>2017-07-21T10:51:04.911Z</lastmod>
     <data>
@@ -551,29 +574,6 @@
         <pubTime>2016-06-12T10:30:13.000Z</pubTime>
         
         <tag>原创 </tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://www.wujianjun.org/2017/07/07/multi-process-read/</loc>
-    <lastmod>2017-07-14T02:12:53.275Z</lastmod>
-    <data>
-        <display>
-        <title>分布式系统下并发读取不重复数据</title>
-        <pubTime>2017-07-07T02:02:57.000Z</pubTime>
-        
-        <tag>原创 </tag>
-         
-        <tag>分布式 </tag>
-         
-        <tag>多进程 </tag>
-         
-        <tag>并发 </tag>
          
          
            

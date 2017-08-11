@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.wujianjun.org/2017/07/07/multi-process-read/</loc>
+    
+    <lastmod>2017-08-11T04:10:20.568Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.wujianjun.org/2017/07/21/transaction-mark-rollbackonly/</loc>
     
     <lastmod>2017-07-21T10:51:04.911Z</lastmod>
@@ -215,13 +222,6 @@
     <loc>http://www.wujianjun.org/2016/06/12/maven-source-doc/</loc>
     
     <lastmod>2017-07-14T02:12:53.287Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.wujianjun.org/2017/07/07/multi-process-read/</loc>
-    
-    <lastmod>2017-07-14T02:12:53.275Z</lastmod>
     
   </url>
   

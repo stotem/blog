@@ -110,7 +110,7 @@
     <link href="http://www.wujianjun.org/2017/07/07/multi-process-read/"/>
     <id>http://www.wujianjun.org/2017/07/07/multi-process-read/</id>
     <published>2017-07-07T02:02:57.000Z</published>
-    <updated>2017-07-14T02:12:53.275Z</updated>
+    <updated>2017-08-11T04:10:20.568Z</updated>
     
     <content type="html">&lt;h2 id=&quot;问题背景&quot;&gt;&lt;a href=&quot;#问题背景&quot; class=&quot;headerlink&quot; title=&quot;问题背景&quot;&gt;&lt;/a&gt;问题背景&lt;/h2&gt;&lt;p&gt;分布式系统模块存在定时任务，当模块被部署多个实例时，不同实例的定时任务在运行时就存在从数据源中获取相同数据的情况，&lt;br&gt;虽然通过乐观锁(数据记录增加version,每次update则set verion+=1 where version=?)的处理方式可以避免多实例更新数据造成脏数据入库的问题，&lt;br&gt;但这无疑是降低了分布式系统部署的初衷（通过横向部署多实例增加系统的处理能力）。&lt;/p&gt;
 &lt;p&gt;经过分析，总结如下几种处理方式。&lt;/p&gt;
@@ -132,6 +132,7 @@
 &lt;li&gt;获取需要处理的数据并存入Redis的处理队列中&lt;/li&gt;
 &lt;li&gt;释放分布式锁&lt;br&gt;&lt;em&gt;由于读取数据的步骤由单进程来获取，所以就避免了并发读取数据的问题&lt;/em&gt;&lt;/li&gt;
 &lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;add by 2017.8.10 :&lt;/strong&gt; 增加处理中的数据队列，在读取数据job时需要排除到正在处理的数据。用于当有数据在处理且数据未更新时，加载数据进行加载时将数据加载出的Bug。&lt;/p&gt;
 &lt;h3 id=&quot;3、利用自增ID&quot;&gt;&lt;a href=&quot;#3、利用自增ID&quot; class=&quot;headerlink&quot; title=&quot;3、利用自增ID&quot;&gt;&lt;/a&gt;3、利用自增ID&lt;/h3&gt;&lt;p&gt;利用分布式锁+Redis存储已处理ID+数据的自增ID来获取数据数据。&lt;/p&gt;
 &lt;p&gt;具体步骤如下：&lt;/p&gt;
 &lt;ul&gt;
@@ -151,7 +152,7 @@
 &lt;li&gt;从数据库取数据时，将数据主键%总实例数，如果余值为x，则取出数据，否则忽略此数据。&lt;/li&gt;
 &lt;li&gt;当模块总实例数变化时，重新计算当前实例需要处理的余值。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;em&gt;风险：&lt;/em&gt; 由于模块实例所需要处理的数据固定，当数据取余后的值可能会命名同一个实例，造成模块各实例处理压力不平均。&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;风险：&lt;/em&gt; 由于模块实例所需要处理的数据固定，当数据取余后的值可能会命中同一个实例，造成模块各实例处理压力不平均。&lt;/p&gt;
 &lt;hr&gt;
 &lt;p&gt;&lt;em&gt;观点仅代表自己，期待你的留言。&lt;/em&gt;&lt;/p&gt;
 </content>
