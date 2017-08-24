@@ -4,19 +4,22 @@
   <meta charset="utf-8">
   
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <title>问题分析 之 no transaction is in progress | 建均笔记</title>
+  <title>多标识位存储优化方案 | 建均笔记</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="问题现象123456789101112131415javax.persistence.TransactionRequiredException: no transaction is in progress	at org.hibernate.ejb.AbstractEntityManagerImpl.flush(AbstractEntityManagerImpl.java:301)	at sun.r">
-<meta name="keywords" content="原创,spring,transaction">
+  <meta name="description" content="背景在做程序开发的过程中常常会遇到数据的标识位（取值为”是”与”否”）需要进行存储，如神马专车系统消息中心中的一个场景：新建一个消息需要勾选发送对象，可选的对象有：司机，下单人，乘车人。最常见的Mysql存储方式为一个消息表中包含三个字段sendDriver,sendUser,sendPassenger按用户新建消息所勾选的情况，依次存储到数据表中并在后续的业务中直接获取值进行对比。
+优化方案利用">
+<meta name="keywords" content="原创">
 <meta property="og:type" content="article">
-<meta property="og:title" content="问题分析 之 no transaction is in progress">
-<meta property="og:url" content="http://www.wujianjun.org/2017/07/21/no-transaction/index.html">
+<meta property="og:title" content="多标识位存储优化方案">
+<meta property="og:url" content="http://www.wujianjun.org/2017/08/24/store-flag-bit/index.html">
 <meta property="og:site_name" content="建均笔记">
-<meta property="og:description" content="问题现象123456789101112131415javax.persistence.TransactionRequiredException: no transaction is in progress	at org.hibernate.ejb.AbstractEntityManagerImpl.flush(AbstractEntityManagerImpl.java:301)	at sun.r">
-<meta property="og:updated_time" content="2017-07-21T10:50:58.959Z">
+<meta property="og:description" content="背景在做程序开发的过程中常常会遇到数据的标识位（取值为”是”与”否”）需要进行存储，如神马专车系统消息中心中的一个场景：新建一个消息需要勾选发送对象，可选的对象有：司机，下单人，乘车人。最常见的Mysql存储方式为一个消息表中包含三个字段sendDriver,sendUser,sendPassenger按用户新建消息所勾选的情况，依次存储到数据表中并在后续的业务中直接获取值进行对比。
+优化方案利用">
+<meta property="og:updated_time" content="2017-08-24T11:53:25.449Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="问题分析 之 no transaction is in progress">
-<meta name="twitter:description" content="问题现象123456789101112131415javax.persistence.TransactionRequiredException: no transaction is in progress	at org.hibernate.ejb.AbstractEntityManagerImpl.flush(AbstractEntityManagerImpl.java:301)	at sun.r">
+<meta name="twitter:title" content="多标识位存储优化方案">
+<meta name="twitter:description" content="背景在做程序开发的过程中常常会遇到数据的标识位（取值为”是”与”否”）需要进行存储，如神马专车系统消息中心中的一个场景：新建一个消息需要勾选发送对象，可选的对象有：司机，下单人，乘车人。最常见的Mysql存储方式为一个消息表中包含三个字段sendDriver,sendUser,sendPassenger按用户新建消息所勾选的情况，依次存储到数据表中并在后续的业务中直接获取值进行对比。
+优化方案利用">
   
     <link rel="alternative" href="/atom.xml" title="建均笔记" type="application/atom+xml">
   
@@ -220,11 +223,11 @@ var _hmt = _hmt || [];
 	</div>
 </nav>
 
-      <div class="body-wrap"><article id="post-no-transaction" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-store-flag-bit" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/07/21/no-transaction/" class="article-date">
-  	<time datetime="2017-07-21T09:55:05.000Z" itemprop="datePublished">2017-07-21</time>
+      <a href="/2017/08/24/store-flag-bit/" class="article-date">
+  	<time datetime="2017-08-24T11:08:28.000Z" itemprop="datePublished">2017-08-24</time>
 </a>
       <div class="analysis-container">
 	<i class="fa fa-line-chart"></i>
@@ -241,7 +244,7 @@ var _hmt = _hmt || [];
         
   
     <h1 class="article-title" itemprop="name">
-      问题分析 之 no transaction is in progress
+      多标识位存储优化方案
     </h1>
   
 
@@ -250,7 +253,7 @@ var _hmt = _hmt || [];
       <div class="article-info article-info-post">
         
 	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring/">spring</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/transaction/">transaction</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li></ul>
 	</div>
 
         
@@ -265,7 +268,7 @@ var _hmt = _hmt || [];
                        
              <div id="toc" class="article-toc">
              <h2>文章目录</h2>
-               <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#问题现象"><span class="toc-number">1.</span> <span class="toc-text">问题现象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#示例代码-Proxy"><span class="toc-number">2.</span> <span class="toc-text">示例代码 - Proxy</span></a></li></ol>  
+               <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#背景"><span class="toc-number">1.</span> <span class="toc-text">背景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#优化方案"><span class="toc-number">2.</span> <span class="toc-text">优化方案</span></a></li></ol>  
              </div>
              <script type="text/javascript">
                var _article = document.getElementsByClassName('article')[0];
@@ -275,11 +278,10 @@ var _hmt = _hmt || [];
              </script>
            
          
-        <h2 id="问题现象"><a href="#问题现象" class="headerlink" title="问题现象"></a>问题现象</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">javax.persistence.TransactionRequiredException: no transaction is in progress</span><br><span class="line">	at org.hibernate.ejb.AbstractEntityManagerImpl.flush(AbstractEntityManagerImpl.java:<span class="number">301</span>)</span><br><span class="line">	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)</span><br><span class="line">	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:<span class="number">39</span>)</span><br><span class="line">	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:<span class="number">25</span>)</span><br><span class="line">	at java.lang.reflect.Method.invoke(Method.java:<span class="number">597</span>)</span><br><span class="line">	at org.springframework.orm.jpa.ExtendedEntityManagerCreator$ExtendedEntityManagerInvocationHandler.invoke(ExtendedEntityManagerCreator.java:<span class="number">365</span>)</span><br><span class="line">	at $Proxy34.flush(Unknown Source)</span><br><span class="line">	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)</span><br><span class="line">	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:<span class="number">39</span>)</span><br><span class="line">	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:<span class="number">25</span>)</span><br><span class="line">	at java.lang.reflect.Method.invoke(Method.java:<span class="number">597</span>)</span><br><span class="line">	at org.springframework.orm.jpa.SharedEntityManagerCreator$SharedEntityManagerInvocationHandler.invoke(SharedEntityManagerCreator.java:<span class="number">240</span>)</span><br><span class="line">	at $Proxy34.flush(Unknown Source)</span><br><span class="line">  ... <span class="number">53</span> more</span><br></pre></td></tr></table></figure>
-<h2 id="示例代码-Proxy"><a href="#示例代码-Proxy" class="headerlink" title="示例代码 - Proxy"></a>示例代码 - Proxy</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">classA</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> doA &#123;</span><br><span class="line">    <span class="keyword">this</span>.doB();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Transaction</span></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> doB&#123;</span><br><span class="line">    <span class="comment">// do save or update</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>问题分析：</strong><br>如上代码段，由于doB为对象内方法，而Spring事务的开启依赖到AOP（Proxy），在doA方法调用doB方法时，<br>由于是对象内的方法调用，造成doB方法的@Transaction不会被Proxy对象代理，进而造成Transaction失效。</p>
-<p><strong>解决方法：</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ClassA</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> ClassB classB;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doA</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    classB.doB();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ClassB</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Transaction</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doB</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// do save or update</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>将需要事务的方法doB通过Proxy进行代理，doA在使用时则是通过Spring开启事务的代理进行的调用。</p>
+        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>在做程序开发的过程中常常会遇到数据的标识位（取值为”是”与”否”）需要进行存储，<br>如神马专车系统消息中心中的一个场景：新建一个消息需要勾选发送对象，可选的对象有：司机，下单人，乘车人。<br>最常见的Mysql存储方式为一个消息表中包含三个字段sendDriver,sendUser,sendPassenger<br>按用户新建消息所勾选的情况，依次存储到数据表中并在后续的业务中直接获取值进行对比。</p>
+<h2 id="优化方案"><a href="#优化方案" class="headerlink" title="优化方案"></a>优化方案</h2><p>利用”与或非”的运算可将这多个标识符存储到一个字段中。<br>实例如下：<br>按业务这里有三个标识符需要存储，因此可以定义一个长度为3的二进行序列：000，从左至右第一位表示司机，第二位表示下单人，第三位表示乘车人。<br>那么，如果只需要发送给司机则可标识为100的二进行序列，如果下单人也需要通知，则可标识为110的二进行序列，依次，如果都需要通知则为111的二进制序列。<br>存储的值则为二进行制序列对应的十进制即可，当需要判断时，则可采用”与”运算符进行判定。</p>
+<p>示例Java代码如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">byte</span> NOTIFY_PASSENGER = <span class="number">0B001</span>; <span class="comment">//二进制为001</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">byte</span> NOTIFY_SUBSCRIBER = <span class="number">0B010</span>; <span class="comment">//二进制为010</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">byte</span> NOTIFY_DRIVER = <span class="number">0B100</span>; <span class="comment">//二进制为100</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span><br><span class="line"> * 获取需要存储的值则为notifyFlag</span><br><span class="line"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">byte</span> <span class="title">getStoreValue</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">byte</span> notifyFlag = <span class="number">0B000</span>; <span class="comment">//二进制为000</span></span><br><span class="line">  <span class="keyword">if</span> (request.isNotifyDriver()) &#123;</span><br><span class="line">      notifyFlag |= NOTIFY_DRIVER;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (request.isNotifyPassenger()) &#123;</span><br><span class="line">      notifyFlag |= NOTIFY_PASSENGER;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (request.isNotifySubscriber()) &#123;</span><br><span class="line">    notifyFlag |= NOTIFY_SUBSCRIBER;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> notifyFlag;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span><br><span class="line"> * 判断是否需要通知</span><br><span class="line"> * <span class="doctag">@param</span> notifyTarget 预计需要通知的目标</span><br><span class="line"> * <span class="doctag">@return</span> true-需要通知，false-不需要通知</span><br><span class="line"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isNotify</span><span class="params">(<span class="keyword">byte</span> notifyTarget)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">byte</span> notifyFlag = <span class="number">0B111</span>;<span class="comment">//二进制为111 , 从数据库取出</span></span><br><span class="line">  <span class="keyword">return</span> notifyFlag &amp; notifyTarget == notifyTarget;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在Java中byte的最大值为：127，二进行为0B1111111, 足够标识七个标识位!</p>
 <hr>
 <p><em>观点仅代表自己，期待你的留言。</em></p>
 
@@ -291,18 +293,9 @@ var _hmt = _hmt || [];
     
 <nav id="article-nav">
   
-    <a href="/2017/08/24/store-flag-bit/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption"><</strong>
-      <div class="article-nav-title">
-        
-          多标识位存储优化方案
-        
-      </div>
-    </a>
   
-  
-    <a href="/2017/07/21/transaction-mark-rollbackonly/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">问题分析 之 Transaction marked as rollbackOnly</div>
+    <a href="/2017/07/21/no-transaction/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">问题分析 之 no transaction is in progress</div>
       <strong class="article-nav-caption">></strong>
     </a>
   

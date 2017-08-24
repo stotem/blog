@@ -220,6 +220,75 @@ var _hmt = _hmt || [];
 
       <div class="body-wrap">
   
+    <article id="post-store-flag-bit" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/08/24/store-flag-bit/" class="article-date">
+  	<time datetime="2017-08-24T11:08:28.000Z" itemprop="datePublished">2017-08-24</time>
+</a>
+      <div class="analysis-container">
+	<i class="fa fa-line-chart"></i>
+	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
+</div>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/08/24/store-flag-bit/">多标识位存储优化方案</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+              
+        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>在做程序开发的过程中常常会遇到数据的标识位（取值为”是”与”否”）需要进行存储，<br>如神马专车系统消息中心中的一个场景：新建一个消息需要勾选发送对象，可选的对象有：司机，下单人，乘车人。<br>最常见的Mysql存储方式为一个消息表中包含三个字段sendDriver,sendUser,sendPassenger<br>按用户新建消息所勾选的情况，依次存储到数据表中并在后续的业务中直接获取值进行对比。</p>
+<h2 id="优化方案"><a href="#优化方案" class="headerlink" title="优化方案"></a>优化方案</h2><p>利用”与或非”的运算可将这多个标识符存储到一个字段中。<br>实例如下：<br>按业务这里有三个标识符需要存储，因此可以定义一个长度为3的二进行序列：000，从左至右第一位表示司机，第二位表示下单人，第三位表示乘车人。<br>那么，如果只需要发送给司机则可标识为100的二进行序列，如果下单人也需要通知，则可标识为110的二进行序列，依次，如果都需要通知则为111的二进制序列。<br>存储的值则为二进行制序列对应的十进制即可，当需要判断时，则可采用”与”运算符进行判定。</p>
+<p>示例Java代码如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">byte</span> NOTIFY_PASSENGER = <span class="number">0B001</span>; <span class="comment">//二进制为001</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">byte</span> NOTIFY_SUBSCRIBER = <span class="number">0B010</span>; <span class="comment">//二进制为010</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">byte</span> NOTIFY_DRIVER = <span class="number">0B100</span>; <span class="comment">//二进制为100</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span><br><span class="line"> * 获取需要存储的值则为notifyFlag</span><br><span class="line"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">byte</span> <span class="title">getStoreValue</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">byte</span> notifyFlag = <span class="number">0B000</span>; <span class="comment">//二进制为000</span></span><br><span class="line">  <span class="keyword">if</span> (request.isNotifyDriver()) &#123;</span><br><span class="line">      notifyFlag |= NOTIFY_DRIVER;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (request.isNotifyPassenger()) &#123;</span><br><span class="line">      notifyFlag |= NOTIFY_PASSENGER;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">if</span> (request.isNotifySubscriber()) &#123;</span><br><span class="line">    notifyFlag |= NOTIFY_SUBSCRIBER;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> notifyFlag;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span><br><span class="line"> * 判断是否需要通知</span><br><span class="line"> * <span class="doctag">@param</span> notifyTarget 预计需要通知的目标</span><br><span class="line"> * <span class="doctag">@return</span> true-需要通知，false-不需要通知</span><br><span class="line"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isNotify</span><span class="params">(<span class="keyword">byte</span> notifyTarget)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">byte</span> notifyFlag = <span class="number">0B111</span>;<span class="comment">//二进制为111 , 从数据库取出</span></span><br><span class="line">  <span class="keyword">return</span> notifyFlag &amp; notifyTarget == notifyTarget;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在Java中byte的最大值为：127，二进行为0B1111111, 足够标识七个标识位!</p>
+<hr>
+<p><em>观点仅代表自己，期待你的留言。</em></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+
+
+  
     <article id="post-no-transaction" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -1017,87 +1086,9 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-spring-core-interface" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/08/29/spring-core-interface/" class="article-date">
-  	<time datetime="2016-08-29T03:17:18.000Z" itemprop="datePublished">2016-08-29</time>
-</a>
-      <div class="analysis-container">
-	<i class="fa fa-line-chart"></i>
-	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
-</div>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/08/29/spring-core-interface/">Spring ApplicationContext与常用接口笔记</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-              
-        <h2 id="一、在Web项目中的ApplicationContext"><a href="#一、在Web项目中的ApplicationContext" class="headerlink" title="一、在Web项目中的ApplicationContext"></a>一、在Web项目中的ApplicationContext</h2><p>在web 项目中（spring mvc），系统会存在两个容器，一个是ApplicationContext,另一个就是我们自己的WebApplicationContext（作为ApplicationContext的子容器）。</p>
-<ul>
-<li>ApplicationContext: 默认配置文件名applicationContext.xml，通过org.springframework.web.context.ContextLoaderListener进行加载并初始化。</li>
-<li>WebApplicationContext: 默认配置文件名xxx-servlet.xml，xxx为DispatcherServlet配置的servlet-name, 通过org.springframework.web.servlet.DispatcherServlet进行加载并初始化。</li>
-</ul>
-<p>WebApplicationContext通过getParent()获取到ApplicationContext，而ApplicationContext的getParent()将获取到null（ApplicationContext没有父容器）。</p>
-<h2 id="二、Spring常用接口"><a href="#二、Spring常用接口" class="headerlink" title="二、Spring常用接口"></a>二、Spring常用接口</h2><h3 id="org-springframework-beans-factory-InitializingBean"><a href="#org-springframework-beans-factory-InitializingBean" class="headerlink" title="org.springframework.beans.factory.InitializingBean"></a>org.springframework.beans.factory.InitializingBean</h3><p>InitializingBean表示为spring管理的初始类，当Bean初始时进行属性注入完成后调用afterPropertiesSet进行初始处理。( <a href="/2017/07/18/spring-initializingbean/">趟坑笔记 add by 2017-07-18</a>)</p>
-<h3 id="org-springframework-beans-factory-FactoryBean"><a href="#org-springframework-beans-factory-FactoryBean" class="headerlink" title="org.springframework.beans.factory.FactoryBean"></a>org.springframework.beans.factory.FactoryBean<t></t></h3><p>FactoryBean 是创建 复杂的bean，一般的bean 直接用xml配置即可，如果一个bean的创建过程中涉及到很多其他的bean 和复杂的逻辑，用xml配置比较困难，这时可以考虑用FactoryBean。</p>
-<p>spring配置时会自动调用getObject来获取注入对象。</p>
-<p>@see org.springframework.web.accept.ContentNegotiationManagerFactoryBean</p>
-<h3 id="org-springframework-context-ApplicationListener"><a href="#org-springframework-context-ApplicationListener" class="headerlink" title="org.springframework.context.ApplicationListener"></a>org.springframework.context.ApplicationListener<e extends="" applicationevent=""></e></h3><p>ApplicationListener用于监听应用程序的事件。<br>所包含的事件详见ApplicationEvent子类。<br>当Application事件发生时会自动调用监听器的onApplicationEvent方法。</p>
-<h3 id="org-springframework-context-ApplicationContextAware"><a href="#org-springframework-context-ApplicationContextAware" class="headerlink" title="org.springframework.context.ApplicationContextAware"></a>org.springframework.context.ApplicationContextAware</h3><p>ApplicationContextAware用于用户保存ApplicationContext的引用，供客户端程序获取ApplicationContext时使用。</p>
-<h3 id="org-springframework-beans-factory-DisposableBean"><a href="#org-springframework-beans-factory-DisposableBean" class="headerlink" title="org.springframework.beans.factory.DisposableBean"></a>org.springframework.beans.factory.DisposableBean</h3><p>DisposableBean用于标识可销毁的类，当类进行回收时调用destroy()</p>
-<hr>
-<p><em>观点仅代表自己，期待你的留言。</em></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
     </nav>
   
 </div>
