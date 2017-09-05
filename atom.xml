@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.wujianjun.org/"/>
-  <updated>2017-08-24T11:53:25.449Z</updated>
+  <updated>2017-09-05T12:55:15.335Z</updated>
   <id>http://www.wujianjun.org/</id>
   
   <author>
@@ -14,6 +14,131 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Cron表达式说明</title>
+    <link href="http://www.wujianjun.org/2017/09/05/cron-expression/"/>
+    <id>http://www.wujianjun.org/2017/09/05/cron-expression/</id>
+    <published>2017-09-05T12:48:08.000Z</published>
+    <updated>2017-09-05T12:55:15.335Z</updated>
+    
+    <content type="html">&lt;h2 id=&quot;CronTrigger&quot;&gt;&lt;a href=&quot;#CronTrigger&quot; class=&quot;headerlink&quot; title=&quot;CronTrigger&quot;&gt;&lt;/a&gt;CronTrigger&lt;/h2&gt;&lt;p&gt;CronTriggers往往比SimpleTrigger更有用，如果您需要基于日历的概念，而非SimpleTrigger完全指定的时间间隔，复发的发射工作的时间表。&lt;br&gt;CronTrigger，你可以指定触发的时间表如“每星期五中午”，或“每个工作日9:30时”，甚至“每5分钟一班9:00和10:00逢星期一上午，星期三星期五“。&lt;br&gt;即便如此，SimpleTrigger一样，CronTrigger拥有的startTime指定的时间表时生效，指定的时间表时，应停止（可选）结束时间。&lt;/p&gt;
+&lt;h3 id=&quot;Cron-Expressions&quot;&gt;&lt;a href=&quot;#Cron-Expressions&quot; class=&quot;headerlink&quot; title=&quot;Cron Expressions&quot;&gt;&lt;/a&gt;Cron Expressions&lt;/h3&gt;&lt;p&gt;cron的表达式被用来配置CronTrigger实例。 cron的表达式是字符串，实际上是由七子表达式，描述个别细节的时间表。&lt;br&gt;这些子表达式是分开的空白，代表：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Seconds&lt;/li&gt;
+&lt;li&gt;Minutes&lt;/li&gt;
+&lt;li&gt;Hours&lt;/li&gt;
+&lt;li&gt;Day-of-Month&lt;/li&gt;
+&lt;li&gt;Month&lt;/li&gt;
+&lt;li&gt;Day-of-Week&lt;/li&gt;
+&lt;li&gt;Year (可选字段)&lt;br&gt;例  “0 0 12 ? * WED” 在每星期三下午12:00 执行,&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;个别子表达式可以包含范围, 例如，在前面的例子里(“WED”)可以替换成 “MON-FRI”, “MON, WED, FRI”甚至”MON-WED,SAT”.&lt;/p&gt;
+&lt;p&gt;“* ” 代表整个时间段.&lt;/p&gt;
+&lt;p&gt;每一个字段都有一套可以指定有效值，如&lt;/p&gt;
+&lt;p&gt;Seconds (秒)         ：可以用数字0－59 表示，&lt;/p&gt;
+&lt;p&gt;Minutes(分)          ：可以用数字0－59 表示，&lt;/p&gt;
+&lt;p&gt;Hours(时)             ：可以用数字0-23表示,&lt;/p&gt;
+&lt;p&gt;Day-of-Month(天) ：可以用数字1-31 中的任一一个值，但要注意一些特别的月份&lt;/p&gt;
+&lt;p&gt;Month(月)            ：可以用0-11 或用字符串  “JAN, FEB, MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT, NOV and DEC” 表示&lt;/p&gt;
+&lt;p&gt;Day-of-Week(每周)：可以用数字1-7表示（1 ＝ 星期日）或用字符口串“SUN, MON, TUE, WED, THU, FRI and SAT”表示&lt;/p&gt;
+&lt;p&gt;“/”：为特别单位，表示为“每”如“0/15”表示每隔15分钟执行一次,“0”表示为从“0”分开始, “3/20”表示表示每隔20分钟执行一次，“3”表示从第3分钟开始执行&lt;/p&gt;
+&lt;p&gt;“?”：表示每月的某一天，或第周的某一天&lt;/p&gt;
+&lt;p&gt;“L”：用于每月，或每周，表示为每月的最后一天，或每个月的最后星期几如“6L”表示“每月的最后一个星期五”&lt;/p&gt;
+&lt;p&gt;“W”：表示为最近工作日，如“15W”放在每月（day-of-month）字段上表示为“到本月15日最近的工作日”&lt;/p&gt;
+&lt;p&gt;““#”：是用来指定“的”每月第n个工作日,例 在每周（day-of-week）这个字段中内容为”6#3” or “FRI#3” 则表示“每月第三个星期五”&lt;/p&gt;
+&lt;p&gt;1）Cron表达式的格式：秒 分 时 日 月 周 年(可选)。&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;字段名&lt;/th&gt;
+&lt;th&gt;允许的值&lt;/th&gt;
+&lt;th&gt;允许的特殊字符  &lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;秒&lt;/td&gt;
+&lt;td&gt;0-59&lt;/td&gt;
+&lt;td&gt;, - * /  &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;分&lt;/td&gt;
+&lt;td&gt;0-59&lt;/td&gt;
+&lt;td&gt;, - * /  &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;小时&lt;/td&gt;
+&lt;td&gt;0-23&lt;/td&gt;
+&lt;td&gt;, - * /  &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;日&lt;/td&gt;
+&lt;td&gt;1-31&lt;/td&gt;
+&lt;td&gt;, - * ? / L W C  &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;月&lt;/td&gt;
+&lt;td&gt;1-12 or JAN-DEC&lt;/td&gt;
+&lt;td&gt;, - * /  &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;周几&lt;/td&gt;
+&lt;td&gt;1-7 or SUN-SAT&lt;/td&gt;
+&lt;td&gt;, - * ? / L C #  &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;年 (可选字段)&lt;/td&gt;
+&lt;td&gt;empty, 1970-2099&lt;/td&gt;
+&lt;td&gt;, - * /&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;pre&gt;&lt;code&gt;“?”字符：表示不确定的值
+
+“,”字符：指定数个值
+
+“-”字符：指定一个值的范围
+
+“/”字符：指定一个值的增加幅度。n/m表示从n开始，每次增加m
+
+“L”字符：用在日表示一个月中的最后一天，用在周表示该月最后一个星期X
+
+“W”字符：指定离给定日期最近的工作日(周一到周五)
+
+“#”字符：表示该月第几个周X。6#3表示该月第3个周五
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt; 2）Cron表达式范例：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;每隔5秒执行一次：*/5 * * * * ?
+
+每隔1分钟执行一次：0 */1 * * * ?
+
+每天23点执行一次：0 0 23 * * ?
+
+每天凌晨1点执行一次：0 0 1 * * ?
+
+每月1号凌晨1点执行一次：0 0 1 1 * ?
+
+每月最后一天23点执行一次：0 0 23 L * ?
+
+每周星期天凌晨1点实行一次：0 0 1 ? * L
+
+在26分、29分、33分执行一次：0 26,29,33 * * * ?
+
+每天的0点、13点、18点、21点都执行一次：0 0 0,13,18,21 * * ?
+&lt;/code&gt;&lt;/pre&gt;&lt;hr&gt;
+&lt;p&gt;转载自：&lt;a href=&quot;http://www.cnblogs.com/maybo/p/5189617.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://www.cnblogs.com/maybo/p/5189617.html&lt;/a&gt;&lt;br&gt;&lt;em&gt;观点仅代表自己，期待你的留言。&lt;/em&gt;&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;CronTrigger&quot;&gt;&lt;a href=&quot;#CronTrigger&quot; class=&quot;headerlink&quot; title=&quot;CronTrigger&quot;&gt;&lt;/a&gt;CronTrigger&lt;/h2&gt;&lt;p&gt;CronTriggers往往比SimpleTrigger更有用，如果
+    
+    </summary>
+    
+    
+      <category term="转载" scheme="http://www.wujianjun.org/tags/%E8%BD%AC%E8%BD%BD/"/>
+    
+  </entry>
   
   <entry>
     <title>多标识位存储优化方案</title>
@@ -804,65 +929,6 @@
     
     
       <category term="原创" scheme="http://www.wujianjun.org/tags/%E5%8E%9F%E5%88%9B/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Zookeeper学习笔记</title>
-    <link href="http://www.wujianjun.org/2016/06/03/zookeeper-note/"/>
-    <id>http://www.wujianjun.org/2016/06/03/zookeeper-note/</id>
-    <published>2016-06-03T10:32:58.000Z</published>
-    <updated>2017-07-14T02:12:53.227Z</updated>
-    
-    <content type="html">&lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;Zookeeper 分布式服务框架是 Apache Hadoop 的一个子项目，它主要是用来解决分布式应用中经常遇到的一些数据管理问题，如：统一命名服务、状态同步服务、集群管理、分布式应用配置项的管理等。&lt;/p&gt;
-&lt;p&gt;Zookeeper的数据存储模型：ZK会维护一个具有层次关系的数据结构，它非常类似于一个标准的文件系统。&lt;br&gt;&lt;img src=&quot;/images/zk_data_model.gif&quot; alt=&quot;Zookeeper的数据存储模型&quot;&gt;&lt;/p&gt;
-&lt;p&gt;Zookeeper 数据结构有如下这些特点：&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;每个子目录项如 NameService 都被称作为 znode，这个 znode 是被它所在的路径唯一标识，如 Server1 这个 znode 的标识为 /NameService/Server1&lt;/li&gt;
-&lt;li&gt;znode 可以有子节点目录，并且每个 znode 可以存储数据，注意 EPHEMERAL 类型的目录节点不能有子节点目录&lt;/li&gt;
-&lt;li&gt;znode 是有版本的，每个 znode 中存储的数据可以有多个版本，也就是一个访问路径中可以存储多份数据&lt;/li&gt;
-&lt;li&gt;znode 可以是临时节点，一旦创建这个 znode 的客户端与服务器失去联系，这个 znode 也将自动删除，Zookeeper 的客户端和服务器通信采用长连接方式，每个客户端和服务器通过心跳来保持连接，这个连接状态称为 session，如果 znode 是临时节点，这个 session 失效，znode 也就删除了&lt;/li&gt;
-&lt;li&gt;znode 的目录名可以自动编号，如 App1 已经存在，再创建的话，将会自动命名为 App2&lt;/li&gt;
-&lt;li&gt;znode 可以被监控，包括这个目录节点中存储的数据的修改，子节点目录的变化等，一旦变化可以通知设置监控的客户端，这个是 Zookeeper 的核心特性，Zookeeper 的很多功能都是基于这个特性实现的&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;Znode目录节点类型：&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;PERSISTENT：持久化目录节点，这个目录节点存储的数据不会丢失；&lt;/li&gt;
-&lt;li&gt;PERSISTENT_SEQUENTIAL：顺序自动编号的目录节点，这种目录节点会根据当前已近存在的节点数自动加 1，然后返回给客户端已经成功创建的目录节点名；&lt;/li&gt;
-&lt;li&gt;EPHEMERAL：临时目录节点，一旦创建这个节点的客户端与服务器端口也就是 session 超时，这种节点会被自动删除；&lt;/li&gt;
-&lt;li&gt;EPHEMERAL_SEQUENTIAL：临时自动编号节点&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2 id=&quot;适用场景&quot;&gt;&lt;a href=&quot;#适用场景&quot; class=&quot;headerlink&quot; title=&quot;适用场景&quot;&gt;&lt;/a&gt;适用场景&lt;/h2&gt;&lt;h3 id=&quot;统一命名服务（Name-Service）&quot;&gt;&lt;a href=&quot;#统一命名服务（Name-Service）&quot; class=&quot;headerlink&quot; title=&quot;统一命名服务（Name Service）&quot;&gt;&lt;/a&gt;统一命名服务（Name Service）&lt;/h3&gt;&lt;p&gt;分布式应用中，通常需要有一套完整的命名规则，既能够产生唯一的名称又便于人识别和记住，通常情况下用树形的名称结构是一个理想的选择，树形的名称结构是一个有层次的目录结构，既对人友好又不会重复。说到这里你可能想到了 JNDI，没错 Zookeeper 的 Name Service 与 JNDI 能够完成的功能是差不多的，它们都是将有层次的目录结构关联到一定资源上，但是 Zookeeper 的 Name Service 更加是广泛意义上的关联，也许你并不需要将名称关联到特定资源上，你可能只需要一个不会重复名称，就像数据库中产生一个唯一的数字主键一样。&lt;br&gt;Name Service 已经是 Zookeeper 内置的功能，你只要调用 Zookeeper 的 API 就能实现。如调用 create 接口就可以很容易创建一个目录节点。&lt;/p&gt;
-&lt;h3 id=&quot;配置管理（Configuration-Management）&quot;&gt;&lt;a href=&quot;#配置管理（Configuration-Management）&quot; class=&quot;headerlink&quot; title=&quot;配置管理（Configuration Management）&quot;&gt;&lt;/a&gt;配置管理（Configuration Management）&lt;/h3&gt;&lt;p&gt;配置的管理在分布式应用环境中很常见，例如同一个应用系统需要多台 PC Server 运行，但是它们运行的应用系统的某些配置项是相同的，如果要修改这些相同的配置项，那么就必须同时修改每台运行这个应用系统的 PC Server，这样非常麻烦而且容易出错。&lt;br&gt;像这样的配置信息完全可以交给 Zookeeper 来管理，将配置信息保存在 Zookeeper 的某个目录节点中，然后将所有需要修改的应用机器监控配置信息的状态，一旦配置信息发生变化，每台应用机器就会收到 Zookeeper 的通知，然后从 Zookeeper 获取新的配置信息应用到系统中。&lt;br&gt;&lt;img src=&quot;/images/zk-config-manager.gif&quot; alt=&quot;配置管理结构图&quot;&gt;&lt;/p&gt;
-&lt;h3 id=&quot;集群管理（Group-Membership）&quot;&gt;&lt;a href=&quot;#集群管理（Group-Membership）&quot; class=&quot;headerlink&quot; title=&quot;集群管理（Group Membership）&quot;&gt;&lt;/a&gt;集群管理（Group Membership）&lt;/h3&gt;&lt;p&gt;Zookeeper 能够很容易的实现集群管理的功能，如有多台 Server 组成一个服务集群，那么必须要一个“总管”知道当前集群中每台机器的服务状态，一旦有机器不能提供服务，集群中其它集群必须知道，从而做出调整重新分配服务策略。同样当增加集群的服务能力时，就会增加一台或多台 Server，同样也必须让“总管”知道。&lt;br&gt;Zookeeper 不仅能够帮你维护当前的集群中机器的服务状态，而且能够帮你选出一个“总管”，让这个总管来管理集群，这就是 Zookeeper 的另一个功能 Leader Election。&lt;br&gt;它们的实现方式都是在 Zookeeper 上创建一个 EPHEMERAL 类型的目录节点，然后每个 Server 在它们创建目录节点的父目录节点上调用 getChildren(String path, boolean watch) 方法并设置 watch 为 true，由于是 EPHEMERAL 目录节点，当创建它的 Server 死去，这个目录节点也随之被删除，所以 Children 将会变化，这时 getChildren上的 Watch 将会被调用，所以其它 Server 就知道已经有某台 Server 死去了。新增 Server 也是同样的原理。&lt;br&gt;Zookeeper 如何实现 Leader Election，也就是选出一个 Master Server。和前面的一样每台 Server 创建一个 EPHEMERAL 目录节点，不同的是它还是一个 SEQUENTIAL 目录节点，所以它是个 EPHEMERAL_SEQUENTIAL 目录节点。之所以它是 EPHEMERAL_SEQUENTIAL 目录节点，是因为我们可以给每台 Server 编号，我们可以选择当前是最小编号的 Server 为 Master，假如这个最小编号的 Server 死去，由于是 EPHEMERAL 节点，死去的 Server 对应的节点也被删除，所以当前的节点列表中又出现一个最小编号的节点，我们就选择这个节点为当前 Master。这样就实现了动态选择 Master，避免了传统意义上单 Master 容易出现单点故障的问题。&lt;br&gt;&lt;img src=&quot;/images/zk-cluster-manager.gif&quot; alt=&quot;集群管理结构图&quot;&gt;&lt;/p&gt;
-&lt;h3 id=&quot;共享锁（Locks）&quot;&gt;&lt;a href=&quot;#共享锁（Locks）&quot; class=&quot;headerlink&quot; title=&quot;共享锁（Locks）&quot;&gt;&lt;/a&gt;共享锁（Locks）&lt;/h3&gt;&lt;p&gt;共享锁在同一个进程中很容易实现，但是在跨进程或者在不同 Server 之间就不好实现了。Zookeeper 却很容易实现这个功能，实现方式也是需要获得锁的 Server 创建一个 EPHEMERAL_SEQUENTIAL 目录节点，然后调用 getChildren方法获取当前的目录节点列表中最小的目录节点是不是就是自己创建的目录节点，如果正是自己创建的，那么它就获得了这个锁，如果不是那么它就调用 exists(String path, boolean watch) 方法并监控 Zookeeper 上目录节点列表的变化，一直到自己创建的节点是列表中最小编号的目录节点，从而获得锁，释放锁很简单，只要删除前面它自己所创建的目录节点就行了。&lt;/p&gt;
-&lt;h3 id=&quot;队列管理&quot;&gt;&lt;a href=&quot;#队列管理&quot; class=&quot;headerlink&quot; title=&quot;队列管理&quot;&gt;&lt;/a&gt;队列管理&lt;/h3&gt;&lt;p&gt;Zookeeper 可以处理两种类型的队列：&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;当一个队列的成员都聚齐时，这个队列才可用，否则一直等待所有成员到达，这种是同步队列。&lt;/li&gt;
-&lt;li&gt;队列按照 FIFO 方式进行入队和出队操作，例如实现生产者和消费者模型。&lt;br&gt;同步队列用 Zookeeper 实现的实现思路如下：&lt;br&gt;创建一个父目录 /synchronizing，每个成员都监控标志（Set Watch）位目录 /synchronizing/start 是否存在，然后每个成员都加入这个队列，加入队列的方式就是创建 /synchronizing/member_i 的临时目录节点，然后每个成员获取 / synchronizing 目录的所有目录节点，也就是 member_i。判断 i 的值是否已经是成员的个数，如果小于成员个数等待 /synchronizing/start 的出现，如果已经相等就创建 /synchronizing/start。&lt;h2 id=&quot;集群配置&quot;&gt;&lt;a href=&quot;#集群配置&quot; class=&quot;headerlink&quot; title=&quot;集群配置&quot;&gt;&lt;/a&gt;集群配置&lt;/h2&gt;&lt;em&gt;zoo.cfg&lt;/em&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;initLimit=5 &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;syncLimit=2 &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;server.1=192.168.211.1:2888:3888 &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;server.2=192.168.211.2:2888:3888&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;&lt;em&gt;说明:&lt;/em&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;initLimit：这个配置项是用来配置 Zookeeper 接受客户端（这里所说的客户端不是用户连接 Zookeeper 服务器的客户端，而是 Zookeeper 服务器集群中连接到 Leader 的 Follower 服务器）初始化连接时最长能忍受多少个心跳时间间隔数。当已经超过 10 个心跳的时间（也就是 tickTime）长度后 Zookeeper 服务器还没有收到客户端的返回信息，那么表明这个客户端连接失败。总的时间长度就是 5*2000=10 秒&lt;/li&gt;
-&lt;li&gt;syncLimit：这个配置项标识 Leader 与 Follower 之间发送消息，请求和应答时间长度，最长不能超过多少个 tickTime 的时间长度，总的时间长度就是 2*2000=4 秒&lt;/li&gt;
-&lt;li&gt;server.A=B：C：D：其中 A 是一个数字，表示这个是第几号服务器；B 是这个服务器的 ip 地址；C 表示的是这个服务器与集群中的 Leader 服务器交换信息的端口；D 表示的是万一集群中的 Leader 服务器挂了，需要一个端口来重新进行选举，选出一个新的 Leader，而这个端口就是用来执行选举时服务器相互通信的端口。如果是伪集群的配置方式，由于 B 都是一样，所以不同的 Zookeeper 实例通信端口号不能一样，所以要给它们分配不同的端口号。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;hr&gt;
-&lt;p&gt;除了修改 zoo.cfg 配置文件，集群模式下还要配置一个文件 myid，这个文件在 dataDir 目录下，这个文件里面就有一个数据就是 A 的值，Zookeeper 启动时会读取这个文件，拿到里面的数据与 zoo.cfg 里面的配置信息比较从而判断到底是那个 server。&lt;/p&gt;
-&lt;hr&gt;
-&lt;p&gt;&lt;em&gt;观点仅代表自己，期待你的留言。&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;https://www.ibm.com/developerworks/cn/opensource/os-cn-zookeeper/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://www.ibm.com/developerworks/cn/opensource/os-cn-zookeeper/&lt;/a&gt;&lt;/p&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;Zookeeper 分布式服务框架是 Apache Hadoop 的一个子项目，它主要是用来解决分布式应用中经常遇到的一些数据管理问题，如：
-    
-    </summary>
-    
-    
-      <category term="关键笔记" scheme="http://www.wujianjun.org/tags/%E5%85%B3%E9%94%AE%E7%AC%94%E8%AE%B0/"/>
     
   </entry>
   

@@ -4,31 +4,19 @@
   <meta charset="utf-8">
   
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <title>Nginx+php-fpm替代apache服务器 | 建均笔记</title>
+  <title>Cron表达式说明 | 建均笔记</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="简介nginx本身不能处理PHP，它只是个web服务器，当接收到请求后，如果是php请求，则发给php解释器处理，并把结果返回给客户端。
-nginx一般是把请求发fastcgi管理进程处理，fascgi管理进程选择cgi子进程处理结果并返回被nginx
-本文以php-fpm为例介绍如何使nginx支持PHP一、编译安装php-fpm
-什么是PHP-FPM
-PHP-FPM是一个PHP FastCGI">
-<meta name="keywords" content="转载,Nginx,php-fpm">
+  <meta name="description" content="CronTriggerCronTriggers往往比SimpleTrigger更有用，如果您需要基于日历的概念，而非SimpleTrigger完全指定的时间间隔，复发的发射工作的时间表。CronTrigger，你可以指定触发的时间表如“每星期五中午”，或“每个工作日9:30时”，甚至“每5分钟一班9:00和10:00逢星期一上午，星期三星期五“。即便如此，SimpleTrigger一样，CronT">
+<meta name="keywords" content="转载">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Nginx+php-fpm替代apache服务器">
-<meta property="og:url" content="http://www.wujianjun.org/2016/03/21/php-fpm/index.html">
+<meta property="og:title" content="Cron表达式说明">
+<meta property="og:url" content="http://www.wujianjun.org/2017/09/05/cron-expression/index.html">
 <meta property="og:site_name" content="建均笔记">
-<meta property="og:description" content="简介nginx本身不能处理PHP，它只是个web服务器，当接收到请求后，如果是php请求，则发给php解释器处理，并把结果返回给客户端。
-nginx一般是把请求发fastcgi管理进程处理，fascgi管理进程选择cgi子进程处理结果并返回被nginx
-本文以php-fpm为例介绍如何使nginx支持PHP一、编译安装php-fpm
-什么是PHP-FPM
-PHP-FPM是一个PHP FastCGI">
-<meta property="og:updated_time" content="2017-07-14T02:12:53.668Z">
+<meta property="og:description" content="CronTriggerCronTriggers往往比SimpleTrigger更有用，如果您需要基于日历的概念，而非SimpleTrigger完全指定的时间间隔，复发的发射工作的时间表。CronTrigger，你可以指定触发的时间表如“每星期五中午”，或“每个工作日9:30时”，甚至“每5分钟一班9:00和10:00逢星期一上午，星期三星期五“。即便如此，SimpleTrigger一样，CronT">
+<meta property="og:updated_time" content="2017-09-05T12:55:15.335Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Nginx+php-fpm替代apache服务器">
-<meta name="twitter:description" content="简介nginx本身不能处理PHP，它只是个web服务器，当接收到请求后，如果是php请求，则发给php解释器处理，并把结果返回给客户端。
-nginx一般是把请求发fastcgi管理进程处理，fascgi管理进程选择cgi子进程处理结果并返回被nginx
-本文以php-fpm为例介绍如何使nginx支持PHP一、编译安装php-fpm
-什么是PHP-FPM
-PHP-FPM是一个PHP FastCGI">
+<meta name="twitter:title" content="Cron表达式说明">
+<meta name="twitter:description" content="CronTriggerCronTriggers往往比SimpleTrigger更有用，如果您需要基于日历的概念，而非SimpleTrigger完全指定的时间间隔，复发的发射工作的时间表。CronTrigger，你可以指定触发的时间表如“每星期五中午”，或“每个工作日9:30时”，甚至“每5分钟一班9:00和10:00逢星期一上午，星期三星期五“。即便如此，SimpleTrigger一样，CronT">
   
     <link rel="alternative" href="/atom.xml" title="建均笔记" type="application/atom+xml">
   
@@ -232,11 +220,11 @@ var _hmt = _hmt || [];
 	</div>
 </nav>
 
-      <div class="body-wrap"><article id="post-php-fpm" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-cron-expression" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2016/03/21/php-fpm/" class="article-date">
-  	<time datetime="2016-03-21T07:01:31.000Z" itemprop="datePublished">2016-03-21</time>
+      <a href="/2017/09/05/cron-expression/" class="article-date">
+  	<time datetime="2017-09-05T12:48:08.000Z" itemprop="datePublished">2017-09-05</time>
 </a>
       <div class="analysis-container">
 	<i class="fa fa-line-chart"></i>
@@ -253,7 +241,7 @@ var _hmt = _hmt || [];
         
   
     <h1 class="article-title" itemprop="name">
-      Nginx+php-fpm替代apache服务器
+      Cron表达式说明
     </h1>
   
 
@@ -262,7 +250,7 @@ var _hmt = _hmt || [];
       <div class="article-info article-info-post">
         
 	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nginx/">Nginx</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/php-fpm/">php-fpm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/转载/">转载</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/转载/">转载</a></li></ul>
 	</div>
 
         
@@ -277,7 +265,7 @@ var _hmt = _hmt || [];
                        
              <div id="toc" class="article-toc">
              <h2>文章目录</h2>
-               <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-number">1.</span> <span class="toc-text">简介</span></a></li></ol>  
+               <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#CronTrigger"><span class="toc-number">1.</span> <span class="toc-text">CronTrigger</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Cron-Expressions"><span class="toc-number">1.1.</span> <span class="toc-text">Cron Expressions</span></a></li></ol></li></ol>  
              </div>
              <script type="text/javascript">
                var _article = document.getElementsByClassName('article')[0];
@@ -287,21 +275,111 @@ var _hmt = _hmt || [];
              </script>
            
          
-        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>nginx本身不能处理PHP，它只是个web服务器，当接收到请求后，如果是php请求，则发给php解释器处理，并把结果返回给客户端。</p>
-<p>nginx一般是把请求发fastcgi管理进程处理，fascgi管理进程选择cgi子进程处理结果并返回被nginx</p>
-<p>本文以php-fpm为例介绍如何使nginx支持PHP<br>一、编译安装php-fpm</p>
-<p>什么是PHP-FPM</p>
-<p>PHP-FPM是一个PHP FastCGI管理器，是只用于PHP的,可以在 <a href="http://php-fpm.org/download" target="_blank" rel="external">http://php-fpm.org/download</a> 下载得到.</p>
-<p>PHP-FPM其实是PHP源代码的一个补丁，旨在将FastCGI进程管理整合进PHP包中。必须将它patch到你的PHP源代码中，在编译安装PHP后才可以使用。</p>
-<p>新版PHP已经集成php-fpm了，不再是第三方的包了，推荐使用。PHP-FPM提供了更好的PHP进程管理方式，可以有效控制内存和进程、可以平滑重载PHP配置，比spawn-fcgi具有更多有点，所以被PHP官方收录了。在./configure的时候带 –enable-fpm参数即可开启PHP-FPM。</p>
-<p>新版php-fpm安装(推荐安装方式)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">wget http://cn2.php.net/distributions/php-5.4.7.tar.gz</span><br><span class="line">tar zvxf php-5.4.7.tar.gz</span><br><span class="line">cd php-5.4.7</span><br><span class="line">./configure --prefix=/usr/local/php --enable-fastcgi --enable-fpm --with-mcrypt --with-zlib --enable-mbstring --disable-pdo --with-curl --disable-debug --enable-pic --disable-rpath --enable-inline-optimization --with-bz2 --with-xml --with-zlib --enable-sockets --enable-sysvsem --enable-sysvshm --enable-pcntl --enable-mbregex --with-mhash --enable-xslt --enable-memcache --enable-zip --with-pcre-regex --with-mysql</span><br><span class="line">make all install</span><br></pre></td></tr></table></figure></p>
-<p>旧版手动打补丁php-fpm安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">wget http://cn2.php.net/get/php-5.2.17.tar.gz</span><br><span class="line">wget http://php-fpm.org/downloads/php-5.2.17-fpm-0.5.14.diff.gz</span><br><span class="line"></span><br><span class="line">tar zvxf php-5.2.17.tar.gz</span><br><span class="line">gzip -cd php-5.2.17-fpm-0.5.14.diff.gz | patch -d php-5.2.17 -p1</span><br><span class="line">cd php-5.2.17</span><br><span class="line">./configure --prefix=/usr/local/php  --enable-fpm --with-mcrypt --enable-mbstring --disable-pdo --with-curl --disable-debug  --disable-rpath --enable-inline-optimization --with-bz2  --with-zlib --enable-sockets --enable-sysvsem --enable-sysvshm --enable-pcntl --enable-mbregex --with-mhash --enable-zip --with-pcre-regex --with-mysql --with-mysqli --with-gd --with-jpeg-dir</span><br><span class="line">make all install</span><br><span class="line">cd /usr/local/php</span><br><span class="line">cp etc/php-fpm.conf.default etc/php-fpm.conf</span><br><span class="line">/usr/local/php/sbin/php-fpm</span><br></pre></td></tr></table></figure></p>
-<p>以上两种方式都可以安装php-fpm，安装后内容放在/usr/local/php目录下</p>
-<p>二、修改nginx配置文件以支持php-fpm<br>nginx安装完成后，修改nginx配置文件为,nginx.conf</p>
-<p>其中server段增加如下配置，注意标红内容配置，否则会出现No input file specified.错误</p>
-<p>#pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">location ~ \.php$ &#123;</span><br><span class="line">root html;</span><br><span class="line">fastcgi_pass 127.0.0.1:9000;</span><br><span class="line">fastcgi_index index.php;</span><br><span class="line">fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;</span><br><span class="line">include fastcgi_params;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>转自：<a href="http://www.cnblogs.com/hujiong/archive/2013/02/20/2918509.html" target="_blank" rel="external">http://www.cnblogs.com/hujiong/archive/2013/02/20/2918509.html</a> </p>
-<hr>
+        <h2 id="CronTrigger"><a href="#CronTrigger" class="headerlink" title="CronTrigger"></a>CronTrigger</h2><p>CronTriggers往往比SimpleTrigger更有用，如果您需要基于日历的概念，而非SimpleTrigger完全指定的时间间隔，复发的发射工作的时间表。<br>CronTrigger，你可以指定触发的时间表如“每星期五中午”，或“每个工作日9:30时”，甚至“每5分钟一班9:00和10:00逢星期一上午，星期三星期五“。<br>即便如此，SimpleTrigger一样，CronTrigger拥有的startTime指定的时间表时生效，指定的时间表时，应停止（可选）结束时间。</p>
+<h3 id="Cron-Expressions"><a href="#Cron-Expressions" class="headerlink" title="Cron Expressions"></a>Cron Expressions</h3><p>cron的表达式被用来配置CronTrigger实例。 cron的表达式是字符串，实际上是由七子表达式，描述个别细节的时间表。<br>这些子表达式是分开的空白，代表：</p>
+<ol>
+<li>Seconds</li>
+<li>Minutes</li>
+<li>Hours</li>
+<li>Day-of-Month</li>
+<li>Month</li>
+<li>Day-of-Week</li>
+<li>Year (可选字段)<br>例  “0 0 12 ? * WED” 在每星期三下午12:00 执行,</li>
+</ol>
+<p>个别子表达式可以包含范围, 例如，在前面的例子里(“WED”)可以替换成 “MON-FRI”, “MON, WED, FRI”甚至”MON-WED,SAT”.</p>
+<p>“* ” 代表整个时间段.</p>
+<p>每一个字段都有一套可以指定有效值，如</p>
+<p>Seconds (秒)         ：可以用数字0－59 表示，</p>
+<p>Minutes(分)          ：可以用数字0－59 表示，</p>
+<p>Hours(时)             ：可以用数字0-23表示,</p>
+<p>Day-of-Month(天) ：可以用数字1-31 中的任一一个值，但要注意一些特别的月份</p>
+<p>Month(月)            ：可以用0-11 或用字符串  “JAN, FEB, MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT, NOV and DEC” 表示</p>
+<p>Day-of-Week(每周)：可以用数字1-7表示（1 ＝ 星期日）或用字符口串“SUN, MON, TUE, WED, THU, FRI and SAT”表示</p>
+<p>“/”：为特别单位，表示为“每”如“0/15”表示每隔15分钟执行一次,“0”表示为从“0”分开始, “3/20”表示表示每隔20分钟执行一次，“3”表示从第3分钟开始执行</p>
+<p>“?”：表示每月的某一天，或第周的某一天</p>
+<p>“L”：用于每月，或每周，表示为每月的最后一天，或每个月的最后星期几如“6L”表示“每月的最后一个星期五”</p>
+<p>“W”：表示为最近工作日，如“15W”放在每月（day-of-month）字段上表示为“到本月15日最近的工作日”</p>
+<p>““#”：是用来指定“的”每月第n个工作日,例 在每周（day-of-week）这个字段中内容为”6#3” or “FRI#3” 则表示“每月第三个星期五”</p>
+<p>1）Cron表达式的格式：秒 分 时 日 月 周 年(可选)。</p>
+<table>
+<thead>
+<tr>
+<th>字段名</th>
+<th>允许的值</th>
+<th>允许的特殊字符  </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>秒</td>
+<td>0-59</td>
+<td>, - * /  </td>
+</tr>
+<tr>
+<td>分</td>
+<td>0-59</td>
+<td>, - * /  </td>
+</tr>
+<tr>
+<td>小时</td>
+<td>0-23</td>
+<td>, - * /  </td>
+</tr>
+<tr>
+<td>日</td>
+<td>1-31</td>
+<td>, - * ? / L W C  </td>
+</tr>
+<tr>
+<td>月</td>
+<td>1-12 or JAN-DEC</td>
+<td>, - * /  </td>
+</tr>
+<tr>
+<td>周几</td>
+<td>1-7 or SUN-SAT</td>
+<td>, - * ? / L C #  </td>
+</tr>
+<tr>
+<td>年 (可选字段)</td>
+<td>empty, 1970-2099</td>
+<td>, - * /</td>
+</tr>
+</tbody>
+</table>
+<pre><code>“?”字符：表示不确定的值
+
+“,”字符：指定数个值
+
+“-”字符：指定一个值的范围
+
+“/”字符：指定一个值的增加幅度。n/m表示从n开始，每次增加m
+
+“L”字符：用在日表示一个月中的最后一天，用在周表示该月最后一个星期X
+
+“W”字符：指定离给定日期最近的工作日(周一到周五)
+
+“#”字符：表示该月第几个周X。6#3表示该月第3个周五
+</code></pre><p> 2）Cron表达式范例：</p>
+<pre><code>每隔5秒执行一次：*/5 * * * * ?
+
+每隔1分钟执行一次：0 */1 * * * ?
+
+每天23点执行一次：0 0 23 * * ?
+
+每天凌晨1点执行一次：0 0 1 * * ?
+
+每月1号凌晨1点执行一次：0 0 1 1 * ?
+
+每月最后一天23点执行一次：0 0 23 L * ?
+
+每周星期天凌晨1点实行一次：0 0 1 ? * L
+
+在26分、29分、33分执行一次：0 26,29,33 * * * ?
+
+每天的0点、13点、18点、21点都执行一次：0 0 0,13,18,21 * * ?
+</code></pre><hr>
+<p>转载自：<a href="http://www.cnblogs.com/maybo/p/5189617.html" target="_blank" rel="external">http://www.cnblogs.com/maybo/p/5189617.html</a><br><em>观点仅代表自己，期待你的留言。</em></p>
 
       
     </div>
@@ -311,18 +389,9 @@ var _hmt = _hmt || [];
     
 <nav id="article-nav">
   
-    <a href="/2016/03/21/header-version/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption"><</strong>
-      <div class="article-nav-title">
-        
-          开放平台Api的版本控制方案
-        
-      </div>
-    </a>
   
-  
-    <a href="/2016/03/18/nginx-muti-domain/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Nginx反向代理多个域名</div>
+    <a href="/2017/08/24/store-flag-bit/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">多标识位存储优化方案</div>
       <strong class="article-nav-caption">></strong>
     </a>
   
