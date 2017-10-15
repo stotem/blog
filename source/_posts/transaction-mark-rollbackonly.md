@@ -1,10 +1,12 @@
 ---
 title: 问题分析 之 Transaction marked as rollbackOnly
+keywords:
+  - 数据库事务
+  - Transaction marked as rollbackOnly
 tags:
   - 原创
-  - transaction
+  - Transaction
   - spring
-  - Transaction marked as rollbackOnly
 date: 2017-07-21 17:01:27
 ---
 
