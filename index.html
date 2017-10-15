@@ -133,7 +133,7 @@ var _hmt = _hmt || [];
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/Docker/" style="font-size: 13.33px;">Docker</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/Maven/" style="font-size: 11.67px;">Maven</a> <a href="/tags/Nginx/" style="font-size: 15px;">Nginx</a> <a href="/tags/Redis/" style="font-size: 11.67px;">Redis</a> <a href="/tags/Transaction-marked-as-rollbackOnly/" style="font-size: 10px;">Transaction marked as rollbackOnly</a> <a href="/tags/iOS/" style="font-size: 16.67px;">iOS</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/php-fpm/" style="font-size: 10px;">php-fpm</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/spring/" style="font-size: 11.67px;">spring</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/transaction/" style="font-size: 11.67px;">transaction</a> <a href="/tags/关键笔记/" style="font-size: 10px;">关键笔记</a> <a href="/tags/分布式/" style="font-size: 10px;">分布式</a> <a href="/tags/原创/" style="font-size: 20px;">原创</a> <a href="/tags/多进程/" style="font-size: 10px;">多进程</a> <a href="/tags/并发/" style="font-size: 10px;">并发</a> <a href="/tags/操作系统/" style="font-size: 10px;">操作系统</a> <a href="/tags/架构/" style="font-size: 10px;">架构</a> <a href="/tags/电商/" style="font-size: 10px;">电商</a> <a href="/tags/转发/" style="font-size: 10px;">转发</a> <a href="/tags/转载/" style="font-size: 18.33px;">转载</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
+						<a href="/tags/Docker/" style="font-size: 13.33px;">Docker</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/Maven/" style="font-size: 11.67px;">Maven</a> <a href="/tags/Nginx/" style="font-size: 15px;">Nginx</a> <a href="/tags/Redis/" style="font-size: 11.67px;">Redis</a> <a href="/tags/Transaction/" style="font-size: 10px;">Transaction</a> <a href="/tags/iOS/" style="font-size: 16.67px;">iOS</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/nginx-obs/" style="font-size: 10px;">nginx + obs</a> <a href="/tags/php-fpm/" style="font-size: 10px;">php-fpm</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/spring/" style="font-size: 11.67px;">spring</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/transaction/" style="font-size: 10px;">transaction</a> <a href="/tags/关键笔记/" style="font-size: 10px;">关键笔记</a> <a href="/tags/分布式/" style="font-size: 10px;">分布式</a> <a href="/tags/原创/" style="font-size: 20px;">原创</a> <a href="/tags/多进程/" style="font-size: 10px;">多进程</a> <a href="/tags/并发/" style="font-size: 10px;">并发</a> <a href="/tags/操作系统/" style="font-size: 10px;">操作系统</a> <a href="/tags/架构/" style="font-size: 10px;">架构</a> <a href="/tags/电商/" style="font-size: 10px;">电商</a> <a href="/tags/转发/" style="font-size: 10px;">转发</a> <a href="/tags/转载/" style="font-size: 18.33px;">转载</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
 					</div>
 				</section>
 				
@@ -219,6 +219,102 @@ var _hmt = _hmt || [];
 </nav>
 
       <div class="body-wrap">
+  
+    <article id="post-nginx-rtmp-obs" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/15/nginx-rtmp-obs/" class="article-date">
+  	<time datetime="2017-10-15T03:07:14.000Z" itemprop="datePublished">2017-10-15</time>
+</a>
+      <div class="analysis-container">
+	<i class="fa fa-line-chart"></i>
+	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
+</div>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/15/nginx-rtmp-obs/">Linux下通过nginx实现直播间功能的实验</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+              
+        <h2 id="实验环境"><a href="#实验环境" class="headerlink" title="实验环境"></a>实验环境</h2><ul>
+<li><p>系统环境</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wujianjun@wujianjun-work ~ $ uname -a</span><br><span class="line">Linux wujianjun-work 4.10.0-37-generic #41~16.04.1-Ubuntu SMP Fri Oct 6 22:42:59 UTC 2017 x86_64 x86_64 x86_64 GNU/Linux</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>软件环境<br>OBS(Open Broadcaster Software) v20.0.1 (Linux)</p>
+<p>nginx version: nginx/1.13.6<br>built by gcc 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.5)<br>built with OpenSSL 1.0.2g  1 Mar 2016<br>TLS SNI support enabled<br>configure arguments: –with-pcre=pcre-8.38 –add-module=nginx-rtmp-module-1.1.11</p>
+</li>
+</ul>
+<h2 id="Nginx-obs安装及配置"><a href="#Nginx-obs安装及配置" class="headerlink" title="Nginx+obs安装及配置"></a>Nginx+obs安装及配置</h2><h3 id="安装obs"><a href="#安装obs" class="headerlink" title="安装obs"></a>安装obs</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">wujianjun@wujianjun-work ~ $ sudo add-apt-repository ppa:kirillshkrogalev/ffmpeg-next</span><br><span class="line">wujianjun@wujianjun-work ~ $ sudo apt-get update &amp;&amp; sudo apt-get install ffmpeg</span><br><span class="line">wujianjun@wujianjun-work ~ $ sudo apt-get install obs-studio</span><br><span class="line">wujianjun@wujianjun-work ~ $ sudo add-apt-repository ppa:obsproject/obs-studio</span><br><span class="line">wujianjun@wujianjun-work ~ $ sudo apt-get update &amp;&amp; sudo apt-get install obs-studio</span><br></pre></td></tr></table></figure>
+<h3 id="nginx加装rtmp模块"><a href="#nginx加装rtmp模块" class="headerlink" title="nginx加装rtmp模块"></a>nginx加装rtmp模块</h3><p>nginx-rtmp-module (<a href="https://github.com/arut/nginx-rtmp-module" target="_blank" rel="external">https://github.com/arut/nginx-rtmp-module</a>)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">wujianjun@wujianjun-work ~ $ sudo apt-get install build-essential</span><br><span class="line">wujianjun@wujianjun-work ~ $ wget wget http://nginx.org/download/nginx-1.13.6.tar.gz</span><br><span class="line">wujianjun@wujianjun-work ~/nginx-1.13.6 $ wget https://github.com/arut/nginx-rtmp-module/archive/v1.1.11.tar.gz</span><br><span class="line">wujianjun@wujianjun-work ~/nginx-1.13.6 $ tar -xvf v1.1.11.tar.gz</span><br><span class="line">wujianjun@wujianjun-work ~/nginx-1.13.6 $ wget http://jaist.dl.sourceforge.net/project/pcre/pcre/8.38/pcre-8.38.tar.gz</span><br><span class="line">wujianjun@wujianjun-work ~/nginx-1.13.6 $ tar -xvf pcre-8.38.tar.gz</span><br><span class="line">wujianjun@wujianjun-work ~/nginx-1.13.6 $ ls -all</span><br><span class="line">总用量 748</span><br><span class="line">drwxr-xr-x  9 wujianjun wujianjun   4096 10月 15 11:39 .</span><br><span class="line">drwxr-xr-x 63 wujianjun wujianjun   4096 10月 15 11:33 ..</span><br><span class="line">drwxr-xr-x  6 wujianjun wujianjun   4096 10月 15 11:33 auto</span><br><span class="line">-rw-r--r--  1 wujianjun wujianjun 282456 10月 10 23:22 CHANGES</span><br><span class="line">-rw-r--r--  1 wujianjun wujianjun 430416 10月 10 23:22 CHANGES.ru</span><br><span class="line">drwxr-xr-x  2 wujianjun wujianjun   4096 10月 15 11:33 conf</span><br><span class="line">-rwxr-xr-x  1 wujianjun wujianjun   2502 10月 10 23:22 configure</span><br><span class="line">drwxr-xr-x  4 wujianjun wujianjun   4096 10月 15 11:33 contrib</span><br><span class="line">drwxr-xr-x  2 wujianjun wujianjun   4096 10月 15 11:33 html</span><br><span class="line">-rw-r--r--  1 wujianjun wujianjun   1397 10月 10 23:22 LICENSE</span><br><span class="line">drwxr-xr-x  2 wujianjun wujianjun   4096 10月 15 11:33 man</span><br><span class="line">drwxrwxr-x  6 wujianjun wujianjun   4096 2月  13  2017 nginx-rtmp-module-1.1.11</span><br><span class="line">drwxr-xr-x  7 wujianjun wujianjun   4096 11月 23  2015 pcre-8.38</span><br><span class="line">-rw-r--r--  1 wujianjun wujianjun     49 10月 10 23:22 README</span><br><span class="line">drwxr-xr-x  9 wujianjun wujianjun   4096 10月 15 11:33 src</span><br><span class="line">wujianjun@wujianjun-work ~/nginx-1.13.6 $ ./configure --with-pcre=pcre-8.38 --add-module=nginx-rtmp-module-1.1.11</span><br><span class="line">wujianjun@wujianjun-work ~/nginx-1.13.6 $ make &amp;&amp; sudo make install</span><br><span class="line">wujianjun@wujianjun-work ~/nginx-1.13.6 $ ls -all /usr/local/nginx/</span><br><span class="line">总用量 24</span><br><span class="line">drwxr-xr-x  6 root root 4096 10月 15 16:11 .</span><br><span class="line">drwxr-xr-x 11 root root 4096 10月 15 16:11 ..</span><br><span class="line">drwxr-xr-x  2 root root 4096 10月 15 16:11 conf</span><br><span class="line">drwxr-xr-x  2 root root 4096 10月 15 16:11 html</span><br><span class="line">drwxr-xr-x  2 root root 4096 10月 15 16:11 logs</span><br><span class="line">drwxr-xr-x  2 root root 4096 10月 15 16:11 sbin</span><br></pre></td></tr></table></figure>
+<h3 id="增加rtmp协议配置"><a href="#增加rtmp协议配置" class="headerlink" title="增加rtmp协议配置"></a>增加rtmp协议配置</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wujianjun@wujianjun-work ~/nginx-1.13.6 $ sudo vi /usr/local/nginx/conf/nginx.conf</span><br></pre></td></tr></table></figure>
+<p>在nginx.conf文件末尾增加以下rtmp协议的配置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">rtmp &#123;</span><br><span class="line">    server &#123;</span><br><span class="line">        listen 1935;</span><br><span class="line">        chunk_size 4096;</span><br><span class="line"></span><br><span class="line">        application live &#123;</span><br><span class="line">            live on;</span><br><span class="line">            record off;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="启动-amp-测试"><a href="#启动-amp-测试" class="headerlink" title="启动&amp;测试"></a>启动&amp;测试</h2><ul>
+<li><p>启动nginx</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wujianjun@wujianjun-work ~/nginx-1.13.6 $ sudo /usr/local/nginx/sbin/nginx</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>启动OBS<br>打开刚安装的OBS软件，在来源处配置图像的推送来源（我这里选择窗口捕获），点击右下角”设置”，进行如下图配置流推送地址<br><img src="/images/obs-1.png" alt=""></p>
+</li>
+</ul>
+<p>配置完成后，点击”开始推流”</p>
+<ul>
+<li><p>启动支持网络流播放的视频播放器(演示使用vlc播放器)<br>配置网络流播放的地址，如下图：<br><img src="/images/vlc-1.png" alt=""></p>
+<p>当点击”播放”后，稍等几秒，即可看到播放器显示了obs捕获的图像了。<br><img src="/images/vlc-2.png" alt=""></p>
+</li>
+</ul>
+<p>由于视频流需要通过网络进行传输，所以直播图像会有几秒的延迟。</p>
+<h2 id="http访问直播视频"><a href="#http访问直播视频" class="headerlink" title="http访问直播视频"></a>http访问直播视频</h2><p>1、更改nginx.conf中配置，增加hls配置(hls是在流媒体服务器中用来存放流媒体的文件夹),再次hls所在目录设置为http协议访问目录即可，更改后的配置如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">rtmp &#123;</span><br><span class="line">    server &#123;</span><br><span class="line">        listen 1935;</span><br><span class="line">        chunk_size 4096;</span><br><span class="line"></span><br><span class="line">        application live &#123;</span><br><span class="line">            live on;</span><br><span class="line">            hls on;</span><br><span class="line">            hls_path /usr/share/nginx/html/hls;</span><br><span class="line">            hls_fragment 5s;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">http &#123;</span><br><span class="line">  server &#123;</span><br><span class="line">    listen 80;</span><br><span class="line">    .....</span><br><span class="line">    location / &#123;</span><br><span class="line">           #root   html;</span><br><span class="line">           root /usr/share/nginx/html;</span><br><span class="line">           index  index.html index.htm;</span><br><span class="line">    &#125;</span><br><span class="line">    .....</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>注意：</strong> hls所在目录nginx的用户必须有写入权限。</p>
+<p>2、obs软件配置录制流名称<br> 在配置obs推送流URL的下方有一个设置”流名称”的地方，这里可以随意填写一个名称（我这里示例填入”test”）</p>
+<p>3、重启一下nginx与obs软件，我们即可在手机浏览器中输入 <a href="http://ip/hls/test.m3u8" target="_blank" rel="external">http://ip/hls/test.m3u8</a> 即可通过手机播放直播视频。（直播延迟有点大，后续出文章优化）<br><img src="/images/obs-2.png" alt=""></p>
+<hr>
+<p><em>观点仅代表自己，期待你的留言。</em></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nginx-obs/">nginx + obs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+
+
   
     <article id="post-cron-expression" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -573,7 +669,7 @@ var _hmt = _hmt || [];
       
       
 	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Transaction-marked-as-rollbackOnly/">Transaction marked as rollbackOnly</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring/">spring</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/transaction/">transaction</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Transaction/">Transaction</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring/">spring</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li></ul>
 	</div>
 
       
@@ -1007,152 +1103,6 @@ var _hmt = _hmt || [];
 <li>TT -  持有次数限制</li>
 <li>MTT  -  最大持有次数限制</li>
 </ul>
-<hr>
-<p><em>观点仅代表自己，期待你的留言。</em></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-jvm-tools-jmap" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/09/21/jvm-tools-jmap/" class="article-date">
-  	<time datetime="2016-09-21T06:21:51.000Z" itemprop="datePublished">2016-09-21</time>
-</a>
-      <div class="analysis-container">
-	<i class="fa fa-line-chart"></i>
-	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
-</div>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/09/21/jvm-tools-jmap/">jvm查内存泄漏利器 - jmap</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-              
-        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Oracle将jmap描述为一种“输出进程、核心文件、远程调试服务器的共享对象内存映射和堆内存细节”的程序。<br>通过它可以查看内存中对象实例，从而解决程序出现不正常的高内存负载、频繁无响应或内存溢出等问题。</p>
-<h2 id="命令安装"><a href="#命令安装" class="headerlink" title="命令安装"></a>命令安装</h2><ol>
-<li>Oracle JDK在安装完成后bin目录下就会发现有jmap命令。</li>
-<li>Open JDK在安装完成后需要安装openjdk-devel开发包才能得到jmap命令。<br>安装方法如下（以CentOS为例）：<br>使用 <code>yum whatprovides &#39;*/jmap&#39;</code>查包含jmap命令开发包的名称。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[root@wujianjun-linux bin]# yum whatprovides &apos;*/jmap&apos;</span><br><span class="line">Loaded plugins: fastestmirror, security</span><br><span class="line">Loading mirror speeds from cached hostfile</span><br><span class="line">base/filelists_db                                                                                  | 6.4 MB     00:00     </span><br><span class="line">extras/filelists_db                                                                                |  38 kB     00:00     </span><br><span class="line">updates/filelists_db                                                                               | 1.5 MB     00:00     </span><br><span class="line">1:java-1.7.0-openjdk-devel-1.7.0.99-2.6.5.1.el6.x86_64 : OpenJDK Development Environment</span><br><span class="line">Repo        : base</span><br><span class="line">Matched from:</span><br><span class="line">Filename    : /usr/lib/jvm/java-1.7.0-openjdk-1.7.0.99.x86_64/bin/jmap</span><br><span class="line">......</span><br><span class="line">.....</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>找到与jdk版本相对应的开发包进行安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@wujianjun-linux bin]# yum install java-1.7.0-openjdk-devel</span><br></pre></td></tr></table></figure></p>
-<p>安装完成后查找命令所在目录<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@wujianjun-linux bin]# whereis jmap</span><br><span class="line">jmap: /usr/bin/jmap /usr/share/man/man1/jmap.1.gz</span><br></pre></td></tr></table></figure></p>
-<p>只要能显示相应目录，则表示安装成功。</p>
-<h2 id="jmap使用"><a href="#jmap使用" class="headerlink" title="jmap使用"></a>jmap使用</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">root@wujianjun-linux ~]# jmap --help</span><br><span class="line">Usage:</span><br><span class="line">    jmap [option] &lt;pid&gt;</span><br><span class="line">        (to connect to running process)</span><br><span class="line">    jmap [option] &lt;executable &lt;core&gt;</span><br><span class="line">        (to connect to a core file)</span><br><span class="line">    jmap [option] [server_id@]&lt;remote server IP or hostname&gt;</span><br><span class="line">        (to connect to remote debug server)</span><br><span class="line"></span><br><span class="line">where &lt;option&gt; is one of:</span><br><span class="line">    &lt;none&gt;               to print same info as Solaris pmap</span><br><span class="line">    -heap                to print java heap summary</span><br><span class="line">    -histo[:live]        to print histogram of java object heap; if the &quot;live&quot;</span><br><span class="line">                         suboption is specified, only count live objects</span><br><span class="line">    -permstat            to print permanent generation statistics</span><br><span class="line">    -finalizerinfo       to print information on objects awaiting finalization</span><br><span class="line">    -dump:&lt;dump-options&gt; to dump java heap in hprof binary format</span><br><span class="line">                         dump-options:</span><br><span class="line">                           live         dump only live objects; if not specified,</span><br><span class="line">                                        all objects in the heap are dumped.</span><br><span class="line">                           format=b     binary format</span><br><span class="line">                           file=&lt;file&gt;  dump heap to &lt;file&gt;</span><br><span class="line">                         Example: jmap -dump:live,format=b,file=heap.bin &lt;pid&gt;</span><br><span class="line">    -F                   force. Use with -dump:&lt;dump-options&gt; &lt;pid&gt; or -histo</span><br><span class="line">                         to force a heap dump or histogram when &lt;pid&gt; does not</span><br><span class="line">                         respond. The &quot;live&quot; suboption is not supported</span><br><span class="line">                         in this mode.</span><br><span class="line">    -h | -help           to print this help message</span><br><span class="line">    -J&lt;flag&gt;             to pass &lt;flag&gt; directly to the runtime system</span><br></pre></td></tr></table></figure>
-<ul>
-<li>jmap pid #打印内存使用的摘要信息</li>
-<li>jmap –heap pid #java heap信息</li>
-<li>jmap -histo:live pid #统计对象count ，live表示在使用</li>
-<li>jmap -histo pid &gt;mem.txt #打印比较简单的各个有多少个对象占了多少内存的信息，一般重定向的文件</li>
-<li>jmap -dump:format=b,file=mem.dat pid #将内存使用的详细情况输出到mem.dat 文件<br>通过<code>jhat -port 7000 mem.dat</code>可以将mem.dat的内容以web的方式暴露到网络，访问<code>http://ip-server:7000</code>查看。</li>
-</ul>
-<p>针对内存泄漏这一问题，可以通过查看堆内存中存活对象实例及所占内存数查到对象是否一直被占用导致不能被GC回收。<br>如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">[root@wujianjun-linux ~]# jps |grep -v Jps</span><br><span class="line">9495 Bootstrap</span><br><span class="line"></span><br><span class="line">[root@wujianjun-linux ~]# jmap -histo:live 9495</span><br><span class="line"> num     #instances         #bytes  class name</span><br><span class="line">----------------------------------------------</span><br><span class="line">   1:        294149       29662584  [C</span><br><span class="line">   2:        187061       27752880  &lt;constMethodKlass&gt;</span><br><span class="line">   3:        187061       23955120  &lt;methodKlass&gt;</span><br><span class="line">   4:         15897       19221104  &lt;constantPoolKlass&gt;</span><br><span class="line">   5:         61107       13783928  [B</span><br><span class="line">   6:         15897       11445056  &lt;instanceKlassKlass&gt;</span><br><span class="line">   7:         13934       11267712  &lt;constantPoolCacheKlass&gt;</span><br><span class="line">   8:        280651        6735624  java.lang.String</span><br><span class="line">   9:        102892        5761952  org.springframework.asm.Item</span><br><span class="line">  10:        234489        5627736  org.springframework.asm.Edge</span><br><span class="line">  11:         84750        5424000  org.springframework.asm.Label</span><br><span class="line">  12:         66211        5296880  java.lang.reflect.Method</span><br><span class="line">  13:         63388        4503312  [I</span><br><span class="line">  14:         75275        4215400  org.springframework.asm.Item</span><br><span class="line">  15:         62580        4005120  org.springframework.asm.Label</span><br><span class="line">  16:        132458        3178992  org.springframework.asm.Edge</span><br><span class="line"></span><br><span class="line">[root@wujianjun-linux ~]# jmap -histo:live 9495|grep com.yqyw</span><br><span class="line"> num     #instances         #bytes  class name</span><br><span class="line">----------------------------------------------</span><br><span class="line">2788:             1             48  com.yqyw.user.rpc.client.UserClient</span><br><span class="line">3570:             1             32  com.yqyw.pnr.sdk.client.ShopClient</span><br><span class="line">3731:             1             32  com.yqyw.pnr.sdk.client.ShopClient</span><br><span class="line">3842:             1             24  com.yqyw.user.rpc.client.impl.FavoriteServiceImpl</span><br></pre></td></tr></table></figure></p>
-<p>从以上输出可以看出目前堆内存中自己程序中的对象实例以及占用bytes，从而确定程序中哪些位置对这些对象进行创建使用且未被释放（典型的情况是将对象存入List等集合类而未被remove）。<br>也通过多次执行<code>jmap -histo:live pid &gt;mem.txt</code>将每次结果定向到不同的txt中，然后对象对比。发现对象实例的增长与占用字节的变化。</p>
-<p><strong>附 - jmap输出中class name非自定义类的说明：</strong></p>
-<table>
-<thead>
-<tr>
-<th>BaseType Character</th>
-<th>Type</th>
-<th>Interpretation </th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>B</td>
-<td>byte</td>
-<td>signed byte</td>
-</tr>
-<tr>
-<td>C</td>
-<td>char</td>
-<td>Unicode character</td>
-</tr>
-<tr>
-<td>D</td>
-<td>double</td>
-<td>double-precision floating-point value</td>
-</tr>
-<tr>
-<td>F</td>
-<td>float</td>
-<td>single-precision floating-point value</td>
-</tr>
-<tr>
-<td>I</td>
-<td>int</td>
-<td>integer</td>
-</tr>
-<tr>
-<td>J</td>
-<td>long</td>
-<td>long integer</td>
-</tr>
-<tr>
-<td>L;</td>
-<td>reference</td>
-<td>an instance of class</td>
-</tr>
-<tr>
-<td>S</td>
-<td>short</td>
-<td>signed short</td>
-</tr>
-<tr>
-<td>Z</td>
-<td>boolean</td>
-<td>true or false</td>
-</tr>
-<tr>
-<td>[</td>
-<td>reference</td>
-<td>one array dimension</td>
-</tr>
-</tbody>
-</table>
 <hr>
 <p><em>观点仅代表自己，期待你的留言。</em></p>
 

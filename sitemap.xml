@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.wujianjun.org/2017/10/15/nginx-rtmp-obs/</loc>
+    
+    <lastmod>2017-10-15T09:40:25.565Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.wujianjun.org/2017/07/21/transaction-mark-rollbackonly/</loc>
+    
+    <lastmod>2017-09-18T07:15:47.383Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.wujianjun.org/2017/07/07/multi-process-read/</loc>
     
     <lastmod>2017-09-13T06:06:54.971Z</lastmod>
@@ -19,13 +33,6 @@
     <loc>http://www.wujianjun.org/2017/08/24/store-flag-bit/</loc>
     
     <lastmod>2017-08-24T11:53:25.449Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.wujianjun.org/2017/07/21/transaction-mark-rollbackonly/</loc>
-    
-    <lastmod>2017-07-21T10:51:04.911Z</lastmod>
     
   </url>
   

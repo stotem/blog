@@ -3,6 +3,46 @@
 
     
   <url>
+    <loc>http://www.wujianjun.org/2017/10/15/nginx-rtmp-obs/</loc>
+    <lastmod>2017-10-15T09:40:25.565Z</lastmod>
+    <data>
+        <display>
+        <title>Linux下通过nginx实现直播间功能的实验</title>
+        <pubTime>2017-10-15T03:07:14.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+        <tag>nginx + obs </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2017/07/21/transaction-mark-rollbackonly/</loc>
+    <lastmod>2017-09-18T07:15:47.383Z</lastmod>
+    <data>
+        <display>
+        <title>问题分析 之 Transaction marked as rollbackOnly</title>
+        <pubTime>2017-07-21T09:01:27.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+        <tag>spring </tag>
+         
+        <tag>Transaction </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://www.wujianjun.org/2017/07/07/multi-process-read/</loc>
     <lastmod>2017-09-13T06:06:54.971Z</lastmod>
     <data>
@@ -51,29 +91,6 @@
         <pubTime>2017-08-24T11:08:28.000Z</pubTime>
         
         <tag>原创 </tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://www.wujianjun.org/2017/07/21/transaction-mark-rollbackonly/</loc>
-    <lastmod>2017-07-21T10:51:04.911Z</lastmod>
-    <data>
-        <display>
-        <title>问题分析 之 Transaction marked as rollbackOnly</title>
-        <pubTime>2017-07-21T09:01:27.000Z</pubTime>
-        
-        <tag>原创 </tag>
-         
-        <tag>spring </tag>
-         
-        <tag>transaction </tag>
-         
-        <tag>Transaction marked as rollbackOnly </tag>
          
          
            
@@ -434,9 +451,9 @@
         <title>docker-dockerfile</title>
         <pubTime>2016-04-19T02:30:45.000Z</pubTime>
         
-        <tag>Docker </tag>
-         
         <tag>转载 </tag>
+         
+        <tag>Docker </tag>
          
          
            

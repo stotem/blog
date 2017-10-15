@@ -133,7 +133,7 @@ var _hmt = _hmt || [];
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/Docker/" style="font-size: 13.33px;">Docker</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/Maven/" style="font-size: 11.67px;">Maven</a> <a href="/tags/Nginx/" style="font-size: 15px;">Nginx</a> <a href="/tags/Redis/" style="font-size: 11.67px;">Redis</a> <a href="/tags/Transaction-marked-as-rollbackOnly/" style="font-size: 10px;">Transaction marked as rollbackOnly</a> <a href="/tags/iOS/" style="font-size: 16.67px;">iOS</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/php-fpm/" style="font-size: 10px;">php-fpm</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/spring/" style="font-size: 11.67px;">spring</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/transaction/" style="font-size: 11.67px;">transaction</a> <a href="/tags/关键笔记/" style="font-size: 10px;">关键笔记</a> <a href="/tags/分布式/" style="font-size: 10px;">分布式</a> <a href="/tags/原创/" style="font-size: 20px;">原创</a> <a href="/tags/多进程/" style="font-size: 10px;">多进程</a> <a href="/tags/并发/" style="font-size: 10px;">并发</a> <a href="/tags/操作系统/" style="font-size: 10px;">操作系统</a> <a href="/tags/架构/" style="font-size: 10px;">架构</a> <a href="/tags/电商/" style="font-size: 10px;">电商</a> <a href="/tags/转发/" style="font-size: 10px;">转发</a> <a href="/tags/转载/" style="font-size: 18.33px;">转载</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
+						<a href="/tags/Docker/" style="font-size: 13.33px;">Docker</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/Maven/" style="font-size: 11.67px;">Maven</a> <a href="/tags/Nginx/" style="font-size: 15px;">Nginx</a> <a href="/tags/Redis/" style="font-size: 11.67px;">Redis</a> <a href="/tags/Transaction/" style="font-size: 10px;">Transaction</a> <a href="/tags/iOS/" style="font-size: 16.67px;">iOS</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/nginx-obs/" style="font-size: 10px;">nginx + obs</a> <a href="/tags/php-fpm/" style="font-size: 10px;">php-fpm</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/spring/" style="font-size: 11.67px;">spring</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/transaction/" style="font-size: 10px;">transaction</a> <a href="/tags/关键笔记/" style="font-size: 10px;">关键笔记</a> <a href="/tags/分布式/" style="font-size: 10px;">分布式</a> <a href="/tags/原创/" style="font-size: 20px;">原创</a> <a href="/tags/多进程/" style="font-size: 10px;">多进程</a> <a href="/tags/并发/" style="font-size: 10px;">并发</a> <a href="/tags/操作系统/" style="font-size: 10px;">操作系统</a> <a href="/tags/架构/" style="font-size: 10px;">架构</a> <a href="/tags/电商/" style="font-size: 10px;">电商</a> <a href="/tags/转发/" style="font-size: 10px;">转发</a> <a href="/tags/转载/" style="font-size: 18.33px;">转载</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
 					</div>
 				</section>
 				
@@ -219,6 +219,82 @@ var _hmt = _hmt || [];
 </nav>
 
       <div class="body-wrap">
+  
+    <article id="post-nginx-install" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/03/14/nginx-install/" class="article-date">
+  	<time datetime="2016-03-14T03:32:15.000Z" itemprop="datePublished">2016-03-14</time>
+</a>
+      <div class="analysis-container">
+	<i class="fa fa-line-chart"></i>
+	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
+</div>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/03/14/nginx-install/">Nginx在CentOS7上源码编译安装</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+              
+        <h3 id="下载Nginx源码及依赖库"><a href="#下载Nginx源码及依赖库" class="headerlink" title="下载Nginx源码及依赖库"></a>下载Nginx源码及依赖库</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# wget http://nginx.org/download/nginx-1.8.1.tar.gz</span><br><span class="line">[root@localhost ~]# yum install -y gcc gcc-c++</span><br><span class="line">[root@localhost ~]# wget http://jaist.dl.sourceforge.net/project/pcre/pcre/8.38/pcre-8.38.tar.gz</span><br><span class="line">[root@localhost ~]# wget http://zlib.net/zlib-1.2.8.tar.gz</span><br></pre></td></tr></table></figure>
+<h3 id="下载Nginx模块"><a href="#下载Nginx模块" class="headerlink" title="下载Nginx模块"></a>下载Nginx模块</h3><p>Nginx官网所有模块列表  <a href="http://nginx.org/en/docs/" target="_blank" rel="external">http://nginx.org/en/docs/</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# yum -y install openssl openssl-devel</span><br><span class="line">[root@localhost ~]# git clone https://github.com/vozlt/nginx-module-vts.git </span><br><span class="line">[root@localhost ~]# git clone https://github.com/yaoweibin/nginx_tcp_proxy_module.git</span><br><span class="line">[root@localhost ~]# git clone https://github.com/yaoweibin/nginx_upstream_check_module.git</span><br></pre></td></tr></table></figure></p>
+<h3 id="编译安装Nginx"><a href="#编译安装Nginx" class="headerlink" title="编译安装Nginx"></a>编译安装Nginx</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# tar xvf nginx-1.8.1.tar.gz</span><br><span class="line">[root@localhost ~]# tar xvf pcre-8.38.tar.gz</span><br><span class="line">[root@localhost ~]# tar xvf zlib-1.2.8.tar.gz</span><br><span class="line">[root@localhost ~]# cd nginx-1.8.1</span><br><span class="line">[root@localhost nginx-1.8.1]# patch -p1 &lt; ../nginx_tcp_proxy_module/tcp.patch</span><br><span class="line">[root@localhost nginx-1.8.1]# patch -p1 &lt; ../nginx_upstream_check_module/check_1.7.5+.patch //按nginx版本来执行不同的补丁文件</span><br><span class="line">[root@localhost nginx-1.8.1]# ./configure --with-pcre=../pcre-8.38 --with-zlib=../zlib-1.2.8 --with-http_gzip_static_module --with-http_ssl_module --add-module=../nginx_tcp_proxy_module/ \--add-module=../nginx_upstream_check_module/ \--add-module=../nginx-module-vts/</span><br><span class="line">[root@localhost nginx-1.8.1]# make </span><br><span class="line">[root@localhost nginx-1.8.1]# make install</span><br><span class="line">[root@localhost nginx-1.8.1]# /usr/local/nginx/sbin/nginx -V </span><br><span class="line">nginx version: nginx/1.8.1</span><br><span class="line">built by gcc 4.8.5 20150623 (Red Hat 4.8.5-4) (GCC) </span><br><span class="line">built with OpenSSL 1.0.1e-fips 11 Feb 2013</span><br><span class="line">TLS SNI support enabled</span><br><span class="line">configure arguments: --with-pcre=../pcre-8.38 --with-zlib=../zlib-1.2.8 --with-http_gzip_static_module --with-http_ssl_module --add-module=../nginx_tcp_proxy_module/ --add-module=../nginx_upstream_check_module/ --add-module=../nginx-module-vts/</span><br><span class="line">[root@localhost nginx-1.8.1]# /usr/local/nginx/sbin/nginx</span><br><span class="line">[root@localhost nginx-1.8.1]# systemctl stop firewalld.service //关闭防火墙，开放访问端口80</span><br></pre></td></tr></table></figure>
+<p><img src="/images/nginx.png" alt="Nginx Welcome"></p>
+<p>nginx安装目录默认为: /usr/local/nginx, 可通过在configure时增加–prefix=”path”来更改。</p>
+<p>nginx启动时默认用户及用户组设置：</p>
+<ul>
+<li>通过在configure时增加–user=”user name”和–group=”group name”来更改。</li>
+<li>在nginx.conf里增加user “user name” “group name”来更改。</li>
+</ul>
+<p><strong>注意: 在configure时如需添加多个第三方module时，从第二个–add-module开始，在之前需要加“\”</strong></p>
+<hr>
+<p><em>观点仅代表自己，期待你的留言。</em></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nginx/">Nginx</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+
+
   
     <article id="post-e-bussiness-architecture" class="article article-type-post" itemscope itemprop="blogPost">
   
