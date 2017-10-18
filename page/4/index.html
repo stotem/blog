@@ -133,7 +133,7 @@ var _hmt = _hmt || [];
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/Docker/" style="font-size: 13.33px;">Docker</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/Maven/" style="font-size: 11.67px;">Maven</a> <a href="/tags/Nginx/" style="font-size: 15px;">Nginx</a> <a href="/tags/Redis/" style="font-size: 11.67px;">Redis</a> <a href="/tags/Transaction/" style="font-size: 10px;">Transaction</a> <a href="/tags/iOS/" style="font-size: 16.67px;">iOS</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/nginx-obs/" style="font-size: 10px;">nginx + obs</a> <a href="/tags/php-fpm/" style="font-size: 10px;">php-fpm</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/spring/" style="font-size: 11.67px;">spring</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/transaction/" style="font-size: 10px;">transaction</a> <a href="/tags/关键笔记/" style="font-size: 10px;">关键笔记</a> <a href="/tags/分布式/" style="font-size: 10px;">分布式</a> <a href="/tags/原创/" style="font-size: 20px;">原创</a> <a href="/tags/多进程/" style="font-size: 10px;">多进程</a> <a href="/tags/并发/" style="font-size: 10px;">并发</a> <a href="/tags/操作系统/" style="font-size: 10px;">操作系统</a> <a href="/tags/架构/" style="font-size: 10px;">架构</a> <a href="/tags/电商/" style="font-size: 10px;">电商</a> <a href="/tags/转发/" style="font-size: 10px;">转发</a> <a href="/tags/转载/" style="font-size: 18.33px;">转载</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
+						<a href="/tags/Docker/" style="font-size: 13.33px;">Docker</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/Maven/" style="font-size: 11.67px;">Maven</a> <a href="/tags/Nginx/" style="font-size: 15px;">Nginx</a> <a href="/tags/Redis/" style="font-size: 11.67px;">Redis</a> <a href="/tags/Transaction/" style="font-size: 10px;">Transaction</a> <a href="/tags/iOS/" style="font-size: 16.67px;">iOS</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/nginx-obs/" style="font-size: 10px;">nginx + obs</a> <a href="/tags/php-fpm/" style="font-size: 10px;">php-fpm</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/spring/" style="font-size: 11.67px;">spring</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/transaction/" style="font-size: 10px;">transaction</a> <a href="/tags/关键笔记/" style="font-size: 10px;">关键笔记</a> <a href="/tags/分布式/" style="font-size: 10px;">分布式</a> <a href="/tags/原创/" style="font-size: 20px;">原创</a> <a href="/tags/多进程/" style="font-size: 10px;">多进程</a> <a href="/tags/并发/" style="font-size: 10px;">并发</a> <a href="/tags/总结/" style="font-size: 10px;">总结</a> <a href="/tags/操作系统/" style="font-size: 10px;">操作系统</a> <a href="/tags/架构/" style="font-size: 10px;">架构</a> <a href="/tags/电商/" style="font-size: 10px;">电商</a> <a href="/tags/笔记/" style="font-size: 10px;">笔记</a> <a href="/tags/转发/" style="font-size: 10px;">转发</a> <a href="/tags/转载/" style="font-size: 18.33px;">转载</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
 					</div>
 				</section>
 				
@@ -219,6 +219,172 @@ var _hmt = _hmt || [];
 </nav>
 
       <div class="body-wrap">
+  
+    <article id="post-os-port-forward" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/05/26/os-port-forward/" class="article-date">
+  	<time datetime="2016-05-26T03:07:35.000Z" itemprop="datePublished">2016-05-26</time>
+</a>
+      <div class="analysis-container">
+	<i class="fa fa-line-chart"></i>
+	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
+</div>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/05/26/os-port-forward/">使用端口转发解决80端口使用问题</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+              
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>当我用在使用linux非root用户进行应用发布时，如遇到应用程序需要占用80端口时总会由于权限不足遇到<code>java.net.BindException: Permission denied:80</code>的错误报出。<br>Linux为保证系统安全，限制了非root用户对1024以下的端口进行占用。<br>那么，本文将通过端口转发的方式解决80端口在Linux和MacOSX系统上占用的问题。</p>
+<h2 id="linux非Root用户使用80端口"><a href="#linux非Root用户使用80端口" class="headerlink" title="linux非Root用户使用80端口"></a>linux非Root用户使用80端口</h2><p>linux操作系统的可以通过iptables来进行端口转发，将流向80端口的数据内部转发到大于1024的端口上。那么非root用户就可以通过占用大于1024的端口进行程序应用的功能处理。<br>以80转发到8080端口为例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# sudo iptables -t nat -A PREROUTING -p tcp -m tcp --dport 80 -j REDIRECT --to-ports 8080</span><br><span class="line">[root@localhost ~]# sudo iptables -t nat -A OUTPUT -d localhost -p tcp -m tcp --dport 80 -j REDIRECT --to-ports 8080</span><br><span class="line">[root@localhost ~]# iptables -t filter -F</span><br><span class="line">[root@localhost ~]# iptables-save</span><br><span class="line">[root@localhost ~]# service iptables restart</span><br><span class="line">[root@localhost ~]# chkconfig iptables on</span><br></pre></td></tr></table></figure></p>
+<p>iptables -t filter -F : 为清除所有的过滤规则。<br>chkconfig iptables on : 设置iptables开机启动。</p>
+<p>iptables存储文件：/etc/sysconfig/iptables</p>
+<h2 id="MacOSX使用80端口"><a href="#MacOSX使用80端口" class="headerlink" title="MacOSX使用80端口"></a>MacOSX使用80端口</h2><p>MacOS操作系统下则使用<code>pf</code>来进行端口转发。<br>pf启动时会自动装载/etc/pf.conf文件，因此，我们可以通过修改这个文件进行80端口数据的转发。<br>修改后的文件内容如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">scrub-anchor &quot;com.apple/*&quot;</span><br><span class="line">nat-anchor &quot;com.apple/*&quot;</span><br><span class="line">rdr-anchor &quot;com.apple/*&quot;</span><br><span class="line">rdr on lo0 inet proto tcp from any to 127.0.0.1 port 80 -&gt; 127.0.0.1 port 8080</span><br><span class="line">dummynet-anchor &quot;com.apple/*&quot;</span><br><span class="line">anchor &quot;com.apple/*&quot;</span><br><span class="line">load anchor &quot;com.apple&quot; from &quot;/etc/pf.anchors/com.apple&quot;</span><br></pre></td></tr></table></figure></p>
+<p>使用 pfctl使用重新加载pf.conf配置，并启动pf<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Jianjun:~ Jianjun$ sudo pfctl -f /etc/pf.conf</span><br><span class="line">Jianjun:~ Jianjun$ sudo pfctl -e</span><br></pre></td></tr></table></figure></p>
+<p>另，关闭pf的命令为：<code>sudo pfctl -d</code></p>
+<hr>
+<p><em>观点仅代表自己，期待你的留言。</em></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/操作系统/">操作系统</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-docker-dockerfile" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/04/19/docker-dockerfile/" class="article-date">
+  	<time datetime="2016-04-19T02:30:45.000Z" itemprop="datePublished">2016-04-19</time>
+</a>
+      <div class="analysis-container">
+	<i class="fa fa-line-chart"></i>
+	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
+</div>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/04/19/docker-dockerfile/">docker-dockerfile</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+              
+        <h1 id="基本结构"><a href="#基本结构" class="headerlink" title="基本结构"></a>基本结构</h1><p>Dockerfile 由一行行字母大写的指令语句组成，并且支持以 <code>#</code> 开头的注释行。<br>一般的，Dockerfile 分为四部分：基础镜像信息、维护者信息、镜像操作指令和容器启动时执行指令。</p>
+<h1 id="指令"><a href="#指令" class="headerlink" title="指令"></a>指令</h1><p>指令的一般格式为 <code>INSTRUCTION arguments</code>，指令包括 FROM、MAINTAINER、RUN 等。</p>
+<h2 id="FROM"><a href="#FROM" class="headerlink" title="FROM"></a>FROM</h2><p>格式为 <code>FROM &lt;image&gt;</code>或<code>FROM &lt;image&gt;:&lt;tag&gt;</code>。<br>第一条指令必须为 FROM 指令。并且，如果在同一个Dockerfile中创建多个镜像时，可以使用多个 <code>FROM</code> 指令（每个镜像一次）。</p>
+<h2 id="MAINTAINER"><a href="#MAINTAINER" class="headerlink" title="MAINTAINER"></a>MAINTAINER</h2><p>格式为 <code>MAINTAINER &lt;name&gt;</code>，指定维护者信息。</p>
+<h2 id="RUN"><a href="#RUN" class="headerlink" title="RUN"></a>RUN</h2><p>格式为 <code>RUN &lt;command&gt;</code> 或 <code>RUN [&quot;executable&quot;, &quot;param1&quot;, &quot;param2&quot;]</code>。<br>前者将在 shell 终端中运行命令，即 <code>/bin/sh -c</code>；后者则使用 <code>exec</code> 执行。指定使用其它终端可以通过第二种方式实现，例如 <code>RUN [&quot;/bin/bash&quot;, &quot;-c&quot;, &quot;echo hello&quot;]</code>。<br>每条 <code>RUN</code> 指令将在当前镜像基础上执行指定命令，并提交为新的镜像。当命令较长时可以使用 <code>\</code> 来换行。</p>
+<h2 id="CMD"><a href="#CMD" class="headerlink" title="CMD"></a>CMD</h2><p>支持三种格式</p>
+<ul>
+<li>CMD [“executable”,”param1”,”param2”] 使用 exec 执行，推荐方式；</li>
+<li>CMD command param1 param2 在 /bin/sh 中执行，提供给需要交互的应用；</li>
+<li>CMD [“param1”,”param2”] 提供给 ENTRYPOINT 的默认参数；<br>指定启动容器时执行的命令，<strong>每个 Dockerfile 只能有一条 <code>CMD</code> 命令</strong>。如果指定了多条命令，只有最后一条会被执行。<br>如果用户启动容器时候指定了运行的命令，则会覆盖掉 CMD 指定的命令。<h2 id="EXPOSE"><a href="#EXPOSE" class="headerlink" title="EXPOSE"></a>EXPOSE</h2></li>
+</ul>
+<p>格式为 <code>EXPOSE &lt;port&gt; [&lt;port&gt;...]</code>。<br>告诉 Docker 服务端容器暴露的端口号，供互联系统使用。在启动容器时需要通过 <code>-P</code>，Docker 主机会自动分配一个端口转发到指定的端口。</p>
+<h2 id="ENV"><a href="#ENV" class="headerlink" title="ENV"></a>ENV</h2><p>格式为 <code>ENV &lt;key&gt; &lt;value&gt;</code>。 指定一个环境变量，会被后续 <code>RUN</code> 指令使用，并在容器运行时保持。<br>例如<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ENV PG_MAJOR 9.3</span><br><span class="line">ENV PG_VERSION 9.3.4</span><br><span class="line">RUN curl -SL http://example.com/postgres-$PG_VERSION.tar.xz | tar -xJC /usr/src/postgress &amp;&amp; …</span><br><span class="line">ENV PATH /usr/local/postgres-$PG_MAJOR/bin:$PATH</span><br></pre></td></tr></table></figure></p>
+<h2 id="ADD"><a href="#ADD" class="headerlink" title="ADD"></a>ADD</h2><p>格式为 <code>ADD &lt;src&gt; &lt;dest&gt;</code>。<br>该命令将复制指定的 <code>&lt;src&gt;</code> 到容器中的 <code>&lt;dest&gt;</code>。 其中 <code>&lt;src&gt;</code> 可以是Dockerfile所在目录的一个相对路径；也可以是一个 URL；还可以是一个 tar 文件（自动解压为目录）。</p>
+<h2 id="COPY"><a href="#COPY" class="headerlink" title="COPY"></a>COPY</h2><p>格式为 <code>COPY &lt;src&gt; &lt;dest&gt;</code>。<br>复制本地主机的 <code>&lt;src&gt;</code>（为 Dockerfile 所在目录的相对路径）到容器中的 <code>&lt;dest&gt;</code>。<br>当使用本地目录为源目录时，推荐使用 <code>COPY</code>。</p>
+<h2 id="ENTRYPOINT"><a href="#ENTRYPOINT" class="headerlink" title="ENTRYPOINT"></a>ENTRYPOINT</h2><p>两种格式：</p>
+<ul>
+<li>ENTRYPOINT [“executable”, “param1”, “param2”]</li>
+<li>ENTRYPOINT command param1 param2（shell中执行）。<br>配置容器启动后执行的命令，并且不可被 <code>docker run</code> 提供的参数覆盖。<br>每个 Dockerfile 中只能有一个 <code>ENTRYPOINT</code>，<strong>当指定多个时，只有最后一个起效</strong>。<h2 id="VOLUME"><a href="#VOLUME" class="headerlink" title="VOLUME"></a>VOLUME</h2></li>
+</ul>
+<p>格式为 <code>VOLUME [&quot;/data&quot;]</code>。<br>创建一个可以从本地主机或其他容器挂载的挂载点，一般用来存放数据库和需要保持的数据等。</p>
+<h2 id="USER"><a href="#USER" class="headerlink" title="USER"></a>USER</h2><p>格式为 <code>USER daemon</code>。<br>指定运行容器时的用户名或 UID，后续的 <code>RUN</code> 也会使用指定用户。<br>当服务不需要管理员权限时，可以通过该命令指定运行用户。并且可以在之前创建所需要的用户，例如：<code>RUN groupadd -r postgres &amp;&amp; useradd -r -g postgres postgres</code>。要临时获取管理员权限可以使用 <code>gosu</code>，而不推荐 <code>sudo</code>。</p>
+<h2 id="WORKDIR"><a href="#WORKDIR" class="headerlink" title="WORKDIR"></a>WORKDIR</h2><p>格式为 <code>WORKDIR /path/to/workdir</code>。<br>为后续的 <code>RUN、CMD、ENTRYPOINT</code> 指令配置工作目录。<br>可以使用多个 <code>WORKDIR</code> 指令，后续命令如果参数是相对路径，则会基于之前命令指定的路径。<br>例如<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">WORKDIR /a</span><br><span class="line">WORKDIR b</span><br><span class="line">WORKDIR c</span><br><span class="line">RUN pwd</span><br></pre></td></tr></table></figure></p>
+<p>则最终路径为 <code>/a/b/c</code>。</p>
+<h2 id="ONBUILD"><a href="#ONBUILD" class="headerlink" title="ONBUILD"></a>ONBUILD</h2><p>格式为 <code>ONBUILD [INSTRUCTION]</code>。<br>配置当所创建的镜像作为其它新创建镜像的基础镜像时，所执行的操作指令。<br>例如，Dockerfile 使用如下的内容创建了镜像 <code>image-A</code>。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[...]</span><br><span class="line">ONBUILD ADD . /app/src</span><br><span class="line">ONBUILD RUN /usr/local/bin/python-build --dir /app/src</span><br><span class="line">[...]</span><br></pre></td></tr></table></figure></p>
+<p>如果基于 <code>image-A</code> 创建新的镜像时，新的Dockerfile中使用 <code>FROM image-A</code>指定基础镜像时，会自动执行 <code>ONBUILD</code> 指令内容，等价于在后面添加了两条指令。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">FROM image-A</span><br><span class="line"></span><br><span class="line">#Automatically run the following</span><br><span class="line">ADD . /app/src</span><br><span class="line">RUN /usr/local/bin/python-build --dir /app/src</span><br></pre></td></tr></table></figure></p>
+<p>使用 <code>ONBUILD</code> 指令的镜像，推荐在标签中注明，例如 <code>ruby:1.9-onbuild</code>。</p>
+<h1 id="创建镜像"><a href="#创建镜像" class="headerlink" title="创建镜像"></a>创建镜像</h1><p>编写完成 Dockerfile 之后，可以通过 <code>docker build</code> 命令来创建镜像。<br>基本的格式为 <code>docker build [选项]</code> 路径，该命令将读取指定路径下（包括子目录）的 Dockerfile，并将该路径下所有内容发送给 Docker 服务端，由服务端来创建镜像。因此一般建议放置 Dockerfile 的目录为空目录。也可以通过 <code>.dockerignore</code>文件（每一行添加一条匹配模式）来让 Docker 忽略路径下的目录和文件。<br>要指定镜像的标签信息，可以通过 <code>-t</code> 选项，<br>例如:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo docker build -t myrepo/myapp /tmp/test1/</span><br></pre></td></tr></table></figure></p>
+<hr>
+<p><a href="https://yeasy.gitbooks.io/docker_practice/content/dockerfile/index.html" target="_blank" rel="external">https://yeasy.gitbooks.io/docker_practice/content/dockerfile/index.html</a></p>
+<p><em>观点仅代表自己，期待你的留言。</em></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Docker/">Docker</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/转载/">转载</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+
+
   
     <article id="post-docker-data-network" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -1184,196 +1350,6 @@ var _hmt = _hmt || [];
 <p>文中的选择流程图是帮助你清楚认识这些机制的好的开始，当然它不是所有问题的答案。如果你觉得这和你自己选择机制的方式相似或是有任何缺漏，欢迎来信指正。</p>
 <hr>
 <p><em>观点仅代表自己，期待你的留言。</em><br><a href="http://objccn.io/issue-7-4/" target="_blank" rel="external">http://objccn.io/issue-7-4/</a></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/转载/">转载</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-ios-sendmsg" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/03/30/ios-sendmsg/" class="article-date">
-  	<time datetime="2016-03-30T08:44:25.000Z" itemprop="datePublished">2016-03-30</time>
-</a>
-      <div class="analysis-container">
-	<i class="fa fa-line-chart"></i>
-	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
-</div>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/03/30/ios-sendmsg/">Effective Objective-C 理解消息传递机制</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-              
-        <h2 id="最简单的动态"><a href="#最简单的动态" class="headerlink" title="最简单的动态"></a>最简单的动态</h2><p>Objective-C 是一门极其动态的语言，许多东西都可以推迟到运行时决定、修改。那么到底何为动态、何为静态？我们通过一个简单的例子对比下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">/***********  例1 静态绑定   ***********/</span><br><span class="line">#import &lt;stdio.h&gt;</span><br><span class="line">void printHello() &#123;</span><br><span class="line">    printf(&quot;Hello, world!\n&quot;);</span><br><span class="line">&#125;</span><br><span class="line">void printGoodbye() &#123;</span><br><span class="line">    printf(&quot;Goodbye, world!\n&quot;);</span><br><span class="line">&#125;</span><br><span class="line">void saySomething(int type) </span><br><span class="line">&#123;</span><br><span class="line">    if (type == 0) &#123;</span><br><span class="line">        printHello();</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        printGoodbye();</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">/***********  例2 动态绑定   ***********/</span><br><span class="line">#import &lt;stdio.h&gt;</span><br><span class="line">void printHello() &#123;</span><br><span class="line">    printf(&quot;Hello, world!\n&quot;);</span><br><span class="line">&#125;</span><br><span class="line">void printGoodbye() &#123;</span><br><span class="line">    printf(&quot;Goodbye, world!\n&quot;);</span><br><span class="line">&#125;</span><br><span class="line">void saySomething(int type) </span><br><span class="line">&#123;</span><br><span class="line">    void (*func)();</span><br><span class="line">    if (type == 0) &#123;</span><br><span class="line">        func = printHello;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        func = printGoodbye;</span><br><span class="line">    &#125;</span><br><span class="line">    func();</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>例1的代码在编译期，编译器就已经知道了有 void printHello()、void printGoodbye() 俩函数，并且在 saySomething() 函数中，调用的函数明确，可以直接将函数名硬编码成地址，生成调用指令，这就是 <strong>静态绑定</strong>（static binding）。那么例2呢？例2的调用的是 func() 函数，而这函数实际调用的地址只能到程序运行时才能确定，这就是所谓的 <strong>动态绑定</strong>（dynamic binding）。动态绑定将函数调用从编译期推迟到了运行时。</p>
-<p>在 Objective-C 中，向对象传递消息，就会使用这种动态绑定机制来决定需要调用的方法，这种动态特性使得 Objective-C 成为一门真正动态的语言。</p>
-<h2 id="objec-msgSend-函数"><a href="#objec-msgSend-函数" class="headerlink" title="objec_msgSend 函数"></a>objec_msgSend 函数</h2><p>Objective-C 的方法调用通常都是下面这种形式<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id returnValue = [someObject messageName:parameter];</span><br></pre></td></tr></table></figure></p>
-<p>这种方法调用其实就是消息传递，编译器看到这条消息会转换成一条标准的 C 语言函数调用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">id returnValue = objc_msgSend(someObject,</span><br><span class="line">                              @selector(messageName:),</span><br><span class="line">                              parameter);</span><br></pre></td></tr></table></figure></p>
-<p>用消息传递的话来解释就是：向 someObject 对象发送了一个名叫 messageName 的消息，这个消息携带了一个叫 parameter 的参数。这里用到了一个 objc_msgSend 函数，其函数原型如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void objc_msgSend(id self, SEL cmd, ...);</span><br></pre></td></tr></table></figure></p>
-<p>这是一个可变参数的函数，第一个参数代表消息接收者，第二个代表 SEL 类型，后面的参数就是消息传递中使用的参数。</p>
-<p>那么什么是 SEL 呢？SEL 就是代码在编译时，编译器根据方法签名来生成的一个唯一 ID。此 ID 可以用以区分不同的方法，只要 ID 一致，即看成同一个方法，ID 不同，即为不同的方法。</p>
-<p>当进行消息传递，对象在响应消息时，是通过 SEL 在 methodlist 中查找函数指针 IMP，找到后直接通过指针调用函数，这其实就是前文介绍的 <strong>动态绑定</strong>。若是找到对应函数就跳转到实现代码，若找不到，就沿着继承链往上查找，直到找到相应的实现代码为止。若最终还是没找到实现代码，说明当前对象无法响应此消息，接下来就会执行 <strong>消息转发</strong> 操作，以试图找到一个能响应此消息的对象。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// 获取 SEL </span><br><span class="line">SEL sel = @selector(methodName);</span><br><span class="line">// 获取 IMP</span><br><span class="line">IMP imp = methodForSelector(sel);</span><br></pre></td></tr></table></figure></p>
-<h2 id="消息转发"><a href="#消息转发" class="headerlink" title="消息转发"></a>消息转发</h2><p>消息转发并不神奇，我们其实早已接触过，只是不知道而已<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-[__NSCFNumber lowercaseString]:unrecognized selector sent to instance 0x87</span><br><span class="line">*** Terminating app due to uncaught exception &apos;NSInvalidArgumentException&apos;, reason:&apos;-[NSCFNumber lowercaseString]:unrecognized selector sent to instance 0x87&apos;</span><br></pre></td></tr></table></figure></p>
-<p>这段异常代码就是由 NSObject 的 doesNotRecognizeSelector: 方法所抛出的，异常表明：消息的接收者类型为 __NSCFNumber，无法响应 lowercaseString 消息，从而转发给 NSObject 处理。</p>
-<p>消息转发分为三大阶段</p>
-<ul>
-<li>第一阶段先征询消息接收者所属的类，看其是否能动态添加方法，以处理当前这个无法响应的 selector，这叫做 动态方法解析（dynamic method resolution）。如果运行期系统（runtime system） 第一阶段执行结束，接收者就无法再以动态新增方法的手段来响应消息，进入第二阶段。</li>
-<li>第二阶段看看有没有其他对象（备援接收者，replacement receiver）能处理此消息。如果有，运行期系统会把消息转发给那个对象，转发过程结束；如果没有，则启动完整的消息转发机制。</li>
-<li>第三阶段 完整的消息转发机制。运行期系统会把与消息有关的全部细节都封装到 NSInvocation 对象中，再给接收者最后一次机会，令其设法解决当前还未处理的消息。</li>
-</ul>
-<h3 id="动态方法解析"><a href="#动态方法解析" class="headerlink" title="动态方法解析"></a>动态方法解析</h3><p>对象在收到无法响应的消息后，会调用其所属类的下列方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> *  如果尚未实现的方法是实例方法，则调用此函数</span><br><span class="line"> *</span><br><span class="line"> *  @param selector 未处理的方法</span><br><span class="line"> *</span><br><span class="line"> *  @return 返回布尔值，表示是否能新增实例方法用以处理selector</span><br><span class="line"> */</span><br><span class="line">+ (BOOL)resolveInstanceMethod:(SEL)selector;</span><br><span class="line">/**</span><br><span class="line"> *  如果尚未实现的方法是类方法，则调用此函数</span><br><span class="line"> *</span><br><span class="line"> *  @param selector 未处理的方法</span><br><span class="line"> *</span><br><span class="line"> *  @return 返回布尔值，表示是否能新增类方法用以处理selector</span><br><span class="line"> */</span><br><span class="line">+ (BOOL)resolveClassMethod:(SEL)selector;</span><br></pre></td></tr></table></figure></p>
-<p>方法返回布尔类型，表示是否能新增一个方法来处理 selector，此方案通常用来实现 @dynamic 属性。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">/************** 使用 resolveInstanceMethod 实现 @dynamic 属性 **************/</span><br><span class="line">id autoDictionaryGetter(id self, SEL _cmd);</span><br><span class="line">void autoDictionarySetter(id self, SEL _cmd, id value);</span><br><span class="line">+ (BOOL)resolveInstanceMethod:(SEL)selector</span><br><span class="line">&#123;</span><br><span class="line">    NSString *selectorString = NSStringFromSelector(selector);</span><br><span class="line">    if (/* selector is from a @dynamic property */)</span><br><span class="line">    &#123;</span><br><span class="line">        if ([selectorString hasPrefix:@&quot;set&quot;])</span><br><span class="line">        &#123;</span><br><span class="line">            // 添加 setter 方法</span><br><span class="line">            class_addMethod(self, selector, (IMP)autoDictionarySetter, &quot;v@:@&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        else</span><br><span class="line">        &#123;</span><br><span class="line">            // 添加 getter 方法</span><br><span class="line">            class_addMethod(self, selector, (IMP)autoDictionaryGetter, &quot;@@:&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        return YES;</span><br><span class="line">    &#125;</span><br><span class="line">    return [super resolveInstanceMethod:selector];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="备援接收者"><a href="#备援接收者" class="headerlink" title="备援接收者"></a>备援接收者</h3><p>如果无法 <strong>动态解析方法</strong>，运行期系统就会询问是否能将消息转给其他接收者来处理，对应的方法为<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> *  此方法询问是否能将消息转给其他接收者来处理</span><br><span class="line"> *</span><br><span class="line"> *  @param aSelector 未处理的方法</span><br><span class="line"> *</span><br><span class="line"> *  @return 如果当前接收者能找到备援对象，就将其返回；否则返回nil；</span><br><span class="line"> */</span><br><span class="line">- (id)forwardingTargetForSelector:(SEL)aSelector;</span><br></pre></td></tr></table></figure></p>
-<p>在对象内部，可能还有其他对象，该对象可通过此方法将能够处理 selector 的相关内部对象返回，在外界看来，就好像是该对象自己处理的似得。</p>
-<h3 id="完整的消息转发机制"><a href="#完整的消息转发机制" class="headerlink" title="完整的消息转发机制"></a>完整的消息转发机制</h3><p>如果前面两步都无法处理消息，就会启动完整的消息转发机制。首先创建 NSInvocation 对象，把尚未处理的那条消息有关的全部细节装在里面，在触发 NSInvocation 对象时，消息派发系统（message-dispatch system）将会把消息指派给目标对象。对应的方法为<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> *  消息派发系统通过此方法，将消息派发给目标对象</span><br><span class="line"> *</span><br><span class="line"> *  @param anInvocation 之前创建的NSInvocation实例对象，用于装载有关消息的所有内容</span><br><span class="line"> */</span><br><span class="line">- (void)forwardInvocation:(NSInvocation *)anInvocation;</span><br></pre></td></tr></table></figure></p>
-<p>这个方法可以实现的很简单，通过改变调用的目标对象，使得消息在新目标对象上得以调用即可。然而这样实现的效果与 <strong>备援接收者</strong> 差不多，所以很少人会这么做。更加有用的实现方式为：在触发消息前，先以某种方式改变消息内容，比如追加另一个参数、修改 selector 等等。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p><img src="/images/image_note64270_1.png" alt=""></p>
-<hr>
-<p><em>观点仅代表自己，期待你的留言。</em><br><a href="https://www.zybuluo.com/MicroCai/note/64270" target="_blank" rel="external">https://www.zybuluo.com/MicroCai/note/64270</a></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/转载/">转载</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-ios-load-initialize" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/03/29/ios-load-initialize/" class="article-date">
-  	<time datetime="2016-03-29T07:42:47.000Z" itemprop="datePublished">2016-03-29</time>
-</a>
-      <div class="analysis-container">
-	<i class="fa fa-line-chart"></i>
-	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
-</div>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/03/29/ios-load-initialize/">NSObject的+load与+initialize方法的区别</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-              
-        <p>先来看看NSObject Class Reference里对这两个方法说明：<br>+(void)initialize</p>
-<p>The runtime sends initialize to each class in a program exactly one time just before the class, or any class that inherits from it, is sent its first message from within the program. (Thus the method may never be invoked if the class is not used.) The runtime sends the initialize message to classes in a thread-safe manner. Superclasses receive this message before their subclasses.</p>
-<p>+(void)load<br>The load message is sent to classes and categories that are both dynamically loaded and statically linked, but only if the newly loaded class or category implements a method that can respond.<br>The order of initialization is as follows:</p>
-<p>All initializers in any framework you link to.<br>All +load methods in your image.<br>All C++ static initializers and C/C++ <strong>attribute</strong>(constructor) functions in your image.<br>All initializers in frameworks that link to you.<br>In addition:</p>
-<p>A class’s +load method is called after all of its superclasses’ +load methods.<br>A category +load method is called after the class’s own +load method.<br>In a custom implementation of load you can therefore safely message other unrelated classes from the same image, but any load methods implemented by those classes may not have run yet.</p>
-<p>Apple的文档很清楚地说明了initialize和load的区别在于：load是只要类所在文件被引用就会被调用，而initialize是在类或者其子类的第一个方法被调用前调用。所以如果类没有被引用进项目，就不会有load调用；但即使类文件被引用进来，但是没有使用，那么initialize也不会被调用。</p>
-<p>它们的相同点在于：方法只会被调用一次。（其实这是相对runtime来说的，后边会做进一步解释）。</p>
-<p>文档也明确阐述了方法调用的顺序：父类(Superclass)的方法优先于子类(Subclass)的方法，类中的方法优先于类别(Category)中的方法。</p>
-<p><strong>总结：</strong></p>
-<table>
-<thead>
-<tr>
-<th>-</th>
-<th>+(void)load</th>
-<th>+(void)initialize</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>执行时机</td>
-<td>在程序运行后立即执行</td>
-<td>在类的方法第一次被调时执行</td>
-</tr>
-<tr>
-<td>若自身未定义，是否沿用父类的方法？</td>
-<td>否</td>
-<td>是</td>
-</tr>
-<tr>
-<td>类别中的定义</td>
-<td>全都执行，但后于类中的方法</td>
-<td>覆盖类中的方法，只执行一个</td>
-</tr>
-</tbody>
-</table>
-<hr>
-<p><em>观点仅代表自己，期待你的留言。</em></p>
 
       
     </div>

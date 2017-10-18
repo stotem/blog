@@ -3,6 +3,42 @@
 
     
   <url>
+    <loc>http://www.wujianjun.org/2017/09/18/transaction-distributed/</loc>
+    <lastmod>2017-10-18T11:30:09.627Z</lastmod>
+    <data>
+        <display>
+        <title>分布式下数据事务</title>
+        <pubTime>2017-09-18T07:13:57.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+        <tag>总结 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2017/10/18/thinkpad-battery-limit/</loc>
+    <lastmod>2017-10-18T08:06:45.088Z</lastmod>
+    <data>
+        <display>
+        <title>ubuntu下thinkpad电池阀设置（待验证）</title>
+        <pubTime>2017-10-18T08:04:47.000Z</pubTime>
+        
+        <tag>笔记 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://www.wujianjun.org/2017/10/15/nginx-rtmp-obs/</loc>
     <lastmod>2017-10-15T09:40:25.565Z</lastmod>
     <data>

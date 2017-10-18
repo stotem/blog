@@ -133,7 +133,7 @@ var _hmt = _hmt || [];
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/Docker/" style="font-size: 13.33px;">Docker</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/Maven/" style="font-size: 11.67px;">Maven</a> <a href="/tags/Nginx/" style="font-size: 15px;">Nginx</a> <a href="/tags/Redis/" style="font-size: 11.67px;">Redis</a> <a href="/tags/Transaction/" style="font-size: 10px;">Transaction</a> <a href="/tags/iOS/" style="font-size: 16.67px;">iOS</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/nginx-obs/" style="font-size: 10px;">nginx + obs</a> <a href="/tags/php-fpm/" style="font-size: 10px;">php-fpm</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/spring/" style="font-size: 11.67px;">spring</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/transaction/" style="font-size: 10px;">transaction</a> <a href="/tags/关键笔记/" style="font-size: 10px;">关键笔记</a> <a href="/tags/分布式/" style="font-size: 10px;">分布式</a> <a href="/tags/原创/" style="font-size: 20px;">原创</a> <a href="/tags/多进程/" style="font-size: 10px;">多进程</a> <a href="/tags/并发/" style="font-size: 10px;">并发</a> <a href="/tags/操作系统/" style="font-size: 10px;">操作系统</a> <a href="/tags/架构/" style="font-size: 10px;">架构</a> <a href="/tags/电商/" style="font-size: 10px;">电商</a> <a href="/tags/转发/" style="font-size: 10px;">转发</a> <a href="/tags/转载/" style="font-size: 18.33px;">转载</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
+						<a href="/tags/Docker/" style="font-size: 13.33px;">Docker</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/Maven/" style="font-size: 11.67px;">Maven</a> <a href="/tags/Nginx/" style="font-size: 15px;">Nginx</a> <a href="/tags/Redis/" style="font-size: 11.67px;">Redis</a> <a href="/tags/Transaction/" style="font-size: 10px;">Transaction</a> <a href="/tags/iOS/" style="font-size: 16.67px;">iOS</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/nginx-obs/" style="font-size: 10px;">nginx + obs</a> <a href="/tags/php-fpm/" style="font-size: 10px;">php-fpm</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/spring/" style="font-size: 11.67px;">spring</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/transaction/" style="font-size: 10px;">transaction</a> <a href="/tags/关键笔记/" style="font-size: 10px;">关键笔记</a> <a href="/tags/分布式/" style="font-size: 10px;">分布式</a> <a href="/tags/原创/" style="font-size: 20px;">原创</a> <a href="/tags/多进程/" style="font-size: 10px;">多进程</a> <a href="/tags/并发/" style="font-size: 10px;">并发</a> <a href="/tags/总结/" style="font-size: 10px;">总结</a> <a href="/tags/操作系统/" style="font-size: 10px;">操作系统</a> <a href="/tags/架构/" style="font-size: 10px;">架构</a> <a href="/tags/电商/" style="font-size: 10px;">电商</a> <a href="/tags/笔记/" style="font-size: 10px;">笔记</a> <a href="/tags/转发/" style="font-size: 10px;">转发</a> <a href="/tags/转载/" style="font-size: 18.33px;">转载</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
 					</div>
 				</section>
 				
@@ -220,6 +220,82 @@ var _hmt = _hmt || [];
 
       <div class="body-wrap">
   
+    <article id="post-thinkpad-battery-limit" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/18/thinkpad-battery-limit/" class="article-date">
+  	<time datetime="2017-10-18T08:04:47.000Z" itemprop="datePublished">2017-10-18</time>
+</a>
+      <div class="analysis-container">
+	<i class="fa fa-line-chart"></i>
+	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
+</div>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/18/thinkpad-battery-limit/">ubuntu下thinkpad电池阀设置（待验证）</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+              
+        <h2 id="设置电池阀"><a href="#设置电池阀" class="headerlink" title="设置电池阀"></a>设置电池阀</h2><p>sudo add-apt-repository ppa:linrunner/tlp<br>sudo apt-get update</p>
+<p>sudo apt-get install tlp tlp-rdw<br>sudo apt-get install tp-smapi-dkms acpi-call-tools</p>
+<p>sudo gedit /etc/default/tlp</p>
+<h1 id="Main-battery-values-in"><a href="#Main-battery-values-in" class="headerlink" title="Main battery (values in %)"></a>Main battery (values in %)</h1><p>START_CHARGE_THRESH_BAT0=10<br>STOP_CHARGE_THRESH_BAT0=96</p>
+<p>之后执行</p>
+<p>sudo tlp setcharge</p>
+<p>重启 OK 电池阀设置完成了</p>
+<h2 id="查看电池阀设置"><a href="#查看电池阀设置" class="headerlink" title="查看电池阀设置"></a>查看电池阀设置</h2><p>tone@ubuntu:~$ sudo tlp-stat –battery<br>— TLP 0.4 ——————————————–</p>
+<p>+++ ThinkPad Extended Battery Functions<br>tp-smapi = active<br>tpacpi-bat = active</p>
+<p>+++ ThinkPad Battery Status (Main)<br>/sys/devices/platform/smapi/BAT0/manufacturer = LGC<br>/sys/devices/platform/smapi/BAT0/model = 42T4865<br>/sys/devices/platform/smapi/BAT0/manufacture_date = 2011-11-24<br>/sys/devices/platform/smapi/BAT0/first_use_date = 2012-04-13<br>/sys/devices/platform/smapi/BAT0/cycle_count = 63<br>/sys/devices/platform/smapi/BAT0/design_capacity = 62160 [mWh]<br>/sys/devices/platform/smapi/BAT0/last_full_capacity = 59470 [mWh]<br>/sys/devices/platform/smapi/BAT0/remaining_capacity = 42410 [mWh]<br>/sys/devices/platform/smapi/BAT0/remaining_percent = 71 [%]<br>/sys/devices/platform/smapi/BAT0/remaining_running_time_now = 189 [min]<br>/sys/devices/platform/smapi/BAT0/remaining_charging_time = not_charging [min]<br>/sys/devices/platform/smapi/BAT0/power_now = -13432 [mW]<br>/sys/devices/platform/smapi/BAT0/power_avg = -12742 [mW]</p>
+<p>tpacpi-bat.BAT0.startThreshold = 10 [%]<br>tpacpi-bat.BAT0.stopThreshold = 96 [%]<br>tpacpi-bat.BAT0.forceDischarge = 0</p>
+<hr>
+<p><em>观点仅代表自己，期待你的留言。</em></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/笔记/">笔记</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+
+
+  
     <article id="post-nginx-rtmp-obs" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -293,6 +369,101 @@ var _hmt = _hmt || [];
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nginx-obs/">nginx + obs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-transaction-distributed" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/18/transaction-distributed/" class="article-date">
+  	<time datetime="2017-09-18T07:13:57.000Z" itemprop="datePublished">2017-09-18</time>
+</a>
+      <div class="analysis-container">
+	<i class="fa fa-line-chart"></i>
+	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
+</div>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/18/transaction-distributed/">分布式下数据事务</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+              
+        <h2 id="一、概念"><a href="#一、概念" class="headerlink" title="一、概念"></a>一、概念</h2><h3 id="1、CAP定律"><a href="#1、CAP定律" class="headerlink" title="1、CAP定律"></a>1、CAP定律</h3><p><strong>Consistency(一致性)：</strong> 数据一致更新，针对集群内所有节点数据变动都是同步完成。<br><strong>Availability(可用性)：</strong> 在集群中一部分节点故障后，集群整体是否还能响应客户端的读写请求。<br><strong>Partition tolerance(分区容错性)：</strong> 以实际效果而言，分区相当于对通信的时限要求。系统如果不能在时限内达成数据一致性，就意味着发生了分区的情况，必须就当前操作在C和A之间做出选择。</p>
+<p>It states, that though its desirable to have Consistency, High-Availability and Partition-tolerance in every system, unfortunately no system can achieve all three at the same time.<br>在分布式系统的设计中，没有一种设计可以同时满足一致性，可用性，分区容错性 3个特性</p>
+<p><img src="/images/cap-theorem.png" alt="CAP定制"></p>
+<h3 id="2、ACID模型"><a href="#2、ACID模型" class="headerlink" title="2、ACID模型"></a>2、ACID模型</h3><p><strong>Atomicity(原子性)：</strong> 事务作为一个整体被执行，包含在其中的对数据库的操作要么全部被执行，要么都不执行。<br><strong>Consistency(一致性)：</strong> 事务应确保数据库的状态从一个一致状态转变为另一个一致状态。一致状态的含义是数据库中的数据应满足完整性约束。<br><strong>Isolation(隔离性)：</strong> 多个事务并发执行时，一个事务的执行不应影响其他事务的执行。<br><strong>Durability(持久性)：</strong> 一个事务一旦提交，他对数据库的修改应该永久保存在数据库中。</p>
+<h3 id="3、BASE模型（反ACID模型）"><a href="#3、BASE模型（反ACID模型）" class="headerlink" title="3、BASE模型（反ACID模型）"></a>3、BASE模型（反ACID模型）</h3><p><strong>Basically Available（基本可用）：</strong> 基本可用是指分布式系统在出现不可预知故障的时候，允许损失部分可用性。<br><strong>Soft state（软状态）：</strong> 软状态和硬状态相对，是指允许系统中的数据存在中间状态，并认为该中间状态的存在不会影响系统的整体可用性，数据更改时允许集群的不同节点有一段时间进行数据状态同步。<br><strong>Eventually consistent（最终一致性）：</strong> 事务处理过程中，会有短暂不一致的情况，但通过恢复系统，可以让事务的数据达到最终一致的目标。</p>
+<h2 id="二、强一致性解决方案"><a href="#二、强一致性解决方案" class="headerlink" title="二、强一致性解决方案"></a>二、强一致性解决方案</h2><h3 id="1、2PC-二阶段提交"><a href="#1、2PC-二阶段提交" class="headerlink" title="1、2PC (二阶段提交)"></a>1、2PC (二阶段提交)</h3><p><strong>算法思路：</strong> 参与者将操作成败通知协调者，再由协调者根据所有参与者的反馈情报决定各参与者是否要提交操作还是中止操作。<br><strong>XA协议：</strong> XA是一个分布式事务协议，由Tuxedo提出。XA中大致分为两部分：事务管理器(Transaction Manager)和本地资源管理器(Local Resource Manager)。其中本地资源管理器往往由数据库实现，比如Oracle、DB2这些商业数据库都实现了XA接口，而事务管理器作为全局的调度者，负责各个本地资源的提交和回滚。</p>
+<p><img src="/images/xopen-dtp.gif" alt="X/Open DTP模型"></p>
+<p><strong>二阶段：</strong></p>
+<ol>
+<li>准备阶段： 事务协调者(事务管理器)给每个参与者(资源管理器)发送Prepare消息，每个参与者要么直接返回失败(如权限验证失败)，要么在本地执行事务，写本地的redo和undo日志，但不提交本地事务。</li>
+<li>提交阶段： 如果协调者收到了参与者的失败消息或者超时，直接给每个参与者发送回滚(Rollback)消息；否则，发送提交(Commit)消息；参与者根据协调者的指令执行提交或者回滚操作，释放所有事务处理过程中使用的锁资源。(注意:必须在最后阶段释放锁资源)</li>
+</ol>
+<p><strong>缺点:</strong></p>
+<ol>
+<li>同步阻塞问题。执行过程中，所有参与节点都是事务阻塞型的。当参与者占有公共资源时，其他第三方节点访问公共资源不得不处于阻塞状态。</li>
+<li>单点故障。由于协调者的重要性，一旦协调者发生故障。参与者会一直阻塞下去。尤其在第二阶段，协调者发生故障，那么所有的参与者还都处于锁定事务资源的状态中，而无法继续完成事务操作。（如果是协调者挂掉，可以重新选举一个协调者，但是无法解决因为协调者宕机导致的参与者处于阻塞状态的问题）</li>
+<li>数据不一致。在二阶段提交的阶段二中，当协调者向参与者发送commit请求之后，发生了局部网络异常或者在发送commit请求过程中协调者发生了故障，这回导致只有一部分参与者接受到了commit请求。而在这部分参与者接到commit请求之后就会执行commit操作。但是其他部分未接到commit请求的机器则无法执行事务提交。于是整个分布式系统便出现了数据部一致性的现象。</li>
+<li>二阶段无法解决的问题：协调者再发出commit消息之后宕机，而唯一接收到这条消息的参与者同时也宕机了。那么即使协调者通过选举协议产生了新的协调者，这条事务的状态也是不确定的，没人知道事务是否被已经提交。</li>
+</ol>
+<h3 id="2、3PC-三阶段提交"><a href="#2、3PC-三阶段提交" class="headerlink" title="2、3PC (三阶段提交)"></a>2、3PC (三阶段提交)</h3><p>与两阶段提交不同的是，三阶段(CanCommit、PreCommit、DoCommit)提交有两个改动点:</p>
+<ol>
+<li>引入超时机制。同时在协调者和参与者中都引入超时机制。</li>
+<li>在第一阶段和第二阶段中插入一个准备阶段。保证了在最后提交阶段之前各参与节点的状态是一致的。</li>
+</ol>
+<p><strong>CanCommit阶段：</strong> 3PC的CanCommit阶段其实和2PC的准备阶段很像。协调者向参与者发送commit请求，参与者如果可以提交就返回Yes响应，否则返回No响应。<br><strong>PreCommit阶段：</strong> 协调者根据参与者的反应情况来决定是否可以继续事务的PreCommit操作。如果参与者执行完本地事务操作则返回YES，假如有任何一个参与者向协调者发送了No响应，或者等待超时之后，协调者都没有接到参与者的响应，那么就执行事务的中断。<br><strong>doCommit阶段：</strong> 该阶段由协调者通知参与者的PreCommit阶段反馈进行判断，最终决定是真正的事务提交，还是执行事务回滚。</p>
+<p><strong>缺点:</strong><br>在doCommit阶段，如果参与者无法及时接收到来自协调者的doCommit或者rebort请求时，会在等待超时之后，会继续进行事务的提交。（其实这个应该是基于概率来决定的，当进入第三阶段时，说明参与者在第二阶段已经收到了PreCommit请求，那么协调者产生PreCommit请求的前提条件是他在第二阶段开始之前，收到所有参与者的CanCommit响应都是Yes。（一旦参与者收到了PreCommit，意味他知道大家其实都同意修改了）所以，一句话概括就是，当进入第三阶段时，由于网络超时等原因，虽然参与者没有收到commit或者abort响应，但是他有理由相信：成功提交的几率很大。 ）</p>
+<h3 id="3、Paxos算法"><a href="#3、Paxos算法" class="headerlink" title="3、Paxos算法"></a>3、Paxos算法</h3><p>  待补充</p>
+<h2 id="三、最终一致性解决方案"><a href="#三、最终一致性解决方案" class="headerlink" title="三、最终一致性解决方案"></a>三、最终一致性解决方案</h2><h3 id="1、本地消息表"><a href="#1、本地消息表" class="headerlink" title="1、本地消息表"></a>1、本地消息表</h3><p><strong>设计思想：</strong> 是将远程分布式事务拆分成一系列的本地事务。借助关系型数据库中的表即可实现。<br><strong>集群节点同步：</strong> 定时扫描本地消息表，将需要同步状态的消息产生MQ消息通过向时效性高的MQ放入消息，再由其它集群节点消费该消息完成通知，通过消息消费状态表来避免MQ消息的重复消费。</p>
+<h3 id="2、RocketMQ（事务消息）"><a href="#2、RocketMQ（事务消息）" class="headerlink" title="2、RocketMQ（事务消息）"></a>2、RocketMQ（事务消息）</h3><p>以网传处理流程为例进行说明<br><img src="/images/rmq-1.png" alt=""><br>说明：<br>1、当第3步confirmB失败时，则交由RMQ定时调用checkTransaction进行处理结果的检测，如果为失败，则rollback,否则发送消息到B账户。<br>2、当第5步consumeB失败时，则交由RMQ定时进行重试，但需要设置最大重试次数，如果达到最大次数依然失败，则需要人工介入进行修正。</p>
+<p>所以RMQ需要一个人工修正的控制台，当系统通过重试无法进行修正时以人工做为做终的修正手段来做保障最终事务一致性。</p>
+<hr>
+<p><em>观点仅代表自己，期待你的留言。</em></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/总结/">总结</a></li></ul>
 	</div>
 
       
@@ -902,207 +1073,6 @@ var _hmt = _hmt || [];
         <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>由于携程航班号查询取消了起止城市信息的返回，为了补全信息，特从网络爬取了8644条机场航站楼对应三字码四字码信息，共享于网络供有需要的朋友使用。</p>
 <p>数据抓取源: <a href="https://airportcode.51240.com" target="_blank" rel="external">便民查询网</a></p>
 <p><a href="/data/t_airport_terminal_code.sql">机场航站楼三字码四字码附件，点击下载</a></p>
-<hr>
-<p><em>观点仅代表自己，期待你的留言。</em></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-linux-autostart" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/10/09/linux-autostart/" class="article-date">
-  	<time datetime="2016-10-09T10:43:51.000Z" itemprop="datePublished">2016-10-09</time>
-</a>
-      <div class="analysis-container">
-	<i class="fa fa-line-chart"></i>
-	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
-</div>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/10/09/linux-autostart/">Linux开机自动启动Tomcat应用</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-              
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>刚过国庆长假，工作机房断电，重回工作岗位发现N多的应用需要手动启动。感觉烦燥？<br>so.. 配置linux开机自启动</p>
-<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>在<em>/etc/rc.local</em>文件末尾增加以下内容<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/sh</span><br><span class="line">#</span><br><span class="line"># This script will be executed *after* all the other init scripts.</span><br><span class="line"># You can put your own initialization stuff in here if you don&apos;t</span><br><span class="line"># want to do the full Sys V style init stuff.</span><br><span class="line"></span><br><span class="line">O_Path=`pwd`</span><br><span class="line">cd /myapps/servers/apache-tomcat-6.0.43/bin/</span><br><span class="line">sh startup.sh</span><br><span class="line">cd $O_Path</span><br></pre></td></tr></table></figure></p>
-<p><strong>需要注意以下几点：</strong></p>
-<ul>
-<li>检查startup.sh是否已授执行权限，如果没有，执行<code>chmod +x /myapps/servers/apache-tomcat-6.0.43/bin/startup.sh</code></li>
-<li>所需要执行的shell文件不能带参数。</li>
-</ul>
-<p>经过以上配置则可以通过<code>sudo reboot</code>进行验证。当Linux重启成功后，可通过<strong>/var/log/boot.log</strong>来查看开机时的日志输出。</p>
-<h2 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h2><p><code>who -r</code> 查看开机级别</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">who --help</span><br><span class="line">用法：who [选项]... [ 文件 | 参数1 参数2 ]</span><br><span class="line">显示当前已登录的用户信息。</span><br><span class="line"></span><br><span class="line">  -a, --all		等于-b -d --login -p -r -t -T -u 选项的组合</span><br><span class="line">  -b, --boot		上次系统启动时间</span><br><span class="line">  -d, --dead		显示已死的进程</span><br><span class="line">  -H, --heading	输出头部的标题列</span><br><span class="line">  -l，--login		显示系统登录进程</span><br><span class="line">      --lookup		尝试通过 DNS 查验主机名</span><br><span class="line">  -m			只面对和标准输入有直接交互的主机和用户</span><br><span class="line">  -p, --process	显示由 init 进程衍生的活动进程</span><br><span class="line">  -q, --count		列出所有已登录用户的登录名与用户数量</span><br><span class="line">  -r, --runlevel	显示当前的运行级别</span><br><span class="line">  -s, --short		只显示名称、线路和时间(默认)</span><br><span class="line">  -T, -w, --mesg	用+，- 或 ? 标注用户消息状态</span><br><span class="line">  -u, --users		列出已登录的用户</span><br><span class="line">      --message	等于-T</span><br><span class="line">      --writable	等于-T</span><br><span class="line">      --help		显示此帮助信息并退出</span><br><span class="line">      --version		显示版本信息并退出</span><br></pre></td></tr></table></figure>
-<hr>
-<p><em>观点仅代表自己，期待你的留言。</em></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-jvm-tools-jstat" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/09/22/jvm-tools-jstat/" class="article-date">
-  	<time datetime="2016-09-22T09:30:09.000Z" itemprop="datePublished">2016-09-22</time>
-</a>
-      <div class="analysis-container">
-	<i class="fa fa-line-chart"></i>
-	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
-</div>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/09/22/jvm-tools-jstat/">查看jvm堆内GC情况利器 - jstat</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-              
-        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>jstat是JDK自带的一个轻量级小工具。全称“Java Virtual Machine statistics monitoring tool”，主要利用JVM内建的指令对Java应用程序的资源和性能进行实时的命令行的监控，包括了对Heap size和垃圾回收状况的监控。<br>以命令行方式运行对系统资源占用很小，在大压力下很少影响性能。并且运行要求低，只要通过Telnet或SSH等方式远程登录到服务器所在机器，就可以进行监控。在与jstat、jstack等工具结合使用时非常方便。</p>
-<h2 id="命令安装"><a href="#命令安装" class="headerlink" title="命令安装"></a>命令安装</h2><ol>
-<li>Oracle JDK在安装完成后bin目录下就会发现有jstat命令。</li>
-<li>Open JDK在安装完成后需要安装openjdk-devel开发包才能得到jstat命令。<br>安装方法如下（以CentOS为例）：<br>使用 <code>yum whatprovides &#39;*/jstat&#39;</code>查包含jstat命令开发包的名称。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[root@wujianjun-linux bin]# yum whatprovides &apos;*/jstat&apos;</span><br><span class="line">Loaded plugins: fastestmirror, security</span><br><span class="line">Loading mirror speeds from cached hostfile</span><br><span class="line">base/filelists_db                                                                                  | 6.4 MB     00:00     </span><br><span class="line">extras/filelists_db                                                                                |  38 kB     00:00     </span><br><span class="line">updates/filelists_db                                                                               | 1.5 MB     00:00     </span><br><span class="line">1:java-1.7.0-openjdk-devel-1.7.0.99-2.6.5.1.el6.x86_64 : OpenJDK Development Environment</span><br><span class="line">Repo        : base</span><br><span class="line">Matched from:</span><br><span class="line">Filename    : /usr/lib/jvm/java-1.7.0-openjdk-1.7.0.99.x86_64/bin/jstat</span><br><span class="line">......</span><br><span class="line">.....</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>找到与jdk版本相对应的开发包进行安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@wujianjun-linux bin]# yum install java-1.7.0-openjdk-devel</span><br></pre></td></tr></table></figure></p>
-<p>安装完成后查找命令所在目录<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@wujianjun-linux bin]# whereis jstat</span><br><span class="line">jstat: /usr/bin/jstat /usr/share/man/man1/jstat.1.gz</span><br></pre></td></tr></table></figure></p>
-<p>只要能显示相应目录，则表示安装成功。</p>
-<h2 id="jstat使用"><a href="#jstat使用" class="headerlink" title="jstat使用"></a>jstat使用</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">[root@order-zhiMaoQu-com ~]# jstat --help</span><br><span class="line">invalid argument count</span><br><span class="line">Usage: jstat -help|-options</span><br><span class="line">       jstat -&lt;option&gt; [-t] [-h&lt;lines&gt;] &lt;vmid&gt; [&lt;interval&gt; [&lt;count&gt;]]</span><br><span class="line"></span><br><span class="line">Definitions:</span><br><span class="line">  &lt;option&gt;      An option reported by the -options option</span><br><span class="line">  &lt;vmid&gt;        Virtual Machine Identifier. A vmid takes the following form:</span><br><span class="line">                     &lt;lvmid&gt;[@&lt;hostname&gt;[:&lt;port&gt;]]</span><br><span class="line">                Where &lt;lvmid&gt; is the local vm identifier for the target</span><br><span class="line">                Java virtual machine, typically a process id; &lt;hostname&gt; is</span><br><span class="line">                the name of the host running the target Java virtual machine;</span><br><span class="line">                and &lt;port&gt; is the port number for the rmiregistry on the</span><br><span class="line">                target host. See the jvmstat documentation for a more complete</span><br><span class="line">                description of the Virtual Machine Identifier.</span><br><span class="line">  &lt;lines&gt;       Number of samples between header lines.</span><br><span class="line">  &lt;interval&gt;    Sampling interval. The following forms are allowed:</span><br><span class="line">                    &lt;n&gt;[&quot;ms&quot;|&quot;s&quot;]</span><br><span class="line">                Where &lt;n&gt; is an integer and the suffix specifies the units as </span><br><span class="line">                milliseconds(&quot;ms&quot;) or seconds(&quot;s&quot;). The default units are &quot;ms&quot;.</span><br><span class="line">  &lt;count&gt;       Number of samples to take before terminating.</span><br><span class="line">  -J&lt;flag&gt;      Pass &lt;flag&gt; directly to the runtime system.</span><br></pre></td></tr></table></figure>
-<p><strong><option> 可选值如下：</option></strong></p>
-<ul>
-<li>-gcutil: 查看gc情况</li>
-<li>-class: 显示加载class的数量，及所占空间等信息</li>
-<li>-compiler: 显示VM实时编译的数量等信息。</li>
-<li>–gccapacity: 可以显示，VM内存中三代（young,old,perm）对象的使用和占用大小，<br>  如：PGCMN显示的是最小perm的内存使用量，PGCMX显示的是perm的内存最大使用量，PGC是当前新生成的perm内存占用量，PC是但前perm内存占用量。<br>  其他的可以根据这个类推，OC是old内纯的占用量。</li>
-<li>-gcnew: new对象的信息</li>
-<li>-gcnewcapacity: new对象的信息及其占用量</li>
-<li>-gcold: old对象的信息。</li>
-<li>-gcoldcapacity: old对象的信息及其占用量</li>
-<li>-gcpermcapacity: perm对象的信息及其占用量</li>
-<li>-printcompilation: 当前VM执行的信息</li>
-</ul>
-<p><strong>附GC显示术语解释：</strong></p>
-<ul>
-<li>S0C - 年轻代中第一个survivor（幸存区）的容量 (字节)</li>
-<li>S1C - 年轻代中第二个survivor（幸存区）的容量 (字节)</li>
-<li>S0U - 年轻代中第一个survivor（幸存区）目前已使用空间 (字节)</li>
-<li>S1U - 年轻代中第二个survivor（幸存区）目前已使用空间 (字节)</li>
-<li>EC - 年轻代中Eden的容量 (字节)</li>
-<li>EU - 年轻代中Eden目前已使用空间 (字节)</li>
-<li>OC - Old代的容量 (字节)</li>
-<li>OU - Old代目前已使用空间 (字节)</li>
-<li>PC - Perm(持久代)的容量 (字节)</li>
-<li>PU - Perm(持久代)目前已使用空间 (字节)</li>
-<li>YGC - 从应用程序启动到采样时年轻代中gc次数</li>
-<li>YGCT - 从应用程序启动到采样时年轻代中gc所用时间(s)</li>
-<li>FGC - 从应用程序启动到采样时old代(全gc)gc次数</li>
-<li>FGCT - 从应用程序启动到采样时old代(全gc)gc所用时间(s)</li>
-<li>GCT - 从应用程序启动到采样时gc用的总时间(s)</li>
-<li>NGCMN - 年轻代(young)中初始化(最小)的大小 (字节)</li>
-<li>NGCMX - 年轻代(young)的最大容量 (字节)</li>
-<li>NGC - 年轻代(young)中当前的容量 (字节)</li>
-<li>OGCMN - old代中初始化(最小)的大小 (字节)</li>
-<li>OGCMX - old代的最大容量 (字节)</li>
-<li>OGC - old代当前新生成的容量 (字节)</li>
-<li>PGCMN - perm代中初始化(最小)的大小 (字节)</li>
-<li>PGCMX - perm代的最大容量 (字节)</li>
-<li>PGC - perm代当前新生成的容量 (字节)</li>
-<li>S0 - 年轻代中第一个survivor（幸存区）已使用的占当前容量百分比</li>
-<li>S1 - 年轻代中第二个survivor（幸存区）已使用的占当前容量百分比</li>
-<li>E - 年轻代中Eden已使用的占当前容量百分比</li>
-<li>O - old代已使用的占当前容量百分比</li>
-<li>P - perm代已使用的占当前容量百分比</li>
-<li>S0CMX - 年轻代中第一个survivor（幸存区）的最大容量 (字节)</li>
-<li>S1CMX  - 年轻代中第二个survivor（幸存区）的最大容量 (字节)</li>
-<li>ECMX - 年轻代中Eden的最大容量 (字节)</li>
-<li>DSS - 当前需要survivor（幸存区）的容量 (字节)（Eden区已满）</li>
-<li>TT -  持有次数限制</li>
-<li>MTT  -  最大持有次数限制</li>
-</ul>
 <hr>
 <p><em>观点仅代表自己，期待你的留言。</em></p>
 
