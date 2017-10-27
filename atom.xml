@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.wujianjun.org/"/>
-  <updated>2017-10-27T15:23:15.963Z</updated>
+  <updated>2017-10-27T15:24:40.707Z</updated>
   <id>http://www.wujianjun.org/</id>
   
   <author>
@@ -20,10 +20,10 @@
     <link href="http://www.wujianjun.org/2017/10/27/dtcs-seq/"/>
     <id>http://www.wujianjun.org/2017/10/27/dtcs-seq/</id>
     <published>2017-10-27T14:57:55.000Z</published>
-    <updated>2017-10-27T15:23:15.963Z</updated>
+    <updated>2017-10-27T15:24:40.707Z</updated>
     
     <content type="html">&lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;DTCS（Data Transfer Consistency Service）：数据一致性传输服务，通过MQ+一致性保障所实现的数据一致性传输服务。为全方面保障数据传输的一致性，增加运维人员人工介入纠正未及时实现数据一致性的处理方式。&lt;/p&gt;
-&lt;h2 id=&quot;业务调用时序图&quot;&gt;&lt;a href=&quot;#业务调用时序图&quot; class=&quot;headerlink&quot; title=&quot;业务调用时序图&quot;&gt;&lt;/a&gt;业务调用时序图&lt;/h2&gt;&lt;p&gt;&lt;img src=&quot;/images/dtcs-seq.jpg&quot; alt=&quot;业务调用时序图&quot;&gt;&lt;/p&gt;
+&lt;h2 id=&quot;业务调用时序&quot;&gt;&lt;a href=&quot;#业务调用时序&quot; class=&quot;headerlink&quot; title=&quot;业务调用时序&quot;&gt;&lt;/a&gt;业务调用时序&lt;/h2&gt;&lt;p&gt;&lt;img src=&quot;/images/dtcs-seq.jpg&quot; alt=&quot;业务调用时序&quot;&gt;&lt;/p&gt;
 &lt;h2 id=&quot;后续&quot;&gt;&lt;a href=&quot;#后续&quot; class=&quot;headerlink&quot; title=&quot;后续&quot;&gt;&lt;/a&gt;后续&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;表决心:&lt;/strong&gt; 此方案后续坚持实现后，必将开源于Github，届时请同行不吝指正。&lt;/p&gt;
 &lt;hr&gt;
 &lt;p&gt;&lt;em&gt;观点仅代表自己，期待你的留言。&lt;/em&gt;&lt;/p&gt;
