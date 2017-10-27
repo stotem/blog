@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.wujianjun.org/"/>
-  <updated>2017-10-18T08:06:45.088Z</updated>
+  <updated>2017-10-27T15:10:41.995Z</updated>
   <id>http://www.wujianjun.org/</id>
   
   <author>
@@ -14,6 +14,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>分布式事务最终一致性解决方案-DTCS</title>
+    <link href="http://www.wujianjun.org/2017/10/27/dtcs-seq/"/>
+    <id>http://www.wujianjun.org/2017/10/27/dtcs-seq/</id>
+    <published>2017-10-27T14:57:55.000Z</published>
+    <updated>2017-10-27T15:10:41.995Z</updated>
+    
+    <content type="html">&lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;DTCS（Data Transfer Consistency Service）：数据一致性传输服务，通过MQ+一致性保障所实现的数据一致性传输服务，被设计用于解决分布式事务数据最终一致性的解决方案。&lt;br&gt;为全方面保障数据传输的一致性，增加运维人员人工介入纠正未及时实现数据一致性的处理方式。&lt;/p&gt;
+&lt;h2 id=&quot;业务调用时序图&quot;&gt;&lt;a href=&quot;#业务调用时序图&quot; class=&quot;headerlink&quot; title=&quot;业务调用时序图&quot;&gt;&lt;/a&gt;业务调用时序图&lt;/h2&gt;&lt;p&gt;&lt;img src=&quot;/images/dtcs-seq.jpg&quot; alt=&quot;业务调用时序图&quot;&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;观点仅代表自己，期待你的留言。&lt;/em&gt;&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;DTCS（Data Transfer Consistency Service）：数据一致性传输服务，通过MQ+一致性保障所实现的数据一致性传
+    
+    </summary>
+    
+    
+      <category term="原创" scheme="http://www.wujianjun.org/tags/%E5%8E%9F%E5%88%9B/"/>
+    
+      <category term="分布式事务" scheme="http://www.wujianjun.org/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/"/>
+    
+  </entry>
   
   <entry>
     <title>ubuntu下thinkpad电池阀设置（待验证）</title>
@@ -903,30 +929,6 @@
     <summary type="html">
     
       &lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;Spring提供了@Cacheable，@CacheEvict,@CachePut等注解很方便有实现数据的缓存，而CompositeCach
-    
-    </summary>
-    
-    
-      <category term="原创" scheme="http://www.wujianjun.org/tags/%E5%8E%9F%E5%88%9B/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>类Google分页算法</title>
-    <link href="http://www.wujianjun.org/2016/07/12/google-pagination-note/"/>
-    <id>http://www.wujianjun.org/2016/07/12/google-pagination-note/</id>
-    <published>2016-07-12T08:08:37.000Z</published>
-    <updated>2017-07-14T02:12:52.763Z</updated>
-    
-    <content type="html">&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;29&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;30&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;31&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;32&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;33&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;34&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;35&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;36&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;37&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;38&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;39&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;40&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;41&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;42&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;public class Pagination &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    @Test&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    public void getPagination() &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        final int[] paginationRegion = getPaginationRegion(6, 5, 10);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        // 进行页码输出&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        System.out.println(Arrays.toString(paginationRegion));&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        for (int i=paginationRegion[0]; i&amp;lt;= paginationRegion[1];i++) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            //....&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    /**&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;     * 类Google分页 - 获取需要显示的闭区间页码范围&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;     * @param currPage 当前页码&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;     * @param showNum 显示条数，为保持当前页码居中，建议为单数值&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;     * @param totalPage 总页数&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;     * @return 闭区间 页码范围&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;     */&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    private static int[] getPaginationRegion(int currPage, int showNum, int totalPage) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        // 先进行基础运算&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        int startNum = currPage - showNum/2;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        int endNum = currPage + showNum/2;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        if (endNum &amp;gt; totalPage) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            endNum = totalPage;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        if (startNum &amp;lt; 1) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            startNum = 1;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        // 如果显示页码数量不够则进行补数&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        if(endNum - startNum &amp;lt; showNum) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            int tmp;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            if ((tmp = endNum - showNum + 1) &amp;gt; 0) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                startNum = tmp;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            else if((tmp = startNum + showNum - 1) &amp;lt; totalPage) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                endNum = tmp;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        return new int[]&amp;#123;startNum, endNum&amp;#125;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;&lt;code&gt;注意：&lt;/code&gt;输入的为闭区间(包含两端页码值)范围。&lt;/p&gt;
-&lt;hr&gt;
-&lt;p&gt;&lt;em&gt;观点仅代表自己，期待你的留言。&lt;/em&gt;&lt;/p&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class
     
     </summary>
     

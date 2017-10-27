@@ -133,7 +133,7 @@ var _hmt = _hmt || [];
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/Docker/" style="font-size: 13.33px;">Docker</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/Maven/" style="font-size: 11.67px;">Maven</a> <a href="/tags/Nginx/" style="font-size: 15px;">Nginx</a> <a href="/tags/Redis/" style="font-size: 11.67px;">Redis</a> <a href="/tags/Transaction/" style="font-size: 10px;">Transaction</a> <a href="/tags/iOS/" style="font-size: 16.67px;">iOS</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/nginx-obs/" style="font-size: 10px;">nginx + obs</a> <a href="/tags/php-fpm/" style="font-size: 10px;">php-fpm</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/spring/" style="font-size: 11.67px;">spring</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/transaction/" style="font-size: 10px;">transaction</a> <a href="/tags/关键笔记/" style="font-size: 10px;">关键笔记</a> <a href="/tags/分布式/" style="font-size: 10px;">分布式</a> <a href="/tags/原创/" style="font-size: 20px;">原创</a> <a href="/tags/多进程/" style="font-size: 10px;">多进程</a> <a href="/tags/并发/" style="font-size: 10px;">并发</a> <a href="/tags/总结/" style="font-size: 10px;">总结</a> <a href="/tags/操作系统/" style="font-size: 10px;">操作系统</a> <a href="/tags/架构/" style="font-size: 10px;">架构</a> <a href="/tags/电商/" style="font-size: 10px;">电商</a> <a href="/tags/笔记/" style="font-size: 10px;">笔记</a> <a href="/tags/转发/" style="font-size: 10px;">转发</a> <a href="/tags/转载/" style="font-size: 18.33px;">转载</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
+						<a href="/tags/Docker/" style="font-size: 13.33px;">Docker</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/Maven/" style="font-size: 11.67px;">Maven</a> <a href="/tags/Nginx/" style="font-size: 15px;">Nginx</a> <a href="/tags/Redis/" style="font-size: 11.67px;">Redis</a> <a href="/tags/Transaction/" style="font-size: 10px;">Transaction</a> <a href="/tags/iOS/" style="font-size: 16.67px;">iOS</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/nginx-obs/" style="font-size: 10px;">nginx + obs</a> <a href="/tags/php-fpm/" style="font-size: 10px;">php-fpm</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/spring/" style="font-size: 11.67px;">spring</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/transaction/" style="font-size: 10px;">transaction</a> <a href="/tags/关键笔记/" style="font-size: 10px;">关键笔记</a> <a href="/tags/分布式/" style="font-size: 10px;">分布式</a> <a href="/tags/分布式事务/" style="font-size: 10px;">分布式事务</a> <a href="/tags/原创/" style="font-size: 20px;">原创</a> <a href="/tags/多进程/" style="font-size: 10px;">多进程</a> <a href="/tags/并发/" style="font-size: 10px;">并发</a> <a href="/tags/总结/" style="font-size: 10px;">总结</a> <a href="/tags/操作系统/" style="font-size: 10px;">操作系统</a> <a href="/tags/架构/" style="font-size: 10px;">架构</a> <a href="/tags/电商/" style="font-size: 10px;">电商</a> <a href="/tags/笔记/" style="font-size: 10px;">笔记</a> <a href="/tags/转发/" style="font-size: 10px;">转发</a> <a href="/tags/转载/" style="font-size: 18.33px;">转载</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
 					</div>
 				</section>
 				
@@ -219,6 +219,81 @@ var _hmt = _hmt || [];
 </nav>
 
       <div class="body-wrap">
+  
+    <article id="post-maven-profile" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/05/26/maven-profile/" class="article-date">
+  	<time datetime="2016-05-26T08:15:01.000Z" itemprop="datePublished">2016-05-26</time>
+</a>
+      <div class="analysis-container">
+	<i class="fa fa-line-chart"></i>
+	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
+</div>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/05/26/maven-profile/">Maven应用发布之不同环境不同配置的实现</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+              
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>一个应用程序从研发到发布一般需要经过三套环境（研发环境、测试环境、生产环境）甚至更多。针对这同的运行环境应用程序也需要一些不同的参数配置值（如果日志输出级别、数据库连接池配置等）。<br>Maven的Profile配置很好的解决这一问题。在pom.xml中配置多套参数值，在程序打包<strong>编译时期</strong>通过部署环境对配置参数进行替换来完成。<br><strong>注意:</strong>当配置项找不到对应的配置值时会保持原样。</p>
+<h2 id="pom-xml多套参数配置"><a href="#pom-xml多套参数配置" class="headerlink" title="pom.xml多套参数配置"></a>pom.xml多套参数配置</h2><p>以不同部署环境配置日志输出级别为例。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span><br><span class="line">         xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd&quot;&gt;</span><br><span class="line">    &lt;properties&gt;</span><br><span class="line">    	&lt;catalina.base&gt;/app/servers/logs&lt;/catalina.base&gt;</span><br><span class="line">    &lt;/properties&gt;</span><br><span class="line">    &lt;profiles&gt;</span><br><span class="line">    	&lt;profile&gt;</span><br><span class="line">            &lt;id&gt;dev&lt;/id&gt;</span><br><span class="line">            &lt;activation&gt;</span><br><span class="line">                &lt;activeByDefault&gt;true&lt;/activeByDefault&gt;</span><br><span class="line">            &lt;/activation&gt;</span><br><span class="line">            &lt;properties&gt;</span><br><span class="line">                &lt;catalina.log.priority&gt;debug&lt;/catalina.log.priority&gt;</span><br><span class="line">            &lt;/properties&gt;</span><br><span class="line">        &lt;/profile&gt;</span><br><span class="line">        &lt;profile&gt;</span><br><span class="line">            &lt;id&gt;test&lt;/id&gt;</span><br><span class="line">            &lt;properties&gt;</span><br><span class="line">                &lt;catalina.log.priority&gt;warn&lt;/catalina.log.priority&gt;</span><br><span class="line">            &lt;/properties&gt;</span><br><span class="line">        &lt;/profile&gt;</span><br><span class="line">    	&lt;profile&gt;</span><br><span class="line">            &lt;id&gt;pro&lt;/id&gt;</span><br><span class="line">            &lt;properties&gt;</span><br><span class="line">                &lt;catalina.log.priority&gt;error&lt;/catalina.log.priority&gt;</span><br><span class="line">            &lt;/properties&gt;</span><br><span class="line">        &lt;/profile&gt;</span><br><span class="line">    &lt;/profiles&gt;</span><br><span class="line">    &lt;build&gt;</span><br><span class="line">    	&lt;resources&gt;</span><br><span class="line">            &lt;resource&gt;</span><br><span class="line">                &lt;directory&gt;src/main/resources&lt;/directory&gt;</span><br><span class="line">                &lt;filtering&gt;true&lt;/filtering&gt;</span><br><span class="line">            &lt;/resource&gt;</span><br><span class="line">        &lt;/resources&gt;</span><br><span class="line">    &lt;/build&gt;</span><br><span class="line">&lt;/project&gt;</span><br></pre></td></tr></table></figure></p>
+<p><strong>说明：</strong><br>以上配置表示在编译时期对<code>src/main/resources</code>目录下配置文件中的<code>${catalina.log.priority}</code>和<code>${catalina.base}</code>进行替换。而catalina.base参数值不区分部署环境。<br>编译开发环境的部署程序包命令如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Jianjun:~ Jianjun$ mvn package –P dev</span><br></pre></td></tr></table></figure></p>
+<p>编译测试环境的部署程序包命令如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Jianjun:~ Jianjun$ mvn package –P test</span><br></pre></td></tr></table></figure></p>
+<p>编译生产环境的部署程序包命令如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Jianjun:~ Jianjun$ mvn package –P pro</span><br></pre></td></tr></table></figure></p>
+<p>如果不指-P参数，默认会使用dev的配置，由于dev节点配置了<strong>activeByDefault</strong></p>
+<h2 id="参数配置项太多"><a href="#参数配置项太多" class="headerlink" title="参数配置项太多"></a>参数配置项太多</h2><p>当配置项太多之后我们可以通过外置properties文件来进行配置，而properties文件需要与pom.xml在同一路径下。<br>properties配置如下：<br><em>product-deploy-config-dev.properties</em><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">catalina.log.priority=debug</span><br></pre></td></tr></table></figure></p>
+<p><em>product-deploy-config-test.properties</em><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">catalina.log.priority=warn</span><br></pre></td></tr></table></figure></p>
+<p><em>product-deploy-config-pro.properties</em><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">catalina.log.priority=error</span><br></pre></td></tr></table></figure></p>
+<p>pom.xml配置如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span><br><span class="line">         xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd&quot;&gt;</span><br><span class="line">    &lt;properties&gt;</span><br><span class="line">    	&lt;catalina.base&gt;/app/servers/logs&lt;/catalina.base&gt;</span><br><span class="line">    &lt;/properties&gt;</span><br><span class="line">    &lt;profiles&gt;</span><br><span class="line">    	&lt;profile&gt;</span><br><span class="line">            &lt;id&gt;dev&lt;/id&gt;</span><br><span class="line">            &lt;activation&gt;</span><br><span class="line">                &lt;activeByDefault&gt;true&lt;/activeByDefault&gt;</span><br><span class="line">            &lt;/activation&gt;</span><br><span class="line">            &lt;build&gt;</span><br><span class="line">            	&lt;filters&gt;</span><br><span class="line">            		&lt;filter&gt;product-deploy-config-dev.properties&lt;/filter&gt;</span><br><span class="line">				&lt;/filters&gt;</span><br><span class="line">            &lt;/build&gt;</span><br><span class="line">        &lt;/profile&gt;</span><br><span class="line">        &lt;profile&gt;</span><br><span class="line">            &lt;id&gt;test&lt;/id&gt;</span><br><span class="line">            &lt;build&gt;</span><br><span class="line">            	&lt;filters&gt;</span><br><span class="line">					&lt;filter&gt;product-deploy-config-test.properties&lt;/filter&gt;</span><br><span class="line">				&lt;/filters&gt;</span><br><span class="line">            &lt;/build&gt;</span><br><span class="line">        &lt;/profile&gt;</span><br><span class="line">    	&lt;profile&gt;</span><br><span class="line">            &lt;id&gt;pro&lt;/id&gt;</span><br><span class="line">            &lt;build&gt;</span><br><span class="line">            	&lt;filters&gt;</span><br><span class="line">					&lt;filter&gt;product-deploy-config-pro.properties&lt;/filter&gt;</span><br><span class="line">				&lt;/filters&gt;</span><br><span class="line">            &lt;/build&gt;</span><br><span class="line">        &lt;/profile&gt;</span><br><span class="line">    &lt;/profiles&gt;</span><br><span class="line">    &lt;build&gt;</span><br><span class="line">    	&lt;resources&gt;</span><br><span class="line">            &lt;resource&gt;</span><br><span class="line">                &lt;directory&gt;src/main/resources&lt;/directory&gt;</span><br><span class="line">                &lt;filtering&gt;true&lt;/filtering&gt;</span><br><span class="line">            &lt;/resource&gt;</span><br><span class="line">        &lt;/resources&gt;</span><br><span class="line">    &lt;/build&gt;</span><br><span class="line">&lt;/project&gt;</span><br></pre></td></tr></table></figure></p>
+<hr>
+<p><em>观点仅代表自己，期待你的留言。</em></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Maven/">Maven</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+
+
   
     <article id="post-os-port-forward" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -1246,110 +1321,6 @@ var _hmt = _hmt || [];
 </ul>
 <hr>
 <p><em>观点仅代表自己，期待你的留言。</em><br><a href="http://objccn.io/issue-5-5/" target="_blank" rel="external">http://objccn.io/issue-5-5/</a></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/转载/">转载</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-ios-msg-transfer" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/03/30/ios-msg-transfer/" class="article-date">
-  	<time datetime="2016-03-30T09:39:24.000Z" itemprop="datePublished">2016-03-30</time>
-</a>
-      <div class="analysis-container">
-	<i class="fa fa-line-chart"></i>
-	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
-</div>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/03/30/ios-msg-transfer/">iOS开发过程中几种消息传递机制的理解</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-              
-        <h2 id="几种消息传递机制"><a href="#几种消息传递机制" class="headerlink" title="几种消息传递机制"></a>几种消息传递机制</h2><p>首先我们来看看每种机制的具体特点。在这个基础上，下一节我们会画一个流程图来帮我们在具体情况下正确选择应该使用的机制。最后，我们会介绍一些苹果框架里的例子并且解释为什么在那些用例中会选择这样的机制。</p>
-<h3 id="KVO"><a href="#KVO" class="headerlink" title="KVO"></a>KVO</h3><p>KVO 是提供对象属性被改变时的通知的机制。KVO 的实现在 Foundation 中，很多基于 Foundation 的框架都依赖它。</p>
-<p>如果只对某个对象的值的改变感兴趣的话，就可以使用 KVO 消息传递。不过有一些前提：第一，接收者（接收对象改变的通知的对象）需要知道发送者 （值会改变的对象）；第二，接收者需要知道发送者的生命周期，因为它需要在发送者被销毁前注销观察者身份。如果这两个要去符合的话，这个消息传递机制可以一对多（多个观察者可以注册观察同一个对象的变化）</p>
-<p>如果要在 Core Data 上使用 KVO 的话，方法会有些许差别。这和 Core Data 的惰性加载 (faulting) 机制有关。一旦一个 managed object 被惰性加载处理的话，即使它的属性没有被改变，它还是会触发相应的观察者。</p>
-<p><strong>编者注</strong> 把属性值先取入缓存中，在对象需要的时候再进行一次访问，这在 Core Data 中是默认行为，这种技术称为 Faulting。这么做可以避免降低内存开销，但是如果你确定将访问结果对象的具体属性值时，可以禁用 Faults 以提高获取性能。关于这个技术更多的情况，请移步<a href="https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/CoreData/Articles/cdFaultingUniquing.html" target="_blank" rel="external">官方文档</a></p>
-<h3 id="通知"><a href="#通知" class="headerlink" title="通知"></a>通知</h3><p>要在代码中的两个不相关的模块中传递消息时，通知机制是非常好的工具。通知机制广播消息，当消息内容丰富而且无需指望接收者一定要关注的话这一招特别有用。</p>
-<p>通知可以用来发送任意消息，甚至可以包含一个 userInfo 字典。你也可以继承 NSNotification 写一个自己的通知类来自定义行为。通知的独特之处在于，发送者和接收者不需要相互知道对方，所以通知可以被用来在不同的相隔很远的模块之间传递消息。这就意味着这种消息传递是单向的，我们不能回复一个通知。</p>
-<h3 id="委托-Delegation"><a href="#委托-Delegation" class="headerlink" title="委托 (Delegation)"></a>委托 (Delegation)</h3><p>Delegation 在苹果的框架中广泛存在。它让我们能自定义对象的行为，并收到一些触发的事件。要使用 delegation 模式的话，发送者需要知道接收者，但是反过来没有要求。因为发送者只需要知道接收者符合一定的协议，所以它们两者结合的很松。</p>
-<p>因为 delegate 协议可以定义任何的方法，我们可以照着自己的需求来传递消息。可以用方法参数来传递消息内容，delegate 可以通过返回值的形式来给发送者作出回应。如果只要在相对接近的两个模块间传递消息，delgation 是很灵活很直接的消息传递机制。</p>
-<p>过度使用 delegation 也会带来风险。如果两个对象结合得很紧密，任何其中一个对象都不能单独运转，那么就不需要用 delegate 协议了。这些情况下，对象已经知道各自的类型，可以直接交流。两个比较新的例子是 UICollectionViewLayout 和 NSURLSessionConfiguration。</p>
-<h3 id="Block"><a href="#Block" class="headerlink" title="Block"></a>Block</h3><p>Block 是最近才加入 Objective-C 的，首次出现在 OS X 10.6 和 iOS 4 平台上。Block 通常可以完全替代 delegation 消息传递机制的角色。不过这两种机制都有它们自己的独特需求和优势。</p>
-<p>一个不使用 block 的理由通常是 block 会存在导致 retain 环 (retain cycles) 的风险。如果发送者需要 retain block 但又不能确保引用在什么时候被赋值为 nil， 那么所有在 block 内对 self 的引用就会发生潜在的 retain 环。</p>
-<p>假设我们要实现一个用 block 回调而不是 delegate 机制的 table view 里的选择方法，如下所示：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">self.myTableView.selectionHandler = ^void(NSIndexPath *selectedIndexPath) &#123;</span><br><span class="line">    // 处理选择</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
-<p>这儿的问题是，self 会 retain table view，table view 为了让 block 之后可以使用而又需要 retain 这个 block。然而 table view 不能把这个引用设为 nil，因为它不知道什么时候不需要这个 block 了。如果我们不能保证打破 retain 环并且我们需要 retain 发送者，那么 block 就不是一个的好选择。</p>
-<p>NSOperation 是使用 block 的一个好范例。因为它在一定的地方打破了 retain 环，解决了上述的问题。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">self.queue = [[NSOperationQueue alloc] init];</span><br><span class="line">MyOperation *operation = [[MyOperation alloc] init];</span><br><span class="line">operation.completionBlock = ^&#123;</span><br><span class="line">    [self finishedOperation];</span><br><span class="line">&#125;;</span><br><span class="line">[self.queue addOperation:operation];</span><br></pre></td></tr></table></figure></p>
-<p>一眼看来好像上面的代码有一个 retain 环：self retain 了 queue，queue retain 了 operation， operation retain 了 completionBlock， 而 completionBlock retain 了 self。然而，把 operation 加入 queue 中会使 operation 在某个时间被执行，然后被从 queue 中移除。（如果没被执行，问题就大了。）一旦 queue 把 operation 移除，retain 环就被打破了。</p>
-<p>另一个例子是：我们在写一个视频编码器的类，在类里面我们会调用一个 encodeWithCompletionHandler: 的方法。为了不出问题，我们需要保证编码器对象在某个时间点会释放对 block 的引用。其代码如下所示：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">@interface Encoder ()</span><br><span class="line">@property (nonatomic, copy) void (^completionHandler)();</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation Encoder</span><br><span class="line"></span><br><span class="line">- (void)encodeWithCompletionHandler:(void (^)())handler</span><br><span class="line">&#123;</span><br><span class="line">    self.completionHandler = handler;</span><br><span class="line">    // 进行异步处理...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 这个方法会在完成后被调用一次</span><br><span class="line">- (void)finishedEncoding</span><br><span class="line">&#123;</span><br><span class="line">    self.completionHandler();</span><br><span class="line">    self.completionHandler = nil; // &lt;- 不要忘了这个!</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure></p>
-<p>一旦任务完成，completion block 调用过了以后，我们就应该把它设为 nil。</p>
-<p>如果一个被调用的方法需要发送一个一次性的消息作为回复，那么使用 block 是很好的选择， 因为这样做我们可以打破潜在的 retain 环。另外，如果将处理的消息和对消息的调用放在一起可以增强可读性的话，我们也很难拒绝使用 block 来进行处理。在用例之中，使用 block 来做完成的回调，错误的回调，或者类似的事情，是很常见的情况。</p>
-<h3 id="Target-Action"><a href="#Target-Action" class="headerlink" title="Target-Action"></a>Target-Action</h3><p>Target-Action 是回应 UI 事件时典型的消息传递方式。iOS 上的 UIControl 和 Mac 上的 NSControl/NSCell 都支持这个机制。Target-Action 在消息的发送者和接收者之间建立了一个松散的关系。消息的接收者不知道发送者，甚至消息的发送者也不知道消息的接收者会是什么。如果 target 是 nil，action 会在<a href="https://developer.apple.com/library/ios/documentation/general/conceptual/Devpedia-CocoaApp/Responder.html" target="_blank" rel="external">响应链 (responder chain) </a>中被传递下去，直到找到一个响应它的对象。在 iOS 中，每个控件甚至可以和多个 target-action 关联。</p>
-<p>基于 target-action 传递机制的一个局限是，发送的消息不能携带自定义的信息。在 Mac 平台上 action 方法的第一个参数永远接收者。iOS 中，可以选择性的把发送者和触发 action 的事件作为参数。除此之外就没有别的控制 action 消息内容的方法了。</p>
-<h3 id="做出正确的选择"><a href="#做出正确的选择" class="headerlink" title="做出正确的选择"></a>做出正确的选择</h3><p>基于上述对不同消息传递机制的特点，我们画了一个流程图来帮助我们在不同情境下做出不同的选择。一句忠告：流程图的建议不代表最终答案。有些时候别的选择依然能达到应有的效果。只不过大多数情况下这张图能引导你做出正确的决定。<br><img src="/images/communication-patterns-flow-chart.png" alt=""><br>图中有些细节值得深究：</p>
-<p>有个框中说到： 发送者支持 KVO。这不仅仅是说发送者会在值改变的时候发送 KVO 通知，而且说明观察者需要知道发送者的生命周期。如果发送者被存在一个 weak 属性中，那么发送者有可能会自己变成 nil，那时观察者会导致内存泄露。</p>
-<p>一个在最后一行的框里说，消息直接响应方法调用。也就是说方法调用的接收者需要给调用者一个消息作为方法调用的直接反馈。这也就是说处理消息的代码和调用方法的代码必须在同一个地方。</p>
-<p>最后在右下角的地方，一个选择分支这样说：发送者能确保释放对 block 的引用吗？这涉及到了我们之前讨论 block 的 API 存在潜在的 retain 环的问题。如果发送者不能保证在某个时间点会释放对 block 的引用，那么你会惹上 retain 环的麻烦。</p>
-<h2 id="Framework-示例"><a href="#Framework-示例" class="headerlink" title="Framework 示例"></a>Framework 示例</h2><p>本节我们通过一些苹果框架里的例子来验证流程图的选择是否有道理，同时解释为什么苹果会选择用这些机制。</p>
-<h3 id="KVO-1"><a href="#KVO-1" class="headerlink" title="KVO"></a>KVO</h3><p>NSOperationQueue 用了 KVO 观察队列中的 operation 状态属性的改变情况 (isFinished，isExecuting，isCancelled)。当状态改变的时候，队列会收到 KVO 通知。为什么 operation 队列要用 KVO 呢？</p>
-<p>消息的接收者（operation 队列）知道消息的发送者（operation），并 retain 它并控制后者的生命周期。另外，在这种情况下只需要单向的消息传递机制。当然如果考虑到 oepration 队列只关心那些改变 operation 的值的改变情况的话，就还不足以说服大家使用 KVO 了。但我们可以这么理解：被传递的消息可以被当成值的改变来处理。因为 state 属性在 operation 队列以外也是有用的，所以这里适合用 KVO。<br><img src="/images/kvo-flow-chart.png" alt=""><br>当然 KVO 不是唯一的选择。我们也可以将 operation 队列作为 operation 的 delegate 来使用，operation 会调用类似 operationDidFinish: 或者 operationDidBeginExecuting: 等方法把它的 state 传递给 queue。这样就不太方便了，因为 operation 要保存 state 属性，以便于调用这些 delegate 方法。另外，由于 queue 不能主动获取 state 信息，所以 queue 也必须保存所有 operation 的 state。</p>
-<h3 id="Notifications"><a href="#Notifications" class="headerlink" title="Notifications"></a>Notifications</h3><p>Core Data 使用 notification 传递事件（例如一个 managed object context 中的改变————NSManagedObjectContextObjectsDidChangeNotification）</p>
-<p>发生改变时触发的 notification 是由 managed object contexts 发出的，所以我们不能假定消息的接收者知道消息的发送者。因为消息的源头不是一个 UI 事件，很多接收者可能在关注着此消息，并且消息传递是单向的，所以 notification 是唯一可行的选择。<br><img src="/images/notification-flow-chart.png" alt=""></p>
-<h3 id="Delegation"><a href="#Delegation" class="headerlink" title="Delegation"></a>Delegation</h3><p>Table view 的 delegate 有多重功能，它可以从管理 accessory view，直到追踪在屏幕上显示的 cell。例如我们可以看看 tableView:didSelectRowAtIndexPath: 方法。为什么用 delegate 实现而不是 target-action 机制？</p>
-<p>正如我们在上述流程图中看到的，用 target-action 时，不能传递自定义的数据。而选中 table view 的某个 cell 时，collection view 不仅需要告诉我们一个 cell 被选中了，也要通过 index path 告诉我们哪个 cell 被选中了。如果我们照着这个思路，流程图会引导我们使用 delegation 机制。<br><img src="/images/delegation-flow-chart.png" alt=""><br>如果不在消息传递中包含选中 cell 的 index path，而是让选中项改变时我们像 table view 主动询问并获取选中 cell 的相关信息，会怎样呢？这会非常不方便，因为我们必须记住当前选中项的数据，这样才能在多选择中知道哪些 cell 是被新选中的。</p>
-<p>同理，我们可以想象通过观察 table view 选中项的 index path 属性，当该值发生改变的时候，获得一个选中项改变的通知。不过我们会遇到上述相似问题：不做记录的话我们就不能分辨哪一个 cell 被选择或取消选择了。</p>
-<h3 id="Block-1"><a href="#Block-1" class="headerlink" title="Block"></a>Block</h3><p>我们用 -[NSURLSession dataTaskWithURL:completionHandler:] 来作为一个 block API 的介绍。那么从 URL 加载部分返回给调用者是怎么传递消息的呢？首先，作为 API 的调用者，我们知道消息的发送者，但是我们并没有 retain 它。另外，这是个单向的消息传递————它直接调用 dataTaskWithURL: 的方法。如果我们对照流程图，会发现这属于 block 消息传递机制。<br><img src="/images/block-flow-chart.png" alt=""><br>有其他的选项吗？当然，苹果自己的 NSURLConnection 就是最好的例子。NSURLConnection在 block 问世之前就存在了，所以它并没有用 block 来实现消息传递，而是使用 delegation 来完成。当 block 出现以后，苹果就在 OS X 10.7 和 iOS 5 平台上的 NSURLConnection 中加了 sendAsynchronousRequest:queue:completionHandler:，所以我们不再在简单的任务中使用 delegate 了。</p>
-<p>因为 NSURLSession 是个最近在 OS X 10.9 和 iOS 7 才出现的 API，所以它们使用 block 来实现消息传递机制（NSURLSession 有一个 delegate，但是是用于其他目的）。</p>
-<h3 id="Target-Action-1"><a href="#Target-Action-1" class="headerlink" title="Target-Action"></a>Target-Action</h3><p>一个明显的 target-action 用例是按钮。按钮在不被按下的时候不需要发送任何的信息。为了这个目的，target-action 是 UI 中消息传递的最佳选择。<br><img src="/images/target-action-flow-chart.png" alt=""><br>如果 target 是明确指定的，那么 action 消息会发送给指定的对象。如果 target 是 nil， action 消息会一直在响应链中被传递下去，直到找到一个能处理它的对象。在这种情况下，我们有一个完全解耦的消息传递机制：发送者不需要知道接收者，反之亦然。</p>
-<p>Target-action 机制非常适合响应 UI 的事件。没有其他的消息传递机制能够提供相同的功能。虽然 notification 在发送者和接收者的松散关系上最接近它，但是 target-action 可以用于响应链——只有一个对象获得 action 并响应，action 在响应链中传递，直到能遇到响应这个 action 的对象。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>一开始接触这么多的消息传递机制的时候，我们可能有些无所适从，觉得所有的机制都可以被选用。不过一旦我们仔细分析每个机制的时候，它们各自都有特殊的要求和能力。</p>
-<p>文中的选择流程图是帮助你清楚认识这些机制的好的开始，当然它不是所有问题的答案。如果你觉得这和你自己选择机制的方式相似或是有任何缺漏，欢迎来信指正。</p>
-<hr>
-<p><em>观点仅代表自己，期待你的留言。</em><br><a href="http://objccn.io/issue-7-4/" target="_blank" rel="external">http://objccn.io/issue-7-4/</a></p>
 
       
     </div>
