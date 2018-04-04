@@ -220,6 +220,181 @@ var _hmt = _hmt || [];
 
       <div class="body-wrap">
   
+    <article id="post-spring-initializingbean" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/07/18/spring-initializingbean/" class="article-date">
+  	<time datetime="2017-07-18T09:59:12.000Z" itemprop="datePublished">2017-07-18</time>
+</a>
+      <div class="analysis-container">
+	<i class="fa fa-line-chart"></i>
+	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
+</div>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/07/18/spring-initializingbean/">Spring InitializingBean趟坑笔记</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+              
+        <h2 id="问题现象"><a href="#问题现象" class="headerlink" title="问题现象"></a>问题现象</h2><p>在Spring完成上下文初始化完成后, InitializingBean的实现类中重写的<code>afterPropertiesSet</code>方法并未执行.</p>
+<h2 id="一、类对象延迟初始"><a href="#一、类对象延迟初始" class="headerlink" title="一、类对象延迟初始"></a>一、类对象延迟初始</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">InitializingBean</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span><br><span class="line">      * Invoked by a BeanFactory after it has set all bean properties supplied</span><br><span class="line">      * (and satisfied BeanFactoryAware and ApplicationContextAware).</span><br><span class="line">      * &lt;p&gt;This method allows the bean instance to perform initialization only</span><br><span class="line">      * possible when all bean properties have been set and to throw an</span><br><span class="line">      * exception in the event of misconfiguration.</span><br><span class="line">      * <span class="doctag">@throws</span> Exception in the event of misconfiguration (such</span><br><span class="line">      * as failure to set an essential property) or if initialization fails.</span><br><span class="line">      */</span></span><br><span class="line">     <span class="function"><span class="keyword">void</span> <span class="title">afterPropertiesSet</span><span class="params">()</span> <span class="keyword">throws</span> Exception</span>;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>由于此接口的方法afterPropertiesSet是在对象的所有属性被初始化后才会调用。当Spring的配置文件中设置类初始默认为”延迟初始”（<code>default-lazy-init=&quot;true&quot;</code>，此值默认为false）时，<br>类对象如果不被使用，则不会实例化该类对象。所以 InitializingBean子类不能用于在容器启动时进行初始化的工作，则应使用Spring提供的<code>ApplicationListener</code>接口来进行程序的初始化工作。</p>
+<p>另外，如果需要InitializingBean子类对象在Spring容器启动时就初始化并则容器调用afterPropertiesSet方法则需要在类上增加<code>org.springframework.context.annotation.Lazy</code>注解并设置为false即可（也可通过spring配置bean时添加<code>lazy-init=&quot;false&quot;</code>)。</p>
+<hr>
+<p><em>观点仅代表自己，期待你的留言。</em></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-multi-process-read" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/07/07/multi-process-read/" class="article-date">
+  	<time datetime="2017-07-07T02:02:57.000Z" itemprop="datePublished">2017-07-07</time>
+</a>
+      <div class="analysis-container">
+	<i class="fa fa-line-chart"></i>
+	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
+</div>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/07/07/multi-process-read/">分布式系统下并发读取不重复数据</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+              
+        <h2 id="问题背景"><a href="#问题背景" class="headerlink" title="问题背景"></a>问题背景</h2><p>分布式系统模块存在定时任务，当模块被部署多个实例时，不同实例的定时任务在运行时就存在从数据源中获取相同数据的情况，<br>虽然通过乐观锁(数据记录增加version,每次update则set verion+=1 where version=?)的处理方式可以避免多实例更新数据造成脏数据入库的问题，<br>但这无疑是降低了分布式系统部署的初衷（通过横向部署多实例增加系统的处理能力）。</p>
+<p>经过分析，总结如下几种处理方式。</p>
+<h2 id="处理方式"><a href="#处理方式" class="headerlink" title="处理方式"></a>处理方式</h2><h3 id="1、数据置标识位"><a href="#1、数据置标识位" class="headerlink" title="1、数据置标识位"></a>1、数据置标识位</h3><p>在数据库记录中增加flag，当数据被读取后则更改flag的值，避免记录被再次读取。</p>
+<p>具体步骤如下：</p>
+<ul>
+<li>锁定分布式锁</li>
+<li>查询指定数量的数据</li>
+<li>更新已查询出数据的标识位</li>
+<li>释放分布式锁</li>
+</ul>
+<p>当处理完成时: 增加数据version,重置标识位</p>
+<h3 id="2、单实例读取，多实例处理"><a href="#2、单实例读取，多实例处理" class="headerlink" title="2、单实例读取，多实例处理"></a>2、单实例读取，多实例处理</h3><p>读取数据Job：利用Redis的分布式锁保障一个实例拥有读取数据的步骤，读取出来的数据再存放到Redis中的需处理数据队列。</p>
+<p>处理业务Job：所有部署实例通过监控Redis的需处理数据队列如果有数据则take一个数据出来进行业务处理。</p>
+<p>具体步骤如下：</p>
+<ul>
+<li>锁定分布式锁</li>
+<li>检查需要处理的数据队列是否为空，如为空，则跳过当前读取任务。</li>
+<li>获取需要处理的数据并存入Redis的处理队列中</li>
+<li>释放分布式锁<br><em>由于读取数据的步骤由单进程来获取，所以就避免了并发读取数据的问题</em></li>
+</ul>
+<p><strong>add by 2017.8.10 :</strong> 增加处理中的数据队列，在读取数据job时需要排除到正在处理的数据。用于当有数据在处理且数据未更新时，加载数据进行加载时将数据加载出的Bug。<br><strong>add by 2017.9.13 :</strong> 将锁定分布式锁扩展到第一步骤，防止并发情况下通过队列容量检查，成功获取到锁后加载到重复记录。</p>
+<h3 id="3、利用自增ID"><a href="#3、利用自增ID" class="headerlink" title="3、利用自增ID"></a>3、利用自增ID</h3><p>利用分布式锁+Redis存储已处理ID+数据的自增ID来获取数据数据。</p>
+<p>具体步骤如下：</p>
+<ul>
+<li>锁定分布式锁</li>
+<li>从Redis中取出已处理数据的最大ID值(此处用x代替)</li>
+<li>从数据库中取出大于x获取出y(固定数据量)的数据</li>
+<li>更新Redis已处理的数据最大ID值</li>
+<li>释放分布式锁</li>
+</ul>
+<h4 id="存在的问题"><a href="#存在的问题" class="headerlink" title="存在的问题"></a>存在的问题</h4><p><strong>问题描述：</strong> 数据任务在进行业务处理的过程中，如处理失败则再也不会被以上步骤再次获取。</p>
+<p><strong>解决方法1：</strong> 当业务处理失败时，在Redis中记录下失败的数据ID。在获取数据步骤中增加获取失败数据的步骤。</p>
+<p><strong>解决方法2：</strong> 当业务处理失败时，在Redis中记录下失败的数据信息。在业务处理环节增加处理已失败的数据重试步骤。</p>
+<h3 id="4、数据取余"><a href="#4、数据取余" class="headerlink" title="4、数据取余"></a>4、数据取余</h3><p>利用zk获取到总实例数，计算模块实例需要处理的余值。</p>
+<p>具体步骤如下：</p>
+<ul>
+<li>模块启动注册到zk，并计算当前实例需要处理的余值为x (当前实例index % 总实例数)</li>
+<li>从数据库取数据时，将数据主键%总实例数，如果余值为x，则取出数据，否则忽略此数据。</li>
+<li>当模块总实例数变化时，重新计算当前实例需要处理的余值。</li>
+</ul>
+<p><em>风险：</em> 由于模块实例所需要处理的数据固定，当数据取余后的值可能会命中同一个实例，造成模块各实例处理压力不平均。</p>
+<hr>
+<p><em>观点仅代表自己，期待你的留言。</em></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/分布式/">分布式</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/多进程/">多进程</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/并发/">并发</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+
+
+  
     <article id="post-airport-terminal-code" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -944,154 +1119,6 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-cas-attribute" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/08/16/cas-attribute/" class="article-date">
-  	<time datetime="2016-08-16T10:41:39.000Z" itemprop="datePublished">2016-08-16</time>
-</a>
-      <div class="analysis-container">
-	<i class="fa fa-line-chart"></i>
-	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
-</div>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/08/16/cas-attribute/">开源SSO项目cas认证返回更多的attribute信息</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-              
-        <h2 id="CAS项目介绍"><a href="#CAS项目介绍" class="headerlink" title="CAS项目介绍"></a>CAS项目介绍</h2><p>介绍网址： <a href="https://github.com/apereo/cas" target="_blank" rel="external">https://github.com/apereo/cas</a><br>github地址：<a href="https://github.com/apereo/cas.git" target="_blank" rel="external">https://github.com/apereo/cas.git</a></p>
-<p>默认情况下，当用户认证成功后，客户端代码中只能获取到用户的登录名称，不能获取到其它的信息（如：手机号，所属角色，已有授权等），好在提供了一个attribute的map可以进行其它信息的返回。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">AttributePrincipal ap = AssertionHolder.getAssertion().getPrincipal();</span><br><span class="line">String name = ap.getName();</span><br><span class="line">Map&lt;String,Object&gt; attribute = ap.getAttributes();</span><br></pre></td></tr></table></figure></p>
-<h2 id="增加attribute信息返回"><a href="#增加attribute信息返回" class="headerlink" title="增加attribute信息返回"></a>增加attribute信息返回</h2><h3 id="修改ticket验证接口返回的xml信息"><a href="#修改ticket验证接口返回的xml信息" class="headerlink" title="修改ticket验证接口返回的xml信息"></a>修改ticket验证接口返回的xml信息</h3><p>找到WEB-INF/view/jsp/protocol/2.0/casServiceValidationSuccess.jsp，在节点之前添加以下内容。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;cas:serviceResponse xmlns:cas=&apos;http://www.yale.edu/tp/cas&apos;&gt;</span><br><span class="line">    &lt;cas:authenticationSuccess&gt;</span><br><span class="line">    	//...原有信息..//</span><br><span class="line">		&lt;c:if test=&quot;$&#123;fn:length(assertion.chainedAuthentications[fn:length(assertion.chainedAuthentications)-1].principal.attributes) &gt; 0&#125;&quot;&gt;</span><br><span class="line">            &lt;cas:attributes&gt;</span><br><span class="line">                &lt;c:forEach var=&quot;attr&quot; items=&quot;$&#123;assertion.chainedAuthentications[fn:length(assertion.chainedAuthentications)-1].principal.attributes&#125;&quot;&gt;</span><br><span class="line">                    &lt;cas:attribute&gt;</span><br><span class="line">                        &lt;cas:$&#123;fn:escapeXml(attr.key)&#125;&gt;$&#123;fn:escapeXml(attr.value)&#125;&lt;/cas:$&#123;fn:escapeXml(attr.key)&#125;&gt;</span><br><span class="line">                    &lt;/cas:attribute&gt;</span><br><span class="line">                &lt;/c:forEach&gt;</span><br><span class="line">            &lt;/cas:attributes&gt;</span><br><span class="line">        &lt;/c:if&gt;</span><br><span class="line">    &lt;/cas:authenticationSuccess&gt;</span><br><span class="line">&lt;/cas:serviceResponse&gt;</span><br></pre></td></tr></table></figure></p>
-<h3 id="在用户登录验证时增加attribute关联"><a href="#在用户登录验证时增加attribute关联" class="headerlink" title="在用户登录验证时增加attribute关联"></a>在用户登录验证时增加attribute关联</h3><p>在deployerConfigContext.xml配置文件中，默认采用AcceptUsersAuthenticationHandler类的users属性（以key为登录名value为密码）进行系统用户的设定。<br>而通过PersonDirectoryPrincipalResolver的attributeRepository属性进行attribute映射和配置。默认由NamedStubPersonAttributeDao类的backingMap属性进行key-value配置，针对所有的用户都生效。<br>提示：IPersonAttributeDao有很多的子类实现，可以通过源码查看各自实现的方式，我这里主要介绍json,xml和数据库三种方式实现。</p>
-<h4 id="json配置的方式"><a href="#json配置的方式" class="headerlink" title="json配置的方式"></a>json配置的方式</h4><p>而在实际业务系统设计中针对不同的用户需要返回不同的attribute这个需求似乎不太适用，经过查看可能配置JsonBackedComplexStubPersonAttributeDao来在json中针对单个用户attribute进行配置。<code>指定init-method为init方法</code><br>配置如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;attributeRepository&quot; class=&quot;org.jasig.services.persondir.support.JsonBackedComplexStubPersonAttributeDao&quot; init-method=&quot;init&quot;&gt;</span><br><span class="line">    &lt;constructor-arg index=&quot;0&quot; value=&quot;classpath:users.json&quot; /&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure></p>
-<p><em>users.json</em><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;user1&quot;:&#123;</span><br><span class="line">    &quot;id&quot;:[&quot;1001&quot;],</span><br><span class="line">    &quot;firstName&quot;:[&quot;View&quot;],</span><br><span class="line">    &quot;lastName&quot;:[&quot;Jack&quot;],</span><br><span class="line">    &quot;roles&quot;:[&quot;view&quot;],</span><br><span class="line">    &quot;permissions&quot;:[&quot;support:*:view&quot;]</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;user2&quot;:&#123;</span><br><span class="line">    &quot;id&quot;:[&quot;1002&quot;],</span><br><span class="line">    &quot;firstName&quot;:[&quot;Admin&quot;],</span><br><span class="line">    &quot;lastName&quot;:[&quot;One&quot;],</span><br><span class="line">    &quot;roles&quot;:[&quot;admin&quot;],</span><br><span class="line">    &quot;permissions&quot;:[&quot;support&quot;]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h4 id="xml配置的方式"><a href="#xml配置的方式" class="headerlink" title="xml配置的方式"></a>xml配置的方式</h4><p>配置attributeRepository为XmlPersonAttributeDao来在xml中针对单个用户的attribute进行配置。<br>配置如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;attributeRepository&quot; class=&quot;org.jasig.services.persondir.support.xml.XmlPersonAttributeDao&quot;&gt;</span><br><span class="line">    &lt;property name=&quot;mappedXmlResource&quot; value=&quot;classpath:users.xml&quot; /&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure></p>
-<h4 id="database读取的方式"><a href="#database读取的方式" class="headerlink" title="database读取的方式"></a>database读取的方式</h4><p>配置attributeRepository为NamedParameterJdbcPersonAttributeDao来在数据库按用户名进行attribute的配置加载。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;attributeRepository&quot; class=&quot;org.jasig.services.persondir.support.jdbc.SingleRowJdbcPersonAttributeDao&quot;&gt;</span><br><span class="line">    &lt;property name=&quot;dataSource&quot; ref=&quot;datasource&quot; /&gt;</span><br><span class="line">    &lt;property name=&quot;sql&quot; value=&quot;select email,name,username,password from cas_user where &#123;0&#125;&quot; /&gt;</span><br><span class="line">    &lt;!-- 组装sql用的查询条件属性 --&gt;	</span><br><span class="line">	&lt;property name=&quot;queryAttributeMapping&quot;&gt;</span><br><span class="line">		&lt;map&gt;</span><br><span class="line">		    &lt;!-- key必须是uername而且是小写否则会导致取不到用户的其它信息，value对应数据库用户名字段,系统会自己匹配 --&gt;</span><br><span class="line">			&lt;entry key=&quot;username&quot; value=&quot;username&quot; /&gt;</span><br><span class="line">		&lt;/map&gt;</span><br><span class="line">	&lt;/property&gt;</span><br><span class="line">	&lt;property name=&quot;resultAttributeMapping&quot;&gt;</span><br><span class="line">		&lt;map&gt;</span><br><span class="line">		    &lt;!-- key为对应的数据库字段名称，value为提供给客户端获取的属性名字，系统会自动填充值 --&gt;</span><br><span class="line">			&lt;entry key=&quot;username&quot; value=&quot;username&quot; /&gt;</span><br><span class="line">			&lt;entry key=&quot;email&quot; value=&quot;email&quot; /&gt;</span><br><span class="line">			&lt;entry key=&quot;name&quot; value=&quot;name&quot; /&gt;</span><br><span class="line">			&lt;entry key=&quot;password&quot; value=&quot;password&quot; /&gt;</span><br><span class="line">		&lt;/map&gt;</span><br><span class="line">	&lt;/property&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure></p>
-<h2 id="密码加密方式配置"><a href="#密码加密方式配置" class="headerlink" title="密码加密方式配置"></a>密码加密方式配置</h2><p>在实际开发中不能任由密码明文进行传输，一般来讲会进行加密。而cas可直接通过配置的方式进行加密方式的确定。<br>在配置的AcceptUsersAuthenticationHandler中继承了父类中的一个名为passwordEncoder的PasswordEncoder类型属性。通过给这个属性配置加密方式值就能实现。默认为PlainTextPasswordEncoder加密方式。<br>如配置md5的方式：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;primaryAuthenticationHandler&quot; class=&quot;org.jasig.cas.authentication.AcceptUsersAuthenticationHandler&quot;&gt;</span><br><span class="line">	&lt;property name=&quot;passwordEncoder&quot; ref=&quot;passwordEncoder&quot; /&gt;</span><br><span class="line">	&lt;property name=&quot;users&quot;&gt;</span><br><span class="line">        &lt;map&gt;</span><br><span class="line">            &lt;entry key=&quot;user1&quot; value=&quot;123&quot; /&gt;</span><br><span class="line">            &lt;entry key=&quot;user2&quot; value=&quot;123&quot; /&gt;</span><br><span class="line">        &lt;/map&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">&lt;/bean&gt;</span><br><span class="line">&lt;bean id=&quot;passwordEncoder&quot; class=&quot;org.jasig.cas.authentication.handler.DefaultPasswordEncoder&quot;&gt;</span><br><span class="line">	&lt;property name=&quot;characterEncoding&quot; value=&quot;utf-8&quot; /&gt;</span><br><span class="line">	&lt;property name=&quot;encodingAlgorithm&quot; value=&quot;MD5&quot; /&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure></p>
-<p><code>提示：</code>配置了密码方式之后，所有配置文件或数据库中所存储的密码则应修改为密文。</p>
-<h2 id="重要发现"><a href="#重要发现" class="headerlink" title="重要发现"></a>重要发现</h2><p>用户登录验证采用的AuthenticationHandler接口的子类实现，当我们自定义实现类完成验证时，不要妄想在通过HandlerResult的getPrincipal()获取到Principal然后给它设置attribute,因为cas在调用认证方式后会针对Principal的数据进行name的复制，所以即使你的认证方式进行了attribute的设置，在进行对象复制时也会丢掉。</p>
-<p>详见：PolicyBasedAuthenticationManager的authenticateInternal方法中的逻辑。<br><img src="/images/QQ20160817-0.png" alt="PolicyBasedAuthenticationManager-authenticateInternal"></p>
-<hr>
-<p><em>观点仅代表自己，期待你的留言。</em></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-spring-compositeCacheManager" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/07/19/spring-compositeCacheManager/" class="article-date">
-  	<time datetime="2016-07-19T08:47:23.000Z" itemprop="datePublished">2016-07-19</time>
-</a>
-      <div class="analysis-container">
-	<i class="fa fa-line-chart"></i>
-	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
-</div>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/07/19/spring-compositeCacheManager/">妙用Spring中的CompositeCacheManager</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-              
-        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Spring提供了@Cacheable，@CacheEvict,@CachePut等注解很方便有实现数据的缓存，而CompositeCacheManager主要用于集合多个CacheManager实例，在使用多种缓存容器时特别有用。</p>
-<h2 id="fallbackToNoOpCache属性的真实意义"><a href="#fallbackToNoOpCache属性的真实意义" class="headerlink" title="fallbackToNoOpCache属性的真实意义"></a>fallbackToNoOpCache属性的真实意义</h2><p>经过查看Spring 4.1.9.RELEASE的源码,当CompositeCacheManager的fallbackToNoOpCache属性设置为true时，CompositeCacheManager会在已配置的cacheManagers末尾添加一个NoOpCacheManager。<br>当通过代码中指定的缓存容器（@Cacheable等注解设置的value）没有在cacheManagers中都找到时，则会进入到NoOpCacheManager中，此时就相当于禁用掉了缓存，而不抛出相应的异常。</p>
-<p>网络上有朋友在说，当设置fallbackToNoOpCache属性设置为true时，则可以解决缓存容器没有准备好时自动禁用缓存的效果，经过查看Spring源码，并未实现。<br>不过，经测试以下方法可以实现通过配置禁用缓存。</p>
-<h2 id="通过配置禁用缓存"><a href="#通过配置禁用缓存" class="headerlink" title="通过配置禁用缓存"></a>通过配置禁用缓存</h2><p>利用CompositeCacheManager + NoOpCacheManager还能解决当缓存容器没有准备好（缓存容器崩溃，网络不可用等）或者需要暂时去掉缓存的需求。</p>
-<p>只需要将cacheManagers的list值的第一个元素设置为NoOpCacheManager就OK了。</p>
-<p><strong>spring.xml</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;bean id=&quot;cacheManager&quot; class=&quot;org.springframework.cache.support.CompositeCacheManager&quot;&gt;</span><br><span class="line">    &lt;property name=&quot;cacheManagers&quot;&gt;</span><br><span class="line">        &lt;list&gt;</span><br><span class="line">        	&lt;bean class=&quot;org.springframework.cache.support.NoOpCacheManager&quot; /&gt;</span><br><span class="line">            &lt;ref bean=&quot;simpleCacheManager&quot; /&gt;</span><br><span class="line">        &lt;/list&gt;</span><br><span class="line">    &lt;/property&gt;</span><br><span class="line">    &lt;property name=&quot;fallbackToNoOpCache&quot; value=&quot;true&quot; /&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure></p>
-<hr>
-<p><em>观点仅代表自己，期待你的留言。</em></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
@@ -1102,7 +1129,7 @@ var _hmt = _hmt || [];
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2017 建均笔记
+    		&copy; 2018 建均笔记
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten

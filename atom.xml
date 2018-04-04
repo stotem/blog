@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.wujianjun.org/"/>
-  <updated>2017-10-27T15:24:40.707Z</updated>
+  <updated>2018-04-04T10:52:09.226Z</updated>
   <id>http://www.wujianjun.org/</id>
   
   <author>
@@ -16,11 +16,645 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>RocketMQ使用指南及参数详解</title>
+    <link href="http://www.wujianjun.org/2018/04/04/mq-rocketmq-manuals/"/>
+    <id>http://www.wujianjun.org/2018/04/04/mq-rocketmq-manuals/</id>
+    <published>2018-04-04T09:58:58.000Z</published>
+    <updated>2018-04-04T10:52:09.226Z</updated>
+    
+    <content type="html">&lt;h2 id=&quot;一、使用指南&quot;&gt;&lt;a href=&quot;#一、使用指南&quot; class=&quot;headerlink&quot; title=&quot;一、使用指南&quot;&gt;&lt;/a&gt;一、使用指南&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;客户端寻址方式&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;在代码中指定NameServer地址&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;Producer.setNamesrvAddr(“192.168.8.106:9876”);&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;或&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;Consumer.setNamesrvAddr(“192.168.8.106:9876”);&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;Java启动参数中指定NameServer地址&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;-Drocketmq.namesrv.addr=192.168.8.106:9876&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;环境变量指定NameServer地址·&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;export NAMESRV_ADDR=192.168.8.106:9876&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;http静态服务器寻址&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;客户端启动后，会定时访问一个静态的HTTP服务器，地址如下：&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://jmenv.tbsite.net:8080/rocketmq/msaddr&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://jmenv.tbsite.net:8080/rocketmq/msaddr&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;这个URL的返回内容如下：&lt;/p&gt;
+&lt;p&gt;192.168.8.106:9876&lt;/p&gt;
+&lt;p&gt;客户端默认每隔2分钟访问一次这个HTTP服务器，并更新本地的NameServer地址。URL已经在代码中写死，可通过修改/etc/hosts文件来改变要访问的服务器，例如在/etc/hosts增加如下配置：&lt;/p&gt;
+&lt;p&gt;10.232.22.67   jmenv.taobao.net&lt;/p&gt;
+&lt;h2 id=&quot;二、参数详解&quot;&gt;&lt;a href=&quot;#二、参数详解&quot; class=&quot;headerlink&quot; title=&quot;二、参数详解&quot;&gt;&lt;/a&gt;二、参数详解&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;客户端的公共配置类：ClientConfig&lt;/li&gt;
+&lt;/ul&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;参数名&lt;/th&gt;
+&lt;th&gt;默认值&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;NamesrvAddr&lt;/td&gt;
+&lt;td&gt;无&lt;/td&gt;
+&lt;td&gt;NameServer地址列表，多个nameServer地址用分号隔开&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;clientIP&lt;/td&gt;
+&lt;td&gt;本机IP&lt;/td&gt;
+&lt;td&gt;客户端本机IP地址，某些机器会发生无法识别客户端IP地址情况，需要应用在代码中强制指定&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;instanceName&lt;/td&gt;
+&lt;td&gt;DEFAULT&lt;/td&gt;
+&lt;td&gt;客户端实例名称，客户端创建的多个Producer，Consumer实际是共用一个内部实例（这个实例包含网络连接，线程资源等）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;clientCallbackExecutorThreads&lt;/td&gt;
+&lt;td&gt;4&lt;/td&gt;
+&lt;td&gt;通信层异步回调线程数&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;pollNameServerInteval&lt;/td&gt;
+&lt;td&gt;30000&lt;/td&gt;
+&lt;td&gt;轮训Name Server 间隔时间，单位毫秒&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;heartbeatBrokerInterval&lt;/td&gt;
+&lt;td&gt;30000&lt;/td&gt;
+&lt;td&gt;向Broker发送心跳间隔时间，单位毫秒&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;persistConsumerOffsetInterval&lt;/td&gt;
+&lt;td&gt;5000&lt;/td&gt;
+&lt;td&gt;持久化Consumer消费进度间隔时间，单位毫秒&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;ul&gt;
+&lt;li&gt;Producer配置&lt;/li&gt;
+&lt;/ul&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;参数名&lt;/th&gt;
+&lt;th&gt;默认值&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;producerGroup&lt;/td&gt;
+&lt;td&gt;DEFAULT_PRODUCER&lt;/td&gt;
+&lt;td&gt;Producer组名，多个Producer如果属于一个应用，发送同样的消息，则应该将它们归为同一组。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;createTopicKey&lt;/td&gt;
+&lt;td&gt;TBW102&lt;/td&gt;
+&lt;td&gt;在发送消息时，自动创建服务器不存在的topic，需要指定key&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;defaultTopicQueueNums&lt;/td&gt;
+&lt;td&gt;4&lt;/td&gt;
+&lt;td&gt;在发送消息时，自动创建服务器不存在的topic，默认创建的队列数&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;sendMsgTimeout&lt;/td&gt;
+&lt;td&gt;10000&lt;/td&gt;
+&lt;td&gt;发送消息超时时间，单位毫秒&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;compressMsgBodyOverHowmuch&lt;/td&gt;
+&lt;td&gt;4096&lt;/td&gt;
+&lt;td&gt;消息Body超过多大开始压缩（Consumer收到消息会自动解压缩），单位字节&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;retryAnotherBrokerWhenNotStoreOK&lt;/td&gt;
+&lt;td&gt;FALSE&lt;/td&gt;
+&lt;td&gt;如果发送消息返回sendResult,但是sendStatus!=SEND_OK,是否重试发送&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;maxMessageSize&lt;/td&gt;
+&lt;td&gt;131072&lt;/td&gt;
+&lt;td&gt;客户端限制的消息大小，超过报错，同时服务端也会限制（默认128K）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;transactionCheckListener&lt;/td&gt;
+&lt;td&gt;无&lt;/td&gt;
+&lt;td&gt;事物消息回查监听器，如果发送事务消息，必须设置&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;checkThreadPoolMinSize&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;Broker回查Producer事务状态时，线程池大小&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;checkThreadPoolMaxSize&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;Broker回查Producer事务状态时，线程池大小&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;checkRequestHoldMax&lt;/td&gt;
+&lt;td&gt;2000&lt;/td&gt;
+&lt;td&gt;Broker回查Producer事务状态时，Producer本地缓冲请求队列大小&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;ul&gt;
+&lt;li&gt;PushConsumer配置&lt;/li&gt;
+&lt;/ul&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;参数名&lt;/th&gt;
+&lt;th&gt;默认值&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;consumerGroup&lt;/td&gt;
+&lt;td&gt;DEFAULT_CONSUMER&lt;/td&gt;
+&lt;td&gt;Consumer组名，多个Consumer如果属于一个应用，订阅同样的消息，且消费逻辑一致，则应将它们归为同一组&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;messageModel&lt;/td&gt;
+&lt;td&gt;CLUSTERING&lt;/td&gt;
+&lt;td&gt;消息模型，支持以下两种1.集群消费2.广播消费&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;consumeFromWhere&lt;/td&gt;
+&lt;td&gt;CONSUME_FROM_LAST_OFFSET&lt;/td&gt;
+&lt;td&gt;Consumer启动后，默认从什么位置开始消费&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;allocateMessageQueueStrategy&lt;/td&gt;
+&lt;td&gt;AllocateMessageQueueAveragely&lt;/td&gt;
+&lt;td&gt;Rebalance算法实现策略&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Subscription&lt;/td&gt;
+&lt;td&gt;{}&lt;/td&gt;
+&lt;td&gt;订阅关系&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;messageListener&lt;/td&gt;
+&lt;td&gt;无&lt;/td&gt;
+&lt;td&gt;消息监听器&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;offsetStore&lt;/td&gt;
+&lt;td&gt;无&lt;/td&gt;
+&lt;td&gt;消费进度存储&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;consumeThreadMin&lt;/td&gt;
+&lt;td&gt;10&lt;/td&gt;
+&lt;td&gt;消费线程池数量&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;consumeThreadMax&lt;/td&gt;
+&lt;td&gt;20&lt;/td&gt;
+&lt;td&gt;消费线程池数量&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;consumeConcurrentlyMaxSpan&lt;/td&gt;
+&lt;td&gt;2000&lt;/td&gt;
+&lt;td&gt;单队列并行消费允许的最大跨度&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;pullThresholdForQueue&lt;/td&gt;
+&lt;td&gt;1000&lt;/td&gt;
+&lt;td&gt;拉消息本地队列缓存消息最大数&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Pullinterval&lt;/td&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;td&gt;拉消息间隔，由于是长轮询，所以为0，但是如果应用了流控，也可以设置大于0的值，单位毫秒&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;consumeMessageBatchMaxSize&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;批量消费，一次消费多少条消息&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;pullBatchSize&lt;/td&gt;
+&lt;td&gt;32&lt;/td&gt;
+&lt;td&gt;批量拉消息，一次最多拉多少条&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;ul&gt;
+&lt;li&gt;PullConsumer配置&lt;/li&gt;
+&lt;/ul&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;参数名&lt;/th&gt;
+&lt;th&gt;默认值&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;consumerGroup&lt;/td&gt;
+&lt;td&gt;无&lt;/td&gt;
+&lt;td&gt;Conusmer组名，多个Consumer如果属于一个应用，订阅同样的消息，且消费逻辑一致，则应该将它们归为同一组&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;brokerSuspendMaxTimeMillis&lt;/td&gt;
+&lt;td&gt;20000&lt;/td&gt;
+&lt;td&gt;长轮询，Consumer拉消息请求在Broker挂起最长时间，单位毫秒&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;consumerPullTimeoutMillis&lt;/td&gt;
+&lt;td&gt;10000&lt;/td&gt;
+&lt;td&gt;非长轮询，拉消息超时时间，单位毫秒&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;consumerTimeoutMillisWhenSuspend&lt;/td&gt;
+&lt;td&gt;30000&lt;/td&gt;
+&lt;td&gt;长轮询，Consumer拉消息请求咋broker挂起超过指定时间，客户端认为超时，单位毫秒&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;messageModel&lt;/td&gt;
+&lt;td&gt;BROADCASTING&lt;/td&gt;
+&lt;td&gt;消息模型，支持以下两种：1集群消费 2广播模式&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;messageQueueListener&lt;/td&gt;
+&lt;td&gt;无&lt;/td&gt;
+&lt;td&gt;监听队列变化&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;offsetStore&lt;/td&gt;
+&lt;td&gt;无&lt;/td&gt;
+&lt;td&gt;消费进度存储&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;registerTopics&lt;/td&gt;
+&lt;td&gt;无&lt;/td&gt;
+&lt;td&gt;注册的topic集合&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;allocateMessageQueueStrategy&lt;/td&gt;
+&lt;td&gt;无&lt;/td&gt;
+&lt;td&gt;Rebalance算法实现策略&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;ul&gt;
+&lt;li&gt;Broker配置参数&lt;br&gt;查看Broker默认配置&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;sh mqbroker -m&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;参数名&lt;/th&gt;
+&lt;th&gt;默认值&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;consumerGroup&lt;/td&gt;
+&lt;td&gt;无&lt;/td&gt;
+&lt;td&gt;Conusmer组名，多个Consumer如果属于一个应用，订阅同样的消息，且消费逻辑一致，则应该将它们归为同一组&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;listenPort&lt;/td&gt;
+&lt;td&gt;10911&lt;/td&gt;
+&lt;td&gt;Broker对外服务的监听端口&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;namesrvAddr&lt;/td&gt;
+&lt;td&gt;Null&lt;/td&gt;
+&lt;td&gt;Name Server地址&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;brokerIP1&lt;/td&gt;
+&lt;td&gt;本机IP&lt;/td&gt;
+&lt;td&gt;本机IP地址，默认系统自动识别，但是某些多网卡机器会存在识别错误的情况，这种情况下可以人工配置。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;brokerName&lt;/td&gt;
+&lt;td&gt;本机主机名&lt;/td&gt;
+&lt;td&gt;无&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;brokerClusterName&lt;/td&gt;
+&lt;td&gt;DefaultCluster&lt;/td&gt;
+&lt;td&gt;Broker所属哪个集群&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;brokerId&lt;/td&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;td&gt;BrokerId,必须是大等于0的整数，0表示Master，&amp;gt;0表示Slave，一个Master可以挂多个Slave，Master和Slave通过BrokerName来配对&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;storePathCommitLog&lt;/td&gt;
+&lt;td&gt;$HOME/store/commitlog&lt;/td&gt;
+&lt;td&gt;commitLog存储路径&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;storePathConsumeQueue&lt;/td&gt;
+&lt;td&gt;$HOME/store/consumequeue&lt;/td&gt;
+&lt;td&gt;消费队列存储路径&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;storePathIndex&lt;/td&gt;
+&lt;td&gt;$HOME/store/index&lt;/td&gt;
+&lt;td&gt;消息索引存储队列&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;deleteWhen&lt;/td&gt;
+&lt;td&gt;4&lt;/td&gt;
+&lt;td&gt;删除时间时间点，默认凌晨4点&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;fileReservedTime&lt;/td&gt;
+&lt;td&gt;48&lt;/td&gt;
+&lt;td&gt;文件保留时间，默认48小时&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;maxTransferBytesOnMessageInMemory&lt;/td&gt;
+&lt;td&gt;262144&lt;/td&gt;
+&lt;td&gt;单次pull消息（内存）传输的最大字节数&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;maxTransferCountOnMessageInMemory&lt;/td&gt;
+&lt;td&gt;32&lt;/td&gt;
+&lt;td&gt;单次pull消息（内存）传输的最大条数&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;maxTransferBytesOnMessageInDisk&lt;/td&gt;
+&lt;td&gt;65535&lt;/td&gt;
+&lt;td&gt;单次pull消息（磁盘）传输的最大字节数&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;maxTransferCountOnMessageInDisk&lt;/td&gt;
+&lt;td&gt;8&lt;/td&gt;
+&lt;td&gt;单次pull消息（磁盘）传输的最大条数&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;messageIndexEnable&lt;/td&gt;
+&lt;td&gt;TRUE&lt;/td&gt;
+&lt;td&gt;是否开启消息索引功能&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;messageIndexSafe&lt;/td&gt;
+&lt;td&gt;FALSE&lt;/td&gt;
+&lt;td&gt;是否提供安全的消息索引机制，索引保证不丢&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;brokerRole&lt;/td&gt;
+&lt;td&gt;ASYNC_MASTER&lt;/td&gt;
+&lt;td&gt;Broker的角色 -ASYNC_MASTER异步复制Master -SYNC_MASTER同步双写Master -SLAVE&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;flushDiskType&lt;/td&gt;
+&lt;td&gt;ASYNC_FLUSH&lt;/td&gt;
+&lt;td&gt;刷盘方式 -ASYNC_FLUSH异步刷盘 -SYNC_FLUSH同步刷盘&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;cleanFileForciblyEnable&lt;/td&gt;
+&lt;td&gt;TRUE&lt;/td&gt;
+&lt;td&gt;磁盘满，且无过期文件情况下TRUE表示强制删除文件，优先保证服务可用 FALSE标记服务不可用，文件不删除&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;转自:&lt;a href=&quot;https://www.cnblogs.com/xiaodf/p/5075167.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://www.cnblogs.com/xiaodf/p/5075167.html&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;观点仅代表自己，期待你的留言。&lt;/em&gt;&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;一、使用指南&quot;&gt;&lt;a href=&quot;#一、使用指南&quot; class=&quot;headerlink&quot; title=&quot;一、使用指南&quot;&gt;&lt;/a&gt;一、使用指南&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;客户端寻址方式&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;在代码中指定NameServer地址&lt;br&gt;&lt;fig
+    
+    </summary>
+    
+    
+      <category term="转载" scheme="http://www.wujianjun.org/tags/%E8%BD%AC%E8%BD%BD/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>RocketMQ各组件特性和HA集群方案</title>
+    <link href="http://www.wujianjun.org/2018/04/04/mq-rocketmq-module/"/>
+    <id>http://www.wujianjun.org/2018/04/04/mq-rocketmq-module/</id>
+    <published>2018-04-04T08:58:58.000Z</published>
+    <updated>2018-04-04T10:52:31.622Z</updated>
+    
+    <content type="html">&lt;h2 id=&quot;一、简介&quot;&gt;&lt;a href=&quot;#一、简介&quot; class=&quot;headerlink&quot; title=&quot;一、简介&quot;&gt;&lt;/a&gt;一、简介&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;RocketMQ是一款分布式、队列模型的消息中间件，具有以下特点：&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;能够保证严格的消息顺序&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;提供丰富的消息拉取模式&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;高效的订阅者水平扩展能力&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;实时的消息订阅机制&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;亿级消息堆积能力&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;二、组件特性&quot;&gt;&lt;a href=&quot;#二、组件特性&quot; class=&quot;headerlink&quot; title=&quot;二、组件特性&quot;&gt;&lt;/a&gt;二、组件特性&lt;/h2&gt;&lt;h3 id=&quot;1-nameserver&quot;&gt;&lt;a href=&quot;#1-nameserver&quot; class=&quot;headerlink&quot; title=&quot;1. nameserver&quot;&gt;&lt;/a&gt;1. nameserver&lt;/h3&gt;&lt;p&gt;相对来说，nameserver的稳定性非常高。原因有二：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;nameserver互相独立，彼此没有通信关系，单台nameserver挂掉，不影响其他nameserver，即使全部挂掉，也不影响业务系统使用。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;nameserver不会有频繁的读写，所以性能开销非常小，稳定性很高。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;2-broker&quot;&gt;&lt;a href=&quot;#2-broker&quot; class=&quot;headerlink&quot; title=&quot;2. broker&quot;&gt;&lt;/a&gt;2. broker&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;与nameserver关系&lt;/strong&gt;&lt;br&gt;&lt;strong&gt;连接:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;单个broker和所有nameserver保持长连接&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;心跳:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;心跳间隔：每隔30秒（此时间无法更改）向所有nameserver发送心跳，心跳包含了自身的topic配置信息。&lt;/p&gt;
+&lt;p&gt;心跳超时：nameserver每隔10秒钟（此时间无法更改），扫描所有还存活的broker连接，若某个连接2分钟内（当前时间与最后更新时间差值超过2分钟，此时间无法更改）没有发送心跳数据，则断开连接。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;断开:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;时机：broker挂掉；心跳超时导致nameserver主动关闭连接&lt;/p&gt;
+&lt;p&gt;动作：一旦连接断开，nameserver会立即感知，更新topc与队列的对应关系，但不会通知生产者和消费者&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;负载均衡:&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;一个topic分布在多个broker上，一个broker可以配置多个topic，它们是多对多的关系。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;如果某个topic消息量很大，应该给它多配置几个队列，并且尽量多分布在不同broker上，减轻某个broker的压力。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;topic消息量都比较均匀的情况下，如果某个broker上的队列越多，则该broker压力越大。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;可用性:&lt;/strong&gt;&lt;br&gt;   由于消息分布在各个broker上，一旦某个broker宕机，则该broker上的消息读写都会受到影响。所以rocketmq提供了master/slave的结构，salve定时从master同步数据，如果master宕机，则slave提供消费服务，但是不能写入消息，此过程对应用透明，由rocketmq内部解决。&lt;/p&gt;
+&lt;p&gt;这里有两个关键点：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;一旦某个broker master宕机，生产者和消费者多久才能发现？受限于rocketmq的网络连接机制，默认情况下，最多需要30秒，但这个时间可由应用设定参数来缩短时间。这个时间段内，发往该broker的消息都是失败的，而且该broker的消息无法消费，因为此时消费者不知道该broker已经挂掉。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;消费者得到master宕机通知后，转向slave消费，但是slave不能保证master的消息100%都同步过来了，因此会有少量的消息丢失。但是消息最终不会丢的，一旦master恢复，未同步过去的消息会被消费掉。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;可靠性:&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;所有发往broker的消息，有同步刷盘和异步刷盘机制，总的来说，可靠性非常高&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;同步刷盘时，消息写入物理文件才会返回成功，因此非常可靠&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;异步刷盘时，只有机器宕机，才会产生消息丢失，broker挂掉可能会发生，但是机器宕机崩溃是很少发生的，除非突然断电&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;消息清理:&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;扫描间隔&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;默认10秒，由broker配置参数cleanResourceInterval决定&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;空间阈值&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;物理文件不能无限制的一直存储在磁盘，当磁盘空间达到阈值时，不再接受消息，broker打印出日志，消息发送失败，阈值为固定值85%&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;清理时机&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;默认每天凌晨4点，由broker配置参数deleteWhen决定；或者磁盘空间达到阈值&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;文件保留时长&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;默认72小时，由broker配置参数fileReservedTime决定&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;读写性能:&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;文件内存映射方式操作文件，避免read/write系统调用和实时文件读写，性能非常高&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;永远一个文件在写，其他文件在读&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;顺序写，随机读&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;利用linux的sendfile机制，将消息内容直接输出到sokect管道，避免系统调用&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;系统特性:&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;大内存，内存越大性能越高，否则系统swap会成为性能瓶颈&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;IO密集&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;cpu load高，使用率低，因为cpu占用后，大部分时间在IO WAIT&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;磁盘可靠性要求高，为了兼顾安全和性能，采用RAID10阵列&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;磁盘读取速度要求快，要求高转速大容量磁盘&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&quot;3-消费者&quot;&gt;&lt;a href=&quot;#3-消费者&quot; class=&quot;headerlink&quot; title=&quot;3. 消费者&quot;&gt;&lt;/a&gt;3. 消费者&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;与nameserver关系&lt;/strong&gt;&lt;br&gt;&lt;strong&gt;连接:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;单个消费者和一台nameserver保持长连接，定时查询topic配置信息，如果该nameserver挂掉，消费者会自动连接下一个nameserver，直到有可用连接为止，并能自动重连。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;心跳:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;与nameserver没有心跳&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;轮询时间:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;默认情况下，消费者每隔30秒从nameserver获取所有topic的最新队列情况，这意味着某个broker如果宕机，客户端最多要30秒才能感知。该时间由DefaultMQPushConsumer的pollNameServerInteval参数决定，可手动配置。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;与broker关系&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;连接:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;单个消费者和该消费者关联的所有broker保持长连接。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;心跳:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;默认情况下，消费者每隔30秒向所有broker发送心跳，该时间由DefaultMQPushConsumer的heartbeatBrokerInterval参数决定，可手动配置。broker每隔10秒钟（此时间无法更改），扫描所有还存活的连接，若某个连接2分钟内（当前时间与最后更新时间差值超过2分钟，此时间无法更改）没有发送心跳数据，则关闭连接，并向该消费者分组的所有消费者发出通知，分组内消费者重新分配队列继续消费&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;断开:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;时机：消费者挂掉；心跳超时导致broker主动关闭连接&lt;/p&gt;
+&lt;p&gt;动作：一旦连接断开，broker会立即感知到，并向该消费者分组的所有消费者发出通知，分组内消费者重新分配队列继续消费&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;负载均衡:&lt;/strong&gt;&lt;br&gt;集群消费模式下，一个消费者集群多台机器共同消费一个topic的多个队列，一个队列只会被一个消费者消费。如果某个消费者挂掉，分组内其它消费者会接替挂掉的消费者继续消费。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;消费机制:&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;本地队列&lt;br&gt;消费者不间断的从broker拉取消息，消息拉取到本地队列，然后本地消费线程消费本地消息队列，只是一个异步过程，拉取线程不会等待本地消费线程，这种模式实时性非常高。对消费者对本地队列有一个保护，因此本地消息队列不能无限大，否则可能会占用大量内存，本地队列大小由DefaultMQPushConsumer的pullThresholdForQueue属性控制，默认1000，可手动设置。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;轮询间隔&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;消息拉取线程每隔多久拉取一次？间隔时间由DefaultMQPushConsumer的pullInterval属性控制，默认为0，可手动设置。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;消息消费数量&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;监听器每次接受本地队列的消息是多少条？这个参数由DefaultMQPushConsumer的consumeMessageBatchMaxSize属性控制，默认为1，可手动设置。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;消费进度存储:&lt;/strong&gt;&lt;br&gt;每隔一段时间将各个队列的消费进度存储到对应的broker上，该时间由DefaultMQPushConsumer的persistConsumerOffsetInterval属性控制，默认为5秒，可手动设置。&lt;/p&gt;
+&lt;p&gt;如果一个topic在某broker上有3个队列，一个消费者消费这3个队列，那么该消费者和这个broker有几个连接？&lt;br&gt;一个连接，消费单位与队列相关，消费连接只跟broker相关，事实上，消费者将所有队列的消息拉取任务放到本地的队列，挨个拉取，拉取完毕后，又将拉取任务放到队尾，然后执行下一个拉取任务&lt;/p&gt;
+&lt;h3 id=&quot;4-生产者&quot;&gt;&lt;a href=&quot;#4-生产者&quot; class=&quot;headerlink&quot; title=&quot;4. 生产者&quot;&gt;&lt;/a&gt;4. 生产者&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;与nameserver关系&lt;/strong&gt;&lt;br&gt;&lt;strong&gt;连接:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;单个生产者者和一台nameserver保持长连接，定时查询topic配置信息，如果该nameserver挂掉，生产者会自动连接下一个nameserver，直到有可用连接为止，并能自动重连。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;轮询时间:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;默认情况下，生产者每隔30秒从nameserver获取所有topic的最新队列情况，这意味着某个broker如果宕机，生产者最多要30秒才能感知，在此期间，发往该broker的消息发送失败。该时间由DefaultMQProducer的pollNameServerInteval参数决定，可手动配置。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;心跳:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;与nameserver没有心跳&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;与broker关系&lt;/strong&gt;&lt;br&gt;&lt;strong&gt;连接:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;单个生产者和该生产者关联的所有broker保持长连接。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;心跳:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;默认情况下，生产者每隔30秒向所有broker发送心跳，该时间由DefaultMQProducer的heartbeatBrokerInterval参数决定，可手动配置。broker每隔10秒钟（此时间无法更改），扫描所有还存活的连接，若某个连接2分钟内（当前时间与最后更新时间差值超过2分钟，此时间无法更改）没有发送心跳数据，则关闭连接。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;连接断开:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;移除broker上的生产者信息&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;负载均衡:&lt;/strong&gt;&lt;br&gt;生产者时间没有关系，每个生产者向队列轮流发送消息&lt;/p&gt;
+&lt;h2 id=&quot;三、集群方案&quot;&gt;&lt;a href=&quot;#三、集群方案&quot; class=&quot;headerlink&quot; title=&quot;三、集群方案&quot;&gt;&lt;/a&gt;三、集群方案&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;单个 Master&lt;br&gt;这种方式风险较大，一旦Broker 重启或者宕机时，会导致整个服务不可用，不建议线上环境使用。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;多 Master 模式&lt;br&gt;一个集群无 Slave，全是 Master，例如 2 个 Master 或者 3 个 Master&lt;/p&gt;
+&lt;p&gt;优点：配置简单，单个Master 宕机或重启维护对应用无影响，在磁盘配置为 RAID10 时，即使机器宕机不可恢复情况下，由与 RAID10 磁盘非常可靠，消息也不会丢（异步刷盘丢失少量消息，同步刷盘一条不丢）。性能最高。&lt;/p&gt;
+&lt;p&gt;缺点：单台机器宕机期间，这台机器上未被消费的消息在机器恢复之前不可订阅，消息实时性会受到受到影响。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;em&gt;先启动 NameServer，例如机器 IP 为：172.16.8.106:9876&lt;/em&gt;&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;nohup sh mqnamesrv &amp;amp;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;   &lt;em&gt;在机器 A，启动第一个 Master&lt;/em&gt;&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;nohup sh mqbroker -n 172.16.8.106:9876 -c $ROCKETMQ_HOME/conf/2m-noslave/broker-a.properties &amp;amp;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;   &lt;em&gt;在机器 B，启动第二个 Master&lt;/em&gt;&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;nohup sh mqbroker -n 172.16.8.106:9876 -c $ROCKETMQ_HOME/conf/2m-noslave/broker-b.properties &amp;amp;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;多 Master 多 Slave 模式，异步复制&lt;br&gt;每个 Master 配置一个 Slave，有多对Master-Slave，HA 采用异步复制方式，主备有短暂消息延迟，毫秒级。&lt;/p&gt;
+&lt;p&gt;优点：即使磁盘损坏，消息丢失的非常少，且消息实时性不会受影响，因为 Master 宕机后，消费者仍然可以从 Slave 消费，此过程对应用透明。不需要人工干预。性能同多 Master 模式几乎一样。&lt;/p&gt;
+&lt;p&gt;缺点：Master 宕机，磁盘损坏情况，会丢失少量消息。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;em&gt;先启动 NameServer，例如机器 IP 为：172.16.8.106:9876&lt;/em&gt;&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;nohup sh mqnamesrv &amp;amp;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;   &lt;em&gt;在机器 A，启动第一个 Master&lt;/em&gt;&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;nohup sh mqbroker -n 172.16.8.106:9876 -c $ROCKETMQ_HOME/conf/2m-2s-async/broker-a.properties &amp;amp;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;   &lt;em&gt;在机器 B，启动第二个 Master&lt;/em&gt;&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;nohup sh mqbroker -n 172.16.8.106:9876 -c $ROCKETMQ_HOME/conf/2m-2s-async/broker-b.properties &amp;amp;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;   &lt;em&gt;在机器 C，启动第一个 Slave&lt;/em&gt;&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;nohup sh mqbroker -n 172.16.8.106:9876 -c $ROCKETMQ_HOME/conf/2m-2s-async/broker-a-s.properties &amp;amp;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;   &lt;em&gt;在机器 D，启动第二个 Slave&lt;/em&gt;&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;nohup sh mqbroker -n 172.16.8.106:9876 -c $ROCKETMQ_HOME/conf/2m-2s-async/broker-b-s.properties &amp;amp;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;多 Master 多 Slave 模式，同步双写&lt;br&gt;每个 Master 配置一个 Slave，有多对Master-Slave，HA 采用同步双写方式，主备都写成功，向应用返回成功。&lt;/p&gt;
+&lt;p&gt;优点：数据与服务都无单点，Master宕机情况下，消息无延迟，服务可用性与数据可用性都非常高&lt;/p&gt;
+&lt;p&gt;缺点：性能比异步复制模式略低，大约低 10%左右，发送单个消息的 RT 会略高。目前主宕机后，备机不能自动切换为主机，后续会支持自动切换功能。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;em&gt;先启动 NameServer，例如机器 IP 为：172.16.8.106:9876&lt;/em&gt;&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;nohup sh mqnamesrv &amp;amp;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;   &lt;em&gt;在机器 A，启动第一个 Master&lt;/em&gt;&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;nohup sh mqbroker -n 172.16.8.106:9876 -c $ROCKETMQ_HOME/conf/2m-2s-sync/broker-a.properties &amp;amp;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;   &lt;em&gt;在机器 B，启动第二个 Master&lt;/em&gt;&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;nohup sh mqbroker -n 172.16.8.106:9876 -c $ROCKETMQ_HOME/conf/2m-2s-sync/broker-b.properties &amp;amp;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;   &lt;em&gt;在机器 C，启动第一个 Slave&lt;/em&gt;&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;nohup sh mqbroker -n 172.16.8.106:9876 -c $ROCKETMQ_HOME/conf/2m-2s-sync/broker-a-s.properties &amp;amp;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;   &lt;em&gt;在机器 D，启动第二个 Slave&lt;/em&gt;&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;nohup sh mqbroker -n 172.16.8.106:9876 -c $ROCKETMQ_HOME/conf/2m-2s-sync/broker-b-s.properties &amp;amp;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;   以上 Broker 与 Slave 配对是通过指定相同的brokerName 参数来配对，Master 的 BrokerId 必须是 0，Slave的BrokerId 必须是大与 0 的数。另外一个 Master 下面可以挂载多个 Slave，同一 Master 下的多个 Slave 通过指定不同的 BrokerId 来区分。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;转自:&lt;a href=&quot;https://www.cnblogs.com/xiaodf/p/5075167.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://www.cnblogs.com/xiaodf/p/5075167.html&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;观点仅代表自己，期待你的留言。&lt;/em&gt;&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;一、简介&quot;&gt;&lt;a href=&quot;#一、简介&quot; class=&quot;headerlink&quot; title=&quot;一、简介&quot;&gt;&lt;/a&gt;一、简介&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;RocketMQ是一款分布式、队列模型的消息中间件，具有以下特点：&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;能够
+    
+    </summary>
+    
+    
+      <category term="转载" scheme="http://www.wujianjun.org/tags/%E8%BD%AC%E8%BD%BD/"/>
+    
+  </entry>
+  
+  <entry>
     <title>分布式事务最终一致性解决方案-DTCS</title>
     <link href="http://www.wujianjun.org/2017/10/27/dtcs-seq/"/>
     <id>http://www.wujianjun.org/2017/10/27/dtcs-seq/</id>
     <published>2017-10-27T14:57:55.000Z</published>
-    <updated>2017-10-27T15:24:40.707Z</updated>
+    <updated>2017-12-01T10:49:44.571Z</updated>
     
     <content type="html">&lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;DTCS（Data Transfer Consistency Service）：数据一致性传输服务，通过MQ+一致性保障所实现的数据一致性传输服务。为全方面保障数据传输的一致性，增加运维人员人工介入纠正未及时实现数据一致性的处理方式。&lt;/p&gt;
 &lt;h2 id=&quot;业务调用时序&quot;&gt;&lt;a href=&quot;#业务调用时序&quot; class=&quot;headerlink&quot; title=&quot;业务调用时序&quot;&gt;&lt;/a&gt;业务调用时序&lt;/h2&gt;&lt;p&gt;&lt;img src=&quot;/images/dtcs-seq.jpg&quot; alt=&quot;业务调用时序&quot;&gt;&lt;/p&gt;
@@ -47,7 +681,7 @@
     <link href="http://www.wujianjun.org/2017/10/18/thinkpad-battery-limit/"/>
     <id>http://www.wujianjun.org/2017/10/18/thinkpad-battery-limit/</id>
     <published>2017-10-18T08:04:47.000Z</published>
-    <updated>2017-10-18T08:06:45.088Z</updated>
+    <updated>2017-12-01T10:49:43.663Z</updated>
     
     <content type="html">&lt;h2 id=&quot;设置电池阀&quot;&gt;&lt;a href=&quot;#设置电池阀&quot; class=&quot;headerlink&quot; title=&quot;设置电池阀&quot;&gt;&lt;/a&gt;设置电池阀&lt;/h2&gt;&lt;p&gt;sudo add-apt-repository ppa:linrunner/tlp&lt;br&gt;sudo apt-get update&lt;/p&gt;
 &lt;p&gt;sudo apt-get install tlp tlp-rdw&lt;br&gt;sudo apt-get install tp-smapi-dkms acpi-call-tools&lt;/p&gt;
@@ -80,7 +714,7 @@
     <link href="http://www.wujianjun.org/2017/10/15/nginx-rtmp-obs/"/>
     <id>http://www.wujianjun.org/2017/10/15/nginx-rtmp-obs/</id>
     <published>2017-10-15T03:07:14.000Z</published>
-    <updated>2017-10-15T09:40:25.565Z</updated>
+    <updated>2017-12-01T10:49:44.295Z</updated>
     
     <content type="html">&lt;h2 id=&quot;实验环境&quot;&gt;&lt;a href=&quot;#实验环境&quot; class=&quot;headerlink&quot; title=&quot;实验环境&quot;&gt;&lt;/a&gt;实验环境&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;&lt;p&gt;系统环境&lt;/p&gt;
@@ -137,7 +771,7 @@
     <link href="http://www.wujianjun.org/2017/09/18/transaction-distributed/"/>
     <id>http://www.wujianjun.org/2017/09/18/transaction-distributed/</id>
     <published>2017-09-18T07:13:57.000Z</published>
-    <updated>2017-10-18T11:30:09.627Z</updated>
+    <updated>2017-12-01T10:49:43.731Z</updated>
     
     <content type="html">&lt;h2 id=&quot;一、概念&quot;&gt;&lt;a href=&quot;#一、概念&quot; class=&quot;headerlink&quot; title=&quot;一、概念&quot;&gt;&lt;/a&gt;一、概念&lt;/h2&gt;&lt;h3 id=&quot;1、CAP定律&quot;&gt;&lt;a href=&quot;#1、CAP定律&quot; class=&quot;headerlink&quot; title=&quot;1、CAP定律&quot;&gt;&lt;/a&gt;1、CAP定律&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;Consistency(一致性)：&lt;/strong&gt; 数据一致更新，针对集群内所有节点数据变动都是同步完成。&lt;br&gt;&lt;strong&gt;Availability(可用性)：&lt;/strong&gt; 在集群中一部分节点故障后，集群整体是否还能响应客户端的读写请求。&lt;br&gt;&lt;strong&gt;Partition tolerance(分区容错性)：&lt;/strong&gt; 以实际效果而言，分区相当于对通信的时限要求。系统如果不能在时限内达成数据一致性，就意味着发生了分区的情况，必须就当前操作在C和A之间做出选择。&lt;/p&gt;
 &lt;p&gt;It states, that though its desirable to have Consistency, High-Availability and Partition-tolerance in every system, unfortunately no system can achieve all three at the same time.&lt;br&gt;在分布式系统的设计中，没有一种设计可以同时满足一致性，可用性，分区容错性 3个特性&lt;/p&gt;
@@ -191,7 +825,7 @@
     <link href="http://www.wujianjun.org/2017/09/05/cron-expression/"/>
     <id>http://www.wujianjun.org/2017/09/05/cron-expression/</id>
     <published>2017-09-05T12:48:08.000Z</published>
-    <updated>2017-09-05T12:55:15.335Z</updated>
+    <updated>2017-12-01T10:49:43.415Z</updated>
     
     <content type="html">&lt;h2 id=&quot;CronTrigger&quot;&gt;&lt;a href=&quot;#CronTrigger&quot; class=&quot;headerlink&quot; title=&quot;CronTrigger&quot;&gt;&lt;/a&gt;CronTrigger&lt;/h2&gt;&lt;p&gt;CronTriggers往往比SimpleTrigger更有用，如果您需要基于日历的概念，而非SimpleTrigger完全指定的时间间隔，复发的发射工作的时间表。&lt;br&gt;CronTrigger，你可以指定触发的时间表如“每星期五中午”，或“每个工作日9:30时”，甚至“每5分钟一班9:00和10:00逢星期一上午，星期三星期五“。&lt;br&gt;即便如此，SimpleTrigger一样，CronTrigger拥有的startTime指定的时间表时生效，指定的时间表时，应停止（可选）结束时间。&lt;/p&gt;
 &lt;h3 id=&quot;Cron-Expressions&quot;&gt;&lt;a href=&quot;#Cron-Expressions&quot; class=&quot;headerlink&quot; title=&quot;Cron Expressions&quot;&gt;&lt;/a&gt;Cron Expressions&lt;/h3&gt;&lt;p&gt;cron的表达式被用来配置CronTrigger实例。 cron的表达式是字符串，实际上是由七子表达式，描述个别细节的时间表。&lt;br&gt;这些子表达式是分开的空白，代表：&lt;/p&gt;
@@ -316,7 +950,7 @@
     <link href="http://www.wujianjun.org/2017/08/24/store-flag-bit/"/>
     <id>http://www.wujianjun.org/2017/08/24/store-flag-bit/</id>
     <published>2017-08-24T11:08:28.000Z</published>
-    <updated>2017-08-24T11:53:25.449Z</updated>
+    <updated>2017-12-01T10:49:43.775Z</updated>
     
     <content type="html">&lt;h2 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h2&gt;&lt;p&gt;在做程序开发的过程中常常会遇到数据的标识位（取值为”是”与”否”）需要进行存储，&lt;br&gt;如神马专车系统消息中心中的一个场景：新建一个消息需要勾选发送对象，可选的对象有：司机，下单人，乘车人。&lt;br&gt;最常见的Mysql存储方式为一个消息表中包含三个字段sendDriver,sendUser,sendPassenger&lt;br&gt;按用户新建消息所勾选的情况，依次存储到数据表中并在后续的业务中直接获取值进行对比。&lt;/p&gt;
 &lt;h2 id=&quot;优化方案&quot;&gt;&lt;a href=&quot;#优化方案&quot; class=&quot;headerlink&quot; title=&quot;优化方案&quot;&gt;&lt;/a&gt;优化方案&lt;/h2&gt;&lt;p&gt;利用”与或非”的运算可将这多个标识符存储到一个字段中。&lt;br&gt;实例如下：&lt;br&gt;按业务这里有三个标识符需要存储，因此可以定义一个长度为3的二进行序列：000，从左至右第一位表示司机，第二位表示下单人，第三位表示乘车人。&lt;br&gt;那么，如果只需要发送给司机则可标识为100的二进行序列，如果下单人也需要通知，则可标识为110的二进行序列，依次，如果都需要通知则为111的二进制序列。&lt;br&gt;存储的值则为二进行制序列对应的十进制即可，当需要判断时，则可采用”与”运算符进行判定。&lt;/p&gt;
@@ -342,7 +976,7 @@
     <link href="http://www.wujianjun.org/2017/07/21/no-transaction/"/>
     <id>http://www.wujianjun.org/2017/07/21/no-transaction/</id>
     <published>2017-07-21T09:55:05.000Z</published>
-    <updated>2017-07-21T10:50:58.959Z</updated>
+    <updated>2017-12-01T10:49:43.515Z</updated>
     
     <content type="html">&lt;h2 id=&quot;问题现象&quot;&gt;&lt;a href=&quot;#问题现象&quot; class=&quot;headerlink&quot; title=&quot;问题现象&quot;&gt;&lt;/a&gt;问题现象&lt;/h2&gt;&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;javax.persistence.TransactionRequiredException: no transaction is in progress&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	at org.hibernate.ejb.AbstractEntityManagerImpl.flush(AbstractEntityManagerImpl.java:&lt;span class=&quot;number&quot;&gt;301&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:&lt;span class=&quot;number&quot;&gt;39&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:&lt;span class=&quot;number&quot;&gt;25&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	at java.lang.reflect.Method.invoke(Method.java:&lt;span class=&quot;number&quot;&gt;597&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	at org.springframework.orm.jpa.ExtendedEntityManagerCreator$ExtendedEntityManagerInvocationHandler.invoke(ExtendedEntityManagerCreator.java:&lt;span class=&quot;number&quot;&gt;365&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	at $Proxy34.flush(Unknown Source)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:&lt;span class=&quot;number&quot;&gt;39&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:&lt;span class=&quot;number&quot;&gt;25&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	at java.lang.reflect.Method.invoke(Method.java:&lt;span class=&quot;number&quot;&gt;597&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	at org.springframework.orm.jpa.SharedEntityManagerCreator$SharedEntityManagerInvocationHandler.invoke(SharedEntityManagerCreator.java:&lt;span class=&quot;number&quot;&gt;240&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	at $Proxy34.flush(Unknown Source)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  ... &lt;span class=&quot;number&quot;&gt;53&lt;/span&gt; more&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;h2 id=&quot;示例代码-Proxy&quot;&gt;&lt;a href=&quot;#示例代码-Proxy&quot; class=&quot;headerlink&quot; title=&quot;示例代码 - Proxy&quot;&gt;&lt;/a&gt;示例代码 - Proxy&lt;/h2&gt;&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;classA&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; doA &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.doB();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;meta&quot;&gt;@Transaction&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; doB&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;// do save or update&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
@@ -373,7 +1007,7 @@
     <link href="http://www.wujianjun.org/2017/07/21/transaction-mark-rollbackonly/"/>
     <id>http://www.wujianjun.org/2017/07/21/transaction-mark-rollbackonly/</id>
     <published>2017-07-21T09:01:27.000Z</published>
-    <updated>2017-09-18T07:15:47.383Z</updated>
+    <updated>2017-12-01T10:49:44.519Z</updated>
     
     <content type="html">&lt;h2 id=&quot;问题现象&quot;&gt;&lt;a href=&quot;#问题现象&quot; class=&quot;headerlink&quot; title=&quot;问题现象&quot;&gt;&lt;/a&gt;问题现象&lt;/h2&gt;&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;org.springframework.transaction.TransactionSystemException: Could not commit JPA transaction; nested exception is javax.persistence.RollbackException: Transaction marked as rollbackOnly&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        at org.springframework.orm.jpa.JpaTransactionManager.doCommit(JpaTransactionManager.java:&lt;span class=&quot;number&quot;&gt;526&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        at org.springframework.transaction.support.AbstractPlatformTransactionManager.processCommit(AbstractPlatformTransactionManager.java:&lt;span class=&quot;number&quot;&gt;757&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        at org.springframework.transaction.support.AbstractPlatformTransactionManager.commit(AbstractPlatformTransactionManager.java:&lt;span class=&quot;number&quot;&gt;726&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        at org.springframework.transaction.interceptor.TransactionAspectSupport.commitTransactionAfterReturning(TransactionAspectSupport.java:&lt;span class=&quot;number&quot;&gt;521&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:&lt;span class=&quot;number&quot;&gt;291&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:&lt;span class=&quot;number&quot;&gt;96&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:&lt;span class=&quot;number&quot;&gt;179&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:&lt;span class=&quot;number&quot;&gt;207&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        at com.sun.proxy.$Proxy49.lazyAssignOrder(Unknown Source)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        at com.smzc.provider.order.facade.OrderFacade.lazyAssignOrder(OrderFacade.java:&lt;span class=&quot;number&quot;&gt;1015&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        at com.smzc.provider.order.schedule.LazyAssignOrderTask$&lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;.run(LazyAssignOrderTask.java:&lt;span class=&quot;number&quot;&gt;51&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:&lt;span class=&quot;number&quot;&gt;1145&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:&lt;span class=&quot;number&quot;&gt;615&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        at java.lang.Thread.run(Thread.java:&lt;span class=&quot;number&quot;&gt;745&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Caused by: javax.persistence.RollbackException: Transaction marked as rollbackOnly&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        at org.hibernate.jpa.internal.TransactionImpl.commit(TransactionImpl.java:&lt;span class=&quot;number&quot;&gt;74&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        at org.springframework.orm.jpa.JpaTransactionManager.doCommit(JpaTransactionManager.java:&lt;span class=&quot;number&quot;&gt;517&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        ... &lt;span class=&quot;number&quot;&gt;13&lt;/span&gt; more&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;h2 id=&quot;代码示例-事务嵌套&quot;&gt;&lt;a href=&quot;#代码示例-事务嵌套&quot; class=&quot;headerlink&quot; title=&quot;代码示例-事务嵌套&quot;&gt;&lt;/a&gt;代码示例-事务嵌套&lt;/h2&gt;&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;29&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;30&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;31&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;32&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;33&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;34&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;meta&quot;&gt;@Transaction&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;doA&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;comment&quot;&gt;// do something&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;keyword&quot;&gt;try&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    doB();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;#125; &lt;span class=&quot;keyword&quot;&gt;catch&lt;/span&gt;(Exception e) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    doC();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;comment&quot;&gt;// do something&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;meta&quot;&gt;@Transaction&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;doA2&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;comment&quot;&gt;// do something&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;keyword&quot;&gt;try&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    doB();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;#125; &lt;span class=&quot;keyword&quot;&gt;catch&lt;/span&gt;(Exception e) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;comment&quot;&gt;// do save or update&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;meta&quot;&gt;@Transaction&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;doB&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;comment&quot;&gt;// do save or update&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(&lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;throw&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Exception(&lt;span class=&quot;string&quot;&gt;&quot;模拟异常&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;meta&quot;&gt;@Transaction&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;doC&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;comment&quot;&gt;// do save or update&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
@@ -404,7 +1038,7 @@
     <link href="http://www.wujianjun.org/2017/07/18/spring-initializingbean/"/>
     <id>http://www.wujianjun.org/2017/07/18/spring-initializingbean/</id>
     <published>2017-07-18T09:59:12.000Z</published>
-    <updated>2017-07-18T10:42:05.602Z</updated>
+    <updated>2017-12-01T10:49:44.715Z</updated>
     
     <content type="html">&lt;h2 id=&quot;问题现象&quot;&gt;&lt;a href=&quot;#问题现象&quot; class=&quot;headerlink&quot; title=&quot;问题现象&quot;&gt;&lt;/a&gt;问题现象&lt;/h2&gt;&lt;p&gt;在Spring完成上下文初始化完成后, InitializingBean的实现类中重写的&lt;code&gt;afterPropertiesSet&lt;/code&gt;方法并未执行.&lt;/p&gt;
 &lt;h2 id=&quot;一、类对象延迟初始&quot;&gt;&lt;a href=&quot;#一、类对象延迟初始&quot; class=&quot;headerlink&quot; title=&quot;一、类对象延迟初始&quot;&gt;&lt;/a&gt;一、类对象延迟初始&lt;/h2&gt;&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;interface&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;InitializingBean&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      * Invoked by a BeanFactory after it has set all bean properties supplied&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      * (and satisfied BeanFactoryAware and ApplicationContextAware).&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      * &amp;lt;p&amp;gt;This method allows the bean instance to perform initialization only&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      * possible when all bean properties have been set and to throw an&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      * exception in the event of misconfiguration.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      * &lt;span class=&quot;doctag&quot;&gt;@throws&lt;/span&gt; Exception in the event of misconfiguration (such&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      * as failure to set an essential property) or if initialization fails.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      */&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;     &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;afterPropertiesSet&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;throws&lt;/span&gt; Exception&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
@@ -430,7 +1064,7 @@
     <link href="http://www.wujianjun.org/2017/07/07/multi-process-read/"/>
     <id>http://www.wujianjun.org/2017/07/07/multi-process-read/</id>
     <published>2017-07-07T02:02:57.000Z</published>
-    <updated>2017-09-13T06:06:54.971Z</updated>
+    <updated>2017-12-01T10:49:44.039Z</updated>
     
     <content type="html">&lt;h2 id=&quot;问题背景&quot;&gt;&lt;a href=&quot;#问题背景&quot; class=&quot;headerlink&quot; title=&quot;问题背景&quot;&gt;&lt;/a&gt;问题背景&lt;/h2&gt;&lt;p&gt;分布式系统模块存在定时任务，当模块被部署多个实例时，不同实例的定时任务在运行时就存在从数据源中获取相同数据的情况，&lt;br&gt;虽然通过乐观锁(数据记录增加version,每次update则set verion+=1 where version=?)的处理方式可以避免多实例更新数据造成脏数据入库的问题，&lt;br&gt;但这无疑是降低了分布式系统部署的初衷（通过横向部署多实例增加系统的处理能力）。&lt;/p&gt;
 &lt;p&gt;经过分析，总结如下几种处理方式。&lt;/p&gt;
@@ -499,7 +1133,7 @@
     <link href="http://www.wujianjun.org/2017/06/29/airport-terminal-code/"/>
     <id>http://www.wujianjun.org/2017/06/29/airport-terminal-code/</id>
     <published>2017-06-29T09:23:50.000Z</published>
-    <updated>2017-07-14T02:12:53.407Z</updated>
+    <updated>2017-12-01T10:49:44.467Z</updated>
     
     <content type="html">&lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;由于携程航班号查询取消了起止城市信息的返回，为了补全信息，特从网络爬取了8644条机场航站楼对应三字码四字码信息，共享于网络供有需要的朋友使用。&lt;/p&gt;
 &lt;p&gt;数据抓取源: &lt;a href=&quot;https://airportcode.51240.com&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;便民查询网&lt;/a&gt;&lt;/p&gt;
@@ -524,7 +1158,7 @@
     <link href="http://www.wujianjun.org/2016/10/09/linux-autostart/"/>
     <id>http://www.wujianjun.org/2016/10/09/linux-autostart/</id>
     <published>2016-10-09T10:43:51.000Z</published>
-    <updated>2017-07-14T02:12:53.736Z</updated>
+    <updated>2017-12-01T10:49:43.959Z</updated>
     
     <content type="html">&lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;刚过国庆长假，工作机房断电，重回工作岗位发现N多的应用需要手动启动。感觉烦燥？&lt;br&gt;so.. 配置linux开机自启动&lt;/p&gt;
 &lt;h2 id=&quot;配置&quot;&gt;&lt;a href=&quot;#配置&quot; class=&quot;headerlink&quot; title=&quot;配置&quot;&gt;&lt;/a&gt;配置&lt;/h2&gt;&lt;p&gt;在&lt;em&gt;/etc/rc.local&lt;/em&gt;文件末尾增加以下内容&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;#!/bin/sh&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;# This script will be executed *after* all the other init scripts.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;# You can put your own initialization stuff in here if you don&amp;apos;t&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;# want to do the full Sys V style init stuff.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;O_Path=`pwd`&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;cd /myapps/servers/apache-tomcat-6.0.43/bin/&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;sh startup.sh&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;cd $O_Path&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
@@ -557,7 +1191,7 @@
     <link href="http://www.wujianjun.org/2016/09/22/jvm-tools-jstat/"/>
     <id>http://www.wujianjun.org/2016/09/22/jvm-tools-jstat/</id>
     <published>2016-09-22T09:30:09.000Z</published>
-    <updated>2017-07-14T02:12:53.515Z</updated>
+    <updated>2017-12-01T10:49:44.143Z</updated>
     
     <content type="html">&lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;jstat是JDK自带的一个轻量级小工具。全称“Java Virtual Machine statistics monitoring tool”，主要利用JVM内建的指令对Java应用程序的资源和性能进行实时的命令行的监控，包括了对Heap size和垃圾回收状况的监控。&lt;br&gt;以命令行方式运行对系统资源占用很小，在大压力下很少影响性能。并且运行要求低，只要通过Telnet或SSH等方式远程登录到服务器所在机器，就可以进行监控。在与jstat、jstack等工具结合使用时非常方便。&lt;/p&gt;
 &lt;h2 id=&quot;命令安装&quot;&gt;&lt;a href=&quot;#命令安装&quot; class=&quot;headerlink&quot; title=&quot;命令安装&quot;&gt;&lt;/a&gt;命令安装&lt;/h2&gt;&lt;ol&gt;
@@ -640,7 +1274,7 @@
     <link href="http://www.wujianjun.org/2016/09/21/jvm-tools-jmap/"/>
     <id>http://www.wujianjun.org/2016/09/21/jvm-tools-jmap/</id>
     <published>2016-09-21T06:21:51.000Z</published>
-    <updated>2017-07-14T02:12:53.543Z</updated>
+    <updated>2017-12-01T10:49:44.423Z</updated>
     
     <content type="html">&lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;Oracle将jmap描述为一种“输出进程、核心文件、远程调试服务器的共享对象内存映射和堆内存细节”的程序。&lt;br&gt;通过它可以查看内存中对象实例，从而解决程序出现不正常的高内存负载、频繁无响应或内存溢出等问题。&lt;/p&gt;
 &lt;h2 id=&quot;命令安装&quot;&gt;&lt;a href=&quot;#命令安装&quot; class=&quot;headerlink&quot; title=&quot;命令安装&quot;&gt;&lt;/a&gt;命令安装&lt;/h2&gt;&lt;ol&gt;
@@ -743,7 +1377,7 @@
     <link href="http://www.wujianjun.org/2016/09/01/china-city-data/"/>
     <id>http://www.wujianjun.org/2016/09/01/china-city-data/</id>
     <published>2016-09-01T10:27:21.000Z</published>
-    <updated>2017-07-14T02:12:53.760Z</updated>
+    <updated>2017-12-01T10:49:44.759Z</updated>
     
     <content type="html">&lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;最近整理的中国全国城市数据库信息，共享于网络。&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;/data/t_city.sql&quot;&gt;城市数据库附件，点击下载&lt;/a&gt;&lt;/p&gt;
@@ -768,7 +1402,7 @@
     <link href="http://www.wujianjun.org/2016/08/29/spring-core-interface/"/>
     <id>http://www.wujianjun.org/2016/08/29/spring-core-interface/</id>
     <published>2016-08-29T03:17:18.000Z</published>
-    <updated>2017-07-18T10:41:21.586Z</updated>
+    <updated>2017-12-01T10:49:43.567Z</updated>
     
     <content type="html">&lt;h2 id=&quot;一、在Web项目中的ApplicationContext&quot;&gt;&lt;a href=&quot;#一、在Web项目中的ApplicationContext&quot; class=&quot;headerlink&quot; title=&quot;一、在Web项目中的ApplicationContext&quot;&gt;&lt;/a&gt;一、在Web项目中的ApplicationContext&lt;/h2&gt;&lt;p&gt;在web 项目中（spring mvc），系统会存在两个容器，一个是ApplicationContext,另一个就是我们自己的WebApplicationContext（作为ApplicationContext的子容器）。&lt;/p&gt;
 &lt;ul&gt;
@@ -803,7 +1437,7 @@
     <link href="http://www.wujianjun.org/2016/08/22/ggcode-lib/"/>
     <id>http://www.wujianjun.org/2016/08/22/ggcode-lib/</id>
     <published>2016-08-22T10:15:58.000Z</published>
-    <updated>2017-07-14T02:12:53.600Z</updated>
+    <updated>2017-12-01T10:49:45.339Z</updated>
     
     <content type="html">&lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;通过近期的努力，将编写的源代码生成器进行0.0.1版本的封版，代码生成器按数据表自动生成源代码包含简单业务的（增，删，改，查，分页等）。&lt;br&gt;部分集成的开源框架已通过配置文件进行开关配置，方便按业务进行开启和关闭。欢迎大家使用。&lt;br&gt;Github地址：&lt;a href=&quot;https://github.com/stotem/GGCode&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/stotem/GGCode&lt;/a&gt;&lt;/p&gt;
 &lt;h3 id=&quot;基础框架&quot;&gt;&lt;a href=&quot;#基础框架&quot; class=&quot;headerlink&quot; title=&quot;基础框架&quot;&gt;&lt;/a&gt;基础框架&lt;/h3&gt;&lt;p&gt;源代码生成框架: &lt;a href=&quot;https://code.google.com/archive/p/rapid-framework/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;rapid-framework&lt;/a&gt;&lt;/p&gt;
@@ -857,7 +1491,7 @@
     <link href="http://www.wujianjun.org/2016/08/17/cas-shiro-auth-flow/"/>
     <id>http://www.wujianjun.org/2016/08/17/cas-shiro-auth-flow/</id>
     <published>2016-08-17T08:44:13.000Z</published>
-    <updated>2017-07-14T02:12:52.943Z</updated>
+    <updated>2017-12-01T10:49:44.991Z</updated>
     
     <content type="html">&lt;h2 id=&quot;框架介绍&quot;&gt;&lt;a href=&quot;#框架介绍&quot; class=&quot;headerlink&quot; title=&quot;框架介绍&quot;&gt;&lt;/a&gt;框架介绍&lt;/h2&gt;&lt;p&gt;Shiro是apache开源项目，主要用户客户端管理登录用户权限提示非常方式的认证接口及丰富的注解。&lt;br&gt;CAS （ Central Authentication Service ）是Yale大学发起的一个企业级的、开源的项目，旨在为 Web 应用系统提供一种可靠的单点登录解决方案（属于Web SSO）。主要用于用户登录认证与登录有效期认证。&lt;/p&gt;
 &lt;h2 id=&quot;调用时序&quot;&gt;&lt;a href=&quot;#调用时序&quot; class=&quot;headerlink&quot; title=&quot;调用时序&quot;&gt;&lt;/a&gt;调用时序&lt;/h2&gt;&lt;p&gt;&lt;img src=&quot;/images/cas-shiro-auth-flow.png&quot; alt=&quot;集成cas与shiro后的用户登录时序图&quot;&gt;&lt;/p&gt;
@@ -868,68 +1502,6 @@
     <summary type="html">
     
       &lt;h2 id=&quot;框架介绍&quot;&gt;&lt;a href=&quot;#框架介绍&quot; class=&quot;headerlink&quot; title=&quot;框架介绍&quot;&gt;&lt;/a&gt;框架介绍&lt;/h2&gt;&lt;p&gt;Shiro是apache开源项目，主要用户客户端管理登录用户权限提示非常方式的认证接口及丰富的注解。&lt;br&gt;CAS （ Ce
-    
-    </summary>
-    
-    
-      <category term="原创" scheme="http://www.wujianjun.org/tags/%E5%8E%9F%E5%88%9B/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>开源SSO项目cas认证返回更多的attribute信息</title>
-    <link href="http://www.wujianjun.org/2016/08/16/cas-attribute/"/>
-    <id>http://www.wujianjun.org/2016/08/16/cas-attribute/</id>
-    <published>2016-08-16T10:41:39.000Z</published>
-    <updated>2017-07-14T02:12:53.820Z</updated>
-    
-    <content type="html">&lt;h2 id=&quot;CAS项目介绍&quot;&gt;&lt;a href=&quot;#CAS项目介绍&quot; class=&quot;headerlink&quot; title=&quot;CAS项目介绍&quot;&gt;&lt;/a&gt;CAS项目介绍&lt;/h2&gt;&lt;p&gt;介绍网址： &lt;a href=&quot;https://github.com/apereo/cas&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/apereo/cas&lt;/a&gt;&lt;br&gt;github地址：&lt;a href=&quot;https://github.com/apereo/cas.git&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/apereo/cas.git&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;默认情况下，当用户认证成功后，客户端代码中只能获取到用户的登录名称，不能获取到其它的信息（如：手机号，所属角色，已有授权等），好在提供了一个attribute的map可以进行其它信息的返回。&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;AttributePrincipal ap = AssertionHolder.getAssertion().getPrincipal();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;String name = ap.getName();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Map&amp;lt;String,Object&amp;gt; attribute = ap.getAttributes();&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-&lt;h2 id=&quot;增加attribute信息返回&quot;&gt;&lt;a href=&quot;#增加attribute信息返回&quot; class=&quot;headerlink&quot; title=&quot;增加attribute信息返回&quot;&gt;&lt;/a&gt;增加attribute信息返回&lt;/h2&gt;&lt;h3 id=&quot;修改ticket验证接口返回的xml信息&quot;&gt;&lt;a href=&quot;#修改ticket验证接口返回的xml信息&quot; class=&quot;headerlink&quot; title=&quot;修改ticket验证接口返回的xml信息&quot;&gt;&lt;/a&gt;修改ticket验证接口返回的xml信息&lt;/h3&gt;&lt;p&gt;找到WEB-INF/view/jsp/protocol/2.0/casServiceValidationSuccess.jsp，在节点之前添加以下内容。&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;cas:serviceResponse xmlns:cas=&amp;apos;http://www.yale.edu/tp/cas&amp;apos;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;lt;cas:authenticationSuccess&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    	//...原有信息..//&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		&amp;lt;c:if test=&amp;quot;$&amp;#123;fn:length(assertion.chainedAuthentications[fn:length(assertion.chainedAuthentications)-1].principal.attributes) &amp;gt; 0&amp;#125;&amp;quot;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;lt;cas:attributes&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &amp;lt;c:forEach var=&amp;quot;attr&amp;quot; items=&amp;quot;$&amp;#123;assertion.chainedAuthentications[fn:length(assertion.chainedAuthentications)-1].principal.attributes&amp;#125;&amp;quot;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                    &amp;lt;cas:attribute&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                        &amp;lt;cas:$&amp;#123;fn:escapeXml(attr.key)&amp;#125;&amp;gt;$&amp;#123;fn:escapeXml(attr.value)&amp;#125;&amp;lt;/cas:$&amp;#123;fn:escapeXml(attr.key)&amp;#125;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                    &amp;lt;/cas:attribute&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &amp;lt;/c:forEach&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;lt;/cas:attributes&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;lt;/c:if&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;lt;/cas:authenticationSuccess&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;/cas:serviceResponse&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-&lt;h3 id=&quot;在用户登录验证时增加attribute关联&quot;&gt;&lt;a href=&quot;#在用户登录验证时增加attribute关联&quot; class=&quot;headerlink&quot; title=&quot;在用户登录验证时增加attribute关联&quot;&gt;&lt;/a&gt;在用户登录验证时增加attribute关联&lt;/h3&gt;&lt;p&gt;在deployerConfigContext.xml配置文件中，默认采用AcceptUsersAuthenticationHandler类的users属性（以key为登录名value为密码）进行系统用户的设定。&lt;br&gt;而通过PersonDirectoryPrincipalResolver的attributeRepository属性进行attribute映射和配置。默认由NamedStubPersonAttributeDao类的backingMap属性进行key-value配置，针对所有的用户都生效。&lt;br&gt;提示：IPersonAttributeDao有很多的子类实现，可以通过源码查看各自实现的方式，我这里主要介绍json,xml和数据库三种方式实现。&lt;/p&gt;
-&lt;h4 id=&quot;json配置的方式&quot;&gt;&lt;a href=&quot;#json配置的方式&quot; class=&quot;headerlink&quot; title=&quot;json配置的方式&quot;&gt;&lt;/a&gt;json配置的方式&lt;/h4&gt;&lt;p&gt;而在实际业务系统设计中针对不同的用户需要返回不同的attribute这个需求似乎不太适用，经过查看可能配置JsonBackedComplexStubPersonAttributeDao来在json中针对单个用户attribute进行配置。&lt;code&gt;指定init-method为init方法&lt;/code&gt;&lt;br&gt;配置如下：&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;bean id=&amp;quot;attributeRepository&amp;quot; class=&amp;quot;org.jasig.services.persondir.support.JsonBackedComplexStubPersonAttributeDao&amp;quot; init-method=&amp;quot;init&amp;quot;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;lt;constructor-arg index=&amp;quot;0&amp;quot; value=&amp;quot;classpath:users.json&amp;quot; /&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;/bean&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;users.json&lt;/em&gt;&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;quot;user1&amp;quot;:&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;quot;id&amp;quot;:[&amp;quot;1001&amp;quot;],&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;quot;firstName&amp;quot;:[&amp;quot;View&amp;quot;],&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;quot;lastName&amp;quot;:[&amp;quot;Jack&amp;quot;],&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;quot;roles&amp;quot;:[&amp;quot;view&amp;quot;],&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;quot;permissions&amp;quot;:[&amp;quot;support:*:view&amp;quot;]&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;#125;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;quot;user2&amp;quot;:&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;quot;id&amp;quot;:[&amp;quot;1002&amp;quot;],&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;quot;firstName&amp;quot;:[&amp;quot;Admin&amp;quot;],&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;quot;lastName&amp;quot;:[&amp;quot;One&amp;quot;],&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;quot;roles&amp;quot;:[&amp;quot;admin&amp;quot;],&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;quot;permissions&amp;quot;:[&amp;quot;support&amp;quot;]&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-&lt;h4 id=&quot;xml配置的方式&quot;&gt;&lt;a href=&quot;#xml配置的方式&quot; class=&quot;headerlink&quot; title=&quot;xml配置的方式&quot;&gt;&lt;/a&gt;xml配置的方式&lt;/h4&gt;&lt;p&gt;配置attributeRepository为XmlPersonAttributeDao来在xml中针对单个用户的attribute进行配置。&lt;br&gt;配置如下：&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;bean id=&amp;quot;attributeRepository&amp;quot; class=&amp;quot;org.jasig.services.persondir.support.xml.XmlPersonAttributeDao&amp;quot;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;lt;property name=&amp;quot;mappedXmlResource&amp;quot; value=&amp;quot;classpath:users.xml&amp;quot; /&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;/bean&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-&lt;h4 id=&quot;database读取的方式&quot;&gt;&lt;a href=&quot;#database读取的方式&quot; class=&quot;headerlink&quot; title=&quot;database读取的方式&quot;&gt;&lt;/a&gt;database读取的方式&lt;/h4&gt;&lt;p&gt;配置attributeRepository为NamedParameterJdbcPersonAttributeDao来在数据库按用户名进行attribute的配置加载。&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;bean id=&amp;quot;attributeRepository&amp;quot; class=&amp;quot;org.jasig.services.persondir.support.jdbc.SingleRowJdbcPersonAttributeDao&amp;quot;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;lt;property name=&amp;quot;dataSource&amp;quot; ref=&amp;quot;datasource&amp;quot; /&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;lt;property name=&amp;quot;sql&amp;quot; value=&amp;quot;select email,name,username,password from cas_user where &amp;#123;0&amp;#125;&amp;quot; /&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;lt;!-- 组装sql用的查询条件属性 --&amp;gt;	&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;lt;property name=&amp;quot;queryAttributeMapping&amp;quot;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		&amp;lt;map&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		    &amp;lt;!-- key必须是uername而且是小写否则会导致取不到用户的其它信息，value对应数据库用户名字段,系统会自己匹配 --&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;			&amp;lt;entry key=&amp;quot;username&amp;quot; value=&amp;quot;username&amp;quot; /&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		&amp;lt;/map&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;lt;/property&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;lt;property name=&amp;quot;resultAttributeMapping&amp;quot;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		&amp;lt;map&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		    &amp;lt;!-- key为对应的数据库字段名称，value为提供给客户端获取的属性名字，系统会自动填充值 --&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;			&amp;lt;entry key=&amp;quot;username&amp;quot; value=&amp;quot;username&amp;quot; /&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;			&amp;lt;entry key=&amp;quot;email&amp;quot; value=&amp;quot;email&amp;quot; /&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;			&amp;lt;entry key=&amp;quot;name&amp;quot; value=&amp;quot;name&amp;quot; /&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;			&amp;lt;entry key=&amp;quot;password&amp;quot; value=&amp;quot;password&amp;quot; /&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;		&amp;lt;/map&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;lt;/property&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;/bean&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-&lt;h2 id=&quot;密码加密方式配置&quot;&gt;&lt;a href=&quot;#密码加密方式配置&quot; class=&quot;headerlink&quot; title=&quot;密码加密方式配置&quot;&gt;&lt;/a&gt;密码加密方式配置&lt;/h2&gt;&lt;p&gt;在实际开发中不能任由密码明文进行传输，一般来讲会进行加密。而cas可直接通过配置的方式进行加密方式的确定。&lt;br&gt;在配置的AcceptUsersAuthenticationHandler中继承了父类中的一个名为passwordEncoder的PasswordEncoder类型属性。通过给这个属性配置加密方式值就能实现。默认为PlainTextPasswordEncoder加密方式。&lt;br&gt;如配置md5的方式：&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;bean id=&amp;quot;primaryAuthenticationHandler&amp;quot; class=&amp;quot;org.jasig.cas.authentication.AcceptUsersAuthenticationHandler&amp;quot;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;lt;property name=&amp;quot;passwordEncoder&amp;quot; ref=&amp;quot;passwordEncoder&amp;quot; /&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;lt;property name=&amp;quot;users&amp;quot;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;lt;map&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;lt;entry key=&amp;quot;user1&amp;quot; value=&amp;quot;123&amp;quot; /&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;lt;entry key=&amp;quot;user2&amp;quot; value=&amp;quot;123&amp;quot; /&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;lt;/map&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;lt;/property&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;/bean&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;bean id=&amp;quot;passwordEncoder&amp;quot; class=&amp;quot;org.jasig.cas.authentication.handler.DefaultPasswordEncoder&amp;quot;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;lt;property name=&amp;quot;characterEncoding&amp;quot; value=&amp;quot;utf-8&amp;quot; /&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;lt;property name=&amp;quot;encodingAlgorithm&amp;quot; value=&amp;quot;MD5&amp;quot; /&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;/bean&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;提示：&lt;/code&gt;配置了密码方式之后，所有配置文件或数据库中所存储的密码则应修改为密文。&lt;/p&gt;
-&lt;h2 id=&quot;重要发现&quot;&gt;&lt;a href=&quot;#重要发现&quot; class=&quot;headerlink&quot; title=&quot;重要发现&quot;&gt;&lt;/a&gt;重要发现&lt;/h2&gt;&lt;p&gt;用户登录验证采用的AuthenticationHandler接口的子类实现，当我们自定义实现类完成验证时，不要妄想在通过HandlerResult的getPrincipal()获取到Principal然后给它设置attribute,因为cas在调用认证方式后会针对Principal的数据进行name的复制，所以即使你的认证方式进行了attribute的设置，在进行对象复制时也会丢掉。&lt;/p&gt;
-&lt;p&gt;详见：PolicyBasedAuthenticationManager的authenticateInternal方法中的逻辑。&lt;br&gt;&lt;img src=&quot;/images/QQ20160817-0.png&quot; alt=&quot;PolicyBasedAuthenticationManager-authenticateInternal&quot;&gt;&lt;/p&gt;
-&lt;hr&gt;
-&lt;p&gt;&lt;em&gt;观点仅代表自己，期待你的留言。&lt;/em&gt;&lt;/p&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;CAS项目介绍&quot;&gt;&lt;a href=&quot;#CAS项目介绍&quot; class=&quot;headerlink&quot; title=&quot;CAS项目介绍&quot;&gt;&lt;/a&gt;CAS项目介绍&lt;/h2&gt;&lt;p&gt;介绍网址： &lt;a href=&quot;https://github.com/apereo/cas&quot; targ
-    
-    </summary>
-    
-    
-      <category term="原创" scheme="http://www.wujianjun.org/tags/%E5%8E%9F%E5%88%9B/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>妙用Spring中的CompositeCacheManager</title>
-    <link href="http://www.wujianjun.org/2016/07/19/spring-compositeCacheManager/"/>
-    <id>http://www.wujianjun.org/2016/07/19/spring-compositeCacheManager/</id>
-    <published>2016-07-19T08:47:23.000Z</published>
-    <updated>2017-07-14T02:12:53.199Z</updated>
-    
-    <content type="html">&lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;Spring提供了@Cacheable，@CacheEvict,@CachePut等注解很方便有实现数据的缓存，而CompositeCacheManager主要用于集合多个CacheManager实例，在使用多种缓存容器时特别有用。&lt;/p&gt;
-&lt;h2 id=&quot;fallbackToNoOpCache属性的真实意义&quot;&gt;&lt;a href=&quot;#fallbackToNoOpCache属性的真实意义&quot; class=&quot;headerlink&quot; title=&quot;fallbackToNoOpCache属性的真实意义&quot;&gt;&lt;/a&gt;fallbackToNoOpCache属性的真实意义&lt;/h2&gt;&lt;p&gt;经过查看Spring 4.1.9.RELEASE的源码,当CompositeCacheManager的fallbackToNoOpCache属性设置为true时，CompositeCacheManager会在已配置的cacheManagers末尾添加一个NoOpCacheManager。&lt;br&gt;当通过代码中指定的缓存容器（@Cacheable等注解设置的value）没有在cacheManagers中都找到时，则会进入到NoOpCacheManager中，此时就相当于禁用掉了缓存，而不抛出相应的异常。&lt;/p&gt;
-&lt;p&gt;网络上有朋友在说，当设置fallbackToNoOpCache属性设置为true时，则可以解决缓存容器没有准备好时自动禁用缓存的效果，经过查看Spring源码，并未实现。&lt;br&gt;不过，经测试以下方法可以实现通过配置禁用缓存。&lt;/p&gt;
-&lt;h2 id=&quot;通过配置禁用缓存&quot;&gt;&lt;a href=&quot;#通过配置禁用缓存&quot; class=&quot;headerlink&quot; title=&quot;通过配置禁用缓存&quot;&gt;&lt;/a&gt;通过配置禁用缓存&lt;/h2&gt;&lt;p&gt;利用CompositeCacheManager + NoOpCacheManager还能解决当缓存容器没有准备好（缓存容器崩溃，网络不可用等）或者需要暂时去掉缓存的需求。&lt;/p&gt;
-&lt;p&gt;只需要将cacheManagers的list值的第一个元素设置为NoOpCacheManager就OK了。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;spring.xml&lt;/strong&gt;&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;bean id=&amp;quot;cacheManager&amp;quot; class=&amp;quot;org.springframework.cache.support.CompositeCacheManager&amp;quot;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;lt;property name=&amp;quot;cacheManagers&amp;quot;&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;lt;list&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        	&amp;lt;bean class=&amp;quot;org.springframework.cache.support.NoOpCacheManager&amp;quot; /&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;lt;ref bean=&amp;quot;simpleCacheManager&amp;quot; /&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;lt;/list&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;lt;/property&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;lt;property name=&amp;quot;fallbackToNoOpCache&amp;quot; value=&amp;quot;true&amp;quot; /&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;lt;/bean&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-&lt;hr&gt;
-&lt;p&gt;&lt;em&gt;观点仅代表自己，期待你的留言。&lt;/em&gt;&lt;/p&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;Spring提供了@Cacheable，@CacheEvict,@CachePut等注解很方便有实现数据的缓存，而CompositeCach
     
     </summary>
     
