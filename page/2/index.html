@@ -220,6 +220,76 @@ var _hmt = _hmt || [];
 
       <div class="body-wrap">
   
+    <article id="post-transaction-mark-rollbackonly" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/07/21/transaction-mark-rollbackonly/" class="article-date">
+  	<time datetime="2017-07-21T09:01:27.000Z" itemprop="datePublished">2017-07-21</time>
+</a>
+      <div class="analysis-container">
+	<i class="fa fa-line-chart"></i>
+	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
+</div>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/07/21/transaction-mark-rollbackonly/">问题分析 之 Transaction marked as rollbackOnly</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+              
+        <h2 id="问题现象"><a href="#问题现象" class="headerlink" title="问题现象"></a>问题现象</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">org.springframework.transaction.TransactionSystemException: Could not commit JPA transaction; nested exception is javax.persistence.RollbackException: Transaction marked as rollbackOnly</span><br><span class="line">        at org.springframework.orm.jpa.JpaTransactionManager.doCommit(JpaTransactionManager.java:<span class="number">526</span>)</span><br><span class="line">        at org.springframework.transaction.support.AbstractPlatformTransactionManager.processCommit(AbstractPlatformTransactionManager.java:<span class="number">757</span>)</span><br><span class="line">        at org.springframework.transaction.support.AbstractPlatformTransactionManager.commit(AbstractPlatformTransactionManager.java:<span class="number">726</span>)</span><br><span class="line">        at org.springframework.transaction.interceptor.TransactionAspectSupport.commitTransactionAfterReturning(TransactionAspectSupport.java:<span class="number">521</span>)</span><br><span class="line">        at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:<span class="number">291</span>)</span><br><span class="line">        at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:<span class="number">96</span>)</span><br><span class="line">        at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:<span class="number">179</span>)</span><br><span class="line">        at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:<span class="number">207</span>)</span><br><span class="line">        at com.sun.proxy.$Proxy49.lazyAssignOrder(Unknown Source)</span><br><span class="line">        at com.smzc.provider.order.facade.OrderFacade.lazyAssignOrder(OrderFacade.java:<span class="number">1015</span>)</span><br><span class="line">        at com.smzc.provider.order.schedule.LazyAssignOrderTask$<span class="number">2</span>.run(LazyAssignOrderTask.java:<span class="number">51</span>)</span><br><span class="line">        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:<span class="number">1145</span>)</span><br><span class="line">        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:<span class="number">615</span>)</span><br><span class="line">        at java.lang.Thread.run(Thread.java:<span class="number">745</span>)</span><br><span class="line">Caused by: javax.persistence.RollbackException: Transaction marked as rollbackOnly</span><br><span class="line">        at org.hibernate.jpa.internal.TransactionImpl.commit(TransactionImpl.java:<span class="number">74</span>)</span><br><span class="line">        at org.springframework.orm.jpa.JpaTransactionManager.doCommit(JpaTransactionManager.java:<span class="number">517</span>)</span><br><span class="line">        ... <span class="number">13</span> more</span><br></pre></td></tr></table></figure>
+<h2 id="代码示例-事务嵌套"><a href="#代码示例-事务嵌套" class="headerlink" title="代码示例-事务嵌套"></a>代码示例-事务嵌套</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Transaction</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doA</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="comment">// do something</span></span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    doB();</span><br><span class="line">  &#125; <span class="keyword">catch</span>(Exception e) &#123;</span><br><span class="line">    doC();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// do something</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Transaction</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doA2</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="comment">// do something</span></span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    doB();</span><br><span class="line">  &#125; <span class="keyword">catch</span>(Exception e) &#123;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// do save or update</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Transaction</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doB</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="comment">// do save or update</span></span><br><span class="line">  <span class="keyword">if</span>(<span class="keyword">true</span>) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> Exception(<span class="string">"模拟异常"</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Transaction</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doC</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="comment">// do save or update</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>问题分析：</strong><br>如上代码段，由于事务的传播性，doA,doB,doC方法其实共用的是由doA开启的同一个事务对象。<br>当doB方法抛出异常后事务被标记为回滚状态，再尝试执行doC方法或者执行任何的更改方法，在进行数据更新后进行事务commit时，此时则为抛出以上的异常。</p>
+<p><strong>解决方法：</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ClassA</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> ClassB classB;</span><br><span class="line">  <span class="comment">//@Transaction</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doA</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      classB.doB();</span><br><span class="line">    &#125; <span class="keyword">catch</span>(Exception e) &#123;</span><br><span class="line">      classB.doC();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ClassB</span> </span>&#123;</span><br><span class="line">  <span class="meta">@Transaction</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doB</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(<span class="number">1</span>==<span class="number">1</span>) &#123;</span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> Exception(<span class="string">"模拟异常"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Transaction</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doC</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">//有数据更改动作</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>以上的解决方法去掉了doA的事务，交由doB与doC分别开启两个事务解决，当doB失败时只标记doB的事务回滚，doC的事务依然能进行提交。</p>
+<hr>
+<p><em>观点仅代表自己，期待你的留言。</em></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Transaction/">Transaction</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring/">spring</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+
+
+  
     <article id="post-spring-initializingbean" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -1018,73 +1088,6 @@ var _hmt = _hmt || [];
 <p><img src="/images/update.png" alt=""></p>
 <p><img src="/images/show.png" alt=""></p>
 <p><img src="/images/delete.png" alt=""></p>
-<hr>
-<p><em>观点仅代表自己，期待你的留言。</em></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-cas-shiro-auth-flow" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/08/17/cas-shiro-auth-flow/" class="article-date">
-  	<time datetime="2016-08-17T08:44:13.000Z" itemprop="datePublished">2016-08-17</time>
-</a>
-      <div class="analysis-container">
-	<i class="fa fa-line-chart"></i>
-	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
-</div>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/08/17/cas-shiro-auth-flow/">Shiro与Cas集成后的登录流程时序图</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-              
-        <h2 id="框架介绍"><a href="#框架介绍" class="headerlink" title="框架介绍"></a>框架介绍</h2><p>Shiro是apache开源项目，主要用户客户端管理登录用户权限提示非常方式的认证接口及丰富的注解。<br>CAS （ Central Authentication Service ）是Yale大学发起的一个企业级的、开源的项目，旨在为 Web 应用系统提供一种可靠的单点登录解决方案（属于Web SSO）。主要用于用户登录认证与登录有效期认证。</p>
-<h2 id="调用时序"><a href="#调用时序" class="headerlink" title="调用时序"></a>调用时序</h2><p><img src="/images/cas-shiro-auth-flow.png" alt="集成cas与shiro后的用户登录时序图"></p>
 <hr>
 <p><em>观点仅代表自己，期待你的留言。</em></p>
 

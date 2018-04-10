@@ -220,6 +220,191 @@ var _hmt = _hmt || [];
 
       <div class="body-wrap">
   
+    <article id="post-mysql-lock-transaction" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/05/30/mysql-lock-transaction/" class="article-date">
+  	<time datetime="2016-05-30T10:00:50.000Z" itemprop="datePublished">2016-05-30</time>
+</a>
+      <div class="analysis-container">
+	<i class="fa fa-line-chart"></i>
+	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
+</div>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/05/30/mysql-lock-transaction/">关于MariaDB事务阻塞等待及锁的实验笔记</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+              
+        <h2 id="实验环境"><a href="#实验环境" class="headerlink" title="实验环境"></a>实验环境</h2><p>Server Version: 10.0.24-MariaDB<br>SET GLOBAL tx_isolation=’REPEATABLE-READ’;<br>SET SESSION tx_isolation=’REPEATABLE-READ’;<br>SET @@autocommit=0;</p>
+<p>SHOW VARIABLES like ‘autocommit’;<br>SELECT @@GLOBAL.tx_isolation, @@tx_isolation;</p>
+<h2 id="实验结论"><a href="#实验结论" class="headerlink" title="实验结论"></a>实验结论</h2><h3 id="幻读的概念是另一事务先完成的情况下判断"><a href="#幻读的概念是另一事务先完成的情况下判断" class="headerlink" title="幻读的概念是另一事务先完成的情况下判断"></a>幻读的概念是另一事务先完成的情况下判断</h3><table>
+<thead>
+<tr>
+<th>事务A</th>
+<th>事务B</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>start TRANSACTION;</td>
+</tr>
+<tr>
+<td>select * from t1;(查询出2条数据)</td>
+</tr>
+<tr>
+<td></td>
+<td>start TRANSACTION;</td>
+</tr>
+<tr>
+<td></td>
+<td>insert into t1 values(null,’v222’);</td>
+</tr>
+<tr>
+<td>select * from t1;(查询出2条数据)</td>
+</tr>
+<tr>
+<td></td>
+<td>commit;(<strong>这一步很关键，它标识了事务B的完成</strong>)</td>
+</tr>
+<tr>
+<td>select * from t1;(查询出3条数据)</td>
+</tr>
+</tbody>
+</table>
+<p><code>InnoDB存储引擎在REPEATABLE-READ的隔离级别下解决了幻读情况，所以会造成以上的情况。</code></p>
+<h3 id="并发事务修改同一行数据时，后执行更新的事务会阻塞等待先执行更新事务先结束（rollback或commit）或者超时"><a href="#并发事务修改同一行数据时，后执行更新的事务会阻塞等待先执行更新事务先结束（rollback或commit）或者超时" class="headerlink" title="并发事务修改同一行数据时，后执行更新的事务会阻塞等待先执行更新事务先结束（rollback或commit）或者超时"></a>并发事务修改同一行数据时，后执行更新的事务会<strong>阻塞等待</strong>先执行更新事务先结束（rollback或commit）或者超时</h3><table>
+<thead>
+<tr>
+<th>事务A</th>
+<th>事务B</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>start TRANSACTION;</td>
+<td>start TRANSACTION;</td>
+</tr>
+<tr>
+<td>update t1 SET da=’v1111’ where id=1;</td>
+</tr>
+<tr>
+<td></td>
+<td>update t1 SET da=’v1111’ where id=1;(此时会等待事务A执行完成 OR 等待超时)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="并发事务更新时只要被更新的数据存在交集，那么就会存在阻塞等待另一事务完成的现象"><a href="#并发事务更新时只要被更新的数据存在交集，那么就会存在阻塞等待另一事务完成的现象" class="headerlink" title="并发事务更新时只要被更新的数据存在交集，那么就会存在阻塞等待另一事务完成的现象"></a>并发事务更新时只要被更新的数据存在交集，那么就会存在<strong>阻塞等待</strong>另一事务完成的现象</h3><table>
+<thead>
+<tr>
+<th>事务A</th>
+<th>事务B</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>start TRANSACTION;</td>
+</tr>
+<tr>
+<td>select * from t1;(查询出2条数据)</td>
+</tr>
+<tr>
+<td></td>
+<td>start TRANSACTION;</td>
+</tr>
+<tr>
+<td></td>
+<td>insert into t1 values(null,’v222’);</td>
+</tr>
+<tr>
+<td>update t1 set da=’updated’(此时会等事务B的完成)</td>
+</tr>
+<tr>
+<td></td>
+<td>commit;</td>
+</tr>
+</tbody>
+</table>
+<h3 id="并发事务更新时只要存在全表扫描-不管数据存在不存在交集-，那么就会存在阻塞等待另一事务完成的现象"><a href="#并发事务更新时只要存在全表扫描-不管数据存在不存在交集-，那么就会存在阻塞等待另一事务完成的现象" class="headerlink" title="并发事务更新时只要存在全表扫描(不管数据存在不存在交集)，那么就会存在阻塞等待另一事务完成的现象"></a>并发事务更新时只要存在全表扫描(不管数据存在不存在交集)，那么就会存在<strong>阻塞等待</strong>另一事务完成的现象</h3><table>
+<thead>
+<tr>
+<th>事务A</th>
+<th>事务B</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>start TRANSACTION;</td>
+</tr>
+<tr>
+<td>select * from t1;(查询出2条数据)</td>
+</tr>
+<tr>
+<td></td>
+<td>start TRANSACTION;</td>
+</tr>
+<tr>
+<td></td>
+<td>update t1 SET da=’v1113333331’ where id=1</td>
+</tr>
+<tr>
+<td>update t1 set da=’updated’ where da like ‘%0000%’(此时会等事务B的完成)</td>
+</tr>
+<tr>
+<td></td>
+<td>commit;</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p><em>观点仅代表自己，期待你的留言。</em></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+
+
+  
     <article id="post-transaction-isolation-levels" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -1268,78 +1453,6 @@ var _hmt = _hmt || [];
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-docker-install-issue" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/04/06/docker-install-issue/" class="article-date">
-  	<time datetime="2016-04-06T01:55:49.000Z" itemprop="datePublished">2016-04-06</time>
-</a>
-      <div class="analysis-container">
-	<i class="fa fa-line-chart"></i>
-	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
-</div>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/04/06/docker-install-issue/">Docker安装问题汇总</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-              
-        <h3 id="测试环境"><a href="#测试环境" class="headerlink" title="测试环境"></a>测试环境</h3><p>Centos7_x86_64<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># uname -a</span></span><br><span class="line">Linux localhost.localdomain 3.10.0-123.el7.x86_64 <span class="comment">#1 SMP Mon Jun 30 12:09:22 UTC 2014 x86_64 x86_64 x86_64 GNU/Linux</span></span><br></pre></td></tr></table></figure></p>
-<h3 id="增加yum源"><a href="#增加yum源" class="headerlink" title="增加yum源"></a>增加yum源</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># sudo tee /etc/yum.repos.d/docker.repo &lt;&lt;-'EOF'</span></span><br><span class="line">[dockerrepo]</span><br><span class="line">name=Docker Repository</span><br><span class="line">baseurl=https://yum.dockerproject.org/repo/main/centos/<span class="variable">$releasever</span>/</span><br><span class="line">enabled=1</span><br><span class="line">gpgcheck=1</span><br><span class="line">gpgkey=https://yum.dockerproject.org/gpg</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
-<h3 id="文件冲突"><a href="#文件冲突" class="headerlink" title="文件冲突"></a>文件冲突</h3><p>Transaction check error:<br>  file /usr/lib/systemd/system/blk-availability.service from install of device-mapper-7:1.02.107-5.el7_2.1.x86_64 conflicts with file from package lvm2-7:2.02.105-14.el7.x86_64<br>  file /usr/sbin/blkdeactivate from install of device-mapper-7:1.02.107-5.el7_2.1.x86_64 conflicts with file from package lvm2-7:2.02.105-14.el7.x86_64<br>  file /usr/share/man/man8/blkdeactivate.8.gz from install of device-mapper-7:1.02.107-5.el7_2.1.x86_64 conflicts with file from package lvm2-7:2.02.105-14.el7.x86_64</p>
-<p><code>解决方法:</code> 先安装lvm2<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># sudo yum install lvm2 -y</span></span><br><span class="line">[root@localhost ~]<span class="comment"># sudo yum install docker -y</span></span><br><span class="line">[root@localhost ~]<span class="comment"># docker -v</span></span><br><span class="line">Docker version 1.10.3, build 20f81d</span><br></pre></td></tr></table></figure></p>
-<h3 id="Docker-daemon未运行"><a href="#Docker-daemon未运行" class="headerlink" title="Docker daemon未运行"></a>Docker daemon未运行</h3><p>[root@localhost ~]# docker pull ubuntu<br>Using default tag: latest<br>Warning: failed to get default registry endpoint from daemon (Cannot connect to the Docker daemon. Is the docker daemon running on this host?). Using system default: <a href="https://index.docker.io/v1/" target="_blank" rel="external">https://index.docker.io/v1/</a><br>Cannot connect to the Docker daemon. Is the docker daemon running on this host?<br><code>解决方法:</code> 重启docker服务<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># service docker restart</span></span><br><span class="line">Redirecting to /bin/systemctl restart  docker.service</span><br></pre></td></tr></table></figure></p>
-<h3 id="Docker被墙"><a href="#Docker被墙" class="headerlink" title="Docker被墙"></a>Docker被墙</h3><p>[root@localhost ~]# docker pull centos<br>Using default tag: latest<br>Pulling repository docker.io/library/centos<br>Error while pulling image: Get <a href="https://index.docker.io/v1/repositories/library/centos/images" target="_blank" rel="external">https://index.docker.io/v1/repositories/library/centos/images</a>: dial tcp: lookup index.docker.io on 10.28.10.166:53: no such host</p>
-<p>由于docker镜像站被墙，推荐使用<a href="https://hub.alauda.cn/" target="_blank" rel="external">灵雀云镜像</a><br><code>解决方法:</code> pull的时候使用国内镜像地址<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># docker pull index.alauda.cn/tutum/centos</span></span><br><span class="line">Using default tag: latest</span><br><span class="line">latest: Pulling from tutum/centos</span><br><span class="line">a3ed95caeb02: Pull complete </span><br><span class="line">196355c4b639: Pull complete </span><br><span class="line">edd0a8ebcd9d: Pull complete </span><br><span class="line">8ba44ed17115: Pull complete </span><br><span class="line">69f7e70c0063: Pull complete </span><br><span class="line">54abd94c9217: Pull complete </span><br><span class="line">Digest: sha256:11bc5863ca1643f1de49962c2741c3d1feca37ef258d5dd91baa2cca9a82b5b5</span><br><span class="line">Status: Downloaded newer image <span class="keyword">for</span> index.alauda.cn/tutum/centos:latest</span><br><span class="line">[root@localhost ~]<span class="comment"># docker images</span></span><br><span class="line">REPOSITORY                     TAG                 IMAGE ID            CREATED             SIZE</span><br><span class="line">index.alauda.cn/tutum/centos   latest              e90ef4c35b09        2 weeks ago         297.3 MB</span><br></pre></td></tr></table></figure></p>
-<hr>
-<p><em>观点仅代表自己，期待你的留言。</em></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Docker/">Docker</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li></ul>
 	</div>
 
       

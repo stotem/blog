@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.wujianjun.org/"/>
-  <updated>2018-04-04T10:52:09.226Z</updated>
+  <updated>2018-04-10T11:14:34.620Z</updated>
   <id>http://www.wujianjun.org/</id>
   
   <author>
@@ -14,6 +14,44 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>redis进阶</title>
+    <link href="http://www.wujianjun.org/2018/04/10/redis-advanced/"/>
+    <id>http://www.wujianjun.org/2018/04/10/redis-advanced/</id>
+    <published>2018-04-10T08:30:13.000Z</published>
+    <updated>2018-04-10T11:14:34.620Z</updated>
+    
+    <content type="html">&lt;h2 id=&quot;redis主从（读写分离）&quot;&gt;&lt;a href=&quot;#redis主从（读写分离）&quot; class=&quot;headerlink&quot; title=&quot;redis主从（读写分离）&quot;&gt;&lt;/a&gt;redis主从（读写分离）&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;问题：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;redis为单进程程序，只能占用单核，无法充分使用多核的系统资源。&lt;/li&gt;
+&lt;li&gt;单节点redis在出现故障时则无法继续提供数据存储服务，无法达到高可用要求。&lt;br&gt;&lt;strong&gt;解决方法：&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;增加redis slave节点通过replicas进行&lt;code&gt;master-slave&lt;/code&gt;的数据复制，故障时手动恢复。&lt;/li&gt;
+&lt;li&gt;通过增加&lt;code&gt;sentinel(哨兵)&lt;/code&gt;监控redis master-slave节点的存活状态，当master出现故障时自动将slave升级为master继续提供服务。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;data-sharding（数据分片）&quot;&gt;&lt;a href=&quot;#data-sharding（数据分片）&quot; class=&quot;headerlink&quot; title=&quot;data sharding（数据分片）&quot;&gt;&lt;/a&gt;data sharding（数据分片）&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;问题：&lt;/strong&gt;&lt;br&gt;  单台redis节点的内存总量有限，达到上限后想要扩容除了增加内存别无它法&lt;br&gt;&lt;strong&gt;解决方法：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;redis client (部署多个独立的redis节点，通过在&lt;code&gt;客户端代码中针对key进行hash&lt;/code&gt;，然后将数据按hash映射存储到不同的redis中)&lt;/li&gt;
+&lt;li&gt;Twemproxy (部署多个独立的redis节点，通过引入twitter开源中间件封装key的hash操作，最终将数据存储到不同的redis中)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;redis-cluster集群&quot;&gt;&lt;a href=&quot;#redis-cluster集群&quot; class=&quot;headerlink&quot; title=&quot;redis cluster集群&quot;&gt;&lt;/a&gt;redis cluster集群&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;问题：&lt;/strong&gt;&lt;br&gt;  单台redis节点的内存容量有限，达到上限后想要扩容除了增加内存别无它法&lt;br&gt;&lt;strong&gt;解决方法：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;将所有的redis节点的内存总容量划分为n个&lt;code&gt;哈希槽(hash slot)&lt;/code&gt;(默认为16384个)，每一个redis节点负责一段solt，存取数据时通过CRC16算法对key进行取余来决定应该从哪一个redis节点进行存取操作。&lt;br&gt;redis节点两两连接共同形成一个集群，客户端代码连接集群中&lt;code&gt;任意节点&lt;/code&gt;进行存取服务，集群中的节点会通过&lt;code&gt;CRC16算法&lt;/code&gt;来将存取请求&lt;code&gt;转发&lt;/code&gt;到目标redis节点完成数据的存取。&lt;/li&gt;
+&lt;li&gt;通过在集群内挑选一部分节点设置为slave节点，通过master-slave构建高可用redis服务&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;redis主从（读写分离）&quot;&gt;&lt;a href=&quot;#redis主从（读写分离）&quot; class=&quot;headerlink&quot; title=&quot;redis主从（读写分离）&quot;&gt;&lt;/a&gt;redis主从（读写分离）&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;问题：&lt;/strong&gt;&lt;/p&gt;
+&lt;
+    
+    </summary>
+    
+    
+      <category term="原创" scheme="http://www.wujianjun.org/tags/%E5%8E%9F%E5%88%9B/"/>
+    
+  </entry>
   
   <entry>
     <title>RocketMQ使用指南及参数详解</title>
@@ -1478,30 +1516,6 @@
     <summary type="html">
     
       &lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;通过近期的努力，将编写的源代码生成器进行0.0.1版本的封版，代码生成器按数据表自动生成源代码包含简单业务的（增，删，改，查，分页等）。&lt;b
-    
-    </summary>
-    
-    
-      <category term="原创" scheme="http://www.wujianjun.org/tags/%E5%8E%9F%E5%88%9B/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Shiro与Cas集成后的登录流程时序图</title>
-    <link href="http://www.wujianjun.org/2016/08/17/cas-shiro-auth-flow/"/>
-    <id>http://www.wujianjun.org/2016/08/17/cas-shiro-auth-flow/</id>
-    <published>2016-08-17T08:44:13.000Z</published>
-    <updated>2017-12-01T10:49:44.991Z</updated>
-    
-    <content type="html">&lt;h2 id=&quot;框架介绍&quot;&gt;&lt;a href=&quot;#框架介绍&quot; class=&quot;headerlink&quot; title=&quot;框架介绍&quot;&gt;&lt;/a&gt;框架介绍&lt;/h2&gt;&lt;p&gt;Shiro是apache开源项目，主要用户客户端管理登录用户权限提示非常方式的认证接口及丰富的注解。&lt;br&gt;CAS （ Central Authentication Service ）是Yale大学发起的一个企业级的、开源的项目，旨在为 Web 应用系统提供一种可靠的单点登录解决方案（属于Web SSO）。主要用于用户登录认证与登录有效期认证。&lt;/p&gt;
-&lt;h2 id=&quot;调用时序&quot;&gt;&lt;a href=&quot;#调用时序&quot; class=&quot;headerlink&quot; title=&quot;调用时序&quot;&gt;&lt;/a&gt;调用时序&lt;/h2&gt;&lt;p&gt;&lt;img src=&quot;/images/cas-shiro-auth-flow.png&quot; alt=&quot;集成cas与shiro后的用户登录时序图&quot;&gt;&lt;/p&gt;
-&lt;hr&gt;
-&lt;p&gt;&lt;em&gt;观点仅代表自己，期待你的留言。&lt;/em&gt;&lt;/p&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;框架介绍&quot;&gt;&lt;a href=&quot;#框架介绍&quot; class=&quot;headerlink&quot; title=&quot;框架介绍&quot;&gt;&lt;/a&gt;框架介绍&lt;/h2&gt;&lt;p&gt;Shiro是apache开源项目，主要用户客户端管理登录用户权限提示非常方式的认证接口及丰富的注解。&lt;br&gt;CAS （ Ce
     
     </summary>
     

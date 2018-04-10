@@ -220,6 +220,73 @@ var _hmt = _hmt || [];
 
       <div class="body-wrap">
   
+    <article id="post-cas-shiro-auth-flow" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/08/17/cas-shiro-auth-flow/" class="article-date">
+  	<time datetime="2016-08-17T08:44:13.000Z" itemprop="datePublished">2016-08-17</time>
+</a>
+      <div class="analysis-container">
+	<i class="fa fa-line-chart"></i>
+	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
+</div>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/08/17/cas-shiro-auth-flow/">Shiro与Cas集成后的登录流程时序图</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+              
+        <h2 id="框架介绍"><a href="#框架介绍" class="headerlink" title="框架介绍"></a>框架介绍</h2><p>Shiro是apache开源项目，主要用户客户端管理登录用户权限提示非常方式的认证接口及丰富的注解。<br>CAS （ Central Authentication Service ）是Yale大学发起的一个企业级的、开源的项目，旨在为 Web 应用系统提供一种可靠的单点登录解决方案（属于Web SSO）。主要用于用户登录认证与登录有效期认证。</p>
+<h2 id="调用时序"><a href="#调用时序" class="headerlink" title="调用时序"></a>调用时序</h2><p><img src="/images/cas-shiro-auth-flow.png" alt="集成cas与shiro后的用户登录时序图"></p>
+<hr>
+<p><em>观点仅代表自己，期待你的留言。</em></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+
+
+  
     <article id="post-cas-attribute" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -988,191 +1055,6 @@ var _hmt = _hmt || [];
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Redis/">Redis</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-mysql-lock-transaction" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/05/30/mysql-lock-transaction/" class="article-date">
-  	<time datetime="2016-05-30T10:00:50.000Z" itemprop="datePublished">2016-05-30</time>
-</a>
-      <div class="analysis-container">
-	<i class="fa fa-line-chart"></i>
-	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
-</div>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/05/30/mysql-lock-transaction/">关于MariaDB事务阻塞等待及锁的实验笔记</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-              
-        <h2 id="实验环境"><a href="#实验环境" class="headerlink" title="实验环境"></a>实验环境</h2><p>Server Version: 10.0.24-MariaDB<br>SET GLOBAL tx_isolation=’REPEATABLE-READ’;<br>SET SESSION tx_isolation=’REPEATABLE-READ’;<br>SET @@autocommit=0;</p>
-<p>SHOW VARIABLES like ‘autocommit’;<br>SELECT @@GLOBAL.tx_isolation, @@tx_isolation;</p>
-<h2 id="实验结论"><a href="#实验结论" class="headerlink" title="实验结论"></a>实验结论</h2><h3 id="幻读的概念是另一事务先完成的情况下判断"><a href="#幻读的概念是另一事务先完成的情况下判断" class="headerlink" title="幻读的概念是另一事务先完成的情况下判断"></a>幻读的概念是另一事务先完成的情况下判断</h3><table>
-<thead>
-<tr>
-<th>事务A</th>
-<th>事务B</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>start TRANSACTION;</td>
-</tr>
-<tr>
-<td>select * from t1;(查询出2条数据)</td>
-</tr>
-<tr>
-<td></td>
-<td>start TRANSACTION;</td>
-</tr>
-<tr>
-<td></td>
-<td>insert into t1 values(null,’v222’);</td>
-</tr>
-<tr>
-<td>select * from t1;(查询出2条数据)</td>
-</tr>
-<tr>
-<td></td>
-<td>commit;(<strong>这一步很关键，它标识了事务B的完成</strong>)</td>
-</tr>
-<tr>
-<td>select * from t1;(查询出3条数据)</td>
-</tr>
-</tbody>
-</table>
-<p><code>InnoDB存储引擎在REPEATABLE-READ的隔离级别下解决了幻读情况，所以会造成以上的情况。</code></p>
-<h3 id="并发事务修改同一行数据时，后执行更新的事务会阻塞等待先执行更新事务先结束（rollback或commit）或者超时"><a href="#并发事务修改同一行数据时，后执行更新的事务会阻塞等待先执行更新事务先结束（rollback或commit）或者超时" class="headerlink" title="并发事务修改同一行数据时，后执行更新的事务会阻塞等待先执行更新事务先结束（rollback或commit）或者超时"></a>并发事务修改同一行数据时，后执行更新的事务会<strong>阻塞等待</strong>先执行更新事务先结束（rollback或commit）或者超时</h3><table>
-<thead>
-<tr>
-<th>事务A</th>
-<th>事务B</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>start TRANSACTION;</td>
-<td>start TRANSACTION;</td>
-</tr>
-<tr>
-<td>update t1 SET da=’v1111’ where id=1;</td>
-</tr>
-<tr>
-<td></td>
-<td>update t1 SET da=’v1111’ where id=1;(此时会等待事务A执行完成 OR 等待超时)</td>
-</tr>
-</tbody>
-</table>
-<h3 id="并发事务更新时只要被更新的数据存在交集，那么就会存在阻塞等待另一事务完成的现象"><a href="#并发事务更新时只要被更新的数据存在交集，那么就会存在阻塞等待另一事务完成的现象" class="headerlink" title="并发事务更新时只要被更新的数据存在交集，那么就会存在阻塞等待另一事务完成的现象"></a>并发事务更新时只要被更新的数据存在交集，那么就会存在<strong>阻塞等待</strong>另一事务完成的现象</h3><table>
-<thead>
-<tr>
-<th>事务A</th>
-<th>事务B</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>start TRANSACTION;</td>
-</tr>
-<tr>
-<td>select * from t1;(查询出2条数据)</td>
-</tr>
-<tr>
-<td></td>
-<td>start TRANSACTION;</td>
-</tr>
-<tr>
-<td></td>
-<td>insert into t1 values(null,’v222’);</td>
-</tr>
-<tr>
-<td>update t1 set da=’updated’(此时会等事务B的完成)</td>
-</tr>
-<tr>
-<td></td>
-<td>commit;</td>
-</tr>
-</tbody>
-</table>
-<h3 id="并发事务更新时只要存在全表扫描-不管数据存在不存在交集-，那么就会存在阻塞等待另一事务完成的现象"><a href="#并发事务更新时只要存在全表扫描-不管数据存在不存在交集-，那么就会存在阻塞等待另一事务完成的现象" class="headerlink" title="并发事务更新时只要存在全表扫描(不管数据存在不存在交集)，那么就会存在阻塞等待另一事务完成的现象"></a>并发事务更新时只要存在全表扫描(不管数据存在不存在交集)，那么就会存在<strong>阻塞等待</strong>另一事务完成的现象</h3><table>
-<thead>
-<tr>
-<th>事务A</th>
-<th>事务B</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>start TRANSACTION;</td>
-</tr>
-<tr>
-<td>select * from t1;(查询出2条数据)</td>
-</tr>
-<tr>
-<td></td>
-<td>start TRANSACTION;</td>
-</tr>
-<tr>
-<td></td>
-<td>update t1 SET da=’v1113333331’ where id=1</td>
-</tr>
-<tr>
-<td>update t1 set da=’updated’ where da like ‘%0000%’(此时会等事务B的完成)</td>
-</tr>
-<tr>
-<td></td>
-<td>commit;</td>
-</tr>
-</tbody>
-</table>
-<hr>
-<p><em>观点仅代表自己，期待你的留言。</em></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li></ul>
 	</div>
 
       
