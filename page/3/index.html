@@ -220,6 +220,103 @@ var _hmt = _hmt || [];
 
       <div class="body-wrap">
   
+    <article id="post-ggcode-lib" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/08/22/ggcode-lib/" class="article-date">
+  	<time datetime="2016-08-22T10:15:58.000Z" itemprop="datePublished">2016-08-22</time>
+</a>
+      <div class="analysis-container">
+	<i class="fa fa-line-chart"></i>
+	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
+</div>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/08/22/ggcode-lib/">工具_源代码生成器GGCode</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+              
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>通过近期的努力，将编写的源代码生成器进行0.0.1版本的封版，代码生成器按数据表自动生成源代码包含简单业务的（增，删，改，查，分页等）。<br>部分集成的开源框架已通过配置文件进行开关配置，方便按业务进行开启和关闭。欢迎大家使用。<br>Github地址：<a href="https://github.com/stotem/GGCode" target="_blank" rel="external">https://github.com/stotem/GGCode</a></p>
+<h3 id="基础框架"><a href="#基础框架" class="headerlink" title="基础框架"></a>基础框架</h3><p>源代码生成框架: <a href="https://code.google.com/archive/p/rapid-framework/" target="_blank" rel="external">rapid-framework</a></p>
+<p>UI框架: <a href="https://startbootstrap.com/template-overviews/sb-admin-2/" target="_blank" rel="external">sb-admin-2</a> </p>
+<p>代码框架: SpringMVC + mybatis + Velocity。</p>
+<p>代码架构: 经典三层架构(MVC), 增加rpc模块做为调用三方api模块, 增加manager模块设置为缓存层与事务层。</p>
+<p>主要转换规则:</p>
+<ol>
+<li>数据表与数据列的注释做为UI展示title。</li>
+<li>数据列的为空性、数据长度和是否可为空等属性转换为javax.validation的判断规则。</li>
+<li>数据列的数据类型转换为实体对象属性的数据类型。</li>
+</ol>
+<h3 id="集成功能"><a href="#集成功能" class="headerlink" title="集成功能"></a>集成功能</h3><ol>
+<li>增加shiro做为权限管理框架。</li>
+<li>为文档数据存储添加MongoDB支持。</li>
+<li>为缓存增加Redis支持, 且自动配置Spring Cache为Redis缓存。</li>
+<li>以Velocity做为页面模板语言。</li>
+<li>增加javax.validation为服务端验证框架。且Controller自动验证传入参数。</li>
+<li>采用bonecp对数据库连接池化管理。</li>
+<li>spring的响应数据采用多视图配置。</li>
+</ol>
+<h3 id="如何使用"><a href="#如何使用" class="headerlink" title="如何使用?"></a>如何使用?</h3><p>在bin目录中通过配置generator.xml后直接<code>java -jar GGCode-0.0.1.jar</code></p>
+<h3 id="generator-xml配置说明"><a href="#generator-xml配置说明" class="headerlink" title="generator.xml配置说明"></a>generator.xml配置说明</h3><p>详见generator.xml注释</p>
+<h3 id="数据库设计要求"><a href="#数据库设计要求" class="headerlink" title="数据库设计要求"></a>数据库设计要求</h3><p>为了规范生成的Code，针对数据表的设计，需要满足每张表包含以下字段，请使用者遵守：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">data_id bigint PRIMARY KEY COMMENT &apos;数据主键(与业务主键区分)&apos;, </span><br><span class="line">del_flag tinyint(1) DEFAULT 1 COMMENT &apos;数据删除标识(1: 有效，2: 失效)&apos;,</span><br><span class="line">create_time timestamp COMMENT &apos;数据创建时间&apos;,</span><br><span class="line">update_time timestamp COMMENT &apos;数据最后update时间&apos;,</span><br></pre></td></tr></table></figure></p>
+<h3 id="其它说明"><a href="#其它说明" class="headerlink" title="其它说明"></a>其它说明</h3><ol>
+<li>controller的访问URI不带后缀.</li>
+<li>所有的页面文件后缀为view.</li>
+</ol>
+<h3 id="生成后程序截图"><a href="#生成后程序截图" class="headerlink" title="生成后程序截图"></a>生成后程序截图</h3><p><img src="/images/list.png" alt=""></p>
+<p><img src="/images/add.png" alt=""></p>
+<p><img src="/images/update.png" alt=""></p>
+<p><img src="/images/show.png" alt=""></p>
+<p><img src="/images/delete.png" alt=""></p>
+<hr>
+<p><em>观点仅代表自己，期待你的留言。</em></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+
+
+  
     <article id="post-cas-shiro-auth-flow" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -911,139 +1008,6 @@ var _hmt = _hmt || [];
 <p>这种将哈希槽分布到不同节点的做法使得用户可以很容易地向集群中添加或者删除节点。<br>当添加集群节点时，需要将已有节点的哈希槽移动到新的节点上进行处理。<br>当删除集群节点时，需要先将节点上已分配的哈希槽移动到其它的节点上再进行删除。</p>
 <h2 id="客户端存储分配"><a href="#客户端存储分配" class="headerlink" title="客户端存储分配"></a>客户端存储分配</h2><p>当客户端向集群节点中任一节点发出存储或读取请求时，redis节点先根据KeyHash出来的值判断是否属于当前集群节点能进行处理，如果不能处理则会将能完成这一请求的Redis节点信息返回给客户端。客户端将再次向能处理请求的Redis节点发出请求。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$ redis-cli -c -p 7000</span><br><span class="line">redis 127.0.0.1:7000&gt; set foo bar</span><br><span class="line">-&gt; Redirected to slot [12182] located at 127.0.0.1:7002</span><br><span class="line">OK</span><br><span class="line">redis 127.0.0.1:7002&gt; set hello world</span><br><span class="line">-&gt; Redirected to slot [866] located at 127.0.0.1:7000</span><br><span class="line">OK</span><br><span class="line">redis 127.0.0.1:7000&gt; get foo</span><br><span class="line">-&gt; Redirected to slot [12182] located at 127.0.0.1:7002</span><br><span class="line">&quot;bar&quot;</span><br><span class="line">redis 127.0.0.1:7000&gt; get hello</span><br><span class="line">-&gt; Redirected to slot [866] located at 127.0.0.1:7000</span><br><span class="line">&quot;world&quot;</span><br></pre></td></tr></table></figure></p>
 <h2 id="集群节点故障"><a href="#集群节点故障" class="headerlink" title="集群节点故障"></a>集群节点故障</h2><p>采用数据分片的处理集群数据分配就存在无法避免的问题，当其中一个集群节点挂掉时，分配到此节点上哈希槽的数据将无法处理。<br>为了使得集群在一部分节点下线或者无法与集群的大多数（majority）节点进行通讯的情况下， 仍然可以正常运作，<br>Redis 集群对每个集群节点都提供了了主从复制功能： 集群中的每个节点都有 1 个至 N 个复制品（replica）， 其中一个复制品为主节点（master）， 而其余的 N-1 个复制品为从节点（slave）。</p>
-<hr>
-<p><em>观点仅代表自己，期待你的留言。</em></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Redis/">Redis</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-distributed-redis-locked-queue" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/05/31/distributed-redis-locked-queue/" class="article-date">
-  	<time datetime="2016-05-31T03:56:20.000Z" itemprop="datePublished">2016-05-31</time>
-</a>
-      <div class="analysis-container">
-	<i class="fa fa-line-chart"></i>
-	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
-</div>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/05/31/distributed-redis-locked-queue/">Redis实现分布式锁和分布式队列</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-              
-        <h2 id="分布式锁"><a href="#分布式锁" class="headerlink" title="分布式锁"></a>分布式锁</h2><p>通过Redis做分布式系统的共享内存实现方案中，可以实现分布式锁的功能。实现方法就是用 SET NX 命令设置一个设定了存活周期 TTL 的 Key 来获取锁，通过删除 Key 来释放锁，通过存活周期来保证避免死锁。<br>如：<code>SET resource_name my_random_value NX PX 30000</code></p>
-<p> <em>注：</em></p>
-<hr>
-<p><code>SET key value [EX seconds] [PX milliseconds] [NX|XX]</code><br>从2.6.12版本开始，redis为SET命令增加了一系列选项:</p>
-<ul>
-<li>EX seconds – Set the specified expire time, in seconds.</li>
-<li>PX milliseconds – Set the specified expire time, in milliseconds.</li>
-<li>NX – Only set the key if it does not already exist.</li>
-<li>XX – Only set the key if it already exist.</li>
-<li>EX seconds – 设置键key的过期时间，单位时秒</li>
-<li>PX milliseconds – 设置键key的过期时间，单位时毫秒</li>
-<li>NX – 只有键key不存在的时候才会设置key的值</li>
-<li>XX – 只有键key存在的时候才会设置key的值</li>
-</ul>
-<p>但，以上简单方案存在一个单点故障的风险。在master/slave环境下，当：</p>
-<ol>
-<li>客户端A获取到锁.</li>
-<li>master节点在将 key 复制到 slave 节点之前崩溃了</li>
-<li>此时，slave节点被提升为master节点.</li>
-<li>客户端 B 从新的 master 节点获得了锁(而这个锁实际上已经由客户端 A 所持有)，导致了系统中有两个客户端在同一时间段内持有同一个互斥锁，破坏了互斥锁的安全性。</li>
-</ol>
-<p><strong>解决方法：</strong>需要解决以上问题，需要在进行锁设值时将惟一标识系统的ID做为value一同存储到Redis中，在完成所有的操作后，进行解锁时取出Redis内存储的value进行比对，<br>如果锁key对应的value还是当前系统的ID,那么表示当前锁目前只被当前系统所持有，反之，则表示锁被其它的系统抢占，那么需要回滚所有的操作。</p>
-<p>如：</p>
-<table>
-<thead>
-<tr>
-<th>客户端A（ID为SYSA）</th>
-<th>Redis</th>
-<th>客户端B（ID为SYSB）</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>获取到锁（SET dist_lock SYSA NX PX 30000)</td>
-<td></td>
-</tr>
-<tr>
-<td>进行其它的业务操作。。。</td>
-<td>master发生故障，slave被提升为NewMaster(未将master中dist_lock复制到NewMaster)</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td>获取到锁（SET dist_lock SYSB NX PX 30000）</td>
-</tr>
-<tr>
-<td>解锁 (get dist_lock，对value进行判定，为SYSA则执行解锁，否则回滚业务)</td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td>解锁 (get dist_lock，对value进行判定，为SYSB则执行解锁，否则回滚业务)</td>
-</tr>
-</tbody>
-</table>
-<h2 id="分布式队列"><a href="#分布式队列" class="headerlink" title="分布式队列"></a>分布式队列</h2><p>Redis实现分布式队列主要实现是通过<code>有序集合</code>实现，通过ZADD向集合内添加元素，同时添加多个元素时为事务处理（不存在部分成功部分失败的情况）</p>
-<p> <em>注：</em></p>
-<hr>
-<p><code>ZADD key [NX|XX] [CH] [INCR] score member [score member ...]</code><br>从3.0.2版本开始，增加以下选项：</p>
-<ul>
-<li>XX: Only update elements that already exist. Never add elements.</li>
-<li>NX: Don’t update already existing elements. Always add new elements.</li>
-<li>CH: Modify the return value from the number of new elements added, to the total number of elements changed (CH is an abbreviation of changed). Changed elements are new elements added and elements already existing for which the score was updated. So elements specified in the command line having the same score as they had in the past are not counted. Note: normally the return value of ZADD only counts the number of new elements added.</li>
-<li>INCR: When this option is specified ZADD acts like ZINCRBY. Only one score-element pair can be specified in this mode.</li>
-</ul>
-<h2 id="另外的选择"><a href="#另外的选择" class="headerlink" title="另外的选择"></a>另外的选择</h2><p><em>Java库：</em>其实也在使用<a href="https://github.com/mrniko/redisson" target="_blank" rel="external">redisson</a>来实现分布式锁。它封装了针对Redis各种操作的分布式实现。</p>
-<p>其它语言可参照官网文章: <a href="http://redis.io/topics/distlock?cm_mc_uid=77610277652214581184982&amp;cm_mc_sid_50200000=1464593765" target="_blank" rel="external">http://redis.io/topics/distlock?cm_mc_uid=77610277652214581184982&amp;cm_mc_sid_50200000=1464593765</a> </p>
 <hr>
 <p><em>观点仅代表自己，期待你的留言。</em></p>
 

@@ -220,6 +220,89 @@ var _hmt = _hmt || [];
 
       <div class="body-wrap">
   
+    <article id="post-ios-mvvm" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/04/07/ios-mvvm/" class="article-date">
+  	<time datetime="2016-04-07T10:14:40.000Z" itemprop="datePublished">2016-04-07</time>
+</a>
+      <div class="analysis-container">
+	<i class="fa fa-line-chart"></i>
+	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
+</div>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/04/07/ios-mvvm/">iOS开发MVVM理解与总结</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+              
+        <h2 id="MVC存在的问题"><a href="#MVC存在的问题" class="headerlink" title="MVC存在的问题"></a>MVC存在的问题</h2><p><img src="/images/ios-mvc.png" alt=""></p>
+<h3 id="iOS概念对应"><a href="#iOS概念对应" class="headerlink" title="iOS概念对应"></a>iOS概念对应</h3><p><code>M（model）:</code> 普通Class，用于对基础数据类型的对象封装，不包含界面逻辑、业务逻辑与数据转换等功能。<br><code>V（view）:</code>  xib或storyboard，用于显示给用户的界面。<br><code>C（controller）:</code> ViewController，用户下行数据输入与上线数据显示，view跳转，数据校验等功能。</p>
+<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><ol>
+<li>所有的逻辑代码，数据校验，UI控制，对象转换，数据缓存等服务都存在到Controller中，造成代码过于臃肿，可读性低。</li>
+<li>Controller中处理所有的任务，基本上很难多人协作完成，分工性差。</li>
+<li>Controller依赖到UIKit库，让单元测试无法覆盖，功能可靠性不可预测。</li>
+<li>试想，iphone程序更换成macosx程序哪些能重用？功能的重用性低。</li>
+</ol>
+<p>分析MVC的问题，主要还是由于Controller完成的任务过多造成，为了解决以上问题，必须让Controller进行减肥。</p>
+<h2 id="MVVM"><a href="#MVVM" class="headerlink" title="MVVM"></a>MVVM</h2><p><img src="/images/ios-mvvm.png" alt=""></p>
+<h3 id="iOS概念对应-1"><a href="#iOS概念对应-1" class="headerlink" title="iOS概念对应"></a>iOS概念对应</h3><p><code>M（model）:</code> 与MVC中概念一致之外，将View分为数据model与界面model。<br><code>V（view）:</code>  与MVC中概念一致之外，另外将与view连接紧密的viewcontroller划分到一起。viewcontroller只负责界面跳转、用户下行数据获取、用户上行数据绑定以及vm层的调用。<br><code>VM（view-model）:</code> 用于连接view与model层，完成界面逻辑，业务逻辑，接口调用，数据model与界面model数据转换，数据校验上行数据处理与下行数据转换，数据缓存等功能。</p>
+<h2 id="另外的建议"><a href="#另外的建议" class="headerlink" title="另外的建议"></a>另外的建议</h2><p>使用<a href="https://cocoapods.org/" target="_blank" rel="external">CocoaPods</a>将各层分开成不同的project，由workspace融合，最终通过静态库的形式进行相互的引用。<br>这样做的好处有以下几点：</p>
+<ol>
+<li>代码清晰，分工明确。</li>
+<li>对于代码修改后的编译为分段进行，提高了编译速度。</li>
+<li>对各层的代码都可以进行版本化管理，调用者的各层代码固化调用版本，对于重构代码等过程有很大的好处。</li>
+<li>由于静态库可由其它程序平台重用（iOS与MacOSX），一次编译，多次使用。</li>
+</ol>
+<hr>
+<p><em>观点仅代表自己，期待你的留言。</em></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+
+
+  
     <article id="post-docker-install-issue" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -973,84 +1056,6 @@ var _hmt = _hmt || [];
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/转载/">转载</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-header-version" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/03/21/header-version/" class="article-date">
-  	<time datetime="2016-03-21T09:02:06.000Z" itemprop="datePublished">2016-03-21</time>
-</a>
-      <div class="analysis-container">
-	<i class="fa fa-line-chart"></i>
-	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
-</div>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/03/21/header-version/">开放平台Api的版本控制方案</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-              
-        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>做开放平台供外部调用的Api理论上变化越少针对调用者来讲越有利，随着开放平台的功能不断完善（优化）不可避免的需要添加新的资源，或者修改现有资源。因此Api的更新升级必不可少，但是，对于开放平台来讲从一开始就应该将对外提供的Api加入版本管理。一个长期稳定可用的开放平台才能被越来越多的用户使用。<br>同理，Native的App与服务器Api也存在同样的关系，Native App安装在不同的移动设备上，如果Api变动都需要提示用户进行强制更新来适配新版本的Api接口，那么，App用户将异常烦躁甚至于将App从设备中Uninstall掉。</p>
-<p>查看众多论坛与博客，总结出目前实现有三种方式：</p>
-<ul>
-<li>URI<br>在访问Api中增加version段来告诉服务器所使用的Api版本（如：<a href="http://xxxx/api/customers/v1.1/1234" target="_blank" rel="external">http://xxxx/api/customers/v1.1/1234</a>  ）。 这种方式正是由于在uri中增加了version段，破坏掉了Api的统一访问URL。</li>
-<li>Request Parameter<br>在Api后增加请求参数来告诉服务器所使用的Api版本（如：<a href="http://xxxx/api/customers/1234?v=1.1" target="_blank" rel="external">http://xxxx/api/customers/1234?v=1.1</a> ）这种方式与第一种URI的方式类似。</li>
-<li>Request Header<br>在请求Api时在Request的请求头中增加Version值来告诉服务器所使用的Api版本。这种方式保留了Api统一访问的URL，版本号传递更隐秘。但需要客户端在请求时增加此参数来完成，所以需要App在开发之初就需要增加版本号的传递。</li>
-</ul>
-<p>综上所述，个人认为第三种 Request Header的传递方式具有统一了URL和Version段隐秘的优点，为最适合的传递方式。</p>
-<h2 id="Request-Header方式实现版本控制"><a href="#Request-Header方式实现版本控制" class="headerlink" title="Request Header方式实现版本控制"></a>Request Header方式实现版本控制</h2><p>说完了客户端传递版本号的方式之后，我们来看一下服务端的处理。按流行的MVC的方式来看，个人觉得应该在控制层之前增加Api的版本控制层来先对客户端的请求Api进行版本的预判。</p>
-<p><img src="/images/QQ20160321-0.png" alt=""></p>
-<p>个人总结了一下，有以下几种预判结果：<br>1: Api为所有版本提供服务。<br>2: Api提供了最低版本，为大于此最低版本的请求提供服务。<br>3: Api提供了服务的版本范围，为大于最低版本且小于最高版本的请求提供服务。<br>4: Api已过期，由其它的Api代替。<br>5: Api已废弃不再提供服务。</p>
-<p>按以上思路，按Java实现为例。可以通过 自定义注解（Annotation）+ 过滤器（Filter）实现。<br>相似的方案还有：自定义注解 + 拦截器， 自定义注解 + Spring AOP<br>同理，其它的语言均有类似技术可以实现。</p>
-<p>接下来我将在 <a href="https://github.com/stotem/header-version-filter.git" target="_blank" rel="external">https://github.com/stotem/header-version-filter.git</a> 中公布我的Annotation+Filter实现。</p>
-<hr>
-<p><em>观点仅代表自己，期待你的留言。</em></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li></ul>
 	</div>
 
       

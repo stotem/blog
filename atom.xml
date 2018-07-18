@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.wujianjun.org/"/>
-  <updated>2018-04-10T11:14:34.620Z</updated>
+  <updated>2018-07-18T09:57:27.939Z</updated>
   <id>http://www.wujianjun.org/</id>
   
   <author>
@@ -16,11 +16,46 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Java Script Engine</title>
+    <link href="http://www.wujianjun.org/2018/07/18/java-script-engine/"/>
+    <id>http://www.wujianjun.org/2018/07/18/java-script-engine/</id>
+    <published>2018-07-18T08:45:12.000Z</published>
+    <updated>2018-07-18T09:57:27.939Z</updated>
+    
+    <content type="html">&lt;h2 id=&quot;Java-Script-Engine&quot;&gt;&lt;a href=&quot;#Java-Script-Engine&quot; class=&quot;headerlink&quot; title=&quot;Java Script Engine&quot;&gt;&lt;/a&gt;Java Script Engine&lt;/h2&gt;&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;29&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;30&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;31&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;32&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;33&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;34&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;35&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;36&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;37&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;38&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;39&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;40&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;41&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;42&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;43&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;44&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;45&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;46&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;47&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;48&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;49&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;50&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(String[] agrs)&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;throws&lt;/span&gt; ScriptException &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; ScriptEngine javascriptEngine = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; ScriptEngineManager().getEngineByName(&lt;span class=&quot;string&quot;&gt;&quot;javascript&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; Bindings globalBindings = javascriptEngine.getBindings(ScriptContext.GLOBAL_SCOPE);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    globalBindings.put(&lt;span class=&quot;string&quot;&gt;&quot;a&quot;&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;5&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    System.out.println(&lt;span class=&quot;string&quot;&gt;&quot;-------Engine bindings scope--------------&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; Bindings javascriptEngineBindings = javascriptEngine.getBindings(ScriptContext.ENGINE_SCOPE);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    javascriptEngineBindings.put(&lt;span class=&quot;string&quot;&gt;&quot;x&quot;&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;20&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    javascriptEngineBindings.put(&lt;span class=&quot;string&quot;&gt;&quot;y&quot;&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;20.4&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    javascriptEngineBindings.put(&lt;span class=&quot;string&quot;&gt;&quot;z&quot;&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; String[] scriptArray = &amp;#123;&lt;span class=&quot;string&quot;&gt;&quot;x*y+z&quot;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&quot;x*(y+z)&quot;&lt;/span&gt;, &lt;span class=&quot;string&quot;&gt;&quot;a+x*(y+z)&quot;&lt;/span&gt;&amp;#125;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    eval(scriptArray, javascriptEngine);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    System.out.println(&lt;span class=&quot;string&quot;&gt;&quot;-------Local bindings scope--------------&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; Bindings localBinding = javascriptEngine.createBindings();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    localBinding.put(&lt;span class=&quot;string&quot;&gt;&quot;x&quot;&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    localBinding.put(&lt;span class=&quot;string&quot;&gt;&quot;y&quot;&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;3&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    localBinding.put(&lt;span class=&quot;string&quot;&gt;&quot;z&quot;&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    eval(scriptArray, javascriptEngine, localBinding);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;eval&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(String[] scriptArray, ScriptEngine javascriptEngine)&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;throws&lt;/span&gt; ScriptException &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    Bindings aBindings = javascriptEngine.getBindings(ScriptContext.GLOBAL_SCOPE);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; (String key : aBindings.keySet()) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        System.out.println(&lt;span class=&quot;string&quot;&gt;&quot;Args (Global bindings scope) &amp;gt; &quot;&lt;/span&gt; + key + &lt;span class=&quot;string&quot;&gt;&quot;=&quot;&lt;/span&gt; + aBindings.get(key));&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    aBindings = javascriptEngine.getBindings(ScriptContext.ENGINE_SCOPE);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; (String key : aBindings.keySet()) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        System.out.println(&lt;span class=&quot;string&quot;&gt;&quot;Args (Engine bindings scope) &amp;gt; &quot;&lt;/span&gt; + key + &lt;span class=&quot;string&quot;&gt;&quot;=&quot;&lt;/span&gt; + aBindings.get(key));&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; (String script : scriptArray) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        System.out.println(&lt;span class=&quot;string&quot;&gt;&quot;script &amp;gt; &quot;&lt;/span&gt; + script + &lt;span class=&quot;string&quot;&gt;&quot; = &quot;&lt;/span&gt; + javascriptEngine.eval(script));&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;eval&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(String[] scriptArray, ScriptEngine javascriptEngine, Bindings localBinding)&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;throws&lt;/span&gt; ScriptException &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    Bindings aBindings = javascriptEngine.getBindings(ScriptContext.GLOBAL_SCOPE);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; (String key : aBindings.keySet()) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        System.out.println(&lt;span class=&quot;string&quot;&gt;&quot;Args (Global bindings scope) &amp;gt; &quot;&lt;/span&gt; + key + &lt;span class=&quot;string&quot;&gt;&quot;=&quot;&lt;/span&gt; + aBindings.get(key));&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    aBindings = javascriptEngine.getBindings(ScriptContext.ENGINE_SCOPE);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; (String key : aBindings.keySet()) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        System.out.println(&lt;span class=&quot;string&quot;&gt;&quot;Args (Engine bindings scope) &amp;gt; &quot;&lt;/span&gt; + key + &lt;span class=&quot;string&quot;&gt;&quot;=&quot;&lt;/span&gt; + aBindings.get(key));&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; (String s : localBinding.keySet()) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        System.out.println(&lt;span class=&quot;string&quot;&gt;&quot;Args (Local bindings scope) &amp;gt; &quot;&lt;/span&gt; + s + &lt;span class=&quot;string&quot;&gt;&quot;=&quot;&lt;/span&gt; + aBindings.get(s));&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;for&lt;/span&gt; (String script : scriptArray) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        System.out.println(&lt;span class=&quot;string&quot;&gt;&quot;script &amp;gt; &quot;&lt;/span&gt; + script + &lt;span class=&quot;string&quot;&gt;&quot; = &quot;&lt;/span&gt; + javascriptEngine.eval(script, localBinding));&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;输出结果：&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;-------Engine bindings scope--------------&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Args (Global bindings scope) &amp;gt; a=5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Args (Engine bindings scope) &amp;gt; z=1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Args (Engine bindings scope) &amp;gt; y=20.4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Args (Engine bindings scope) &amp;gt; x=20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;script &amp;gt; x*y+z = 409.0&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;script &amp;gt; x*(y+z) = 428.0&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;script &amp;gt; a+x*(y+z) = 433.0&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;-------Local bindings scope--------------&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Args (Global bindings scope) &amp;gt; a=5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Args (Engine bindings scope) &amp;gt; println=sun.org.mozilla.javascript.internal.InterpretedFunction@45a23f67&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Args (Engine bindings scope) &amp;gt; context=javax.script.SimpleScriptContext@1ef0a6e8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Args (Engine bindings scope) &amp;gt; z=1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Args (Engine bindings scope) &amp;gt; print=sun.org.mozilla.javascript.internal.InterpretedFunction@495dd936&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Args (Engine bindings scope) &amp;gt; y=20.4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Args (Engine bindings scope) &amp;gt; x=20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Args (Local bindings scope) &amp;gt; z=1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Args (Local bindings scope) &amp;gt; y=20.4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Args (Local bindings scope) &amp;gt; x=20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;script &amp;gt; x*y+z = 7.0&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;script &amp;gt; x*(y+z) = 8.0&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;script &amp;gt; a+x*(y+z) = 13.0&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Process finished with exit code 0&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Bindings变量的有效范围&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Global对应到ScriptEngineFactory，通过&lt;code&gt;scriptEngine.getBindings(ScriptContext.GLOBAL_SCOPE)&lt;/code&gt;获得。&lt;/li&gt;
+&lt;li&gt;Engine对应到ScriptEngine，通过&lt;code&gt;scriptEngine.getBindings(ScriptContext.ENGINE_SCOPE)&lt;/code&gt;获得。&lt;/li&gt;
+&lt;li&gt;Local Binding每一次执行script，通过&lt;code&gt;scriptEngine.createBindings()&lt;/code&gt;获得。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;使用场景适用于&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;规则引擎&lt;/li&gt;
+&lt;li&gt;流程流转条件判定&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;观点仅代表自己，期待你的留言。&lt;/em&gt;&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;Java-Script-Engine&quot;&gt;&lt;a href=&quot;#Java-Script-Engine&quot; class=&quot;headerlink&quot; title=&quot;Java Script Engine&quot;&gt;&lt;/a&gt;Java Script Engine&lt;/h2&gt;&lt;figure c
+    
+    </summary>
+    
+    
+      <category term="原创" scheme="http://www.wujianjun.org/tags/%E5%8E%9F%E5%88%9B/"/>
+    
+  </entry>
+  
+  <entry>
     <title>redis进阶</title>
     <link href="http://www.wujianjun.org/2018/04/10/redis-advanced/"/>
     <id>http://www.wujianjun.org/2018/04/10/redis-advanced/</id>
     <published>2018-04-10T08:30:13.000Z</published>
-    <updated>2018-04-10T11:14:34.620Z</updated>
+    <updated>2018-04-10T11:14:34.621Z</updated>
     
     <content type="html">&lt;h2 id=&quot;redis主从（读写分离）&quot;&gt;&lt;a href=&quot;#redis主从（读写分离）&quot; class=&quot;headerlink&quot; title=&quot;redis主从（读写分离）&quot;&gt;&lt;/a&gt;redis主从（读写分离）&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;问题：&lt;/strong&gt;&lt;/p&gt;
 &lt;ul&gt;
@@ -481,7 +516,7 @@
     <link href="http://www.wujianjun.org/2018/04/04/mq-rocketmq-module/"/>
     <id>http://www.wujianjun.org/2018/04/04/mq-rocketmq-module/</id>
     <published>2018-04-04T08:58:58.000Z</published>
-    <updated>2018-04-04T10:52:31.622Z</updated>
+    <updated>2018-04-04T10:52:31.623Z</updated>
     
     <content type="html">&lt;h2 id=&quot;一、简介&quot;&gt;&lt;a href=&quot;#一、简介&quot; class=&quot;headerlink&quot; title=&quot;一、简介&quot;&gt;&lt;/a&gt;一、简介&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;&lt;p&gt;RocketMQ是一款分布式、队列模型的消息中间件，具有以下特点：&lt;/p&gt;
@@ -1462,60 +1497,6 @@
     <summary type="html">
     
       &lt;h2 id=&quot;一、在Web项目中的ApplicationContext&quot;&gt;&lt;a href=&quot;#一、在Web项目中的ApplicationContext&quot; class=&quot;headerlink&quot; title=&quot;一、在Web项目中的ApplicationContext&quot;&gt;&lt;/a&gt;一、
-    
-    </summary>
-    
-    
-      <category term="原创" scheme="http://www.wujianjun.org/tags/%E5%8E%9F%E5%88%9B/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>工具_源代码生成器GGCode</title>
-    <link href="http://www.wujianjun.org/2016/08/22/ggcode-lib/"/>
-    <id>http://www.wujianjun.org/2016/08/22/ggcode-lib/</id>
-    <published>2016-08-22T10:15:58.000Z</published>
-    <updated>2017-12-01T10:49:45.339Z</updated>
-    
-    <content type="html">&lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;通过近期的努力，将编写的源代码生成器进行0.0.1版本的封版，代码生成器按数据表自动生成源代码包含简单业务的（增，删，改，查，分页等）。&lt;br&gt;部分集成的开源框架已通过配置文件进行开关配置，方便按业务进行开启和关闭。欢迎大家使用。&lt;br&gt;Github地址：&lt;a href=&quot;https://github.com/stotem/GGCode&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/stotem/GGCode&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&quot;基础框架&quot;&gt;&lt;a href=&quot;#基础框架&quot; class=&quot;headerlink&quot; title=&quot;基础框架&quot;&gt;&lt;/a&gt;基础框架&lt;/h3&gt;&lt;p&gt;源代码生成框架: &lt;a href=&quot;https://code.google.com/archive/p/rapid-framework/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;rapid-framework&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;UI框架: &lt;a href=&quot;https://startbootstrap.com/template-overviews/sb-admin-2/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;sb-admin-2&lt;/a&gt; &lt;/p&gt;
-&lt;p&gt;代码框架: SpringMVC + mybatis + Velocity。&lt;/p&gt;
-&lt;p&gt;代码架构: 经典三层架构(MVC), 增加rpc模块做为调用三方api模块, 增加manager模块设置为缓存层与事务层。&lt;/p&gt;
-&lt;p&gt;主要转换规则:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;数据表与数据列的注释做为UI展示title。&lt;/li&gt;
-&lt;li&gt;数据列的为空性、数据长度和是否可为空等属性转换为javax.validation的判断规则。&lt;/li&gt;
-&lt;li&gt;数据列的数据类型转换为实体对象属性的数据类型。&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h3 id=&quot;集成功能&quot;&gt;&lt;a href=&quot;#集成功能&quot; class=&quot;headerlink&quot; title=&quot;集成功能&quot;&gt;&lt;/a&gt;集成功能&lt;/h3&gt;&lt;ol&gt;
-&lt;li&gt;增加shiro做为权限管理框架。&lt;/li&gt;
-&lt;li&gt;为文档数据存储添加MongoDB支持。&lt;/li&gt;
-&lt;li&gt;为缓存增加Redis支持, 且自动配置Spring Cache为Redis缓存。&lt;/li&gt;
-&lt;li&gt;以Velocity做为页面模板语言。&lt;/li&gt;
-&lt;li&gt;增加javax.validation为服务端验证框架。且Controller自动验证传入参数。&lt;/li&gt;
-&lt;li&gt;采用bonecp对数据库连接池化管理。&lt;/li&gt;
-&lt;li&gt;spring的响应数据采用多视图配置。&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h3 id=&quot;如何使用&quot;&gt;&lt;a href=&quot;#如何使用&quot; class=&quot;headerlink&quot; title=&quot;如何使用?&quot;&gt;&lt;/a&gt;如何使用?&lt;/h3&gt;&lt;p&gt;在bin目录中通过配置generator.xml后直接&lt;code&gt;java -jar GGCode-0.0.1.jar&lt;/code&gt;&lt;/p&gt;
-&lt;h3 id=&quot;generator-xml配置说明&quot;&gt;&lt;a href=&quot;#generator-xml配置说明&quot; class=&quot;headerlink&quot; title=&quot;generator.xml配置说明&quot;&gt;&lt;/a&gt;generator.xml配置说明&lt;/h3&gt;&lt;p&gt;详见generator.xml注释&lt;/p&gt;
-&lt;h3 id=&quot;数据库设计要求&quot;&gt;&lt;a href=&quot;#数据库设计要求&quot; class=&quot;headerlink&quot; title=&quot;数据库设计要求&quot;&gt;&lt;/a&gt;数据库设计要求&lt;/h3&gt;&lt;p&gt;为了规范生成的Code，针对数据表的设计，需要满足每张表包含以下字段，请使用者遵守：&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;data_id bigint PRIMARY KEY COMMENT &amp;apos;数据主键(与业务主键区分)&amp;apos;, &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;del_flag tinyint(1) DEFAULT 1 COMMENT &amp;apos;数据删除标识(1: 有效，2: 失效)&amp;apos;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;create_time timestamp COMMENT &amp;apos;数据创建时间&amp;apos;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;update_time timestamp COMMENT &amp;apos;数据最后update时间&amp;apos;,&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-&lt;h3 id=&quot;其它说明&quot;&gt;&lt;a href=&quot;#其它说明&quot; class=&quot;headerlink&quot; title=&quot;其它说明&quot;&gt;&lt;/a&gt;其它说明&lt;/h3&gt;&lt;ol&gt;
-&lt;li&gt;controller的访问URI不带后缀.&lt;/li&gt;
-&lt;li&gt;所有的页面文件后缀为view.&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h3 id=&quot;生成后程序截图&quot;&gt;&lt;a href=&quot;#生成后程序截图&quot; class=&quot;headerlink&quot; title=&quot;生成后程序截图&quot;&gt;&lt;/a&gt;生成后程序截图&lt;/h3&gt;&lt;p&gt;&lt;img src=&quot;/images/list.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;/images/add.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;/images/update.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;/images/show.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;/images/delete.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-&lt;hr&gt;
-&lt;p&gt;&lt;em&gt;观点仅代表自己，期待你的留言。&lt;/em&gt;&lt;/p&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;通过近期的努力，将编写的源代码生成器进行0.0.1版本的封版，代码生成器按数据表自动生成源代码包含简单业务的（增，删，改，查，分页等）。&lt;b
     
     </summary>
     

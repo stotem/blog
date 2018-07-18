@@ -23,7 +23,7 @@ redis为单进程程序，只能占用单核，无法充分使用多核的系统
 单节点redis在出现故障时则无法继续提供数据存储服务，无法达到高可用要求。解决方法：
 增加redis slave节点通过replicas进行master-slave的数据复制，故障时手动恢复。
 通过增加sentinel(哨兵)监控redis master-slave节点的存活状态，当maste">
-<meta property="og:updated_time" content="2018-04-10T11:14:34.620Z">
+<meta property="og:updated_time" content="2018-04-10T11:14:34.621Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="redis进阶">
 <meta name="twitter:description" content="redis主从（读写分离）问题：
@@ -315,6 +315,15 @@ var _hmt = _hmt || [];
   
     
 <nav id="article-nav">
+  
+    <a href="/2018/07/18/java-script-engine/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          Java Script Engine
+        
+      </div>
+    </a>
   
   
     <a href="/2018/04/04/mq-rocketmq-manuals/" id="article-nav-older" class="article-nav-link-wrap">
