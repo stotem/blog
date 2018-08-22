@@ -3,6 +3,25 @@
 
     
   <url>
+    <loc>http://www.wujianjun.org/2018/08/22/module-multi-rocketmq/</loc>
+    <lastmod>2018-08-22T04:08:28.348Z</lastmod>
+    <data>
+        <display>
+        <title>同一微服务连接多套RocketMQ集群</title>
+        <pubTime>2018-08-22T03:11:03.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+        <tag>rocketmq </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://www.wujianjun.org/2018/07/18/java-script-engine/</loc>
     <lastmod>2018-07-18T09:57:27.939Z</lastmod>
     <data>
@@ -21,7 +40,7 @@
     
   <url>
     <loc>http://www.wujianjun.org/2018/04/10/redis-advanced/</loc>
-    <lastmod>2018-04-10T11:14:34.621Z</lastmod>
+    <lastmod>2018-04-10T11:14:34.620Z</lastmod>
     <data>
         <display>
         <title>redis进阶</title>
@@ -38,7 +57,7 @@
     
   <url>
     <loc>http://www.wujianjun.org/2018/04/04/mq-rocketmq-module/</loc>
-    <lastmod>2018-04-04T10:52:31.623Z</lastmod>
+    <lastmod>2018-04-04T10:52:31.622Z</lastmod>
     <data>
         <display>
         <title>RocketMQ各组件特性和HA集群方案</title>

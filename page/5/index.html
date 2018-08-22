@@ -133,7 +133,7 @@ var _hmt = _hmt || [];
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/Docker/" style="font-size: 13.33px;">Docker</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/Maven/" style="font-size: 11.67px;">Maven</a> <a href="/tags/Nginx/" style="font-size: 15px;">Nginx</a> <a href="/tags/Redis/" style="font-size: 11.67px;">Redis</a> <a href="/tags/Transaction/" style="font-size: 10px;">Transaction</a> <a href="/tags/iOS/" style="font-size: 16.67px;">iOS</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/nginx-obs/" style="font-size: 10px;">nginx + obs</a> <a href="/tags/php-fpm/" style="font-size: 10px;">php-fpm</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/spring/" style="font-size: 11.67px;">spring</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/transaction/" style="font-size: 10px;">transaction</a> <a href="/tags/关键笔记/" style="font-size: 10px;">关键笔记</a> <a href="/tags/分布式/" style="font-size: 10px;">分布式</a> <a href="/tags/分布式事务/" style="font-size: 10px;">分布式事务</a> <a href="/tags/原创/" style="font-size: 20px;">原创</a> <a href="/tags/多进程/" style="font-size: 10px;">多进程</a> <a href="/tags/并发/" style="font-size: 10px;">并发</a> <a href="/tags/总结/" style="font-size: 10px;">总结</a> <a href="/tags/操作系统/" style="font-size: 10px;">操作系统</a> <a href="/tags/架构/" style="font-size: 10px;">架构</a> <a href="/tags/电商/" style="font-size: 10px;">电商</a> <a href="/tags/笔记/" style="font-size: 10px;">笔记</a> <a href="/tags/转发/" style="font-size: 10px;">转发</a> <a href="/tags/转载/" style="font-size: 18.33px;">转载</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
+						<a href="/tags/Docker/" style="font-size: 13.33px;">Docker</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/Maven/" style="font-size: 11.67px;">Maven</a> <a href="/tags/Nginx/" style="font-size: 15px;">Nginx</a> <a href="/tags/Redis/" style="font-size: 11.67px;">Redis</a> <a href="/tags/Transaction/" style="font-size: 10px;">Transaction</a> <a href="/tags/iOS/" style="font-size: 16.67px;">iOS</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/nginx-obs/" style="font-size: 10px;">nginx + obs</a> <a href="/tags/php-fpm/" style="font-size: 10px;">php-fpm</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/rocketmq/" style="font-size: 10px;">rocketmq</a> <a href="/tags/spring/" style="font-size: 11.67px;">spring</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/transaction/" style="font-size: 10px;">transaction</a> <a href="/tags/关键笔记/" style="font-size: 10px;">关键笔记</a> <a href="/tags/分布式/" style="font-size: 10px;">分布式</a> <a href="/tags/分布式事务/" style="font-size: 10px;">分布式事务</a> <a href="/tags/原创/" style="font-size: 20px;">原创</a> <a href="/tags/多进程/" style="font-size: 10px;">多进程</a> <a href="/tags/并发/" style="font-size: 10px;">并发</a> <a href="/tags/总结/" style="font-size: 10px;">总结</a> <a href="/tags/操作系统/" style="font-size: 10px;">操作系统</a> <a href="/tags/架构/" style="font-size: 10px;">架构</a> <a href="/tags/电商/" style="font-size: 10px;">电商</a> <a href="/tags/笔记/" style="font-size: 10px;">笔记</a> <a href="/tags/转发/" style="font-size: 10px;">转发</a> <a href="/tags/转载/" style="font-size: 18.33px;">转载</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
 					</div>
 				</section>
 				
@@ -219,6 +219,358 @@ var _hmt = _hmt || [];
 </nav>
 
       <div class="body-wrap">
+  
+    <article id="post-string-format" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/04/13/string-format/" class="article-date">
+  	<time datetime="2016-04-13T08:02:59.000Z" itemprop="datePublished">2016-04-13</time>
+</a>
+      <div class="analysis-container">
+	<i class="fa fa-line-chart"></i>
+	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
+</div>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/04/13/string-format/">String.format详解</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+              
+        <p>String类的format()方法用于创建格式化的字符串以及连接多个字符串对象。熟悉C语言的同学应该记得C语言的sprintf()方法，两者有类似之处。format()方法有两种重载形式。<br>format(String format, Object… args) 新字符串使用本地语言环境，制定字符串格式和参数生成格式化的新字符串。</p>
+<p>format(Locale locale, String format, Object… args) 使用指定的语言环境，制定字符串格式和参数生成格式化的字符串。</p>
+<h2 id="常规类型的格式化"><a href="#常规类型的格式化" class="headerlink" title="常规类型的格式化"></a>常规类型的格式化</h2><table>
+<thead>
+<tr>
+<th>转换符</th>
+<th>说明</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>%s</td>
+<td>字符串类型</td>
+<td>“mingrisoft”            </td>
+</tr>
+<tr>
+<td>%c</td>
+<td>字符类型</td>
+<td>‘m’            </td>
+</tr>
+<tr>
+<td>%b</td>
+<td>布尔类型</td>
+<td>true            </td>
+</tr>
+<tr>
+<td>%d</td>
+<td>整数类型（十进制）</td>
+<td>99            </td>
+</tr>
+<tr>
+<td>%x</td>
+<td>整数类型（十六进制）</td>
+<td>FF            </td>
+</tr>
+<tr>
+<td>%o</td>
+<td>整数类型（八进制）</td>
+<td>77            </td>
+</tr>
+<tr>
+<td>%f</td>
+<td>浮点类型</td>
+<td>99.99            </td>
+</tr>
+<tr>
+<td>%a</td>
+<td>十六进制浮点类型</td>
+<td>FF.35AE            </td>
+</tr>
+<tr>
+<td>%e</td>
+<td>指数类型</td>
+<td>9.38e+5            </td>
+</tr>
+<tr>
+<td>%g</td>
+<td>通用浮点类型（f和e类型中较短的）             </td>
+</tr>
+<tr>
+<td>%h</td>
+<td>散列码             </td>
+</tr>
+<tr>
+<td>%%</td>
+<td>百分比类型</td>
+<td>％            </td>
+</tr>
+<tr>
+<td>%n</td>
+<td>换行符             </td>
+</tr>
+<tr>
+<td>%tx</td>
+<td>日期与时间类型（x代表不同的日期与时间转换符）</td>
+</tr>
+</tbody>
+</table>
+<p>测试代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) &#123;  </span><br><span class="line">    String str=null;  </span><br><span class="line">    str=String.format(&quot;Hi,%s&quot;, &quot;王力&quot;);  </span><br><span class="line">    System.out.println(str);  </span><br><span class="line">    str=String.format(&quot;Hi,%s:%s.%s&quot;, &quot;王南&quot;,&quot;王力&quot;,&quot;王张&quot;);            </span><br><span class="line">    System.out.println(str);                           </span><br><span class="line">    System.out.printf(&quot;字母a的大写是：%c %n&quot;, &apos;A&apos;);  </span><br><span class="line">    System.out.printf(&quot;3&gt;7的结果是：%b %n&quot;, 3&gt;7);  </span><br><span class="line">    System.out.printf(&quot;100的一半是：%d %n&quot;, 100/2);  </span><br><span class="line">    System.out.printf(&quot;100的16进制数是：%x %n&quot;, 100);  </span><br><span class="line">    System.out.printf(&quot;100的8进制数是：%o %n&quot;, 100);  </span><br><span class="line">    System.out.printf(&quot;50元的书打8.5折扣是：%f 元%n&quot;, 50*0.85);  </span><br><span class="line">    System.out.printf(&quot;上面价格的16进制数是：%a %n&quot;, 50*0.85);  </span><br><span class="line">    System.out.printf(&quot;上面价格的指数表示：%e %n&quot;, 50*0.85);  </span><br><span class="line">    System.out.printf(&quot;上面价格的指数和浮点数结果的长度较短的是：%g %n&quot;, 50*0.85);  </span><br><span class="line">    System.out.printf(&quot;上面的折扣是%d%% %n&quot;, 85);  </span><br><span class="line">    System.out.printf(&quot;字母A的散列码是：%h %n&quot;, &apos;A&apos;);  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>输出结果:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Hi,王力  </span><br><span class="line">Hi,王南:王力.王张  </span><br><span class="line">字母a的大写是：A   </span><br><span class="line">3&gt;7的结果是：false   </span><br><span class="line">100的一半是：50   </span><br><span class="line">100的16进制数是：64   </span><br><span class="line">100的8进制数是：144   </span><br><span class="line">50元的书打8.5折扣是：42.500000 元  </span><br><span class="line">上面价格的16进制数是：0x1.54p5   </span><br><span class="line">上面价格的指数表示：4.250000e+01   </span><br><span class="line">上面价格的指数和浮点数结果的长度较短的是：42.5000   </span><br><span class="line">上面的折扣是85%   </span><br><span class="line">字母A的散列码是：41</span><br></pre></td></tr></table></figure></p>
+<p>搭配转换符的标志，如图所示:</p>
+<table>
+<thead>
+<tr>
+<th>标志</th>
+<th>说明</th>
+<th>示例</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>+</td>
+<td>为正数或者负数添加符号</td>
+<td>(“%+d”,15)</td>
+<td>+15</td>
+</tr>
+<tr>
+<td>−</td>
+<td>左对齐</td>
+<td>(“%-5d”,15)</td>
+<td>15</td>
+</tr>
+<tr>
+<td>0</td>
+<td>数字前面补0</td>
+<td>(“%04d”, 99)</td>
+<td>0099</td>
+</tr>
+<tr>
+<td>空格</td>
+<td>在整数之前添加指定数量的空格</td>
+<td>(“% 4d”, 99)</td>
+<td>99</td>
+</tr>
+<tr>
+<td>,</td>
+<td>以“,”对数字分组</td>
+<td>(“%,f”, 9999.99)</td>
+<td>9,999.990000</td>
+</tr>
+<tr>
+<td>(</td>
+<td>使用括号包含负数</td>
+<td>(“%(f”, -99.99)</td>
+<td>(99.990000)</td>
+</tr>
+<tr>
+<td>#</td>
+<td>如果是浮点数则包含小数点，如果是16进制或8进制则添加0x或0</td>
+<td>(“%#x”, 99)</td>
+<td>0x63</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>(“%#o”, 99)</td>
+<td>0143</td>
+</tr>
+<tr>
+<td>&lt;</td>
+<td>格式化前一个转换符所描述的参数</td>
+<td>(“%f和%&lt;3.2f”, 99.45)</td>
+<td>99.450000和99.45</td>
+</tr>
+<tr>
+<td>$</td>
+<td>被格式化的参数索引</td>
+<td>(“%1$d,%2$s”, 99,”abc”)</td>
+<td>99,abc</td>
+</tr>
+</tbody>
+</table>
+<p>测试代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) &#123;  </span><br><span class="line">    String str=null;  </span><br><span class="line">    //$使用  </span><br><span class="line">    str=String.format(&quot;格式参数$的使用：%1$d,%2$s&quot;, 99,&quot;abc&quot;);             </span><br><span class="line">    System.out.println(str);                       </span><br><span class="line">    //+使用  </span><br><span class="line">    System.out.printf(&quot;显示正负数的符号：%+d与%d%n&quot;, 99,-99);  </span><br><span class="line">    //补O使用  </span><br><span class="line">    System.out.printf(&quot;最牛的编号是：%03d%n&quot;, 7);  </span><br><span class="line">    //空格使用  </span><br><span class="line">    System.out.printf(&quot;Tab键的效果是：% 8d%n&quot;, 7);  </span><br><span class="line">    //.使用  </span><br><span class="line">    System.out.printf(&quot;整数分组的效果是：%,d%n&quot;, 9989997);  </span><br><span class="line">    //空格和小数点后面个数  </span><br><span class="line">    System.out.printf(&quot;一本书的价格是：% 50.5f元%n&quot;, 49.8);  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>输出结果:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">格式参数$的使用：99,abc  </span><br><span class="line">显示正负数的符号：+99与-99  </span><br><span class="line">最牛的编号是：007  </span><br><span class="line">Tab键的效果是：       7  </span><br><span class="line">整数分组的效果是：9,989,997  </span><br><span class="line">一本书的价格是：                                          49.80000元</span><br></pre></td></tr></table></figure></p>
+<h2 id="日期和事件字符串格式化"><a href="#日期和事件字符串格式化" class="headerlink" title="日期和事件字符串格式化"></a>日期和事件字符串格式化</h2><p>在程序界面中经常需要显示时间和日期，但是其显示的 格式经常不尽人意，需要编写大量的代码经过各种算法才得到理想的日期与时间格式。字符串格式中还有%tx转换符没有详细介绍，它是专门用来格式化日期和时 间的。%tx转换符中的x代表另外的处理日期和时间格式的转换符，它们的组合能够将日期和时间格式化成多种格式。</p>
+<p>常见日期和时间组合的格式，如表所示。</p>
+<table>
+<thead>
+<tr>
+<th>转换符</th>
+<th>说明</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>c</td>
+<td>包括全部日期和时间信息</td>
+<td>星期六 十月 27 14:21:20 CST 2007</td>
+</tr>
+<tr>
+<td>F</td>
+<td>“年-月-日”格式</td>
+<td>2007-10-27</td>
+</tr>
+<tr>
+<td>D</td>
+<td>“月/日/年”格式</td>
+<td>10/27/07</td>
+</tr>
+<tr>
+<td>r</td>
+<td>“HH:MM:SS PM”格式（12时制）</td>
+<td>02:25:51 下午</td>
+</tr>
+<tr>
+<td>T</td>
+<td>“HH:MM:SS”格式（24时制）</td>
+<td>14:28:16</td>
+</tr>
+<tr>
+<td>R</td>
+<td>“HH:MM”格式（24时制）</td>
+<td>14:28</td>
+</tr>
+</tbody>
+</table>
+<p>测试代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) &#123;  </span><br><span class="line">    Date date=new Date();                                  </span><br><span class="line">    //c的使用  </span><br><span class="line">    System.out.printf(&quot;全部日期和时间信息：%tc%n&quot;,date);          </span><br><span class="line">    //f的使用  </span><br><span class="line">    System.out.printf(&quot;年-月-日格式：%tF%n&quot;,date);  </span><br><span class="line">    //d的使用  </span><br><span class="line">    System.out.printf(&quot;月/日/年格式：%tD%n&quot;,date);  </span><br><span class="line">    //r的使用  </span><br><span class="line">    System.out.printf(&quot;HH:MM:SS PM格式（12时制）：%tr%n&quot;,date);  </span><br><span class="line">    //t的使用  </span><br><span class="line">    System.out.printf(&quot;HH:MM:SS格式（24时制）：%tT%n&quot;,date);  </span><br><span class="line">    //R的使用  </span><br><span class="line">    System.out.printf(&quot;HH:MM格式（24时制）：%tR&quot;,date);  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>输出结果：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">全部日期和时间信息：星期一 九月 10 10:43:36 CST 2012  </span><br><span class="line">年-月-日格式：2012-09-10  </span><br><span class="line">月/日/年格式：09/10/12  </span><br><span class="line">HH:MM:SS PM格式（12时制）：10:43:36 上午  </span><br><span class="line">HH:MM:SS格式（24时制）：10:43:36  </span><br><span class="line">HH:MM格式（24时制）：10:43</span><br></pre></td></tr></table></figure></p>
+<p>定义日期格式的转换符可以使日期通过指定的转换符生成新字符串。这些日期转换符如图所示。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) &#123;  </span><br><span class="line">    Date date=new Date();                                      </span><br><span class="line">    //b的使用，月份简称  </span><br><span class="line">    String str=String.format(Locale.US,&quot;英文月份简称：%tb&quot;,date);       </span><br><span class="line">    System.out.println(str);                                                                              </span><br><span class="line">    System.out.printf(&quot;本地月份简称：%tb%n&quot;,date);  </span><br><span class="line">    //B的使用，月份全称  </span><br><span class="line">    str=String.format(Locale.US,&quot;英文月份全称：%tB&quot;,date);  </span><br><span class="line">    System.out.println(str);  </span><br><span class="line">    System.out.printf(&quot;本地月份全称：%tB%n&quot;,date);  </span><br><span class="line">    //a的使用，星期简称  </span><br><span class="line">    str=String.format(Locale.US,&quot;英文星期的简称：%ta&quot;,date);  </span><br><span class="line">    System.out.println(str);  </span><br><span class="line">    //A的使用，星期全称  </span><br><span class="line">    System.out.printf(&quot;本地星期的简称：%tA%n&quot;,date);  </span><br><span class="line">    //C的使用，年前两位  </span><br><span class="line">    System.out.printf(&quot;年的前两位数字（不足两位前面补0）：%tC%n&quot;,date);  </span><br><span class="line">    //y的使用，年后两位  </span><br><span class="line">    System.out.printf(&quot;年的后两位数字（不足两位前面补0）：%ty%n&quot;,date);  </span><br><span class="line">    //j的使用，一年的天数  </span><br><span class="line">    System.out.printf(&quot;一年中的天数（即年的第几天）：%tj%n&quot;,date);  </span><br><span class="line">    //m的使用，月份  </span><br><span class="line">    System.out.printf(&quot;两位数字的月份（不足两位前面补0）：%tm%n&quot;,date);  </span><br><span class="line">    //d的使用，日（二位，不够补零）  </span><br><span class="line">    System.out.printf(&quot;两位数字的日（不足两位前面补0）：%td%n&quot;,date);  </span><br><span class="line">    //e的使用，日（一位不补零）  </span><br><span class="line">    System.out.printf(&quot;月份的日（前面不补0）：%te&quot;,date);  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>输出结果：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">英文月份简称：Sep  </span><br><span class="line">本地月份简称：九月  </span><br><span class="line">英文月份全称：September  </span><br><span class="line">本地月份全称：九月  </span><br><span class="line">英文星期的简称：Mon  </span><br><span class="line">本地星期的简称：星期一  </span><br><span class="line">年的前两位数字（不足两位前面补0）：20  </span><br><span class="line">年的后两位数字（不足两位前面补0）：12  </span><br><span class="line">一年中的天数（即年的第几天）：254  </span><br><span class="line">两位数字的月份（不足两位前面补0）：09  </span><br><span class="line">两位数字的日（不足两位前面补0）：10  </span><br><span class="line">月份的日（前面不补0）：10</span><br></pre></td></tr></table></figure></p>
+<p>和日期格式转换符相比，时间格式的转换符要更多、更精确。它可以将时间格式化成时、分、秒甚至时毫秒等单位。格式化时间字符串的转换符如图所示。</p>
+<table>
+<thead>
+<tr>
+<th>转换符</th>
+<th>说明</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>H</td>
+<td>2位数字24时制的小时（不足2位前面补0）</td>
+<td>15</td>
+</tr>
+<tr>
+<td>I</td>
+<td>2位数字12时制的小时（不足2位前面补0）</td>
+<td>03</td>
+</tr>
+<tr>
+<td>k</td>
+<td>2位数字24时制的小时（前面不补0）</td>
+<td>15</td>
+</tr>
+<tr>
+<td>l</td>
+<td>2位数字12时制的小时（前面不补0）</td>
+<td>3</td>
+</tr>
+<tr>
+<td>M</td>
+<td>2位数字的分钟（不足2位前面补0）</td>
+<td>03</td>
+</tr>
+<tr>
+<td>S</td>
+<td>2位数字的秒（不足2位前面补0）</td>
+<td>09</td>
+</tr>
+<tr>
+<td>L</td>
+<td>3位数字的毫秒（不足3位前面补0）</td>
+<td>015</td>
+</tr>
+<tr>
+<td>N</td>
+<td>9位数字的毫秒数（不足9位前面补0）</td>
+<td>562000000</td>
+</tr>
+<tr>
+<td>p</td>
+<td>小写字母的上午或下午标记</td>
+<td>中：下午</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td>英：pm</td>
+</tr>
+<tr>
+<td>z</td>
+<td>相对于GMT的RFC822时区的偏移量</td>
+<td>+0800</td>
+</tr>
+<tr>
+<td>Z</td>
+<td>时区缩写字符串</td>
+<td>CST</td>
+</tr>
+<tr>
+<td>s</td>
+<td>1970-1-1 00:00:00 到现在所经过的秒数</td>
+<td>1193468128</td>
+</tr>
+<tr>
+<td>Q</td>
+<td>1970-1-1 00:00:00 到现在所经过的毫秒数</td>
+<td>1193468128984</td>
+</tr>
+</tbody>
+</table>
+<p>示例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) &#123;  </span><br><span class="line">    Date date = new Date();  </span><br><span class="line">    //H的使用  </span><br><span class="line">    System.out.printf(&quot;2位数字24时制的小时（不足2位前面补0）:%tH%n&quot;, date);  </span><br><span class="line">    //I的使用  </span><br><span class="line">    System.out.printf(&quot;2位数字12时制的小时（不足2位前面补0）:%tI%n&quot;, date);  </span><br><span class="line">    //k的使用  </span><br><span class="line">    System.out.printf(&quot;2位数字24时制的小时（前面不补0）:%tk%n&quot;, date);  </span><br><span class="line">    //l的使用  </span><br><span class="line">    System.out.printf(&quot;2位数字12时制的小时（前面不补0）:%tl%n&quot;, date);  </span><br><span class="line">    //M的使用  </span><br><span class="line">    System.out.printf(&quot;2位数字的分钟（不足2位前面补0）:%tM%n&quot;, date);  </span><br><span class="line">    //S的使用  </span><br><span class="line">    System.out.printf(&quot;2位数字的秒（不足2位前面补0）:%tS%n&quot;, date);  </span><br><span class="line">    //L的使用  </span><br><span class="line">    System.out.printf(&quot;3位数字的毫秒（不足3位前面补0）:%tL%n&quot;, date);  </span><br><span class="line">    //N的使用  </span><br><span class="line">    System.out.printf(&quot;9位数字的毫秒数（不足9位前面补0）:%tN%n&quot;, date);  </span><br><span class="line">    //p的使用  </span><br><span class="line">    String str = String.format(Locale.US, &quot;小写字母的上午或下午标记(英)：%tp&quot;, date);  </span><br><span class="line">    System.out.println(str);   </span><br><span class="line">    System.out.printf(&quot;小写字母的上午或下午标记（中）：%tp%n&quot;, date);  </span><br><span class="line">    //z的使用  </span><br><span class="line">    System.out.printf(&quot;相对于GMT的RFC822时区的偏移量:%tz%n&quot;, date);  </span><br><span class="line">    //Z的使用  </span><br><span class="line">    System.out.printf(&quot;时区缩写字符串:%tZ%n&quot;, date);  </span><br><span class="line">    //s的使用  </span><br><span class="line">    System.out.printf(&quot;1970-1-1 00:00:00 到现在所经过的秒数：%ts%n&quot;, date);  </span><br><span class="line">    //Q的使用  </span><br><span class="line">    System.out.printf(&quot;1970-1-1 00:00:00 到现在所经过的毫秒数：%tQ%n&quot;, date);  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>输出结果：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">2位数字24时制的小时（不足2位前面补0）:11  </span><br><span class="line">2位数字12时制的小时（不足2位前面补0）:11  </span><br><span class="line">2位数字24时制的小时（前面不补0）:11  </span><br><span class="line">2位数字12时制的小时（前面不补0）:11  </span><br><span class="line">2位数字的分钟（不足2位前面补0）:03  </span><br><span class="line">2位数字的秒（不足2位前面补0）:52  </span><br><span class="line">3位数字的毫秒（不足3位前面补0）:773  </span><br><span class="line">9位数字的毫秒数（不足9位前面补0）:773000000  </span><br><span class="line">小写字母的上午或下午标记(英)：am  </span><br><span class="line">小写字母的上午或下午标记（中）：上午  </span><br><span class="line">相对于GMT的RFC822时区的偏移量:+0800  </span><br><span class="line">时区缩写字符串:CST  </span><br><span class="line">1970-1-1 00:00:00 到现在所经过的秒数：1347246232  </span><br><span class="line">1970-1-1 00:00:00 到现在所经过的毫秒数：1347246232773</span><br></pre></td></tr></table></figure></p>
+<hr>
+<p><em>观点仅代表自己，期待你的留言。</em></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+
+
   
     <article id="post-ios-mvvm" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -998,90 +1350,9 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-ios-layoutsubviews" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/03/22/ios-layoutsubviews/" class="article-date">
-  	<time datetime="2016-03-22T03:35:23.000Z" itemprop="datePublished">2016-03-22</time>
-</a>
-      <div class="analysis-container">
-	<i class="fa fa-line-chart"></i>
-	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
-</div>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/03/22/ios-layoutsubviews/">UIView的layoutSubviews和drawRect</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-              
-        <p>UIView的setNeedsDisplay和setNeedsLayout方法。首先两个方法都是异步执行的。setNeedsDisplay会调用自动调用drawRect方法，这样可以拿到UIGraphicsGetCurrentContext，就可以画画了。而setNeedsLayout会默认调用layoutSubViews，就可以处理子视图中的一些数据。<br>综上两个方法都是异步执行的，layoutSubviews方便数据计算，drawRect方便视图重绘。</p>
-<p>先大概看下ios layout机制相关的这几个方法：</p>
-<ul>
-<li>(CGSize)sizeThatFits:(CGSize)size</li>
-<li>(void)sizeToFit<br>——————-</li>
-<li>(void)layoutSubviews</li>
-<li>(void)layoutIfNeeded</li>
-<li>(void)setNeedsLayout<br>——————–</li>
-<li>(void)setNeedsDisplay</li>
-<li>(void)drawRect</li>
-</ul>
-<h4 id="一、layoutSubviews在以下情况下会被调用："><a href="#一、layoutSubviews在以下情况下会被调用：" class="headerlink" title="一、layoutSubviews在以下情况下会被调用："></a>一、layoutSubviews在以下情况下会被调用：</h4><p>1、init初始化不会触发layoutSubviews。<br>2、addSubview会触发layoutSubviews。<br>3、设置view的Frame会触发layoutSubviews，当然前提是frame的值设置前后发生了变化。<br>4、滚动一个UIScrollView会触发layoutSubviews。<br>5、旋转Screen会触发父UIView上的layoutSubviews事件。<br>6、改变一个UIView大小的时候也会触发父UIView上的layoutSubviews事件。<br>7、直接调用setLayoutSubviews。<br>8、直接调用setNeedsLayout。<br>在苹果的官方文档中强调:You should override this method only if the autoresizing behaviors of the subviews do not offer the behavior you want.<br>layoutSubviews, 当我们在某个类的内部调整子视图位置时，需要调用。<br>反过来的意思就是说：如果你想要在外部设置subviews的位置，就不要重写。</p>
-<p> 刷新子对象布局<br>-layoutSubviews方法：这个方法，默认没有做任何事情，需要子类进行重写<br>-setNeedsLayout方法： 标记为需要重新布局，异步调用layoutIfNeeded刷新布局，不立即刷新，但layoutSubviews一定会被调用<br>-layoutIfNeeded方法：如果，有需要刷新的标记，立即调用layoutSubviews进行布局（如果没有标记，不会调用layoutSubviews）<br>如果要立即刷新，要先调用[view setNeedsLayout]，把标记设为需要布局，然后马上调用[view layoutIfNeeded]，实现布局<br>在视图第一次显示之前，标记总是“需要刷新”的，可以直接调用[view layoutIfNeeded]</p>
-<h4 id="二、drawRect在以下情况下会被调用："><a href="#二、drawRect在以下情况下会被调用：" class="headerlink" title="二、drawRect在以下情况下会被调用："></a>二、drawRect在以下情况下会被调用：</h4><p>1、如果在UIView初始化时没有设置rect大小，将直接导致drawRect不被自动调用。drawRect 掉用是在Controller-&gt;loadView, Controller-&gt;viewDidLoad 两方法之后掉用的.所以不用担心在 控制器中,这些View的drawRect就开始画了.这样可以在控制器中设置一些值给View(如果这些View draw的时候需要用到某些变量 值).<br>2、该方法在调用sizeToFit后被调用，所以可以先调用sizeToFit计算出size。然后系统自动调用drawRect:方法。<br>sizeToFit会自动调用sizeThatFits方法；<br>sizeToFit不应该在子类中被重写，应该重写sizeThatFits<br>sizeThatFits传入的参数是receiver当前的size，返回一个适合的size<br>sizeToFit可以被手动直接调用<br>sizeToFit和sizeThatFits方法都没有递归，对subviews也不负责，只负责自己<br>3、通过设置contentMode属性值为UIViewContentModeRedraw。那么将在每次设置或更改frame的时候自动调用drawRect:。<br>4、直接调用setNeedsDisplay，或者setNeedsDisplayInRect:触发drawRect:，但是有个前提条件是rect不能为0。<br>-setNeedsDisplay方法：标记为需要重绘，异步调用drawRect<br>-setNeedsDisplayInRect:(CGRect)invalidRect方法：标记为需要局部重绘<br>以上1,2推荐；而3,4不提倡</p>
-<p>drawRect方法使用注意点：<br>1、 若使用UIView绘图，只能在drawRect：方法中获取相应的contextRef并绘图。如果在其他方法中获取将获取到一个invalidate 的ref并且不能用于画图。drawRect：方法不能手动显示调用，必须通过调用setNeedsDisplay 或 者 setNeedsDisplayInRect，让系统自动调该方法。<br>2、若使用calayer绘图，只能在drawInContext: 中（类似鱼drawRect）绘制，或者在delegate中的相应方法绘制。同样也是调用setNeedDisplay等间接调用以上方法<br>3、若要实时画图，不能使用gestureRecognizer，只能使用touchbegan等方法来掉用setNeedsDisplay实时刷新屏幕</p>
-<h4 id="三、layoutSubviews对subviews重新布局"><a href="#三、layoutSubviews对subviews重新布局" class="headerlink" title="三、layoutSubviews对subviews重新布局"></a>三、layoutSubviews对subviews重新布局</h4><p>layoutSubviews方法调用先于drawRect<br>setNeedsLayout在receiver标上一个需要被重新布局的标记，在系统runloop的下一个周期自动调用layoutSubviews<br>layoutIfNeeded方法如其名，UIKit会判断该receiver是否需要layout.根据Apple官方文档,layoutIfNeeded方法应该是这样的<br>layoutIfNeeded遍历的不是superview链，应该是subviews链<br>drawRect是对receiver的重绘，能获得context<br>setNeedDisplay在receiver标上一个需要被重新绘图的标记，在下一个draw周期自动重绘，iphone device的刷新频率是60hz，也就是1/60秒后重绘</p>
-<hr>
-<p>原地址：<a href="http://justsee.iteye.com/blog/1886463" target="_blank" rel="external">http://justsee.iteye.com/blog/1886463</a></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/转载/">转载</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/4/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/6/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/page/4/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/6/">Next &raquo;</a>
     </nav>
   
 </div>
