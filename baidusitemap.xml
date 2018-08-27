@@ -2,6 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
     
+    
   <url>
     <loc>http://www.wujianjun.org/2018/08/24/cdt-java/</loc>
     <lastmod>2018-08-27T02:52:13.190Z</lastmod>
@@ -20,7 +21,6 @@
     </data>
     </url>
 
-    
     
   <url>
     <loc>http://www.wujianjun.org/2016/03/30/ios-msg-transfer/</loc>
@@ -167,23 +167,6 @@
 
     
   <url>
-    <loc>http://www.wujianjun.org/2017/07/18/spring-initializingbean/</loc>
-    <lastmod>2018-08-23T02:13:14.248Z</lastmod>
-    <data>
-        <display>
-        <title>Spring InitializingBean趟坑笔记</title>
-        <pubTime>2017-07-18T09:59:12.000Z</pubTime>
-        
-        <tag>原创 </tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://www.wujianjun.org/2017/09/18/transaction-distributed/</loc>
     <lastmod>2018-08-23T02:13:14.248Z</lastmod>
     <data>
@@ -194,6 +177,23 @@
         <tag>原创 </tag>
          
         <tag>总结 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2017/07/18/spring-initializingbean/</loc>
+    <lastmod>2018-08-23T02:13:14.248Z</lastmod>
+    <data>
+        <display>
+        <title>Spring InitializingBean趟坑笔记</title>
+        <pubTime>2017-07-18T09:59:12.000Z</pubTime>
+        
+        <tag>原创 </tag>
          
          
            
@@ -408,6 +408,23 @@
 
     
   <url>
+    <loc>http://www.wujianjun.org/2016/08/29/spring-core-interface/</loc>
+    <lastmod>2018-08-23T02:13:14.204Z</lastmod>
+    <data>
+        <display>
+        <title>Spring ApplicationContext与常用接口笔记</title>
+        <pubTime>2016-08-29T03:17:18.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://www.wujianjun.org/2016/03/29/ios-loadview/</loc>
     <lastmod>2018-08-23T02:13:14.204Z</lastmod>
     <data>
@@ -418,23 +435,6 @@
         <tag>原创 </tag>
          
         <tag>iOS </tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://www.wujianjun.org/2016/08/29/spring-core-interface/</loc>
-    <lastmod>2018-08-23T02:13:14.204Z</lastmod>
-    <data>
-        <display>
-        <title>Spring ApplicationContext与常用接口笔记</title>
-        <pubTime>2016-08-29T03:17:18.000Z</pubTime>
-        
-        <tag>原创 </tag>
          
          
            
@@ -571,23 +571,6 @@
 
     
   <url>
-    <loc>http://www.wujianjun.org/2016/06/03/zookeeper-note/</loc>
-    <lastmod>2018-08-23T02:13:14.160Z</lastmod>
-    <data>
-        <display>
-        <title>Zookeeper学习笔记</title>
-        <pubTime>2016-06-03T10:32:58.000Z</pubTime>
-        
-        <tag>关键笔记 </tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://www.wujianjun.org/2016/05/31/redis-cluster-note/</loc>
     <lastmod>2018-08-23T02:13:14.160Z</lastmod>
     <data>
@@ -598,6 +581,23 @@
         <tag>原创 </tag>
          
         <tag>Redis </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2016/06/03/zookeeper-note/</loc>
+    <lastmod>2018-08-23T02:13:14.160Z</lastmod>
+    <data>
+        <display>
+        <title>Zookeeper学习笔记</title>
+        <pubTime>2016-06-03T10:32:58.000Z</pubTime>
+        
+        <tag>关键笔记 </tag>
          
          
            
