@@ -50,9 +50,9 @@ Sat Sep 13 23:00:00 CST 1986
 
 又如：
 ```bash
-wujianjun@work ~ $ date
+wujianjun@smzc ~ $ date
 2018年 08月 24日 星期五 19:20:41 CST
-wujianjun@work ~ $ date -d @579279600
+wujianjun@smzc ~ $ date -d @579279600
 1988年 05月 11日 星期三 00:00:00 CDT
 wujianjun@smzc ~ $ date -d @599587200
 1989年 01月 01日 星期日 00:00:00 CST
