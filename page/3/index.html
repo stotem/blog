@@ -226,6 +226,132 @@ var _hmt = _hmt || [];
 
       <div class="body-wrap">
   
+    <article id="post-jvm-tools-jstat" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/09/22/jvm-tools-jstat/" class="article-date">
+  	<time datetime="2016-09-22T09:30:09.000Z" itemprop="datePublished">2016-09-22</time>
+</a>
+      <div class="analysis-container">
+	<i class="fa fa-line-chart"></i>
+	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
+</div>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/09/22/jvm-tools-jstat/">查看jvm堆内GC情况利器 - jstat</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+              
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>jstat是JDK自带的一个轻量级小工具。全称“Java Virtual Machine statistics monitoring tool”，主要利用JVM内建的指令对Java应用程序的资源和性能进行实时的命令行的监控，包括了对Heap size和垃圾回收状况的监控。<br>以命令行方式运行对系统资源占用很小，在大压力下很少影响性能。并且运行要求低，只要通过Telnet或SSH等方式远程登录到服务器所在机器，就可以进行监控。在与jstat、jstack等工具结合使用时非常方便。</p>
+<h2 id="命令安装"><a href="#命令安装" class="headerlink" title="命令安装"></a>命令安装</h2><ol>
+<li>Oracle JDK在安装完成后bin目录下就会发现有jstat命令。</li>
+<li>Open JDK在安装完成后需要安装openjdk-devel开发包才能得到jstat命令。<br>安装方法如下（以CentOS为例）：<br>使用 <code>yum whatprovides &#39;*/jstat&#39;</code>查包含jstat命令开发包的名称。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[root@wujianjun-linux bin]# yum whatprovides &apos;*/jstat&apos;</span><br><span class="line">Loaded plugins: fastestmirror, security</span><br><span class="line">Loading mirror speeds from cached hostfile</span><br><span class="line">base/filelists_db                                                                                  | 6.4 MB     00:00     </span><br><span class="line">extras/filelists_db                                                                                |  38 kB     00:00     </span><br><span class="line">updates/filelists_db                                                                               | 1.5 MB     00:00     </span><br><span class="line">1:java-1.7.0-openjdk-devel-1.7.0.99-2.6.5.1.el6.x86_64 : OpenJDK Development Environment</span><br><span class="line">Repo        : base</span><br><span class="line">Matched from:</span><br><span class="line">Filename    : /usr/lib/jvm/java-1.7.0-openjdk-1.7.0.99.x86_64/bin/jstat</span><br><span class="line">......</span><br><span class="line">.....</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>找到与jdk版本相对应的开发包进行安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@wujianjun-linux bin]# yum install java-1.7.0-openjdk-devel</span><br></pre></td></tr></table></figure></p>
+<p>安装完成后查找命令所在目录<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@wujianjun-linux bin]# whereis jstat</span><br><span class="line">jstat: /usr/bin/jstat /usr/share/man/man1/jstat.1.gz</span><br></pre></td></tr></table></figure></p>
+<p>只要能显示相应目录，则表示安装成功。</p>
+<h2 id="jstat使用"><a href="#jstat使用" class="headerlink" title="jstat使用"></a>jstat使用</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">[root@order-zhiMaoQu-com ~]# jstat --help</span><br><span class="line">invalid argument count</span><br><span class="line">Usage: jstat -help|-options</span><br><span class="line">       jstat -&lt;option&gt; [-t] [-h&lt;lines&gt;] &lt;vmid&gt; [&lt;interval&gt; [&lt;count&gt;]]</span><br><span class="line"></span><br><span class="line">Definitions:</span><br><span class="line">  &lt;option&gt;      An option reported by the -options option</span><br><span class="line">  &lt;vmid&gt;        Virtual Machine Identifier. A vmid takes the following form:</span><br><span class="line">                     &lt;lvmid&gt;[@&lt;hostname&gt;[:&lt;port&gt;]]</span><br><span class="line">                Where &lt;lvmid&gt; is the local vm identifier for the target</span><br><span class="line">                Java virtual machine, typically a process id; &lt;hostname&gt; is</span><br><span class="line">                the name of the host running the target Java virtual machine;</span><br><span class="line">                and &lt;port&gt; is the port number for the rmiregistry on the</span><br><span class="line">                target host. See the jvmstat documentation for a more complete</span><br><span class="line">                description of the Virtual Machine Identifier.</span><br><span class="line">  &lt;lines&gt;       Number of samples between header lines.</span><br><span class="line">  &lt;interval&gt;    Sampling interval. The following forms are allowed:</span><br><span class="line">                    &lt;n&gt;[&quot;ms&quot;|&quot;s&quot;]</span><br><span class="line">                Where &lt;n&gt; is an integer and the suffix specifies the units as </span><br><span class="line">                milliseconds(&quot;ms&quot;) or seconds(&quot;s&quot;). The default units are &quot;ms&quot;.</span><br><span class="line">  &lt;count&gt;       Number of samples to take before terminating.</span><br><span class="line">  -J&lt;flag&gt;      Pass &lt;flag&gt; directly to the runtime system.</span><br></pre></td></tr></table></figure>
+<p><strong><option> 可选值如下：</option></strong></p>
+<ul>
+<li>-gcutil: 查看gc情况</li>
+<li>-class: 显示加载class的数量，及所占空间等信息</li>
+<li>-compiler: 显示VM实时编译的数量等信息。</li>
+<li>–gccapacity: 可以显示，VM内存中三代（young,old,perm）对象的使用和占用大小，<br>  如：PGCMN显示的是最小perm的内存使用量，PGCMX显示的是perm的内存最大使用量，PGC是当前新生成的perm内存占用量，PC是但前perm内存占用量。<br>  其他的可以根据这个类推，OC是old内纯的占用量。</li>
+<li>-gcnew: new对象的信息</li>
+<li>-gcnewcapacity: new对象的信息及其占用量</li>
+<li>-gcold: old对象的信息。</li>
+<li>-gcoldcapacity: old对象的信息及其占用量</li>
+<li>-gcpermcapacity: perm对象的信息及其占用量</li>
+<li>-printcompilation: 当前VM执行的信息</li>
+</ul>
+<p><strong>附GC显示术语解释：</strong></p>
+<ul>
+<li>S0C - 年轻代中第一个survivor（幸存区）的容量 (字节)</li>
+<li>S1C - 年轻代中第二个survivor（幸存区）的容量 (字节)</li>
+<li>S0U - 年轻代中第一个survivor（幸存区）目前已使用空间 (字节)</li>
+<li>S1U - 年轻代中第二个survivor（幸存区）目前已使用空间 (字节)</li>
+<li>EC - 年轻代中Eden的容量 (字节)</li>
+<li>EU - 年轻代中Eden目前已使用空间 (字节)</li>
+<li>OC - Old代的容量 (字节)</li>
+<li>OU - Old代目前已使用空间 (字节)</li>
+<li>PC - Perm(持久代)的容量 (字节)</li>
+<li>PU - Perm(持久代)目前已使用空间 (字节)</li>
+<li>YGC - 从应用程序启动到采样时年轻代中gc次数</li>
+<li>YGCT - 从应用程序启动到采样时年轻代中gc所用时间(s)</li>
+<li>FGC - 从应用程序启动到采样时old代(全gc)gc次数</li>
+<li>FGCT - 从应用程序启动到采样时old代(全gc)gc所用时间(s)</li>
+<li>GCT - 从应用程序启动到采样时gc用的总时间(s)</li>
+<li>NGCMN - 年轻代(young)中初始化(最小)的大小 (字节)</li>
+<li>NGCMX - 年轻代(young)的最大容量 (字节)</li>
+<li>NGC - 年轻代(young)中当前的容量 (字节)</li>
+<li>OGCMN - old代中初始化(最小)的大小 (字节)</li>
+<li>OGCMX - old代的最大容量 (字节)</li>
+<li>OGC - old代当前新生成的容量 (字节)</li>
+<li>PGCMN - perm代中初始化(最小)的大小 (字节)</li>
+<li>PGCMX - perm代的最大容量 (字节)</li>
+<li>PGC - perm代当前新生成的容量 (字节)</li>
+<li>S0 - 年轻代中第一个survivor（幸存区）已使用的占当前容量百分比</li>
+<li>S1 - 年轻代中第二个survivor（幸存区）已使用的占当前容量百分比</li>
+<li>E - 年轻代中Eden已使用的占当前容量百分比</li>
+<li>O - old代已使用的占当前容量百分比</li>
+<li>P - perm代已使用的占当前容量百分比</li>
+<li>S0CMX - 年轻代中第一个survivor（幸存区）的最大容量 (字节)</li>
+<li>S1CMX  - 年轻代中第二个survivor（幸存区）的最大容量 (字节)</li>
+<li>ECMX - 年轻代中Eden的最大容量 (字节)</li>
+<li>DSS - 当前需要survivor（幸存区）的容量 (字节)（Eden区已满）</li>
+<li>TT -  持有次数限制</li>
+<li>MTT  -  最大持有次数限制</li>
+</ul>
+<hr>
+<p><em>观点仅代表自己，期待你的留言。</em></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+
+
+  
     <article id="post-jvm-tools-jmap" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -977,91 +1103,6 @@ var _hmt = _hmt || [];
 <h3 id="获取切入点更多的信息"><a href="#获取切入点更多的信息" class="headerlink" title="获取切入点更多的信息"></a>获取切入点更多的信息</h3><p>任何通知方法可以将第一个参数定义为org.aspectj.lang.JoinPoint类型 （环绕通知需要定义第一个参数为ProceedingJoinPoint类型， 它是 JoinPoint 的一个子类）。JoinPoint 接口提供了一系列有用的方法，比如 getArgs()（返回方法参数）、 getThis()（返回代理对象）、getTarget()（返回目标）、 getSignature()（返回正在被通知的方法相关信息）和 toString() （打印出正在被通知的方法的有用信息）。</p>
 <hr>
 <p><a href="http://shouce.jb51.net/spring/aop.html" target="_blank" rel="external">http://shouce.jb51.net/spring/aop.html</a></p>
-<p><em>观点仅代表自己，期待你的留言。</em></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-spring-mutiview" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/06/29/spring-mutiview/" class="article-date">
-  	<time datetime="2016-06-29T07:56:16.000Z" itemprop="datePublished">2016-06-29</time>
-</a>
-      <div class="analysis-container">
-	<i class="fa fa-line-chart"></i>
-	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
-</div>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/06/29/spring-mutiview/">Spring多视图配置及源码剖析</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-              
-        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>在MVC架构中，Controller被用于连接Model与View，同时控制View的显示与跳转。在以往的开发实践中常常是直接将View与Controller放置在同一个Project中，如果此时想要真正实现Controller与View的分离，View与Controller的交互就只能通过HTTP+数据格式或者ajax实现。那么Controller所需要做的就是将数据通过api的方式提供给View。此时针对Controller就需要将数据进行api和view的两种完全不同的视图呈现。好在Spring已经给我们提供了<code>org.springframework.web.servlet.view.ContentNegotiatingViewResolver</code>来实现。</p>
-<h2 id="Spring多视图配置"><a href="#Spring多视图配置" class="headerlink" title="Spring多视图配置"></a>Spring多视图配置</h2><p><em>spring-web.xml</em><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--配置消息转换器--&gt;</span><br><span class="line">&lt;mvc:annotation-driven&gt;</span><br><span class="line">    &lt;mvc:message-converters register-defaults=&quot;true&quot;&gt;</span><br><span class="line">        &lt;bean class=&quot;org.springframework.http.converter.StringHttpMessageConverter&quot;&gt;</span><br><span class="line">            &lt;constructor-arg value=&quot;UTF-8&quot;/&gt;</span><br><span class="line">            &lt;property name=&quot;supportedMediaTypes&quot;&gt;</span><br><span class="line">               &lt;list&gt;</span><br><span class="line">                   &lt;value&gt;application/xml;charset=UTF-8&lt;/value&gt;</span><br><span class="line">                   &lt;value&gt;text/html;charset=UTF-8&lt;/value&gt;</span><br><span class="line">                   &lt;value&gt;text/plain;charset=UTF-8&lt;/value&gt;</span><br><span class="line">                   &lt;value&gt;application/json;charset=UTF-8&lt;/value&gt;</span><br><span class="line">               &lt;/list&gt;</span><br><span class="line">           &lt;/property&gt;</span><br><span class="line">        &lt;/bean&gt;</span><br><span class="line">        &lt;bean class=&quot;org.springframework.http.converter.json.MappingJackson2HttpMessageConverter&quot;&gt;</span><br><span class="line">            &lt;property name=&quot;prettyPrint&quot; value=&quot;true&quot;/&gt;</span><br><span class="line">        &lt;/bean&gt;</span><br><span class="line">    &lt;/mvc:message-converters&gt;</span><br><span class="line">&lt;/mvc:annotation-driven&gt;</span><br><span class="line">&lt;!--多视图解析配置--&gt;</span><br><span class="line">&lt;bean class=&quot;org.springframework.web.servlet.view.ContentNegotiatingViewResolver&quot;&gt;</span><br><span class="line">	&lt;property name=&quot;defaultContentType&quot; value=&quot;text/html;charset=UTF-8&quot; /&gt;</span><br><span class="line">	&lt;!-- not by accept header --&gt;</span><br><span class="line">	&lt;property name=&quot;ignoreAcceptHeader&quot; value=&quot;true&quot;/&gt;</span><br><span class="line">	&lt;property name=&quot;favorPathExtension&quot; value=&quot;true&quot;/&gt;</span><br><span class="line">	&lt;property name=&quot;favorParameter&quot; value=&quot;true&quot;/&gt;</span><br><span class="line">    &lt;property name=&quot;useNotAcceptableStatusCode&quot; value=&quot;true&quot; /&gt;</span><br><span class="line">	&lt;!-- by extension --&gt;</span><br><span class="line">	&lt;property name=&quot;mediaTypes&quot;&gt;</span><br><span class="line">		&lt;map&gt;</span><br><span class="line">		    &lt;entry key=&quot;xml&quot; value=&quot;application/xml&quot; /&gt;</span><br><span class="line">			&lt;entry key=&quot;json&quot; value=&quot;application/json&quot; /&gt;</span><br><span class="line">            &lt;entry key=&quot;httl&quot; value=&quot;text/html&quot; /&gt;</span><br><span class="line">		&lt;/map&gt;</span><br><span class="line">	&lt;/property&gt;</span><br><span class="line">	&lt;property name=&quot;viewResolvers&quot;&gt;</span><br><span class="line">		&lt;list&gt;</span><br><span class="line">            &lt;ref bean=&quot;httlViewResolver&quot;/&gt;</span><br><span class="line">		&lt;/list&gt;</span><br><span class="line">	&lt;/property&gt;</span><br><span class="line">		&lt;property name=&quot;defaultViews&quot;&gt;</span><br><span class="line">		&lt;list&gt;</span><br><span class="line">            &lt;bean class=&quot;org.springframework.web.servlet.view.json.MappingJackson2JsonView&quot; /&gt;</span><br><span class="line">           	&lt;bean class=&quot;org.springframework.web.servlet.view.xml.MappingJackson2XmlView&quot; /&gt;</span><br><span class="line">		&lt;/list&gt;</span><br><span class="line">	&lt;/property&gt;</span><br><span class="line">&lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- 视图解析器配置 --&gt;</span><br><span class="line">&lt;bean id=&quot;httlViewResolver&quot; class=&quot;httl.web.springmvc.HttlViewResolver&quot;&gt;</span><br><span class="line">    &lt;property name=&quot;suffix&quot; value=&quot;.view&quot;/&gt;</span><br><span class="line">    &lt;property name=&quot;contentType&quot; value=&quot;text/html;charset=UTF-8&quot;/&gt;</span><br><span class="line">    &lt;property name=&quot;attributesMap&quot; ref=&quot;viewTools&quot; /&gt;</span><br><span class="line">&lt;/bean&gt;</span><br></pre></td></tr></table></figure></p>
-<p><em>Controller.java</em><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@Controller</span><br><span class="line">@RequestMapping(&quot;/&quot;)</span><br><span class="line">public class CommonController &#123;</span><br><span class="line">	@RequestMapping(&quot;index&quot;)</span><br><span class="line">    public ModelAndView indexPage() &#123;</span><br><span class="line">        Map&lt;String, Object&gt; param = new HashMap&lt;&gt;();</span><br><span class="line">        param.put(&quot;_model_&quot;, new Example());</span><br><span class="line">        return getView(&quot;index&quot;, param);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>以上为多视图配置的全部内容，配置中我们提供了三种视图。</p>
-<ol>
-<li>httl的页面视图。 通过访问/index或/index.httl就可以得到。<br><img src="/images/spring-mutiview-0.png" alt=""></li>
-<li>json的数据视图。 通过访问/index.json就可以得到。<br><img src="/images/spring-mutiview-1.png" alt=""></li>
-<li>xml的数据视图。 通过访问/index.xml就可以各到。<br><img src="/images/spring-mutiview-2.png" alt=""><br>这里需要注意的是，由于xml只有一个根节点，所以返回的param的Map中只能包含一个元素。如果配置多个map元素，则会抛出异常java.lang.IllegalStateException: Model contains more than one object to render, only one is supported<br><img src="/images/spring-mutiview-4.png" alt=""></li>
-</ol>
-<p><code>useNotAcceptableStatusCode</code>：这个配置表示，当配置为true且不能找到你需要的配置时返回HttpStatus 406. 默认值为false<br><img src="/images/spring-mutiview-3.png" alt=""></p>
-<h2 id="Spring源码剖析"><a href="#Spring源码剖析" class="headerlink" title="Spring源码剖析"></a>Spring源码剖析</h2><p>首先当然是org.springframework.web.servlet.view.ContentNegotiatingViewResolver类，经过断点跟踪后，发现是通过resolveViewName()来定位的显示View。<br><img src="/images/spring-mutiview-5.png" alt=""><br>从图上可以看出，先通过request获取到requestedMediaTypes。</p>
-<h3 id="获取请求的视图格式"><a href="#获取请求的视图格式" class="headerlink" title="获取请求的视图格式"></a>获取请求的视图格式</h3><p><img src="/images/spring-mutiview-6.png" alt=""><br>再深入一层查看，发现这里是针对requestedMediaTypes的过滤，而获取请求格式有三个途径，<br>ServletPathExtensionContentNegotiationStrategy（继承自PathExtensionContentNegotiationStrategy），<br>ParameterContentNegotiationStrategy<br>FixedContentNegotiationStrategy<br>而这恰好对应了Spring中针对识别多视图标识的配置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;property name=&quot;ignoreAcceptHeader&quot; value=&quot;true&quot;/&gt;</span><br><span class="line">&lt;property name=&quot;favorPathExtension&quot; value=&quot;true&quot;/&gt;</span><br><span class="line">&lt;property name=&quot;favorParameter&quot; value=&quot;true&quot;/&gt;</span><br></pre></td></tr></table></figure></p>
-<p>所以可以得出结论：<br>1、HeaderContentNegotiationStrategy对应ignoreAcceptHeader的配置，此处配置为false,那么ContentNegotiatingViewResolver.contentNegotiationManager属性里则会多出一个元素。通过其源码可以得到它是通过在request header中增加Accept消息头获取视图格式。<br>2、ServletPathExtensionContentNegotiationStrategy（或者PathExtensionContentNegotiationStrategy）对应favorPathExtension的配置。通过请求后缀获取视图格式。<br>3、ParameterContentNegotiationStrategy对应favorParameter的配置，通过在request uri中增加format=?获取视图格式。</p>
-<h3 id="按requestdMediaTypes获取到支持的ViewResolver"><a href="#按requestdMediaTypes获取到支持的ViewResolver" class="headerlink" title="按requestdMediaTypes获取到支持的ViewResolver"></a>按requestdMediaTypes获取到支持的ViewResolver</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List candidateViews = this.getCandidateViews(viewName, locale, requestedMediaTypes);</span><br></pre></td></tr></table></figure>
-<p><img src="/images/spring-mutiview-7.png" alt=""><br>这里所做的事，就是将controller处理完成的view名称拿到配置的ViewResolver里去查找（视图名称和加了后缀的视图名称两步搜索），最后再将配置的defaultViews直接加入到返回结果的List中。此处忽略掉了视图格式标识。 </p>
-<h3 id="获取匹配度最高的View"><a href="#获取匹配度最高的View" class="headerlink" title="获取匹配度最高的View"></a>获取匹配度最高的View</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">View bestView = this.getBestView(candidateViews, requestedMediaTypes, attrs);</span><br></pre></td></tr></table></figure>
-<p>此方法所做的事：将包含视图名称的ViewResolver按requestedMediaTypes找到匹配度最高的View。<br>如果没有找到，则按useNotAcceptableStatusCode返回HttpCode 406.或者通过candidateViews的第一个进行视图渲染。<strong>这里的顺序可以通过配置viewResolvers的order属性确定</strong>。</p>
-<h2 id="Velocity与Httl视图工具类实例处理方案"><a href="#Velocity与Httl视图工具类实例处理方案" class="headerlink" title="Velocity与Httl视图工具类实例处理方案"></a>Velocity与Httl视图工具类实例处理方案</h2><p>由于在页面视图中我们需要用到很多的工具类来对Controller返回的数据进行判断以及转换等操作，所以一般来讲我们会在Map存入工具类的实例对象以便能在Page中直接使用。<br>但是当返回的为xml视图时，由于元素数据限制为1个，所以这些工具类将会导致多视图不能返回xml的数据格式。</p>
-<p>在Velocity中可以配置toolbox等工具组件来实现，但是Httl并未支持。所以我找到另一个实现方式。</p>
-<p>经过源码的查看，UrlBasedViewResolver类中包含一个staticAttributes的Map类型属性，这里完全可以拿来存放工具类对象实例，staticAttributes属性的get和set方法名称为：setAttributesMap()和getAttributesMap(). 所以配置的时候要注意配置名为<strong>attributesMap</strong>。<br>而HttlViewResolver与VelocityLayoutViewResolver都间接继承自UrlBasedViewResolver，所以可以通过配置attributesMap属性来实现工具类实例的配置。</p>
-<hr>
 <p><em>观点仅代表自己，期待你的留言。</em></p>
 
       

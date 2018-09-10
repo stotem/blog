@@ -226,6 +226,102 @@ var _hmt = _hmt || [];
 
       <div class="body-wrap">
   
+    <article id="post-nginx-rtmp-obs" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/15/nginx-rtmp-obs/" class="article-date">
+  	<time datetime="2017-10-15T03:07:14.000Z" itemprop="datePublished">2017-10-15</time>
+</a>
+      <div class="analysis-container">
+	<i class="fa fa-line-chart"></i>
+	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
+</div>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/15/nginx-rtmp-obs/">Linux下通过nginx实现直播间功能的实验</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+              
+        <h2 id="实验环境"><a href="#实验环境" class="headerlink" title="实验环境"></a>实验环境</h2><ul>
+<li><p>系统环境</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wujianjun@wujianjun-work ~ $ uname -a</span><br><span class="line">Linux wujianjun-work 4.10.0-37-generic #41~16.04.1-Ubuntu SMP Fri Oct 6 22:42:59 UTC 2017 x86_64 x86_64 x86_64 GNU/Linux</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>软件环境<br>OBS(Open Broadcaster Software) v20.0.1 (Linux)</p>
+<p>nginx version: nginx/1.13.6<br>built by gcc 5.4.0 20160609 (Ubuntu 5.4.0-6ubuntu1~16.04.5)<br>built with OpenSSL 1.0.2g  1 Mar 2016<br>TLS SNI support enabled<br>configure arguments: –with-pcre=pcre-8.38 –add-module=nginx-rtmp-module-1.1.11</p>
+</li>
+</ul>
+<h2 id="Nginx-obs安装及配置"><a href="#Nginx-obs安装及配置" class="headerlink" title="Nginx+obs安装及配置"></a>Nginx+obs安装及配置</h2><h3 id="安装obs"><a href="#安装obs" class="headerlink" title="安装obs"></a>安装obs</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">wujianjun@wujianjun-work ~ $ sudo add-apt-repository ppa:kirillshkrogalev/ffmpeg-next</span><br><span class="line">wujianjun@wujianjun-work ~ $ sudo apt-get update &amp;&amp; sudo apt-get install ffmpeg</span><br><span class="line">wujianjun@wujianjun-work ~ $ sudo apt-get install obs-studio</span><br><span class="line">wujianjun@wujianjun-work ~ $ sudo add-apt-repository ppa:obsproject/obs-studio</span><br><span class="line">wujianjun@wujianjun-work ~ $ sudo apt-get update &amp;&amp; sudo apt-get install obs-studio</span><br></pre></td></tr></table></figure>
+<h3 id="nginx加装rtmp模块"><a href="#nginx加装rtmp模块" class="headerlink" title="nginx加装rtmp模块"></a>nginx加装rtmp模块</h3><p>nginx-rtmp-module (<a href="https://github.com/arut/nginx-rtmp-module" target="_blank" rel="external">https://github.com/arut/nginx-rtmp-module</a>)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">wujianjun@wujianjun-work ~ $ sudo apt-get install build-essential</span><br><span class="line">wujianjun@wujianjun-work ~ $ wget wget http://nginx.org/download/nginx-1.13.6.tar.gz</span><br><span class="line">wujianjun@wujianjun-work ~/nginx-1.13.6 $ wget https://github.com/arut/nginx-rtmp-module/archive/v1.1.11.tar.gz</span><br><span class="line">wujianjun@wujianjun-work ~/nginx-1.13.6 $ tar -xvf v1.1.11.tar.gz</span><br><span class="line">wujianjun@wujianjun-work ~/nginx-1.13.6 $ wget http://jaist.dl.sourceforge.net/project/pcre/pcre/8.38/pcre-8.38.tar.gz</span><br><span class="line">wujianjun@wujianjun-work ~/nginx-1.13.6 $ tar -xvf pcre-8.38.tar.gz</span><br><span class="line">wujianjun@wujianjun-work ~/nginx-1.13.6 $ ls -all</span><br><span class="line">总用量 748</span><br><span class="line">drwxr-xr-x  9 wujianjun wujianjun   4096 10月 15 11:39 .</span><br><span class="line">drwxr-xr-x 63 wujianjun wujianjun   4096 10月 15 11:33 ..</span><br><span class="line">drwxr-xr-x  6 wujianjun wujianjun   4096 10月 15 11:33 auto</span><br><span class="line">-rw-r--r--  1 wujianjun wujianjun 282456 10月 10 23:22 CHANGES</span><br><span class="line">-rw-r--r--  1 wujianjun wujianjun 430416 10月 10 23:22 CHANGES.ru</span><br><span class="line">drwxr-xr-x  2 wujianjun wujianjun   4096 10月 15 11:33 conf</span><br><span class="line">-rwxr-xr-x  1 wujianjun wujianjun   2502 10月 10 23:22 configure</span><br><span class="line">drwxr-xr-x  4 wujianjun wujianjun   4096 10月 15 11:33 contrib</span><br><span class="line">drwxr-xr-x  2 wujianjun wujianjun   4096 10月 15 11:33 html</span><br><span class="line">-rw-r--r--  1 wujianjun wujianjun   1397 10月 10 23:22 LICENSE</span><br><span class="line">drwxr-xr-x  2 wujianjun wujianjun   4096 10月 15 11:33 man</span><br><span class="line">drwxrwxr-x  6 wujianjun wujianjun   4096 2月  13  2017 nginx-rtmp-module-1.1.11</span><br><span class="line">drwxr-xr-x  7 wujianjun wujianjun   4096 11月 23  2015 pcre-8.38</span><br><span class="line">-rw-r--r--  1 wujianjun wujianjun     49 10月 10 23:22 README</span><br><span class="line">drwxr-xr-x  9 wujianjun wujianjun   4096 10月 15 11:33 src</span><br><span class="line">wujianjun@wujianjun-work ~/nginx-1.13.6 $ ./configure --with-pcre=pcre-8.38 --add-module=nginx-rtmp-module-1.1.11</span><br><span class="line">wujianjun@wujianjun-work ~/nginx-1.13.6 $ make &amp;&amp; sudo make install</span><br><span class="line">wujianjun@wujianjun-work ~/nginx-1.13.6 $ ls -all /usr/local/nginx/</span><br><span class="line">总用量 24</span><br><span class="line">drwxr-xr-x  6 root root 4096 10月 15 16:11 .</span><br><span class="line">drwxr-xr-x 11 root root 4096 10月 15 16:11 ..</span><br><span class="line">drwxr-xr-x  2 root root 4096 10月 15 16:11 conf</span><br><span class="line">drwxr-xr-x  2 root root 4096 10月 15 16:11 html</span><br><span class="line">drwxr-xr-x  2 root root 4096 10月 15 16:11 logs</span><br><span class="line">drwxr-xr-x  2 root root 4096 10月 15 16:11 sbin</span><br></pre></td></tr></table></figure>
+<h3 id="增加rtmp协议配置"><a href="#增加rtmp协议配置" class="headerlink" title="增加rtmp协议配置"></a>增加rtmp协议配置</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wujianjun@wujianjun-work ~/nginx-1.13.6 $ sudo vi /usr/local/nginx/conf/nginx.conf</span><br></pre></td></tr></table></figure>
+<p>在nginx.conf文件末尾增加以下rtmp协议的配置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">rtmp &#123;</span><br><span class="line">    server &#123;</span><br><span class="line">        listen 1935;</span><br><span class="line">        chunk_size 4096;</span><br><span class="line"></span><br><span class="line">        application live &#123;</span><br><span class="line">            live on;</span><br><span class="line">            record off;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="启动-amp-测试"><a href="#启动-amp-测试" class="headerlink" title="启动&amp;测试"></a>启动&amp;测试</h2><ul>
+<li><p>启动nginx</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wujianjun@wujianjun-work ~/nginx-1.13.6 $ sudo /usr/local/nginx/sbin/nginx</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>启动OBS<br>打开刚安装的OBS软件，在来源处配置图像的推送来源（我这里选择窗口捕获），点击右下角”设置”，进行如下图配置流推送地址<br><img src="/images/obs-1.png" alt=""></p>
+</li>
+</ul>
+<p>配置完成后，点击”开始推流”</p>
+<ul>
+<li><p>启动支持网络流播放的视频播放器(演示使用vlc播放器)<br>配置网络流播放的地址，如下图：<br><img src="/images/vlc-1.png" alt=""></p>
+<p>当点击”播放”后，稍等几秒，即可看到播放器显示了obs捕获的图像了。<br><img src="/images/vlc-2.png" alt=""></p>
+</li>
+</ul>
+<p>由于视频流需要通过网络进行传输，所以直播图像会有几秒的延迟。</p>
+<h2 id="http访问直播视频"><a href="#http访问直播视频" class="headerlink" title="http访问直播视频"></a>http访问直播视频</h2><p>1、更改nginx.conf中配置，增加hls配置(hls是在流媒体服务器中用来存放流媒体的文件夹),再次hls所在目录设置为http协议访问目录即可，更改后的配置如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">rtmp &#123;</span><br><span class="line">    server &#123;</span><br><span class="line">        listen 1935;</span><br><span class="line">        chunk_size 4096;</span><br><span class="line"></span><br><span class="line">        application live &#123;</span><br><span class="line">            live on;</span><br><span class="line">            hls on;</span><br><span class="line">            hls_path /usr/share/nginx/html/hls;</span><br><span class="line">            hls_fragment 5s;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">http &#123;</span><br><span class="line">  server &#123;</span><br><span class="line">    listen 80;</span><br><span class="line">    .....</span><br><span class="line">    location / &#123;</span><br><span class="line">           #root   html;</span><br><span class="line">           root /usr/share/nginx/html;</span><br><span class="line">           index  index.html index.htm;</span><br><span class="line">    &#125;</span><br><span class="line">    .....</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>注意：</strong> hls所在目录nginx的用户必须有写入权限。</p>
+<p>2、obs软件配置录制流名称<br> 在配置obs推送流URL的下方有一个设置”流名称”的地方，这里可以随意填写一个名称（我这里示例填入”test”）</p>
+<p>3、重启一下nginx与obs软件，我们即可在手机浏览器中输入 <a href="http://ip/hls/test.m3u8" target="_blank" rel="external">http://ip/hls/test.m3u8</a> 即可通过手机播放直播视频。（直播延迟有点大，后续出文章优化）<br><img src="/images/obs-2.png" alt=""></p>
+<hr>
+<p><em>观点仅代表自己，期待你的留言。</em></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nginx-obs/">nginx + obs</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+
+
+  
     <article id="post-transaction-distributed" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -982,132 +1078,6 @@ var _hmt = _hmt || [];
 <p>经过以上配置则可以通过<code>sudo reboot</code>进行验证。当Linux重启成功后，可通过<strong>/var/log/boot.log</strong>来查看开机时的日志输出。</p>
 <h2 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h2><p><code>who -r</code> 查看开机级别</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">who --help</span><br><span class="line">用法：who [选项]... [ 文件 | 参数1 参数2 ]</span><br><span class="line">显示当前已登录的用户信息。</span><br><span class="line"></span><br><span class="line">  -a, --all		等于-b -d --login -p -r -t -T -u 选项的组合</span><br><span class="line">  -b, --boot		上次系统启动时间</span><br><span class="line">  -d, --dead		显示已死的进程</span><br><span class="line">  -H, --heading	输出头部的标题列</span><br><span class="line">  -l，--login		显示系统登录进程</span><br><span class="line">      --lookup		尝试通过 DNS 查验主机名</span><br><span class="line">  -m			只面对和标准输入有直接交互的主机和用户</span><br><span class="line">  -p, --process	显示由 init 进程衍生的活动进程</span><br><span class="line">  -q, --count		列出所有已登录用户的登录名与用户数量</span><br><span class="line">  -r, --runlevel	显示当前的运行级别</span><br><span class="line">  -s, --short		只显示名称、线路和时间(默认)</span><br><span class="line">  -T, -w, --mesg	用+，- 或 ? 标注用户消息状态</span><br><span class="line">  -u, --users		列出已登录的用户</span><br><span class="line">      --message	等于-T</span><br><span class="line">      --writable	等于-T</span><br><span class="line">      --help		显示此帮助信息并退出</span><br><span class="line">      --version		显示版本信息并退出</span><br></pre></td></tr></table></figure>
-<hr>
-<p><em>观点仅代表自己，期待你的留言。</em></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-jvm-tools-jstat" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/09/22/jvm-tools-jstat/" class="article-date">
-  	<time datetime="2016-09-22T09:30:09.000Z" itemprop="datePublished">2016-09-22</time>
-</a>
-      <div class="analysis-container">
-	<i class="fa fa-line-chart"></i>
-	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
-</div>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/09/22/jvm-tools-jstat/">查看jvm堆内GC情况利器 - jstat</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-              
-        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>jstat是JDK自带的一个轻量级小工具。全称“Java Virtual Machine statistics monitoring tool”，主要利用JVM内建的指令对Java应用程序的资源和性能进行实时的命令行的监控，包括了对Heap size和垃圾回收状况的监控。<br>以命令行方式运行对系统资源占用很小，在大压力下很少影响性能。并且运行要求低，只要通过Telnet或SSH等方式远程登录到服务器所在机器，就可以进行监控。在与jstat、jstack等工具结合使用时非常方便。</p>
-<h2 id="命令安装"><a href="#命令安装" class="headerlink" title="命令安装"></a>命令安装</h2><ol>
-<li>Oracle JDK在安装完成后bin目录下就会发现有jstat命令。</li>
-<li>Open JDK在安装完成后需要安装openjdk-devel开发包才能得到jstat命令。<br>安装方法如下（以CentOS为例）：<br>使用 <code>yum whatprovides &#39;*/jstat&#39;</code>查包含jstat命令开发包的名称。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[root@wujianjun-linux bin]# yum whatprovides &apos;*/jstat&apos;</span><br><span class="line">Loaded plugins: fastestmirror, security</span><br><span class="line">Loading mirror speeds from cached hostfile</span><br><span class="line">base/filelists_db                                                                                  | 6.4 MB     00:00     </span><br><span class="line">extras/filelists_db                                                                                |  38 kB     00:00     </span><br><span class="line">updates/filelists_db                                                                               | 1.5 MB     00:00     </span><br><span class="line">1:java-1.7.0-openjdk-devel-1.7.0.99-2.6.5.1.el6.x86_64 : OpenJDK Development Environment</span><br><span class="line">Repo        : base</span><br><span class="line">Matched from:</span><br><span class="line">Filename    : /usr/lib/jvm/java-1.7.0-openjdk-1.7.0.99.x86_64/bin/jstat</span><br><span class="line">......</span><br><span class="line">.....</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>找到与jdk版本相对应的开发包进行安装<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@wujianjun-linux bin]# yum install java-1.7.0-openjdk-devel</span><br></pre></td></tr></table></figure></p>
-<p>安装完成后查找命令所在目录<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@wujianjun-linux bin]# whereis jstat</span><br><span class="line">jstat: /usr/bin/jstat /usr/share/man/man1/jstat.1.gz</span><br></pre></td></tr></table></figure></p>
-<p>只要能显示相应目录，则表示安装成功。</p>
-<h2 id="jstat使用"><a href="#jstat使用" class="headerlink" title="jstat使用"></a>jstat使用</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">[root@order-zhiMaoQu-com ~]# jstat --help</span><br><span class="line">invalid argument count</span><br><span class="line">Usage: jstat -help|-options</span><br><span class="line">       jstat -&lt;option&gt; [-t] [-h&lt;lines&gt;] &lt;vmid&gt; [&lt;interval&gt; [&lt;count&gt;]]</span><br><span class="line"></span><br><span class="line">Definitions:</span><br><span class="line">  &lt;option&gt;      An option reported by the -options option</span><br><span class="line">  &lt;vmid&gt;        Virtual Machine Identifier. A vmid takes the following form:</span><br><span class="line">                     &lt;lvmid&gt;[@&lt;hostname&gt;[:&lt;port&gt;]]</span><br><span class="line">                Where &lt;lvmid&gt; is the local vm identifier for the target</span><br><span class="line">                Java virtual machine, typically a process id; &lt;hostname&gt; is</span><br><span class="line">                the name of the host running the target Java virtual machine;</span><br><span class="line">                and &lt;port&gt; is the port number for the rmiregistry on the</span><br><span class="line">                target host. See the jvmstat documentation for a more complete</span><br><span class="line">                description of the Virtual Machine Identifier.</span><br><span class="line">  &lt;lines&gt;       Number of samples between header lines.</span><br><span class="line">  &lt;interval&gt;    Sampling interval. The following forms are allowed:</span><br><span class="line">                    &lt;n&gt;[&quot;ms&quot;|&quot;s&quot;]</span><br><span class="line">                Where &lt;n&gt; is an integer and the suffix specifies the units as </span><br><span class="line">                milliseconds(&quot;ms&quot;) or seconds(&quot;s&quot;). The default units are &quot;ms&quot;.</span><br><span class="line">  &lt;count&gt;       Number of samples to take before terminating.</span><br><span class="line">  -J&lt;flag&gt;      Pass &lt;flag&gt; directly to the runtime system.</span><br></pre></td></tr></table></figure>
-<p><strong><option> 可选值如下：</option></strong></p>
-<ul>
-<li>-gcutil: 查看gc情况</li>
-<li>-class: 显示加载class的数量，及所占空间等信息</li>
-<li>-compiler: 显示VM实时编译的数量等信息。</li>
-<li>–gccapacity: 可以显示，VM内存中三代（young,old,perm）对象的使用和占用大小，<br>  如：PGCMN显示的是最小perm的内存使用量，PGCMX显示的是perm的内存最大使用量，PGC是当前新生成的perm内存占用量，PC是但前perm内存占用量。<br>  其他的可以根据这个类推，OC是old内纯的占用量。</li>
-<li>-gcnew: new对象的信息</li>
-<li>-gcnewcapacity: new对象的信息及其占用量</li>
-<li>-gcold: old对象的信息。</li>
-<li>-gcoldcapacity: old对象的信息及其占用量</li>
-<li>-gcpermcapacity: perm对象的信息及其占用量</li>
-<li>-printcompilation: 当前VM执行的信息</li>
-</ul>
-<p><strong>附GC显示术语解释：</strong></p>
-<ul>
-<li>S0C - 年轻代中第一个survivor（幸存区）的容量 (字节)</li>
-<li>S1C - 年轻代中第二个survivor（幸存区）的容量 (字节)</li>
-<li>S0U - 年轻代中第一个survivor（幸存区）目前已使用空间 (字节)</li>
-<li>S1U - 年轻代中第二个survivor（幸存区）目前已使用空间 (字节)</li>
-<li>EC - 年轻代中Eden的容量 (字节)</li>
-<li>EU - 年轻代中Eden目前已使用空间 (字节)</li>
-<li>OC - Old代的容量 (字节)</li>
-<li>OU - Old代目前已使用空间 (字节)</li>
-<li>PC - Perm(持久代)的容量 (字节)</li>
-<li>PU - Perm(持久代)目前已使用空间 (字节)</li>
-<li>YGC - 从应用程序启动到采样时年轻代中gc次数</li>
-<li>YGCT - 从应用程序启动到采样时年轻代中gc所用时间(s)</li>
-<li>FGC - 从应用程序启动到采样时old代(全gc)gc次数</li>
-<li>FGCT - 从应用程序启动到采样时old代(全gc)gc所用时间(s)</li>
-<li>GCT - 从应用程序启动到采样时gc用的总时间(s)</li>
-<li>NGCMN - 年轻代(young)中初始化(最小)的大小 (字节)</li>
-<li>NGCMX - 年轻代(young)的最大容量 (字节)</li>
-<li>NGC - 年轻代(young)中当前的容量 (字节)</li>
-<li>OGCMN - old代中初始化(最小)的大小 (字节)</li>
-<li>OGCMX - old代的最大容量 (字节)</li>
-<li>OGC - old代当前新生成的容量 (字节)</li>
-<li>PGCMN - perm代中初始化(最小)的大小 (字节)</li>
-<li>PGCMX - perm代的最大容量 (字节)</li>
-<li>PGC - perm代当前新生成的容量 (字节)</li>
-<li>S0 - 年轻代中第一个survivor（幸存区）已使用的占当前容量百分比</li>
-<li>S1 - 年轻代中第二个survivor（幸存区）已使用的占当前容量百分比</li>
-<li>E - 年轻代中Eden已使用的占当前容量百分比</li>
-<li>O - old代已使用的占当前容量百分比</li>
-<li>P - perm代已使用的占当前容量百分比</li>
-<li>S0CMX - 年轻代中第一个survivor（幸存区）的最大容量 (字节)</li>
-<li>S1CMX  - 年轻代中第二个survivor（幸存区）的最大容量 (字节)</li>
-<li>ECMX - 年轻代中Eden的最大容量 (字节)</li>
-<li>DSS - 当前需要survivor（幸存区）的容量 (字节)（Eden区已满）</li>
-<li>TT -  持有次数限制</li>
-<li>MTT  -  最大持有次数限制</li>
-</ul>
 <hr>
 <p><em>观点仅代表自己，期待你的留言。</em></p>
 
