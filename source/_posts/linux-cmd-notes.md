@@ -13,7 +13,7 @@ date: 2018-09-10 15:09:20
 ---
 
 ## nslookup 指定DNS服务器解析
-```
+```bash
 wujianjun@smzc ~ $ nslookup m.vvip-u.com 10.28.17.101
 Server:		10.28.17.101
 Address:	10.28.17.101#53
@@ -34,32 +34,32 @@ Address: 120.77.124.39
 https://www.isc.org/downloads/bind/
 
 ## find包含某关键字的文件内容
-```
+```bash
 wujianjun@smzc ~ $ find /smapp/logs -name “*” | xargs grep “keywords”
 ```
 
-```
+```bash
 wujianjun@smzc ~ $ grep -nR "keywords" /smapp/logs
 ```
 
 grep + RegExp (提取行首不是abc的行)
-```
+```bash
 wujianjun@smzc ~ $ grep “^[^abc]” /smapp/logs
 ```
 
 ## 文本替换
-```
+```bash
 wujianjun@smzc ~ $ sed -n ‘s/oldk/newk/g’ file
 ```
 
 先删除1到3行，然后用bb替换aa；
-```
+```bash
 wujianjun@smzc ~ $ sed -e ’1,3d’ -e ‘s/aa/bb/g’ file
 ```
 
 ## 文本处理
 打印所有内容行(相当于cat)
-```
+```bash
 wujianjun@smzc ~ $ awk '{print $0}' result.txt
 18100000011 - "status":"SUCCESS"
 18100000012 - "status":"SUCCESS"
@@ -68,7 +68,7 @@ wujianjun@smzc ~ $ awk '{print $0}' result.txt
 ```
 
 按`空格`分隔逐行内容并打印第一个内容
-```
+```bash
 wujianjun@smzc ~ $ awk '{print $1}' result.txt
 18100000011
 18100000012
