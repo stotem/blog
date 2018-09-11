@@ -3,6 +3,23 @@
 
     
   <url>
+    <loc>http://www.wujianjun.org/2018/09/11/https-flow/</loc>
+    <lastmod>2018-09-11T10:51:30.576Z</lastmod>
+    <data>
+        <display>
+        <title>https交互流程</title>
+        <pubTime>2018-09-11T10:46:47.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://www.wujianjun.org/2018/09/10/linux-cmd-notes/</loc>
     <lastmod>2018-09-10T07:43:58.149Z</lastmod>
     <data>
@@ -444,6 +461,23 @@
 
     
   <url>
+    <loc>http://www.wujianjun.org/2016/08/29/spring-core-interface/</loc>
+    <lastmod>2018-08-23T02:13:14.204Z</lastmod>
+    <data>
+        <display>
+        <title>Spring ApplicationContext与常用接口笔记</title>
+        <pubTime>2016-08-29T03:17:18.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://www.wujianjun.org/2016/03/29/ios-loadview/</loc>
     <lastmod>2018-08-23T02:13:14.204Z</lastmod>
     <data>
@@ -454,23 +488,6 @@
         <tag>原创 </tag>
          
         <tag>iOS </tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://www.wujianjun.org/2016/08/29/spring-core-interface/</loc>
-    <lastmod>2018-08-23T02:13:14.204Z</lastmod>
-    <data>
-        <display>
-        <title>Spring ApplicationContext与常用接口笔记</title>
-        <pubTime>2016-08-29T03:17:18.000Z</pubTime>
-        
-        <tag>原创 </tag>
          
          
            
@@ -552,25 +569,6 @@
 
     
   <url>
-    <loc>http://www.wujianjun.org/2016/03/18/nginx-upstream-jvm-route/</loc>
-    <lastmod>2018-08-23T02:13:14.176Z</lastmod>
-    <data>
-        <display>
-        <title>Nginx+tomcat+redis集群之session跟踪（nginx_upstream_jvm_route）</title>
-        <pubTime>2016-03-18T01:35:55.000Z</pubTime>
-        
-        <tag>原创 </tag>
-         
-        <tag>Nginx </tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://www.wujianjun.org/2016/05/26/os-port-forward/</loc>
     <lastmod>2018-08-23T02:13:14.176Z</lastmod>
     <data>
@@ -581,6 +579,25 @@
         <tag>原创 </tag>
          
         <tag>操作系统 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2016/03/18/nginx-upstream-jvm-route/</loc>
+    <lastmod>2018-08-23T02:13:14.176Z</lastmod>
+    <data>
+        <display>
+        <title>Nginx+tomcat+redis集群之session跟踪（nginx_upstream_jvm_route）</title>
+        <pubTime>2016-03-18T01:35:55.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+        <tag>Nginx </tag>
          
          
            
@@ -643,23 +660,6 @@
 
     
   <url>
-    <loc>http://www.wujianjun.org/2016/08/16/cas-attribute/</loc>
-    <lastmod>2018-08-23T02:13:14.156Z</lastmod>
-    <data>
-        <display>
-        <title>开源SSO项目cas认证返回更多的attribute信息</title>
-        <pubTime>2016-08-16T10:41:39.000Z</pubTime>
-        
-        <tag>原创 </tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://www.wujianjun.org/2016/05/26/maven-profile/</loc>
     <lastmod>2018-08-23T02:13:14.156Z</lastmod>
     <data>
@@ -670,6 +670,23 @@
         <tag>原创 </tag>
          
         <tag>Maven </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2016/08/16/cas-attribute/</loc>
+    <lastmod>2018-08-23T02:13:14.156Z</lastmod>
+    <data>
+        <display>
+        <title>开源SSO项目cas认证返回更多的attribute信息</title>
+        <pubTime>2016-08-16T10:41:39.000Z</pubTime>
+        
+        <tag>原创 </tag>
          
          
            
@@ -1106,6 +1123,23 @@
 
     
   <url>
+    <loc>http://www.wujianjun.org/2017/08/24/store-flag-bit/</loc>
+    <lastmod>2018-08-23T02:13:14.012Z</lastmod>
+    <data>
+        <display>
+        <title>多标识位存储优化方案</title>
+        <pubTime>2017-08-24T11:08:28.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://www.wujianjun.org/2016/03/18/linux-strace/</loc>
     <lastmod>2018-08-23T02:13:14.012Z</lastmod>
     <data>
@@ -1116,23 +1150,6 @@
         <tag>转发 </tag>
          
         <tag>linux </tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://www.wujianjun.org/2017/08/24/store-flag-bit/</loc>
-    <lastmod>2018-08-23T02:13:14.012Z</lastmod>
-    <data>
-        <display>
-        <title>多标识位存储优化方案</title>
-        <pubTime>2017-08-24T11:08:28.000Z</pubTime>
-        
-        <tag>原创 </tag>
          
          
            

@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.wujianjun.org/"/>
-  <updated>2018-09-10T07:43:58.149Z</updated>
+  <updated>2018-09-11T10:51:30.576Z</updated>
   <id>http://www.wujianjun.org/</id>
   
   <author>
@@ -14,6 +14,30 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>https交互流程</title>
+    <link href="http://www.wujianjun.org/2018/09/11/https-flow/"/>
+    <id>http://www.wujianjun.org/2018/09/11/https-flow/</id>
+    <published>2018-09-11T10:46:47.000Z</published>
+    <updated>2018-09-11T10:51:30.576Z</updated>
+    
+    <content type="html">&lt;h2 id=&quot;单向Https&quot;&gt;&lt;a href=&quot;#单向Https&quot; class=&quot;headerlink&quot; title=&quot;单向Https&quot;&gt;&lt;/a&gt;单向Https&lt;/h2&gt;&lt;p&gt;&lt;img src=&quot;/images/one-way-https.jpg&quot; alt=&quot;单向Https&quot;&gt;&lt;/p&gt;
+&lt;h2 id=&quot;双向Https&quot;&gt;&lt;a href=&quot;#双向Https&quot; class=&quot;headerlink&quot; title=&quot;双向Https&quot;&gt;&lt;/a&gt;双向Https&lt;/h2&gt;&lt;p&gt;&lt;img src=&quot;/images/two-way-https.jpg&quot; alt=&quot;双向Https&quot;&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;观点仅代表自己，期待你的留言。&lt;/em&gt;&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;单向Https&quot;&gt;&lt;a href=&quot;#单向Https&quot; class=&quot;headerlink&quot; title=&quot;单向Https&quot;&gt;&lt;/a&gt;单向Https&lt;/h2&gt;&lt;p&gt;&lt;img src=&quot;/images/one-way-https.jpg&quot; alt=&quot;单向Https&quot;
+    
+    </summary>
+    
+    
+      <category term="原创" scheme="http://www.wujianjun.org/tags/%E5%8E%9F%E5%88%9B/"/>
+    
+  </entry>
   
   <entry>
     <title>Linux常用命令备注（nslookup,find,grep,sed,awk）</title>
@@ -1352,39 +1376,6 @@
     <summary type="html">
     
       &lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;由于携程航班号查询取消了起止城市信息的返回，为了补全信息，特从网络爬取了8644条机场航站楼对应三字码四字码信息，共享于网络供有需要的朋友使
-    
-    </summary>
-    
-    
-      <category term="原创" scheme="http://www.wujianjun.org/tags/%E5%8E%9F%E5%88%9B/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Linux开机自动启动Tomcat应用</title>
-    <link href="http://www.wujianjun.org/2016/10/09/linux-autostart/"/>
-    <id>http://www.wujianjun.org/2016/10/09/linux-autostart/</id>
-    <published>2016-10-09T10:43:51.000Z</published>
-    <updated>2018-08-23T02:13:14.284Z</updated>
-    
-    <content type="html">&lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;刚过国庆长假，工作机房断电，重回工作岗位发现N多的应用需要手动启动。感觉烦燥？&lt;br&gt;so.. 配置linux开机自启动&lt;/p&gt;
-&lt;h2 id=&quot;配置&quot;&gt;&lt;a href=&quot;#配置&quot; class=&quot;headerlink&quot; title=&quot;配置&quot;&gt;&lt;/a&gt;配置&lt;/h2&gt;&lt;p&gt;在&lt;em&gt;/etc/rc.local&lt;/em&gt;文件末尾增加以下内容&lt;br&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;#!/bin/sh&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;# This script will be executed *after* all the other init scripts.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;# You can put your own initialization stuff in here if you don&amp;apos;t&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;# want to do the full Sys V style init stuff.&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;O_Path=`pwd`&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;cd /myapps/servers/apache-tomcat-6.0.43/bin/&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;sh startup.sh&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;cd $O_Path&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;需要注意以下几点：&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;检查startup.sh是否已授执行权限，如果没有，执行&lt;code&gt;chmod +x /myapps/servers/apache-tomcat-6.0.43/bin/startup.sh&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;所需要执行的shell文件不能带参数。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;经过以上配置则可以通过&lt;code&gt;sudo reboot&lt;/code&gt;进行验证。当Linux重启成功后，可通过&lt;strong&gt;/var/log/boot.log&lt;/strong&gt;来查看开机时的日志输出。&lt;/p&gt;
-&lt;h2 id=&quot;其它&quot;&gt;&lt;a href=&quot;#其它&quot; class=&quot;headerlink&quot; title=&quot;其它&quot;&gt;&lt;/a&gt;其它&lt;/h2&gt;&lt;p&gt;&lt;code&gt;who -r&lt;/code&gt; 查看开机级别&lt;/p&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;who --help&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;用法：who [选项]... [ 文件 | 参数1 参数2 ]&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;显示当前已登录的用户信息。&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  -a, --all		等于-b -d --login -p -r -t -T -u 选项的组合&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  -b, --boot		上次系统启动时间&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  -d, --dead		显示已死的进程&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  -H, --heading	输出头部的标题列&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  -l，--login		显示系统登录进程&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      --lookup		尝试通过 DNS 查验主机名&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  -m			只面对和标准输入有直接交互的主机和用户&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  -p, --process	显示由 init 进程衍生的活动进程&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  -q, --count		列出所有已登录用户的登录名与用户数量&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  -r, --runlevel	显示当前的运行级别&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  -s, --short		只显示名称、线路和时间(默认)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  -T, -w, --mesg	用+，- 或 ? 标注用户消息状态&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  -u, --users		列出已登录的用户&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      --message	等于-T&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      --writable	等于-T&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      --help		显示此帮助信息并退出&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      --version		显示版本信息并退出&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;hr&gt;
-&lt;p&gt;&lt;em&gt;观点仅代表自己，期待你的留言。&lt;/em&gt;&lt;/p&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;刚过国庆长假，工作机房断电，重回工作岗位发现N多的应用需要手动启动。感觉烦燥？&lt;br&gt;so.. 配置linux开机自启动&lt;/p&gt;
-&lt;h2 i
     
     </summary>
     

@@ -226,6 +226,78 @@ var _hmt = _hmt || [];
 
       <div class="body-wrap">
   
+    <article id="post-os-port-forward" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/05/26/os-port-forward/" class="article-date">
+  	<time datetime="2016-05-26T03:07:35.000Z" itemprop="datePublished">2016-05-26</time>
+</a>
+      <div class="analysis-container">
+	<i class="fa fa-line-chart"></i>
+	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
+</div>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/05/26/os-port-forward/">使用端口转发解决80端口使用问题</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+              
+        <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>当我用在使用linux非root用户进行应用发布时，如遇到应用程序需要占用80端口时总会由于权限不足遇到<code>java.net.BindException: Permission denied:80</code>的错误报出。<br>Linux为保证系统安全，限制了非root用户对1024以下的端口进行占用。<br>那么，本文将通过端口转发的方式解决80端口在Linux和MacOSX系统上占用的问题。</p>
+<h2 id="linux非Root用户使用80端口"><a href="#linux非Root用户使用80端口" class="headerlink" title="linux非Root用户使用80端口"></a>linux非Root用户使用80端口</h2><p>linux操作系统的可以通过iptables来进行端口转发，将流向80端口的数据内部转发到大于1024的端口上。那么非root用户就可以通过占用大于1024的端口进行程序应用的功能处理。<br>以80转发到8080端口为例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# sudo iptables -t nat -A PREROUTING -p tcp -m tcp --dport 80 -j REDIRECT --to-ports 8080</span><br><span class="line">[root@localhost ~]# sudo iptables -t nat -A OUTPUT -d localhost -p tcp -m tcp --dport 80 -j REDIRECT --to-ports 8080</span><br><span class="line">[root@localhost ~]# iptables -t filter -F</span><br><span class="line">[root@localhost ~]# iptables-save</span><br><span class="line">[root@localhost ~]# service iptables restart</span><br><span class="line">[root@localhost ~]# chkconfig iptables on</span><br></pre></td></tr></table></figure></p>
+<p>iptables -t filter -F : 为清除所有的过滤规则。<br>chkconfig iptables on : 设置iptables开机启动。</p>
+<p>iptables存储文件：/etc/sysconfig/iptables</p>
+<h2 id="MacOSX使用80端口"><a href="#MacOSX使用80端口" class="headerlink" title="MacOSX使用80端口"></a>MacOSX使用80端口</h2><p>MacOS操作系统下则使用<code>pf</code>来进行端口转发。<br>pf启动时会自动装载/etc/pf.conf文件，因此，我们可以通过修改这个文件进行80端口数据的转发。<br>修改后的文件内容如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">scrub-anchor &quot;com.apple/*&quot;</span><br><span class="line">nat-anchor &quot;com.apple/*&quot;</span><br><span class="line">rdr-anchor &quot;com.apple/*&quot;</span><br><span class="line">rdr on lo0 inet proto tcp from any to 127.0.0.1 port 80 -&gt; 127.0.0.1 port 8080</span><br><span class="line">dummynet-anchor &quot;com.apple/*&quot;</span><br><span class="line">anchor &quot;com.apple/*&quot;</span><br><span class="line">load anchor &quot;com.apple&quot; from &quot;/etc/pf.anchors/com.apple&quot;</span><br></pre></td></tr></table></figure></p>
+<p>使用 pfctl使用重新加载pf.conf配置，并启动pf<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Jianjun:~ Jianjun$ sudo pfctl -f /etc/pf.conf</span><br><span class="line">Jianjun:~ Jianjun$ sudo pfctl -e</span><br></pre></td></tr></table></figure></p>
+<p>另，关闭pf的命令为：<code>sudo pfctl -d</code></p>
+<hr>
+<p><em>观点仅代表自己，期待你的留言。</em></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/操作系统/">操作系统</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+
+
+  
     <article id="post-docker-dockerfile" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -1284,96 +1356,6 @@ var _hmt = _hmt || [];
 <p>文中的选择流程图是帮助你清楚认识这些机制的好的开始，当然它不是所有问题的答案。如果你觉得这和你自己选择机制的方式相似或是有任何缺漏，欢迎来信指正。</p>
 <hr>
 <p><em>观点仅代表自己，期待你的留言。</em><br><a href="http://objccn.io/issue-7-4/" target="_blank" rel="external">http://objccn.io/issue-7-4/</a></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/转载/">转载</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-ios-sendmsg" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/03/30/ios-sendmsg/" class="article-date">
-  	<time datetime="2016-03-30T08:44:25.000Z" itemprop="datePublished">2016-03-30</time>
-</a>
-      <div class="analysis-container">
-	<i class="fa fa-line-chart"></i>
-	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
-</div>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/03/30/ios-sendmsg/">Effective Objective-C 理解消息传递机制</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-              
-        <h2 id="最简单的动态"><a href="#最简单的动态" class="headerlink" title="最简单的动态"></a>最简单的动态</h2><p>Objective-C 是一门极其动态的语言，许多东西都可以推迟到运行时决定、修改。那么到底何为动态、何为静态？我们通过一个简单的例子对比下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">/***********  例1 静态绑定   ***********/</span><br><span class="line">#import &lt;stdio.h&gt;</span><br><span class="line">void printHello() &#123;</span><br><span class="line">    printf(&quot;Hello, world!\n&quot;);</span><br><span class="line">&#125;</span><br><span class="line">void printGoodbye() &#123;</span><br><span class="line">    printf(&quot;Goodbye, world!\n&quot;);</span><br><span class="line">&#125;</span><br><span class="line">void saySomething(int type) </span><br><span class="line">&#123;</span><br><span class="line">    if (type == 0) &#123;</span><br><span class="line">        printHello();</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        printGoodbye();</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">/***********  例2 动态绑定   ***********/</span><br><span class="line">#import &lt;stdio.h&gt;</span><br><span class="line">void printHello() &#123;</span><br><span class="line">    printf(&quot;Hello, world!\n&quot;);</span><br><span class="line">&#125;</span><br><span class="line">void printGoodbye() &#123;</span><br><span class="line">    printf(&quot;Goodbye, world!\n&quot;);</span><br><span class="line">&#125;</span><br><span class="line">void saySomething(int type) </span><br><span class="line">&#123;</span><br><span class="line">    void (*func)();</span><br><span class="line">    if (type == 0) &#123;</span><br><span class="line">        func = printHello;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        func = printGoodbye;</span><br><span class="line">    &#125;</span><br><span class="line">    func();</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>例1的代码在编译期，编译器就已经知道了有 void printHello()、void printGoodbye() 俩函数，并且在 saySomething() 函数中，调用的函数明确，可以直接将函数名硬编码成地址，生成调用指令，这就是 <strong>静态绑定</strong>（static binding）。那么例2呢？例2的调用的是 func() 函数，而这函数实际调用的地址只能到程序运行时才能确定，这就是所谓的 <strong>动态绑定</strong>（dynamic binding）。动态绑定将函数调用从编译期推迟到了运行时。</p>
-<p>在 Objective-C 中，向对象传递消息，就会使用这种动态绑定机制来决定需要调用的方法，这种动态特性使得 Objective-C 成为一门真正动态的语言。</p>
-<h2 id="objec-msgSend-函数"><a href="#objec-msgSend-函数" class="headerlink" title="objec_msgSend 函数"></a>objec_msgSend 函数</h2><p>Objective-C 的方法调用通常都是下面这种形式<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id returnValue = [someObject messageName:parameter];</span><br></pre></td></tr></table></figure></p>
-<p>这种方法调用其实就是消息传递，编译器看到这条消息会转换成一条标准的 C 语言函数调用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">id returnValue = objc_msgSend(someObject,</span><br><span class="line">                              @selector(messageName:),</span><br><span class="line">                              parameter);</span><br></pre></td></tr></table></figure></p>
-<p>用消息传递的话来解释就是：向 someObject 对象发送了一个名叫 messageName 的消息，这个消息携带了一个叫 parameter 的参数。这里用到了一个 objc_msgSend 函数，其函数原型如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void objc_msgSend(id self, SEL cmd, ...);</span><br></pre></td></tr></table></figure></p>
-<p>这是一个可变参数的函数，第一个参数代表消息接收者，第二个代表 SEL 类型，后面的参数就是消息传递中使用的参数。</p>
-<p>那么什么是 SEL 呢？SEL 就是代码在编译时，编译器根据方法签名来生成的一个唯一 ID。此 ID 可以用以区分不同的方法，只要 ID 一致，即看成同一个方法，ID 不同，即为不同的方法。</p>
-<p>当进行消息传递，对象在响应消息时，是通过 SEL 在 methodlist 中查找函数指针 IMP，找到后直接通过指针调用函数，这其实就是前文介绍的 <strong>动态绑定</strong>。若是找到对应函数就跳转到实现代码，若找不到，就沿着继承链往上查找，直到找到相应的实现代码为止。若最终还是没找到实现代码，说明当前对象无法响应此消息，接下来就会执行 <strong>消息转发</strong> 操作，以试图找到一个能响应此消息的对象。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// 获取 SEL </span><br><span class="line">SEL sel = @selector(methodName);</span><br><span class="line">// 获取 IMP</span><br><span class="line">IMP imp = methodForSelector(sel);</span><br></pre></td></tr></table></figure></p>
-<h2 id="消息转发"><a href="#消息转发" class="headerlink" title="消息转发"></a>消息转发</h2><p>消息转发并不神奇，我们其实早已接触过，只是不知道而已<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-[__NSCFNumber lowercaseString]:unrecognized selector sent to instance 0x87</span><br><span class="line">*** Terminating app due to uncaught exception &apos;NSInvalidArgumentException&apos;, reason:&apos;-[NSCFNumber lowercaseString]:unrecognized selector sent to instance 0x87&apos;</span><br></pre></td></tr></table></figure></p>
-<p>这段异常代码就是由 NSObject 的 doesNotRecognizeSelector: 方法所抛出的，异常表明：消息的接收者类型为 __NSCFNumber，无法响应 lowercaseString 消息，从而转发给 NSObject 处理。</p>
-<p>消息转发分为三大阶段</p>
-<ul>
-<li>第一阶段先征询消息接收者所属的类，看其是否能动态添加方法，以处理当前这个无法响应的 selector，这叫做 动态方法解析（dynamic method resolution）。如果运行期系统（runtime system） 第一阶段执行结束，接收者就无法再以动态新增方法的手段来响应消息，进入第二阶段。</li>
-<li>第二阶段看看有没有其他对象（备援接收者，replacement receiver）能处理此消息。如果有，运行期系统会把消息转发给那个对象，转发过程结束；如果没有，则启动完整的消息转发机制。</li>
-<li>第三阶段 完整的消息转发机制。运行期系统会把与消息有关的全部细节都封装到 NSInvocation 对象中，再给接收者最后一次机会，令其设法解决当前还未处理的消息。</li>
-</ul>
-<h3 id="动态方法解析"><a href="#动态方法解析" class="headerlink" title="动态方法解析"></a>动态方法解析</h3><p>对象在收到无法响应的消息后，会调用其所属类的下列方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> *  如果尚未实现的方法是实例方法，则调用此函数</span><br><span class="line"> *</span><br><span class="line"> *  @param selector 未处理的方法</span><br><span class="line"> *</span><br><span class="line"> *  @return 返回布尔值，表示是否能新增实例方法用以处理selector</span><br><span class="line"> */</span><br><span class="line">+ (BOOL)resolveInstanceMethod:(SEL)selector;</span><br><span class="line">/**</span><br><span class="line"> *  如果尚未实现的方法是类方法，则调用此函数</span><br><span class="line"> *</span><br><span class="line"> *  @param selector 未处理的方法</span><br><span class="line"> *</span><br><span class="line"> *  @return 返回布尔值，表示是否能新增类方法用以处理selector</span><br><span class="line"> */</span><br><span class="line">+ (BOOL)resolveClassMethod:(SEL)selector;</span><br></pre></td></tr></table></figure></p>
-<p>方法返回布尔类型，表示是否能新增一个方法来处理 selector，此方案通常用来实现 @dynamic 属性。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">/************** 使用 resolveInstanceMethod 实现 @dynamic 属性 **************/</span><br><span class="line">id autoDictionaryGetter(id self, SEL _cmd);</span><br><span class="line">void autoDictionarySetter(id self, SEL _cmd, id value);</span><br><span class="line">+ (BOOL)resolveInstanceMethod:(SEL)selector</span><br><span class="line">&#123;</span><br><span class="line">    NSString *selectorString = NSStringFromSelector(selector);</span><br><span class="line">    if (/* selector is from a @dynamic property */)</span><br><span class="line">    &#123;</span><br><span class="line">        if ([selectorString hasPrefix:@&quot;set&quot;])</span><br><span class="line">        &#123;</span><br><span class="line">            // 添加 setter 方法</span><br><span class="line">            class_addMethod(self, selector, (IMP)autoDictionarySetter, &quot;v@:@&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        else</span><br><span class="line">        &#123;</span><br><span class="line">            // 添加 getter 方法</span><br><span class="line">            class_addMethod(self, selector, (IMP)autoDictionaryGetter, &quot;@@:&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        return YES;</span><br><span class="line">    &#125;</span><br><span class="line">    return [super resolveInstanceMethod:selector];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="备援接收者"><a href="#备援接收者" class="headerlink" title="备援接收者"></a>备援接收者</h3><p>如果无法 <strong>动态解析方法</strong>，运行期系统就会询问是否能将消息转给其他接收者来处理，对应的方法为<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> *  此方法询问是否能将消息转给其他接收者来处理</span><br><span class="line"> *</span><br><span class="line"> *  @param aSelector 未处理的方法</span><br><span class="line"> *</span><br><span class="line"> *  @return 如果当前接收者能找到备援对象，就将其返回；否则返回nil；</span><br><span class="line"> */</span><br><span class="line">- (id)forwardingTargetForSelector:(SEL)aSelector;</span><br></pre></td></tr></table></figure></p>
-<p>在对象内部，可能还有其他对象，该对象可通过此方法将能够处理 selector 的相关内部对象返回，在外界看来，就好像是该对象自己处理的似得。</p>
-<h3 id="完整的消息转发机制"><a href="#完整的消息转发机制" class="headerlink" title="完整的消息转发机制"></a>完整的消息转发机制</h3><p>如果前面两步都无法处理消息，就会启动完整的消息转发机制。首先创建 NSInvocation 对象，把尚未处理的那条消息有关的全部细节装在里面，在触发 NSInvocation 对象时，消息派发系统（message-dispatch system）将会把消息指派给目标对象。对应的方法为<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> *  消息派发系统通过此方法，将消息派发给目标对象</span><br><span class="line"> *</span><br><span class="line"> *  @param anInvocation 之前创建的NSInvocation实例对象，用于装载有关消息的所有内容</span><br><span class="line"> */</span><br><span class="line">- (void)forwardInvocation:(NSInvocation *)anInvocation;</span><br></pre></td></tr></table></figure></p>
-<p>这个方法可以实现的很简单，通过改变调用的目标对象，使得消息在新目标对象上得以调用即可。然而这样实现的效果与 <strong>备援接收者</strong> 差不多，所以很少人会这么做。更加有用的实现方式为：在触发消息前，先以某种方式改变消息内容，比如追加另一个参数、修改 selector 等等。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p><img src="/images/image_note64270_1.png" alt=""></p>
-<hr>
-<p><em>观点仅代表自己，期待你的留言。</em><br><a href="https://www.zybuluo.com/MicroCai/note/64270" target="_blank" rel="external">https://www.zybuluo.com/MicroCai/note/64270</a></p>
 
       
     </div>

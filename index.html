@@ -226,6 +226,73 @@ var _hmt = _hmt || [];
 
       <div class="body-wrap">
   
+    <article id="post-https-flow" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/09/11/https-flow/" class="article-date">
+  	<time datetime="2018-09-11T10:46:47.000Z" itemprop="datePublished">2018-09-11</time>
+</a>
+      <div class="analysis-container">
+	<i class="fa fa-line-chart"></i>
+	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
+</div>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/09/11/https-flow/">https交互流程</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+              
+        <h2 id="单向Https"><a href="#单向Https" class="headerlink" title="单向Https"></a>单向Https</h2><p><img src="/images/one-way-https.jpg" alt="单向Https"></p>
+<h2 id="双向Https"><a href="#双向Https" class="headerlink" title="双向Https"></a>双向Https</h2><p><img src="/images/two-way-https.jpg" alt="双向Https"></p>
+<hr>
+<p><em>观点仅代表自己，期待你的留言。</em></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+
+
+  
     <article id="post-linux-cmd-notes" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -1443,82 +1510,6 @@ var _hmt = _hmt || [];
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/分布式事务/">分布式事务</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-thinkpad-battery-limit" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/10/18/thinkpad-battery-limit/" class="article-date">
-  	<time datetime="2017-10-18T08:04:47.000Z" itemprop="datePublished">2017-10-18</time>
-</a>
-      <div class="analysis-container">
-	<i class="fa fa-line-chart"></i>
-	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
-</div>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/10/18/thinkpad-battery-limit/">ubuntu下thinkpad电池阀设置（待验证）</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-              
-        <h2 id="设置电池阀"><a href="#设置电池阀" class="headerlink" title="设置电池阀"></a>设置电池阀</h2><p>sudo add-apt-repository ppa:linrunner/tlp<br>sudo apt-get update</p>
-<p>sudo apt-get install tlp tlp-rdw<br>sudo apt-get install tp-smapi-dkms acpi-call-tools</p>
-<p>sudo gedit /etc/default/tlp</p>
-<h1 id="Main-battery-values-in"><a href="#Main-battery-values-in" class="headerlink" title="Main battery (values in %)"></a>Main battery (values in %)</h1><p>START_CHARGE_THRESH_BAT0=10<br>STOP_CHARGE_THRESH_BAT0=96</p>
-<p>之后执行</p>
-<p>sudo tlp setcharge</p>
-<p>重启 OK 电池阀设置完成了</p>
-<h2 id="查看电池阀设置"><a href="#查看电池阀设置" class="headerlink" title="查看电池阀设置"></a>查看电池阀设置</h2><p>tone@ubuntu:~$ sudo tlp-stat –battery<br>— TLP 0.4 ——————————————–</p>
-<p>+++ ThinkPad Extended Battery Functions<br>tp-smapi = active<br>tpacpi-bat = active</p>
-<p>+++ ThinkPad Battery Status (Main)<br>/sys/devices/platform/smapi/BAT0/manufacturer = LGC<br>/sys/devices/platform/smapi/BAT0/model = 42T4865<br>/sys/devices/platform/smapi/BAT0/manufacture_date = 2011-11-24<br>/sys/devices/platform/smapi/BAT0/first_use_date = 2012-04-13<br>/sys/devices/platform/smapi/BAT0/cycle_count = 63<br>/sys/devices/platform/smapi/BAT0/design_capacity = 62160 [mWh]<br>/sys/devices/platform/smapi/BAT0/last_full_capacity = 59470 [mWh]<br>/sys/devices/platform/smapi/BAT0/remaining_capacity = 42410 [mWh]<br>/sys/devices/platform/smapi/BAT0/remaining_percent = 71 [%]<br>/sys/devices/platform/smapi/BAT0/remaining_running_time_now = 189 [min]<br>/sys/devices/platform/smapi/BAT0/remaining_charging_time = not_charging [min]<br>/sys/devices/platform/smapi/BAT0/power_now = -13432 [mW]<br>/sys/devices/platform/smapi/BAT0/power_avg = -12742 [mW]</p>
-<p>tpacpi-bat.BAT0.startThreshold = 10 [%]<br>tpacpi-bat.BAT0.stopThreshold = 96 [%]<br>tpacpi-bat.BAT0.forceDischarge = 0</p>
-<hr>
-<p><em>观点仅代表自己，期待你的留言。</em></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/笔记/">笔记</a></li></ul>
 	</div>
 
       

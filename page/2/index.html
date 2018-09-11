@@ -226,6 +226,82 @@ var _hmt = _hmt || [];
 
       <div class="body-wrap">
   
+    <article id="post-thinkpad-battery-limit" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/18/thinkpad-battery-limit/" class="article-date">
+  	<time datetime="2017-10-18T08:04:47.000Z" itemprop="datePublished">2017-10-18</time>
+</a>
+      <div class="analysis-container">
+	<i class="fa fa-line-chart"></i>
+	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
+</div>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/18/thinkpad-battery-limit/">ubuntu下thinkpad电池阀设置（待验证）</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+              
+        <h2 id="设置电池阀"><a href="#设置电池阀" class="headerlink" title="设置电池阀"></a>设置电池阀</h2><p>sudo add-apt-repository ppa:linrunner/tlp<br>sudo apt-get update</p>
+<p>sudo apt-get install tlp tlp-rdw<br>sudo apt-get install tp-smapi-dkms acpi-call-tools</p>
+<p>sudo gedit /etc/default/tlp</p>
+<h1 id="Main-battery-values-in"><a href="#Main-battery-values-in" class="headerlink" title="Main battery (values in %)"></a>Main battery (values in %)</h1><p>START_CHARGE_THRESH_BAT0=10<br>STOP_CHARGE_THRESH_BAT0=96</p>
+<p>之后执行</p>
+<p>sudo tlp setcharge</p>
+<p>重启 OK 电池阀设置完成了</p>
+<h2 id="查看电池阀设置"><a href="#查看电池阀设置" class="headerlink" title="查看电池阀设置"></a>查看电池阀设置</h2><p>tone@ubuntu:~$ sudo tlp-stat –battery<br>— TLP 0.4 ——————————————–</p>
+<p>+++ ThinkPad Extended Battery Functions<br>tp-smapi = active<br>tpacpi-bat = active</p>
+<p>+++ ThinkPad Battery Status (Main)<br>/sys/devices/platform/smapi/BAT0/manufacturer = LGC<br>/sys/devices/platform/smapi/BAT0/model = 42T4865<br>/sys/devices/platform/smapi/BAT0/manufacture_date = 2011-11-24<br>/sys/devices/platform/smapi/BAT0/first_use_date = 2012-04-13<br>/sys/devices/platform/smapi/BAT0/cycle_count = 63<br>/sys/devices/platform/smapi/BAT0/design_capacity = 62160 [mWh]<br>/sys/devices/platform/smapi/BAT0/last_full_capacity = 59470 [mWh]<br>/sys/devices/platform/smapi/BAT0/remaining_capacity = 42410 [mWh]<br>/sys/devices/platform/smapi/BAT0/remaining_percent = 71 [%]<br>/sys/devices/platform/smapi/BAT0/remaining_running_time_now = 189 [min]<br>/sys/devices/platform/smapi/BAT0/remaining_charging_time = not_charging [min]<br>/sys/devices/platform/smapi/BAT0/power_now = -13432 [mW]<br>/sys/devices/platform/smapi/BAT0/power_avg = -12742 [mW]</p>
+<p>tpacpi-bat.BAT0.startThreshold = 10 [%]<br>tpacpi-bat.BAT0.stopThreshold = 96 [%]<br>tpacpi-bat.BAT0.forceDischarge = 0</p>
+<hr>
+<p><em>观点仅代表自己，期待你的留言。</em></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/笔记/">笔记</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+
+
+  
     <article id="post-nginx-rtmp-obs" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -1003,81 +1079,6 @@ var _hmt = _hmt || [];
         <h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>由于携程航班号查询取消了起止城市信息的返回，为了补全信息，特从网络爬取了8644条机场航站楼对应三字码四字码信息，共享于网络供有需要的朋友使用。</p>
 <p>数据抓取源: <a href="https://airportcode.51240.com" target="_blank" rel="external">便民查询网</a></p>
 <p><a href="/data/t_airport_terminal_code.sql">机场航站楼三字码四字码附件，点击下载</a></p>
-<hr>
-<p><em>观点仅代表自己，期待你的留言。</em></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-linux-autostart" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/10/09/linux-autostart/" class="article-date">
-  	<time datetime="2016-10-09T10:43:51.000Z" itemprop="datePublished">2016-10-09</time>
-</a>
-      <div class="analysis-container">
-	<i class="fa fa-line-chart"></i>
-	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
-</div>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/10/09/linux-autostart/">Linux开机自动启动Tomcat应用</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-              
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>刚过国庆长假，工作机房断电，重回工作岗位发现N多的应用需要手动启动。感觉烦燥？<br>so.. 配置linux开机自启动</p>
-<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>在<em>/etc/rc.local</em>文件末尾增加以下内容<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/sh</span><br><span class="line">#</span><br><span class="line"># This script will be executed *after* all the other init scripts.</span><br><span class="line"># You can put your own initialization stuff in here if you don&apos;t</span><br><span class="line"># want to do the full Sys V style init stuff.</span><br><span class="line"></span><br><span class="line">O_Path=`pwd`</span><br><span class="line">cd /myapps/servers/apache-tomcat-6.0.43/bin/</span><br><span class="line">sh startup.sh</span><br><span class="line">cd $O_Path</span><br></pre></td></tr></table></figure></p>
-<p><strong>需要注意以下几点：</strong></p>
-<ul>
-<li>检查startup.sh是否已授执行权限，如果没有，执行<code>chmod +x /myapps/servers/apache-tomcat-6.0.43/bin/startup.sh</code></li>
-<li>所需要执行的shell文件不能带参数。</li>
-</ul>
-<p>经过以上配置则可以通过<code>sudo reboot</code>进行验证。当Linux重启成功后，可通过<strong>/var/log/boot.log</strong>来查看开机时的日志输出。</p>
-<h2 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h2><p><code>who -r</code> 查看开机级别</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">who --help</span><br><span class="line">用法：who [选项]... [ 文件 | 参数1 参数2 ]</span><br><span class="line">显示当前已登录的用户信息。</span><br><span class="line"></span><br><span class="line">  -a, --all		等于-b -d --login -p -r -t -T -u 选项的组合</span><br><span class="line">  -b, --boot		上次系统启动时间</span><br><span class="line">  -d, --dead		显示已死的进程</span><br><span class="line">  -H, --heading	输出头部的标题列</span><br><span class="line">  -l，--login		显示系统登录进程</span><br><span class="line">      --lookup		尝试通过 DNS 查验主机名</span><br><span class="line">  -m			只面对和标准输入有直接交互的主机和用户</span><br><span class="line">  -p, --process	显示由 init 进程衍生的活动进程</span><br><span class="line">  -q, --count		列出所有已登录用户的登录名与用户数量</span><br><span class="line">  -r, --runlevel	显示当前的运行级别</span><br><span class="line">  -s, --short		只显示名称、线路和时间(默认)</span><br><span class="line">  -T, -w, --mesg	用+，- 或 ? 标注用户消息状态</span><br><span class="line">  -u, --users		列出已登录的用户</span><br><span class="line">      --message	等于-T</span><br><span class="line">      --writable	等于-T</span><br><span class="line">      --help		显示此帮助信息并退出</span><br><span class="line">      --version		显示版本信息并退出</span><br></pre></td></tr></table></figure>
 <hr>
 <p><em>观点仅代表自己，期待你的留言。</em></p>
 
