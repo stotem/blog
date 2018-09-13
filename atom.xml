@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.wujianjun.org/"/>
-  <updated>2018-09-11T10:51:30.576Z</updated>
+  <updated>2018-09-13T03:14:47.753Z</updated>
   <id>http://www.wujianjun.org/</id>
   
   <author>
@@ -14,6 +14,91 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>使用openssl与keytool完成https配置实例（转）</title>
+    <link href="http://www.wujianjun.org/2018/09/13/https-cr-demo/"/>
+    <id>http://www.wujianjun.org/2018/09/13/https-cr-demo/</id>
+    <published>2018-09-13T02:37:12.000Z</published>
+    <updated>2018-09-13T03:14:47.753Z</updated>
+    
+    <content type="html">&lt;h2 id=&quot;keytool单向认证实例&quot;&gt;&lt;a href=&quot;#keytool单向认证实例&quot; class=&quot;headerlink&quot; title=&quot;keytool单向认证实例&quot;&gt;&lt;/a&gt;keytool单向认证实例&lt;/h2&gt;&lt;h3 id=&quot;1-为服务器生成证书&quot;&gt;&lt;a href=&quot;#1-为服务器生成证书&quot; class=&quot;headerlink&quot; title=&quot;1) 为服务器生成证书&quot;&gt;&lt;/a&gt;1) 为服务器生成证书&lt;/h3&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;wujianjun@smzc ~ $ keytool -genkey -keyalg RSA -dname &lt;span class=&quot;string&quot;&gt;&quot;cn=127.0.0.1,ou=inspur,o=none,l=shandong,st=jinan,c=cn&quot;&lt;/span&gt; -alias server -keypass 111111 -keystore server.keystore -storepass 111111 -validity 3650&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;&lt;em&gt;注：cn=127.0.0.1配置的是服务器IP&lt;/em&gt;&lt;/p&gt;
+&lt;h3 id=&quot;2-生成csr&quot;&gt;&lt;a href=&quot;#2-生成csr&quot; class=&quot;headerlink&quot; title=&quot;2) 生成csr&quot;&gt;&lt;/a&gt;2) 生成csr&lt;/h3&gt;&lt;p&gt;生成csr文件用于提交CA认证生成证书使用。&lt;br&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;wujianjun@smzc ~ $ keytool -certReq -alias server -keystore server.keystore -file ca.csr&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;h3 id=&quot;3-生成cer&quot;&gt;&lt;a href=&quot;#3-生成cer&quot; class=&quot;headerlink&quot; title=&quot;3) 生成cer&quot;&gt;&lt;/a&gt;3) 生成cer&lt;/h3&gt;&lt;p&gt;这个ca.cer是为了解决不信任时要导入的&lt;br&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;wujianjun@smzc ~ $ keytool -export -alias server -keystore server.keystore -file ca.cer -storepass 111111&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;h3 id=&quot;4-tomcat配置ssl&quot;&gt;&lt;a href=&quot;#4-tomcat配置ssl&quot; class=&quot;headerlink&quot; title=&quot;4) tomcat配置ssl&quot;&gt;&lt;/a&gt;4) tomcat配置ssl&lt;/h3&gt;&lt;p&gt;clientAuth=”false”代表单向认证，配置如下：&lt;br&gt;&lt;figure class=&quot;highlight xml&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;Connector&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;SSLEnabled&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;true&quot;&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;clientAuth&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;false&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;attr&quot;&gt;maxThreads&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;150&quot;&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;port&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;8443&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;attr&quot;&gt;protocol&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;org.apache.coyote.http11.Http11Protocol&quot;&lt;/span&gt;&lt;span class=&quot;string&quot;&gt;或者HTTP&lt;/span&gt;/&lt;span class=&quot;attr&quot;&gt;1.1&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;attr&quot;&gt;scheme&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;https&quot;&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;secure&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;true&quot;&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;sslProtocol&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;TLS&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;attr&quot;&gt;keystoreFile&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;/home/server.keystore&quot;&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;keystorePass&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;111111&quot;&lt;/span&gt;/&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;注: Http11Protocol支持HTTP/1.1协议，是http1.1协议的ProtocolHandler实现。&lt;/em&gt;&lt;/p&gt;
+&lt;h3 id=&quot;5-常见问题&quot;&gt;&lt;a href=&quot;#5-常见问题&quot; class=&quot;headerlink&quot; title=&quot;5) 常见问题&quot;&gt;&lt;/a&gt;5) 常见问题&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;服务器的证书不受信任&lt;/strong&gt;&lt;br&gt;解决方法：&lt;br&gt;1、选择“继续前往（不安全）”，也能访问，但是此时就是以普通的HTTP方式进行信息传输了。&lt;br&gt;2、选择生成的&lt;code&gt;ca.cer&lt;/code&gt;文件，将证书存储在 &lt;strong&gt;“受信任的证书颁发机构”&lt;/strong&gt; ，就可以通过HTTPS正常访问了。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;程序访问Https异常&lt;/strong&gt;&lt;br&gt;&lt;strong&gt;sun.security.validator.ValidatorException: PKIX path building failed…&lt;/strong&gt;&lt;br&gt;需要将生成的证书(ca.cer ) 导入到jdk中&lt;br&gt;执行以下命令：&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;wujianjun@smzc ~ $ keytool -import -alias tomcatsso -file &lt;span class=&quot;string&quot;&gt;&quot;ca.cer&quot;&lt;/span&gt; -keystore &lt;span class=&quot;string&quot;&gt;&quot;D:\java\jdk1.6.0_11\jre\lib\security\cacerts&quot;&lt;/span&gt; -storepass changeit&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;em&gt;其中&lt;code&gt;changeit&lt;/code&gt;是jre默认的密码。&lt;/em&gt;&lt;br&gt;&lt;strong&gt;No subject alternative names present&lt;/strong&gt;，请在生成keystore 注意CN必须要为域名（或机器名称)例如 localhost 不能为IP 。&lt;br&gt;&lt;strong&gt;No name matching localhost found&lt;/strong&gt;，表示你生成keystore CN的名称和你访问的名称不一致。&lt;/p&gt;
+&lt;h2 id=&quot;openssl双向认证实例&quot;&gt;&lt;a href=&quot;#openssl双向认证实例&quot; class=&quot;headerlink&quot; title=&quot;openssl双向认证实例&quot;&gt;&lt;/a&gt;openssl双向认证实例&lt;/h2&gt;&lt;p&gt;&lt;em&gt;Linux环境下，在home下建立out32dll目录，在此目录下建立ca、client、server三个文件夹。以下命令均在out32dll目录下执行。&lt;/em&gt;&lt;/p&gt;
+&lt;h3 id=&quot;1-模拟CA生成证书&quot;&gt;&lt;a href=&quot;#1-模拟CA生成证书&quot; class=&quot;headerlink&quot; title=&quot;1) 模拟CA生成证书&quot;&gt;&lt;/a&gt;1) 模拟CA生成证书&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;创建私钥&lt;/p&gt;
+&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;wujianjun@smzc ~/out32dll $ openssl genrsa -out ca/ca-key.pem 1024&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;创建证书请求&lt;/p&gt;
+&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;wujianjun@smzc ~/out32dll $ openssl req -new -out ca/ca-req.csr -key ca/ca-key.pem&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;自签署证书&lt;/p&gt;
+&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;wujianjun@smzc ~/out32dll $ openssl x509 -req -in ca/ca-req.csr -out ca/ca-cert.pem -signkey ca/ca-key.pem -days 3650&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;将证书导出成浏览器支持的.p12格式 (供浏览器不受信任时导入)&lt;/p&gt;
+&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;wujianjun@smzc ~/out32dll $ openssl pkcs12 -export -clcerts -in ca/ca-cert.pem -inkey ca/ca-key.pem -out ca/ca.p12&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;em&gt;密码：111111&lt;/em&gt;&lt;/p&gt;
+&lt;h3 id=&quot;2-生成Server证书&quot;&gt;&lt;a href=&quot;#2-生成Server证书&quot; class=&quot;headerlink&quot; title=&quot;2) 生成Server证书&quot;&gt;&lt;/a&gt;2) 生成Server证书&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;创建私钥&lt;/p&gt;
+&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;wujianjun@smzc ~/out32dll $ openssl genrsa -out server/server-key.pem 1024&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;创建Server证书请求&lt;/p&gt;
+&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;wujianjun@smzc ~/out32dll $ openssl req -new -out server/server-req.csr -key server/server-key.pem&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;使用CA证书签署Server证书&lt;/p&gt;
+&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;wujianjun@smzc ~/out32dll $ openssl x509 -req -in server/server-req.csr -out server/server-cert.pem -signkey server/server-key.pem -CA ca/ca-cert.pem -CAkey ca/ca-key.pem -CAcreateserial -days 3650&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;将证书导出成浏览器支持的.p12格式&lt;/p&gt;
+&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;wujianjun@smzc ~/out32dll $ openssl pkcs12 -export -clcerts -in server/server-cert.pem -inkey server/server-key.pem -out server/server.p12&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;em&gt;密码：111111&lt;/em&gt;&lt;/p&gt;
+&lt;h3 id=&quot;3-生成Clinet证书&quot;&gt;&lt;a href=&quot;#3-生成Clinet证书&quot; class=&quot;headerlink&quot; title=&quot;3) 生成Clinet证书&quot;&gt;&lt;/a&gt;3) 生成Clinet证书&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;创建私钥&lt;/p&gt;
+&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;wujianjun@smzc ~/out32dll $ openssl genrsa -out client/client-key.pem 1024&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;创建Client证书请求&lt;/p&gt;
+&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;wujianjun@smzc ~/out32dll $ openssl req -new -out client/client-req.csr -key client/client-key.pem&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;使用CA证书签署Client证书&lt;/p&gt;
+&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;wujianjun@smzc ~/out32dll $ openssl x509 -req -in client/client-req.csr -out client/client-cert.pem -signkey client/client-key.pem -CA ca/ca-cert.pem -CAkey ca/ca-key.pem -CAcreateserial -days 3650&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;将证书导出成浏览器支持的.p12格式&lt;/p&gt;
+&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;wujianjun@smzc ~/out32dll $ openssl pkcs12 -export -clcerts -in client/client-cert.pem -inkey client/client-key.pem -out client/client.p12&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;em&gt;密码：111111&lt;/em&gt;&lt;/p&gt;
+&lt;h3 id=&quot;4-根据CA证书生成jks文件&quot;&gt;&lt;a href=&quot;#4-根据CA证书生成jks文件&quot; class=&quot;headerlink&quot; title=&quot;4) 根据CA证书生成jks文件&quot;&gt;&lt;/a&gt;4) 根据CA证书生成jks文件&lt;/h3&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;wujianjun@smzc ~/out32dll $ keytool -keystore truststore.jks -keypass 222222 -storepass 222222 -alias ca -import -trustcacerts -file /home/out32dll/ca/ca-cert.pem&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h3 id=&quot;5-服务器配置（tomcat6示例）&quot;&gt;&lt;a href=&quot;#5-服务器配置（tomcat6示例）&quot; class=&quot;headerlink&quot; title=&quot;5) 服务器配置（tomcat6示例）&quot;&gt;&lt;/a&gt;5) 服务器配置（tomcat6示例）&lt;/h3&gt;&lt;p&gt;修改conf/server.xml。 将keystoreFile、truststoreFile的路径填写为正确的放置路径。&lt;br&gt;&lt;figure class=&quot;highlight xml&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;name&quot;&gt;Connector&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;port&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;8443&quot;&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;protocol&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;HTTP/1.1&quot;&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;SSLEnabled&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;true&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;attr&quot;&gt;maxThreads&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;150&quot;&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;scheme&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;https&quot;&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;secure&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;true&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;attr&quot;&gt;clientAuth&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;true&quot;&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;sslProtocol&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;TLS&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;attr&quot;&gt;keystoreFile&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;/home/out32dll/server/server.p12&quot;&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;keystorePass&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;111111&quot;&lt;/span&gt;  &lt;span class=&quot;attr&quot;&gt;keystoreType&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;PKCS12&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;attr&quot;&gt;truststoreFile&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;/home/out32dll/truststore.jks&quot;&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;truststorePass&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;222222&quot;&lt;/span&gt; &lt;span class=&quot;attr&quot;&gt;truststoreType&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&quot;JKS&quot;&lt;/span&gt;/&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;h3 id=&quot;6-导入证书-IE示例&quot;&gt;&lt;a href=&quot;#6-导入证书-IE示例&quot; class=&quot;headerlink&quot; title=&quot;6) 导入证书(IE示例)&quot;&gt;&lt;/a&gt;6) 导入证书(IE示例)&lt;/h3&gt;&lt;p&gt;将ca.p12，client.p12分别导入到IE中去（打开IE-&amp;gt;Internet选项-&amp;gt;内容-&amp;gt;证书）。 ca.p12导入至 受信任的根证书颁发机构，client.p12导入至个人。&lt;br&gt;&lt;em&gt;进行浏览器访问双向Https时会弹出客户端证书供选择&lt;/em&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;观点仅代表自己，期待你的留言。&lt;/em&gt;&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;keytool单向认证实例&quot;&gt;&lt;a href=&quot;#keytool单向认证实例&quot; class=&quot;headerlink&quot; title=&quot;keytool单向认证实例&quot;&gt;&lt;/a&gt;keytool单向认证实例&lt;/h2&gt;&lt;h3 id=&quot;1-为服务器生成证书&quot;&gt;&lt;a href=&quot;
+    
+    </summary>
+    
+    
+      <category term="原创" scheme="http://www.wujianjun.org/tags/%E5%8E%9F%E5%88%9B/"/>
+    
+      <category term="https" scheme="http://www.wujianjun.org/tags/https/"/>
+    
+  </entry>
   
   <entry>
     <title>https交互流程</title>
@@ -1356,31 +1441,6 @@
       <category term="多进程" scheme="http://www.wujianjun.org/tags/%E5%A4%9A%E8%BF%9B%E7%A8%8B/"/>
     
       <category term="并发" scheme="http://www.wujianjun.org/tags/%E5%B9%B6%E5%8F%91/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>机场航站楼三字码四字码信息数据库</title>
-    <link href="http://www.wujianjun.org/2017/06/29/airport-terminal-code/"/>
-    <id>http://www.wujianjun.org/2017/06/29/airport-terminal-code/</id>
-    <published>2017-06-29T09:23:50.000Z</published>
-    <updated>2018-08-23T02:13:14.128Z</updated>
-    
-    <content type="html">&lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;由于携程航班号查询取消了起止城市信息的返回，为了补全信息，特从网络爬取了8644条机场航站楼对应三字码四字码信息，共享于网络供有需要的朋友使用。&lt;/p&gt;
-&lt;p&gt;数据抓取源: &lt;a href=&quot;https://airportcode.51240.com&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;便民查询网&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;/data/t_airport_terminal_code.sql&quot;&gt;机场航站楼三字码四字码附件，点击下载&lt;/a&gt;&lt;/p&gt;
-&lt;hr&gt;
-&lt;p&gt;&lt;em&gt;观点仅代表自己，期待你的留言。&lt;/em&gt;&lt;/p&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;由于携程航班号查询取消了起止城市信息的返回，为了补全信息，特从网络爬取了8644条机场航站楼对应三字码四字码信息，共享于网络供有需要的朋友使
-    
-    </summary>
-    
-    
-      <category term="原创" scheme="http://www.wujianjun.org/tags/%E5%8E%9F%E5%88%9B/"/>
     
   </entry>
   
