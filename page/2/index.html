@@ -133,7 +133,7 @@ var _hmt = _hmt || [];
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/Docker/" style="font-size: 13.33px;">Docker</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/Maven/" style="font-size: 11.67px;">Maven</a> <a href="/tags/Nginx/" style="font-size: 15px;">Nginx</a> <a href="/tags/Redis/" style="font-size: 11.67px;">Redis</a> <a href="/tags/Transaction/" style="font-size: 10px;">Transaction</a> <a href="/tags/cdt/" style="font-size: 10px;">cdt</a> <a href="/tags/https/" style="font-size: 10px;">https</a> <a href="/tags/iOS/" style="font-size: 16.67px;">iOS</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/nginx-obs/" style="font-size: 10px;">nginx + obs</a> <a href="/tags/php-fpm/" style="font-size: 10px;">php-fpm</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/rocketmq/" style="font-size: 10px;">rocketmq</a> <a href="/tags/shiro/" style="font-size: 10px;">shiro</a> <a href="/tags/spring/" style="font-size: 11.67px;">spring</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/transaction/" style="font-size: 10px;">transaction</a> <a href="/tags/关键笔记/" style="font-size: 10px;">关键笔记</a> <a href="/tags/分布式/" style="font-size: 10px;">分布式</a> <a href="/tags/分布式事务/" style="font-size: 10px;">分布式事务</a> <a href="/tags/原创/" style="font-size: 20px;">原创</a> <a href="/tags/多进程/" style="font-size: 10px;">多进程</a> <a href="/tags/并发/" style="font-size: 10px;">并发</a> <a href="/tags/总结/" style="font-size: 10px;">总结</a> <a href="/tags/操作系统/" style="font-size: 10px;">操作系统</a> <a href="/tags/架构/" style="font-size: 10px;">架构</a> <a href="/tags/电商/" style="font-size: 10px;">电商</a> <a href="/tags/笔记/" style="font-size: 10px;">笔记</a> <a href="/tags/转发/" style="font-size: 10px;">转发</a> <a href="/tags/转载/" style="font-size: 18.33px;">转载</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
+						<a href="/tags/Docker/" style="font-size: 13.33px;">Docker</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/Maven/" style="font-size: 11.67px;">Maven</a> <a href="/tags/Nginx/" style="font-size: 15px;">Nginx</a> <a href="/tags/Redis/" style="font-size: 11.67px;">Redis</a> <a href="/tags/Transaction/" style="font-size: 10px;">Transaction</a> <a href="/tags/cdt/" style="font-size: 10px;">cdt</a> <a href="/tags/https/" style="font-size: 10px;">https</a> <a href="/tags/iOS/" style="font-size: 16.67px;">iOS</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/nginx-obs/" style="font-size: 10px;">nginx + obs</a> <a href="/tags/php-fpm/" style="font-size: 10px;">php-fpm</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/rocketmq/" style="font-size: 10px;">rocketmq</a> <a href="/tags/shiro/" style="font-size: 11.67px;">shiro</a> <a href="/tags/spring/" style="font-size: 11.67px;">spring</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/transaction/" style="font-size: 10px;">transaction</a> <a href="/tags/关键笔记/" style="font-size: 10px;">关键笔记</a> <a href="/tags/分布式/" style="font-size: 10px;">分布式</a> <a href="/tags/分布式事务/" style="font-size: 10px;">分布式事务</a> <a href="/tags/原创/" style="font-size: 20px;">原创</a> <a href="/tags/多进程/" style="font-size: 10px;">多进程</a> <a href="/tags/并发/" style="font-size: 10px;">并发</a> <a href="/tags/总结/" style="font-size: 10px;">总结</a> <a href="/tags/操作系统/" style="font-size: 10px;">操作系统</a> <a href="/tags/架构/" style="font-size: 10px;">架构</a> <a href="/tags/电商/" style="font-size: 10px;">电商</a> <a href="/tags/笔记/" style="font-size: 10px;">笔记</a> <a href="/tags/转发/" style="font-size: 10px;">转发</a> <a href="/tags/转载/" style="font-size: 18.33px;">转载</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
 					</div>
 				</section>
 				
@@ -225,6 +225,257 @@ var _hmt = _hmt || [];
 </nav>
 
       <div class="body-wrap">
+  
+    <article id="post-mq-rocketmq-module" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/04/04/mq-rocketmq-module/" class="article-date">
+  	<time datetime="2018-04-04T08:58:58.000Z" itemprop="datePublished">2018-04-04</time>
+</a>
+      <div class="analysis-container">
+	<i class="fa fa-line-chart"></i>
+	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
+</div>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/04/04/mq-rocketmq-module/">RocketMQ各组件特性和HA集群方案</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+              
+        <h2 id="一、简介"><a href="#一、简介" class="headerlink" title="一、简介"></a>一、简介</h2><ul>
+<li><p>RocketMQ是一款分布式、队列模型的消息中间件，具有以下特点：</p>
+</li>
+<li><p>能够保证严格的消息顺序</p>
+</li>
+<li><p>提供丰富的消息拉取模式</p>
+</li>
+<li><p>高效的订阅者水平扩展能力</p>
+</li>
+<li><p>实时的消息订阅机制</p>
+</li>
+<li><p>亿级消息堆积能力</p>
+</li>
+</ul>
+<h2 id="二、组件特性"><a href="#二、组件特性" class="headerlink" title="二、组件特性"></a>二、组件特性</h2><h3 id="1-nameserver"><a href="#1-nameserver" class="headerlink" title="1. nameserver"></a>1. nameserver</h3><p>相对来说，nameserver的稳定性非常高。原因有二：</p>
+<ul>
+<li><p>nameserver互相独立，彼此没有通信关系，单台nameserver挂掉，不影响其他nameserver，即使全部挂掉，也不影响业务系统使用。</p>
+</li>
+<li><p>nameserver不会有频繁的读写，所以性能开销非常小，稳定性很高。</p>
+</li>
+</ul>
+<h3 id="2-broker"><a href="#2-broker" class="headerlink" title="2. broker"></a>2. broker</h3><p><strong>与nameserver关系</strong><br><strong>连接:</strong></p>
+<p>单个broker和所有nameserver保持长连接</p>
+<p><strong>心跳:</strong></p>
+<p>心跳间隔：每隔30秒（此时间无法更改）向所有nameserver发送心跳，心跳包含了自身的topic配置信息。</p>
+<p>心跳超时：nameserver每隔10秒钟（此时间无法更改），扫描所有还存活的broker连接，若某个连接2分钟内（当前时间与最后更新时间差值超过2分钟，此时间无法更改）没有发送心跳数据，则断开连接。</p>
+<p><strong>断开:</strong></p>
+<p>时机：broker挂掉；心跳超时导致nameserver主动关闭连接</p>
+<p>动作：一旦连接断开，nameserver会立即感知，更新topc与队列的对应关系，但不会通知生产者和消费者</p>
+<p><strong>负载均衡:</strong></p>
+<ol>
+<li><p>一个topic分布在多个broker上，一个broker可以配置多个topic，它们是多对多的关系。</p>
+</li>
+<li><p>如果某个topic消息量很大，应该给它多配置几个队列，并且尽量多分布在不同broker上，减轻某个broker的压力。</p>
+</li>
+<li><p>topic消息量都比较均匀的情况下，如果某个broker上的队列越多，则该broker压力越大。</p>
+</li>
+</ol>
+<p><strong>可用性:</strong><br>   由于消息分布在各个broker上，一旦某个broker宕机，则该broker上的消息读写都会受到影响。所以rocketmq提供了master/slave的结构，salve定时从master同步数据，如果master宕机，则slave提供消费服务，但是不能写入消息，此过程对应用透明，由rocketmq内部解决。</p>
+<p>这里有两个关键点：</p>
+<ol>
+<li><p>一旦某个broker master宕机，生产者和消费者多久才能发现？受限于rocketmq的网络连接机制，默认情况下，最多需要30秒，但这个时间可由应用设定参数来缩短时间。这个时间段内，发往该broker的消息都是失败的，而且该broker的消息无法消费，因为此时消费者不知道该broker已经挂掉。</p>
+</li>
+<li><p>消费者得到master宕机通知后，转向slave消费，但是slave不能保证master的消息100%都同步过来了，因此会有少量的消息丢失。但是消息最终不会丢的，一旦master恢复，未同步过去的消息会被消费掉。</p>
+</li>
+</ol>
+<p><strong>可靠性:</strong></p>
+<ol>
+<li><p>所有发往broker的消息，有同步刷盘和异步刷盘机制，总的来说，可靠性非常高</p>
+</li>
+<li><p>同步刷盘时，消息写入物理文件才会返回成功，因此非常可靠</p>
+</li>
+<li><p>异步刷盘时，只有机器宕机，才会产生消息丢失，broker挂掉可能会发生，但是机器宕机崩溃是很少发生的，除非突然断电</p>
+</li>
+</ol>
+<p><strong>消息清理:</strong></p>
+<ul>
+<li>扫描间隔</li>
+</ul>
+<p>默认10秒，由broker配置参数cleanResourceInterval决定</p>
+<ul>
+<li>空间阈值</li>
+</ul>
+<p>物理文件不能无限制的一直存储在磁盘，当磁盘空间达到阈值时，不再接受消息，broker打印出日志，消息发送失败，阈值为固定值85%</p>
+<ul>
+<li>清理时机</li>
+</ul>
+<p>默认每天凌晨4点，由broker配置参数deleteWhen决定；或者磁盘空间达到阈值</p>
+<ul>
+<li>文件保留时长</li>
+</ul>
+<p>默认72小时，由broker配置参数fileReservedTime决定</p>
+<p><strong>读写性能:</strong></p>
+<ol>
+<li><p>文件内存映射方式操作文件，避免read/write系统调用和实时文件读写，性能非常高</p>
+</li>
+<li><p>永远一个文件在写，其他文件在读</p>
+</li>
+<li><p>顺序写，随机读</p>
+</li>
+<li><p>利用linux的sendfile机制，将消息内容直接输出到sokect管道，避免系统调用</p>
+</li>
+</ol>
+<p><strong>系统特性:</strong></p>
+<ol>
+<li><p>大内存，内存越大性能越高，否则系统swap会成为性能瓶颈</p>
+</li>
+<li><p>IO密集</p>
+</li>
+<li><p>cpu load高，使用率低，因为cpu占用后，大部分时间在IO WAIT</p>
+</li>
+<li><p>磁盘可靠性要求高，为了兼顾安全和性能，采用RAID10阵列</p>
+</li>
+<li><p>磁盘读取速度要求快，要求高转速大容量磁盘</p>
+</li>
+</ol>
+<h3 id="3-消费者"><a href="#3-消费者" class="headerlink" title="3. 消费者"></a>3. 消费者</h3><p><strong>与nameserver关系</strong><br><strong>连接:</strong></p>
+<p>单个消费者和一台nameserver保持长连接，定时查询topic配置信息，如果该nameserver挂掉，消费者会自动连接下一个nameserver，直到有可用连接为止，并能自动重连。</p>
+<p><strong>心跳:</strong></p>
+<p>与nameserver没有心跳</p>
+<p><strong>轮询时间:</strong></p>
+<p>默认情况下，消费者每隔30秒从nameserver获取所有topic的最新队列情况，这意味着某个broker如果宕机，客户端最多要30秒才能感知。该时间由DefaultMQPushConsumer的pollNameServerInteval参数决定，可手动配置。</p>
+<p><strong>与broker关系</strong></p>
+<p><strong>连接:</strong></p>
+<p>单个消费者和该消费者关联的所有broker保持长连接。</p>
+<p><strong>心跳:</strong></p>
+<p>默认情况下，消费者每隔30秒向所有broker发送心跳，该时间由DefaultMQPushConsumer的heartbeatBrokerInterval参数决定，可手动配置。broker每隔10秒钟（此时间无法更改），扫描所有还存活的连接，若某个连接2分钟内（当前时间与最后更新时间差值超过2分钟，此时间无法更改）没有发送心跳数据，则关闭连接，并向该消费者分组的所有消费者发出通知，分组内消费者重新分配队列继续消费</p>
+<p><strong>断开:</strong></p>
+<p>时机：消费者挂掉；心跳超时导致broker主动关闭连接</p>
+<p>动作：一旦连接断开，broker会立即感知到，并向该消费者分组的所有消费者发出通知，分组内消费者重新分配队列继续消费</p>
+<p><strong>负载均衡:</strong><br>集群消费模式下，一个消费者集群多台机器共同消费一个topic的多个队列，一个队列只会被一个消费者消费。如果某个消费者挂掉，分组内其它消费者会接替挂掉的消费者继续消费。</p>
+<p><strong>消费机制:</strong></p>
+<ul>
+<li><p>本地队列<br>消费者不间断的从broker拉取消息，消息拉取到本地队列，然后本地消费线程消费本地消息队列，只是一个异步过程，拉取线程不会等待本地消费线程，这种模式实时性非常高。对消费者对本地队列有一个保护，因此本地消息队列不能无限大，否则可能会占用大量内存，本地队列大小由DefaultMQPushConsumer的pullThresholdForQueue属性控制，默认1000，可手动设置。</p>
+</li>
+<li><p>轮询间隔</p>
+</li>
+</ul>
+<p>消息拉取线程每隔多久拉取一次？间隔时间由DefaultMQPushConsumer的pullInterval属性控制，默认为0，可手动设置。</p>
+<ul>
+<li>消息消费数量</li>
+</ul>
+<p>监听器每次接受本地队列的消息是多少条？这个参数由DefaultMQPushConsumer的consumeMessageBatchMaxSize属性控制，默认为1，可手动设置。</p>
+<p><strong>消费进度存储:</strong><br>每隔一段时间将各个队列的消费进度存储到对应的broker上，该时间由DefaultMQPushConsumer的persistConsumerOffsetInterval属性控制，默认为5秒，可手动设置。</p>
+<p>如果一个topic在某broker上有3个队列，一个消费者消费这3个队列，那么该消费者和这个broker有几个连接？<br>一个连接，消费单位与队列相关，消费连接只跟broker相关，事实上，消费者将所有队列的消息拉取任务放到本地的队列，挨个拉取，拉取完毕后，又将拉取任务放到队尾，然后执行下一个拉取任务</p>
+<h3 id="4-生产者"><a href="#4-生产者" class="headerlink" title="4. 生产者"></a>4. 生产者</h3><p><strong>与nameserver关系</strong><br><strong>连接:</strong></p>
+<p>单个生产者者和一台nameserver保持长连接，定时查询topic配置信息，如果该nameserver挂掉，生产者会自动连接下一个nameserver，直到有可用连接为止，并能自动重连。</p>
+<p><strong>轮询时间:</strong></p>
+<p>默认情况下，生产者每隔30秒从nameserver获取所有topic的最新队列情况，这意味着某个broker如果宕机，生产者最多要30秒才能感知，在此期间，发往该broker的消息发送失败。该时间由DefaultMQProducer的pollNameServerInteval参数决定，可手动配置。</p>
+<p><strong>心跳:</strong></p>
+<p>与nameserver没有心跳</p>
+<p><strong>与broker关系</strong><br><strong>连接:</strong></p>
+<p>单个生产者和该生产者关联的所有broker保持长连接。</p>
+<p><strong>心跳:</strong></p>
+<p>默认情况下，生产者每隔30秒向所有broker发送心跳，该时间由DefaultMQProducer的heartbeatBrokerInterval参数决定，可手动配置。broker每隔10秒钟（此时间无法更改），扫描所有还存活的连接，若某个连接2分钟内（当前时间与最后更新时间差值超过2分钟，此时间无法更改）没有发送心跳数据，则关闭连接。</p>
+<p><strong>连接断开:</strong></p>
+<p>移除broker上的生产者信息</p>
+<p><strong>负载均衡:</strong><br>生产者时间没有关系，每个生产者向队列轮流发送消息</p>
+<h2 id="三、集群方案"><a href="#三、集群方案" class="headerlink" title="三、集群方案"></a>三、集群方案</h2><ol>
+<li><p>单个 Master<br>这种方式风险较大，一旦Broker 重启或者宕机时，会导致整个服务不可用，不建议线上环境使用。</p>
+</li>
+<li><p>多 Master 模式<br>一个集群无 Slave，全是 Master，例如 2 个 Master 或者 3 个 Master</p>
+<p>优点：配置简单，单个Master 宕机或重启维护对应用无影响，在磁盘配置为 RAID10 时，即使机器宕机不可恢复情况下，由与 RAID10 磁盘非常可靠，消息也不会丢（异步刷盘丢失少量消息，同步刷盘一条不丢）。性能最高。</p>
+<p>缺点：单台机器宕机期间，这台机器上未被消费的消息在机器恢复之前不可订阅，消息实时性会受到受到影响。</p>
+</li>
+</ol>
+<p><em>先启动 NameServer，例如机器 IP 为：172.16.8.106:9876</em></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nohup sh mqnamesrv &amp;</span><br></pre></td></tr></table></figure>
+<p>   <em>在机器 A，启动第一个 Master</em></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nohup sh mqbroker -n 172.16.8.106:9876 -c $ROCKETMQ_HOME/conf/2m-noslave/broker-a.properties &amp;</span><br></pre></td></tr></table></figure>
+<p>   <em>在机器 B，启动第二个 Master</em></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nohup sh mqbroker -n 172.16.8.106:9876 -c $ROCKETMQ_HOME/conf/2m-noslave/broker-b.properties &amp;</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>多 Master 多 Slave 模式，异步复制<br>每个 Master 配置一个 Slave，有多对Master-Slave，HA 采用异步复制方式，主备有短暂消息延迟，毫秒级。</p>
+<p>优点：即使磁盘损坏，消息丢失的非常少，且消息实时性不会受影响，因为 Master 宕机后，消费者仍然可以从 Slave 消费，此过程对应用透明。不需要人工干预。性能同多 Master 模式几乎一样。</p>
+<p>缺点：Master 宕机，磁盘损坏情况，会丢失少量消息。</p>
+</li>
+</ol>
+<p><em>先启动 NameServer，例如机器 IP 为：172.16.8.106:9876</em></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nohup sh mqnamesrv &amp;</span><br></pre></td></tr></table></figure>
+<p>   <em>在机器 A，启动第一个 Master</em></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nohup sh mqbroker -n 172.16.8.106:9876 -c $ROCKETMQ_HOME/conf/2m-2s-async/broker-a.properties &amp;</span><br></pre></td></tr></table></figure>
+<p>   <em>在机器 B，启动第二个 Master</em></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nohup sh mqbroker -n 172.16.8.106:9876 -c $ROCKETMQ_HOME/conf/2m-2s-async/broker-b.properties &amp;</span><br></pre></td></tr></table></figure>
+<p>   <em>在机器 C，启动第一个 Slave</em></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nohup sh mqbroker -n 172.16.8.106:9876 -c $ROCKETMQ_HOME/conf/2m-2s-async/broker-a-s.properties &amp;</span><br></pre></td></tr></table></figure>
+<p>   <em>在机器 D，启动第二个 Slave</em></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nohup sh mqbroker -n 172.16.8.106:9876 -c $ROCKETMQ_HOME/conf/2m-2s-async/broker-b-s.properties &amp;</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>多 Master 多 Slave 模式，同步双写<br>每个 Master 配置一个 Slave，有多对Master-Slave，HA 采用同步双写方式，主备都写成功，向应用返回成功。</p>
+<p>优点：数据与服务都无单点，Master宕机情况下，消息无延迟，服务可用性与数据可用性都非常高</p>
+<p>缺点：性能比异步复制模式略低，大约低 10%左右，发送单个消息的 RT 会略高。目前主宕机后，备机不能自动切换为主机，后续会支持自动切换功能。</p>
+</li>
+</ol>
+<p><em>先启动 NameServer，例如机器 IP 为：172.16.8.106:9876</em></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nohup sh mqnamesrv &amp;</span><br></pre></td></tr></table></figure>
+<p>   <em>在机器 A，启动第一个 Master</em></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nohup sh mqbroker -n 172.16.8.106:9876 -c $ROCKETMQ_HOME/conf/2m-2s-sync/broker-a.properties &amp;</span><br></pre></td></tr></table></figure>
+<p>   <em>在机器 B，启动第二个 Master</em></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nohup sh mqbroker -n 172.16.8.106:9876 -c $ROCKETMQ_HOME/conf/2m-2s-sync/broker-b.properties &amp;</span><br></pre></td></tr></table></figure>
+<p>   <em>在机器 C，启动第一个 Slave</em></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nohup sh mqbroker -n 172.16.8.106:9876 -c $ROCKETMQ_HOME/conf/2m-2s-sync/broker-a-s.properties &amp;</span><br></pre></td></tr></table></figure>
+<p>   <em>在机器 D，启动第二个 Slave</em></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nohup sh mqbroker -n 172.16.8.106:9876 -c $ROCKETMQ_HOME/conf/2m-2s-sync/broker-b-s.properties &amp;</span><br></pre></td></tr></table></figure>
+<p>   以上 Broker 与 Slave 配对是通过指定相同的brokerName 参数来配对，Master 的 BrokerId 必须是 0，Slave的BrokerId 必须是大与 0 的数。另外一个 Master 下面可以挂载多个 Slave，同一 Master 下的多个 Slave 通过指定不同的 BrokerId 来区分。</p>
+<hr>
+<p><em>转自:<a href="https://www.cnblogs.com/xiaodf/p/5075167.html" target="_blank" rel="external">https://www.cnblogs.com/xiaodf/p/5075167.html</a></em></p>
+<p><em>观点仅代表自己，期待你的留言。</em></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/转载/">转载</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+
+
   
     <article id="post-dtcs-seq" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -984,112 +1235,6 @@ var _hmt = _hmt || [];
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-multi-process-read" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/07/07/multi-process-read/" class="article-date">
-  	<time datetime="2017-07-07T02:02:57.000Z" itemprop="datePublished">2017-07-07</time>
-</a>
-      <div class="analysis-container">
-	<i class="fa fa-line-chart"></i>
-	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
-</div>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/07/07/multi-process-read/">分布式系统下并发读取不重复数据</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-              
-        <h2 id="问题背景"><a href="#问题背景" class="headerlink" title="问题背景"></a>问题背景</h2><p>分布式系统模块存在定时任务，当模块被部署多个实例时，不同实例的定时任务在运行时就存在从数据源中获取相同数据的情况，<br>虽然通过乐观锁(数据记录增加version,每次update则set verion+=1 where version=?)的处理方式可以避免多实例更新数据造成脏数据入库的问题，<br>但这无疑是降低了分布式系统部署的初衷（通过横向部署多实例增加系统的处理能力）。</p>
-<p>经过分析，总结如下几种处理方式。</p>
-<h2 id="处理方式"><a href="#处理方式" class="headerlink" title="处理方式"></a>处理方式</h2><h3 id="1、数据置标识位"><a href="#1、数据置标识位" class="headerlink" title="1、数据置标识位"></a>1、数据置标识位</h3><p>在数据库记录中增加flag，当数据被读取后则更改flag的值，避免记录被再次读取。</p>
-<p>具体步骤如下：</p>
-<ul>
-<li>锁定分布式锁</li>
-<li>查询指定数量的数据</li>
-<li>更新已查询出数据的标识位</li>
-<li>释放分布式锁</li>
-</ul>
-<p>当处理完成时: 增加数据version,重置标识位</p>
-<h3 id="2、单实例读取，多实例处理"><a href="#2、单实例读取，多实例处理" class="headerlink" title="2、单实例读取，多实例处理"></a>2、单实例读取，多实例处理</h3><p>读取数据Job：利用Redis的分布式锁保障一个实例拥有读取数据的步骤，读取出来的数据再存放到Redis中的需处理数据队列。</p>
-<p>处理业务Job：所有部署实例通过监控Redis的需处理数据队列如果有数据则take一个数据出来进行业务处理。</p>
-<p>具体步骤如下：</p>
-<ul>
-<li>锁定分布式锁</li>
-<li>检查需要处理的数据队列是否为空，如为空，则跳过当前读取任务。</li>
-<li>获取需要处理的数据并存入Redis的处理队列中</li>
-<li>释放分布式锁<br><em>由于读取数据的步骤由单进程来获取，所以就避免了并发读取数据的问题</em></li>
-</ul>
-<p><strong>add by 2017.8.10 :</strong> 增加处理中的数据队列，在读取数据job时需要排除到正在处理的数据。用于当有数据在处理且数据未更新时，加载数据进行加载时将数据加载出的Bug。<br><strong>add by 2017.9.13 :</strong> 将锁定分布式锁扩展到第一步骤，防止并发情况下通过队列容量检查，成功获取到锁后加载到重复记录。</p>
-<h3 id="3、利用自增ID"><a href="#3、利用自增ID" class="headerlink" title="3、利用自增ID"></a>3、利用自增ID</h3><p>利用分布式锁+Redis存储已处理ID+数据的自增ID来获取数据数据。</p>
-<p>具体步骤如下：</p>
-<ul>
-<li>锁定分布式锁</li>
-<li>从Redis中取出已处理数据的最大ID值(此处用x代替)</li>
-<li>从数据库中取出大于x获取出y(固定数据量)的数据</li>
-<li>更新Redis已处理的数据最大ID值</li>
-<li>释放分布式锁</li>
-</ul>
-<h4 id="存在的问题"><a href="#存在的问题" class="headerlink" title="存在的问题"></a>存在的问题</h4><p><strong>问题描述：</strong> 数据任务在进行业务处理的过程中，如处理失败则再也不会被以上步骤再次获取。</p>
-<p><strong>解决方法1：</strong> 当业务处理失败时，在Redis中记录下失败的数据ID。在获取数据步骤中增加获取失败数据的步骤。</p>
-<p><strong>解决方法2：</strong> 当业务处理失败时，在Redis中记录下失败的数据信息。在业务处理环节增加处理已失败的数据重试步骤。</p>
-<h3 id="4、数据取余"><a href="#4、数据取余" class="headerlink" title="4、数据取余"></a>4、数据取余</h3><p>利用zk获取到总实例数，计算模块实例需要处理的余值。</p>
-<p>具体步骤如下：</p>
-<ul>
-<li>模块启动注册到zk，并计算当前实例需要处理的余值为x (当前实例index % 总实例数)</li>
-<li>从数据库取数据时，将数据主键%总实例数，如果余值为x，则取出数据，否则忽略此数据。</li>
-<li>当模块总实例数变化时，重新计算当前实例需要处理的余值。</li>
-</ul>
-<p><em>风险：</em> 由于模块实例所需要处理的数据固定，当数据取余后的值可能会命中同一个实例，造成模块各实例处理压力不平均。</p>
-<hr>
-<p><em>观点仅代表自己，期待你的留言。</em></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/分布式/">分布式</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/多进程/">多进程</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/并发/">并发</a></li></ul>
 	</div>
 
       
