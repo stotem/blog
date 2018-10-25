@@ -3,6 +3,11 @@ title: Shiro完成短信验证码登录的实例
 tags:
   - 原创
   - shiro
+keywords:
+  - 短信验证码登录
+  - shiro
+  - RestfulApi
+  - 身份校验
 date: 2018-08-30 17:44:47
 ---
 

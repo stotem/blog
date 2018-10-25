@@ -3,6 +3,11 @@ title: Shiro完成RestfulApi的会话保持实例
 tags:
   - 原创
   - shiro
+keywords:
+  - 前后端分离
+  - shiro
+  - RestfulApi
+  - 会话保持
 date: 2018-10-24 15:00:30
 ---
 
@@ -101,6 +106,16 @@ __spring-shiro.xml__
        <bean class="org.wujianjun.apps.web.auth.TokenSessionManager" p:sessionDAO-ref="redisSessionDAO"
              p:deleteInvalidSessions="false" p:sessionIdCookieEnabled="false" p:sessionValidationSchedulerEnabled="false"/>
     </property>
+</bean>
+```
+
+## SessoinId扩展
+如果需要自己定义sessionId的生成，只需要给 __org.apache.shiro.session.mgt.eis.AbstractSessionDAO__ 设置`sessionIdGenerator`的属性值即可。
+```xml
+<bean class="org.wujianjun.apps.web.auth.RedisSessionDAO">
+  <property name="sessionIdGenerator">
+    <bean class="org.wujianjun.apps.web.auth.JWTSessionIdGenerator" />
+  </property>
 </bean>
 ```
 
