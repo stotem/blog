@@ -11,6 +11,7 @@ date: 2019-01-07 16:44:15
 1. spring1.x时代xml配置，优点：取代new实例、ioc、实例对象池化管理
 2. spring2.x时代注解配置，优点：减少配置量
 3. spring3.x时代Java配置，优点：类型安全，可重构
+
 ## POM简化
 增加parent module依赖，自动引入默认的jar配置
 ```xml
@@ -20,6 +21,7 @@ date: 2019-01-07 16:44:15
 <version>1.4.4.RELEASE</version>
 </parent>
 ```
+
 ## 知识点
 一. WEB应用添加spring-boot-starter-web启动器
 ```xml
