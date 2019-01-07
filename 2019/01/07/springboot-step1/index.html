@@ -9,7 +9,9 @@
   <meta name="description" content="配置演进
 spring1.x时代xml配置，优点：取代new实例、ioc、实例对象池化管理
 spring2.x时代注解配置，优点：减少配置量
-spring3.x时代Java配置，优点：类型安全，可重构POM简化增加parent module依赖，自动引入默认的jar配置12345&amp;lt;parent&amp;gt;&amp;lt;groupId&amp;gt;org.springframework.boot&amp;lt;/gr">
+spring3.x时代Java配置，优点：类型安全，可重构
+
+POM简化增加parent module依赖，自动引入默认的jar配置12345&amp;lt;parent&amp;gt;&amp;lt;groupId&amp;gt;org.springframework.boot&amp;lt;/">
 <meta name="keywords" content="springboot">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SpringBoot（一）">
@@ -18,14 +20,18 @@ spring3.x时代Java配置，优点：类型安全，可重构POM简化增加pare
 <meta property="og:description" content="配置演进
 spring1.x时代xml配置，优点：取代new实例、ioc、实例对象池化管理
 spring2.x时代注解配置，优点：减少配置量
-spring3.x时代Java配置，优点：类型安全，可重构POM简化增加parent module依赖，自动引入默认的jar配置12345&amp;lt;parent&amp;gt;&amp;lt;groupId&amp;gt;org.springframework.boot&amp;lt;/gr">
-<meta property="og:updated_time" content="2019-01-07T10:01:54.364Z">
+spring3.x时代Java配置，优点：类型安全，可重构
+
+POM简化增加parent module依赖，自动引入默认的jar配置12345&amp;lt;parent&amp;gt;&amp;lt;groupId&amp;gt;org.springframework.boot&amp;lt;/">
+<meta property="og:updated_time" content="2019-01-07T10:04:06.610Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="SpringBoot（一）">
 <meta name="twitter:description" content="配置演进
 spring1.x时代xml配置，优点：取代new实例、ioc、实例对象池化管理
 spring2.x时代注解配置，优点：减少配置量
-spring3.x时代Java配置，优点：类型安全，可重构POM简化增加parent module依赖，自动引入默认的jar配置12345&amp;lt;parent&amp;gt;&amp;lt;groupId&amp;gt;org.springframework.boot&amp;lt;/gr">
+spring3.x时代Java配置，优点：类型安全，可重构
+
+POM简化增加parent module依赖，自动引入默认的jar配置12345&amp;lt;parent&amp;gt;&amp;lt;groupId&amp;gt;org.springframework.boot&amp;lt;/">
   
     <link rel="alternative" href="/atom.xml" title="建均笔记" type="application/atom+xml">
   
@@ -293,9 +299,9 @@ var _hmt = _hmt || [];
         <h2 id="配置演进"><a href="#配置演进" class="headerlink" title="配置演进"></a>配置演进</h2><ol>
 <li>spring1.x时代xml配置，优点：取代new实例、ioc、实例对象池化管理</li>
 <li>spring2.x时代注解配置，优点：减少配置量</li>
-<li>spring3.x时代Java配置，优点：类型安全，可重构<h2 id="POM简化"><a href="#POM简化" class="headerlink" title="POM简化"></a>POM简化</h2>增加parent module依赖，自动引入默认的jar配置<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">parent</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-parent<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">version</span>&gt;</span>1.4.4.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">parent</span>&gt;</span></span><br></pre></td></tr></table></figure>
-</li>
+<li>spring3.x时代Java配置，优点：类型安全，可重构</li>
 </ol>
+<h2 id="POM简化"><a href="#POM简化" class="headerlink" title="POM简化"></a>POM简化</h2><p>增加parent module依赖，自动引入默认的jar配置<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">parent</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-parent<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">version</span>&gt;</span>1.4.4.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">parent</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
 <h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><p>一. WEB应用添加spring-boot-starter-web启动器<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
 <p>二. 更改jdk依赖版本，在properties下增加<code>java.version</code>配置jdk版本，如：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">properties</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">java.version</span>&gt;</span>1.7<span class="tag">&lt;/<span class="name">java.version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">properties</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
 <p>三. spring-boot-devtools实现热部署调试<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-devtools<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
