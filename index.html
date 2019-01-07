@@ -226,6 +226,164 @@ var _hmt = _hmt || [];
 
       <div class="body-wrap">
   
+    <article id="post-springboot-step1" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2019/01/07/springboot-step1/" class="article-date">
+  	<time datetime="2019-01-07T08:44:15.000Z" itemprop="datePublished">2019-01-07</time>
+</a>
+      <div class="analysis-container">
+	<i class="fa fa-line-chart"></i>
+	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
+</div>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/01/07/springboot-step1/">SpringBoot（一）</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+              
+        <h2 id="配置演进"><a href="#配置演进" class="headerlink" title="配置演进"></a>配置演进</h2><ol>
+<li>spring1.x时代xml配置，优点：取代new实例、ioc、实例对象池化管理</li>
+<li>spring2.x时代注解配置，优点：减少配置量</li>
+<li>spring3.x时代Java配置，优点：类型安全，可重构<h2 id="POM简化"><a href="#POM简化" class="headerlink" title="POM简化"></a>POM简化</h2>增加parent module依赖，自动引入默认的jar配置<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">parent</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-parent<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">version</span>&gt;</span>1.4.4.RELEASE<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">parent</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><p>一. WEB应用添加spring-boot-starter-web启动器<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>二. 更改jdk依赖版本，在properties下增加<code>java.version</code>配置jdk版本，如：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">properties</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">java.version</span>&gt;</span>1.7<span class="tag">&lt;/<span class="name">java.version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">properties</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>三. spring-boot-devtools实现热部署调试<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-devtools<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>四. spring-boot-test实现单元测试<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-test<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">scope</span>&gt;</span>test<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RunWith</span>(SpringJUnit4ClassRunner.class)</span><br><span class="line"><span class="meta">@SpringBootTest</span>(classes = Application.class)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestCls</span> </span>&#123;</span><br><span class="line">  <span class="meta">@Test</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">hello</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">//....</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>五. 程序读取配置文件<br>src/main/resources/application.properties<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cfg.name=abc</span><br></pre></td></tr></table></figure></p>
+<p>1) 环境对象实例中获取<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">A</span> </span>&#123;</span><br><span class="line">  <span class="meta">@Resource</span></span><br><span class="line">  <span class="keyword">private</span> org.springframework.core.env.Environment env;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">hello</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    System.out.println(env.getProperty(<span class="string">"cfg.name"</span>));<span class="comment">// 输出abc</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>2) Value获取<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">A</span> </span>&#123;</span><br><span class="line">  <span class="meta">@Value</span>(<span class="string">"$&#123;cfg.name&#125;"</span>)</span><br><span class="line">  <span class="keyword">private</span> String cfgName;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">hello</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    System.out.println(cfgName);<span class="comment">// 输出abc</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>3) ConfigurationProperties获取<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@ConfigurationProperties</span>(<span class="string">"cfg"</span>)</span><br><span class="line"><span class="meta">@Setter</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">A</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> String name;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>六. 编译生成jar包程序（默认包类型）<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">packaging</span>&gt;</span>jar<span class="tag">&lt;/<span class="name">packaging</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-maven-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p><code>输出:</code> 生成带tomcat-plugin的package.jar，通过java -jar package.jar运行。</p>
+<p>七. 编译生成war包程序<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--1. 更改package类型--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">packaging</span>&gt;</span>war<span class="tag">&lt;/<span class="name">packaging</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--2. 修改tomcat的依赖为provided--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-tomcat<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">scope</span>&gt;</span>provided<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!--3. 设置输出package的名称--&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">finalName</span>&gt;</span>package<span class="tag">&lt;/<span class="name">finalName</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>调整启动类:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SpringBootApplication</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ClientApplication</span> <span class="keyword">extends</span> <span class="title">SpringBootServletInitializer</span>  </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		SpringApplication.run(ClientApplication.class, args);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">protected</span> SpringApplicationBuilder <span class="title">configure</span><span class="params">(SpringApplicationBuilder builder)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> builder.sources(getClass());</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><code>输出:</code> 生成package.war，将war放入到tomcat或其它的支持java运行的服务器中运行。</p>
+<hr>
+<p><em>观点仅代表自己，期待你的留言。</em></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-redis-data-type" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/12/25/redis-data-type/" class="article-date">
+  	<time datetime="2018-12-25T14:49:58.000Z" itemprop="datePublished">2018-12-25</time>
+</a>
+      <div class="analysis-container">
+	<i class="fa fa-line-chart"></i>
+	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
+</div>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/12/25/redis-data-type/">Redis数据类型特点</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+              
+        <h2 id="Redis数据类型特点"><a href="#Redis数据类型特点" class="headerlink" title="Redis数据类型特点"></a>Redis数据类型特点</h2><ol>
+<li>string：可独立设置expire time。</li>
+<li>list：特有的LPUSH、RPUSH、LPOP、RPOP、LPOPRPUSH等函数可以无缝的支持生产者、消费者架构模式。</li>
+<li>hash：基于Hash算法的，对于项的查找时间复杂度是O(1)。</li>
+<li>set：最大的特点就是集合的计算能力，inter交集、union并集、diff差集，这些特点可以用来做高性能的交叉计算或者剔除数据。SINTERSTORE命令将交集计算后的结果存储在一个目标集合中。</li>
+<li>zset：在set的基础上提供了排序的功能，可用于多维度算法计算得分后找最佳结果的场景。</li>
+</ol>
+<p>由于Redis是Signle-Thread单线程模型，基于这个特性我们就可以使用Redis提供的pipeline管道来提交一连串带有逻辑的命令集合，这些命令在处理期间不会被其他客户端的命令干扰。</p>
+<hr>
+<p><em>观点仅代表自己，期待你的留言。</em></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+
+
+  
     <article id="post-shiro-restful-api-session" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -871,549 +1029,6 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-redis-advanced" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2018/04/10/redis-advanced/" class="article-date">
-  	<time datetime="2018-04-10T08:30:13.000Z" itemprop="datePublished">2018-04-10</time>
-</a>
-      <div class="analysis-container">
-	<i class="fa fa-line-chart"></i>
-	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
-</div>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/04/10/redis-advanced/">redis进阶</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-              
-        <h2 id="redis主从（读写分离）"><a href="#redis主从（读写分离）" class="headerlink" title="redis主从（读写分离）"></a>redis主从（读写分离）</h2><p><strong>问题：</strong></p>
-<ul>
-<li>redis为单进程程序，只能占用单核，无法充分使用多核的系统资源。</li>
-<li>单节点redis在出现故障时则无法继续提供数据存储服务，无法达到高可用要求。<br><strong>解决方法：</strong></li>
-<li>增加redis slave节点通过replicas进行<code>master-slave</code>的数据复制，故障时手动恢复。</li>
-<li>通过增加<code>sentinel(哨兵)</code>监控redis master-slave节点的存活状态，当master出现故障时自动将slave升级为master继续提供服务。</li>
-</ul>
-<h2 id="data-sharding（数据分片）"><a href="#data-sharding（数据分片）" class="headerlink" title="data sharding（数据分片）"></a>data sharding（数据分片）</h2><p><strong>问题：</strong><br>  单台redis节点的内存总量有限，达到上限后想要扩容除了增加内存别无它法<br><strong>解决方法：</strong></p>
-<ul>
-<li>redis client (部署多个独立的redis节点，通过在<code>客户端代码中针对key进行hash</code>，然后将数据按hash映射存储到不同的redis中)</li>
-<li>Twemproxy (部署多个独立的redis节点，通过引入twitter开源中间件封装key的hash操作，最终将数据存储到不同的redis中)</li>
-</ul>
-<h2 id="redis-cluster集群"><a href="#redis-cluster集群" class="headerlink" title="redis cluster集群"></a>redis cluster集群</h2><p><strong>问题：</strong><br>  单台redis节点的内存容量有限，达到上限后想要扩容除了增加内存别无它法<br><strong>解决方法：</strong></p>
-<ul>
-<li>将所有的redis节点的内存总容量划分为n个<code>哈希槽(hash slot)</code>(默认为16384个)，每一个redis节点负责一段solt，存取数据时通过CRC16算法对key进行取余来决定应该从哪一个redis节点进行存取操作。<br>redis节点两两连接共同形成一个集群，客户端代码连接集群中<code>任意节点</code>进行存取服务，集群中的节点会通过<code>CRC16算法</code>来将存取请求<code>转发</code>到目标redis节点完成数据的存取。</li>
-<li>通过在集群内挑选一部分节点设置为slave节点，通过master-slave构建高可用redis服务</li>
-</ul>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-mq-rocketmq-manuals" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2018/04/04/mq-rocketmq-manuals/" class="article-date">
-  	<time datetime="2018-04-04T09:58:58.000Z" itemprop="datePublished">2018-04-04</time>
-</a>
-      <div class="analysis-container">
-	<i class="fa fa-line-chart"></i>
-	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
-</div>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/04/04/mq-rocketmq-manuals/">RocketMQ使用指南及参数详解</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-              
-        <h2 id="一、使用指南"><a href="#一、使用指南" class="headerlink" title="一、使用指南"></a>一、使用指南</h2><ul>
-<li>客户端寻址方式</li>
-</ul>
-<p>在代码中指定NameServer地址<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Producer.setNamesrvAddr(“192.168.8.106:9876”);</span><br></pre></td></tr></table></figure></p>
-<p>或<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Consumer.setNamesrvAddr(“192.168.8.106:9876”);</span><br></pre></td></tr></table></figure></p>
-<p>Java启动参数中指定NameServer地址<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-Drocketmq.namesrv.addr=192.168.8.106:9876</span><br></pre></td></tr></table></figure></p>
-<p>环境变量指定NameServer地址·<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export NAMESRV_ADDR=192.168.8.106:9876</span><br></pre></td></tr></table></figure></p>
-<ul>
-<li>http静态服务器寻址</li>
-</ul>
-<p>客户端启动后，会定时访问一个静态的HTTP服务器，地址如下：</p>
-<p><a href="http://jmenv.tbsite.net:8080/rocketmq/msaddr" target="_blank" rel="external">http://jmenv.tbsite.net:8080/rocketmq/msaddr</a></p>
-<p>这个URL的返回内容如下：</p>
-<p>192.168.8.106:9876</p>
-<p>客户端默认每隔2分钟访问一次这个HTTP服务器，并更新本地的NameServer地址。URL已经在代码中写死，可通过修改/etc/hosts文件来改变要访问的服务器，例如在/etc/hosts增加如下配置：</p>
-<p>10.232.22.67   jmenv.taobao.net</p>
-<h2 id="二、参数详解"><a href="#二、参数详解" class="headerlink" title="二、参数详解"></a>二、参数详解</h2><ul>
-<li>客户端的公共配置类：ClientConfig</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>参数名</th>
-<th>默认值</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>NamesrvAddr</td>
-<td>无</td>
-<td>NameServer地址列表，多个nameServer地址用分号隔开</td>
-</tr>
-<tr>
-<td>clientIP</td>
-<td>本机IP</td>
-<td>客户端本机IP地址，某些机器会发生无法识别客户端IP地址情况，需要应用在代码中强制指定</td>
-</tr>
-<tr>
-<td>instanceName</td>
-<td>DEFAULT</td>
-<td>客户端实例名称，客户端创建的多个Producer，Consumer实际是共用一个内部实例（这个实例包含网络连接，线程资源等）</td>
-</tr>
-<tr>
-<td>clientCallbackExecutorThreads</td>
-<td>4</td>
-<td>通信层异步回调线程数</td>
-</tr>
-<tr>
-<td>pollNameServerInteval</td>
-<td>30000</td>
-<td>轮训Name Server 间隔时间，单位毫秒</td>
-</tr>
-<tr>
-<td>heartbeatBrokerInterval</td>
-<td>30000</td>
-<td>向Broker发送心跳间隔时间，单位毫秒</td>
-</tr>
-<tr>
-<td>persistConsumerOffsetInterval</td>
-<td>5000</td>
-<td>持久化Consumer消费进度间隔时间，单位毫秒</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>Producer配置</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>参数名</th>
-<th>默认值</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>producerGroup</td>
-<td>DEFAULT_PRODUCER</td>
-<td>Producer组名，多个Producer如果属于一个应用，发送同样的消息，则应该将它们归为同一组。</td>
-</tr>
-<tr>
-<td>createTopicKey</td>
-<td>TBW102</td>
-<td>在发送消息时，自动创建服务器不存在的topic，需要指定key</td>
-</tr>
-<tr>
-<td>defaultTopicQueueNums</td>
-<td>4</td>
-<td>在发送消息时，自动创建服务器不存在的topic，默认创建的队列数</td>
-</tr>
-<tr>
-<td>sendMsgTimeout</td>
-<td>10000</td>
-<td>发送消息超时时间，单位毫秒</td>
-</tr>
-<tr>
-<td>compressMsgBodyOverHowmuch</td>
-<td>4096</td>
-<td>消息Body超过多大开始压缩（Consumer收到消息会自动解压缩），单位字节</td>
-</tr>
-<tr>
-<td>retryAnotherBrokerWhenNotStoreOK</td>
-<td>FALSE</td>
-<td>如果发送消息返回sendResult,但是sendStatus!=SEND_OK,是否重试发送</td>
-</tr>
-<tr>
-<td>maxMessageSize</td>
-<td>131072</td>
-<td>客户端限制的消息大小，超过报错，同时服务端也会限制（默认128K）</td>
-</tr>
-<tr>
-<td>transactionCheckListener</td>
-<td>无</td>
-<td>事物消息回查监听器，如果发送事务消息，必须设置</td>
-</tr>
-<tr>
-<td>checkThreadPoolMinSize</td>
-<td>1</td>
-<td>Broker回查Producer事务状态时，线程池大小</td>
-</tr>
-<tr>
-<td>checkThreadPoolMaxSize</td>
-<td>1</td>
-<td>Broker回查Producer事务状态时，线程池大小</td>
-</tr>
-<tr>
-<td>checkRequestHoldMax</td>
-<td>2000</td>
-<td>Broker回查Producer事务状态时，Producer本地缓冲请求队列大小</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>PushConsumer配置</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>参数名</th>
-<th>默认值</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>consumerGroup</td>
-<td>DEFAULT_CONSUMER</td>
-<td>Consumer组名，多个Consumer如果属于一个应用，订阅同样的消息，且消费逻辑一致，则应将它们归为同一组</td>
-</tr>
-<tr>
-<td>messageModel</td>
-<td>CLUSTERING</td>
-<td>消息模型，支持以下两种1.集群消费2.广播消费</td>
-</tr>
-<tr>
-<td>consumeFromWhere</td>
-<td>CONSUME_FROM_LAST_OFFSET</td>
-<td>Consumer启动后，默认从什么位置开始消费</td>
-</tr>
-<tr>
-<td>allocateMessageQueueStrategy</td>
-<td>AllocateMessageQueueAveragely</td>
-<td>Rebalance算法实现策略</td>
-</tr>
-<tr>
-<td>Subscription</td>
-<td>{}</td>
-<td>订阅关系</td>
-</tr>
-<tr>
-<td>messageListener</td>
-<td>无</td>
-<td>消息监听器</td>
-</tr>
-<tr>
-<td>offsetStore</td>
-<td>无</td>
-<td>消费进度存储</td>
-</tr>
-<tr>
-<td>consumeThreadMin</td>
-<td>10</td>
-<td>消费线程池数量</td>
-</tr>
-<tr>
-<td>consumeThreadMax</td>
-<td>20</td>
-<td>消费线程池数量</td>
-</tr>
-<tr>
-<td>consumeConcurrentlyMaxSpan</td>
-<td>2000</td>
-<td>单队列并行消费允许的最大跨度</td>
-</tr>
-<tr>
-<td>pullThresholdForQueue</td>
-<td>1000</td>
-<td>拉消息本地队列缓存消息最大数</td>
-</tr>
-<tr>
-<td>Pullinterval</td>
-<td>0</td>
-<td>拉消息间隔，由于是长轮询，所以为0，但是如果应用了流控，也可以设置大于0的值，单位毫秒</td>
-</tr>
-<tr>
-<td>consumeMessageBatchMaxSize</td>
-<td>1</td>
-<td>批量消费，一次消费多少条消息</td>
-</tr>
-<tr>
-<td>pullBatchSize</td>
-<td>32</td>
-<td>批量拉消息，一次最多拉多少条</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>PullConsumer配置</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>参数名</th>
-<th>默认值</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>consumerGroup</td>
-<td>无</td>
-<td>Conusmer组名，多个Consumer如果属于一个应用，订阅同样的消息，且消费逻辑一致，则应该将它们归为同一组</td>
-</tr>
-<tr>
-<td>brokerSuspendMaxTimeMillis</td>
-<td>20000</td>
-<td>长轮询，Consumer拉消息请求在Broker挂起最长时间，单位毫秒</td>
-</tr>
-<tr>
-<td>consumerPullTimeoutMillis</td>
-<td>10000</td>
-<td>非长轮询，拉消息超时时间，单位毫秒</td>
-</tr>
-<tr>
-<td>consumerTimeoutMillisWhenSuspend</td>
-<td>30000</td>
-<td>长轮询，Consumer拉消息请求咋broker挂起超过指定时间，客户端认为超时，单位毫秒</td>
-</tr>
-<tr>
-<td>messageModel</td>
-<td>BROADCASTING</td>
-<td>消息模型，支持以下两种：1集群消费 2广播模式</td>
-</tr>
-<tr>
-<td>messageQueueListener</td>
-<td>无</td>
-<td>监听队列变化</td>
-</tr>
-<tr>
-<td>offsetStore</td>
-<td>无</td>
-<td>消费进度存储</td>
-</tr>
-<tr>
-<td>registerTopics</td>
-<td>无</td>
-<td>注册的topic集合</td>
-</tr>
-<tr>
-<td>allocateMessageQueueStrategy</td>
-<td>无</td>
-<td>Rebalance算法实现策略</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>Broker配置参数<br>查看Broker默认配置</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sh mqbroker -m</span><br></pre></td></tr></table></figure>
-<table>
-<thead>
-<tr>
-<th>参数名</th>
-<th>默认值</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>consumerGroup</td>
-<td>无</td>
-<td>Conusmer组名，多个Consumer如果属于一个应用，订阅同样的消息，且消费逻辑一致，则应该将它们归为同一组</td>
-</tr>
-<tr>
-<td>listenPort</td>
-<td>10911</td>
-<td>Broker对外服务的监听端口</td>
-</tr>
-<tr>
-<td>namesrvAddr</td>
-<td>Null</td>
-<td>Name Server地址</td>
-</tr>
-<tr>
-<td>brokerIP1</td>
-<td>本机IP</td>
-<td>本机IP地址，默认系统自动识别，但是某些多网卡机器会存在识别错误的情况，这种情况下可以人工配置。</td>
-</tr>
-<tr>
-<td>brokerName</td>
-<td>本机主机名</td>
-<td>无</td>
-</tr>
-<tr>
-<td>brokerClusterName</td>
-<td>DefaultCluster</td>
-<td>Broker所属哪个集群</td>
-</tr>
-<tr>
-<td>brokerId</td>
-<td>0</td>
-<td>BrokerId,必须是大等于0的整数，0表示Master，&gt;0表示Slave，一个Master可以挂多个Slave，Master和Slave通过BrokerName来配对</td>
-</tr>
-<tr>
-<td>storePathCommitLog</td>
-<td>$HOME/store/commitlog</td>
-<td>commitLog存储路径</td>
-</tr>
-<tr>
-<td>storePathConsumeQueue</td>
-<td>$HOME/store/consumequeue</td>
-<td>消费队列存储路径</td>
-</tr>
-<tr>
-<td>storePathIndex</td>
-<td>$HOME/store/index</td>
-<td>消息索引存储队列</td>
-</tr>
-<tr>
-<td>deleteWhen</td>
-<td>4</td>
-<td>删除时间时间点，默认凌晨4点</td>
-</tr>
-<tr>
-<td>fileReservedTime</td>
-<td>48</td>
-<td>文件保留时间，默认48小时</td>
-</tr>
-<tr>
-<td>maxTransferBytesOnMessageInMemory</td>
-<td>262144</td>
-<td>单次pull消息（内存）传输的最大字节数</td>
-</tr>
-<tr>
-<td>maxTransferCountOnMessageInMemory</td>
-<td>32</td>
-<td>单次pull消息（内存）传输的最大条数</td>
-</tr>
-<tr>
-<td>maxTransferBytesOnMessageInDisk</td>
-<td>65535</td>
-<td>单次pull消息（磁盘）传输的最大字节数</td>
-</tr>
-<tr>
-<td>maxTransferCountOnMessageInDisk</td>
-<td>8</td>
-<td>单次pull消息（磁盘）传输的最大条数</td>
-</tr>
-<tr>
-<td>messageIndexEnable</td>
-<td>TRUE</td>
-<td>是否开启消息索引功能</td>
-</tr>
-<tr>
-<td>messageIndexSafe</td>
-<td>FALSE</td>
-<td>是否提供安全的消息索引机制，索引保证不丢</td>
-</tr>
-<tr>
-<td>brokerRole</td>
-<td>ASYNC_MASTER</td>
-<td>Broker的角色 -ASYNC_MASTER异步复制Master -SYNC_MASTER同步双写Master -SLAVE</td>
-</tr>
-<tr>
-<td>flushDiskType</td>
-<td>ASYNC_FLUSH</td>
-<td>刷盘方式 -ASYNC_FLUSH异步刷盘 -SYNC_FLUSH同步刷盘</td>
-</tr>
-<tr>
-<td>cleanFileForciblyEnable</td>
-<td>TRUE</td>
-<td>磁盘满，且无过期文件情况下TRUE表示强制删除文件，优先保证服务可用 FALSE标记服务不可用，文件不删除</td>
-</tr>
-</tbody>
-</table>
-<hr>
-<p><em>转自:<a href="https://www.cnblogs.com/xiaodf/p/5075167.html" target="_blank" rel="external">https://www.cnblogs.com/xiaodf/p/5075167.html</a></em></p>
-<p><em>观点仅代表自己，期待你的留言。</em></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/转载/">转载</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -1424,7 +1039,7 @@ var _hmt = _hmt || [];
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2018 建均笔记
+    		&copy; 2019 建均笔记
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
