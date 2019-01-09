@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.wujianjun.org/"/>
-  <updated>2019-01-07T10:04:06.610Z</updated>
+  <updated>2019-01-09T09:55:31.874Z</updated>
   <id>http://www.wujianjun.org/</id>
   
   <author>
@@ -14,6 +14,92 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>软件测试点汇总</title>
+    <link href="http://www.wujianjun.org/2019/01/08/software-test-point/"/>
+    <id>http://www.wujianjun.org/2019/01/08/software-test-point/</id>
+    <published>2019-01-08T09:06:36.000Z</published>
+    <updated>2019-01-09T09:55:31.874Z</updated>
+    
+    <content type="html">&lt;h2 id=&quot;功能性测试&quot;&gt;&lt;a href=&quot;#功能性测试&quot; class=&quot;headerlink&quot; title=&quot;功能性测试&quot;&gt;&lt;/a&gt;功能性测试&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;需求功能完成度测试（业务逻辑、功能点等）&lt;/li&gt;
+&lt;li&gt;值类型测试&lt;/li&gt;
+&lt;li&gt;值乱码测试（特殊字符、表情符等）&lt;/li&gt;
+&lt;li&gt;值边界测试&lt;/li&gt;
+&lt;li&gt;关联功能测试&lt;/li&gt;
+&lt;li&gt;请求重复提交/请求中断测试（快速重复提交请求、发起请求后dismiss功能界面等）&lt;/li&gt;
+&lt;li&gt;运行速度测试（app启动、页面切换等）&lt;/li&gt;
+&lt;li&gt;程序异常测试&lt;/li&gt;
+&lt;li&gt;场景回滚测试&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&quot;兼容性测试&quot;&gt;&lt;a href=&quot;#兼容性测试&quot; class=&quot;headerlink&quot; title=&quot;兼容性测试&quot;&gt;&lt;/a&gt;兼容性测试&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;不同设备兼容性（分辨率、设备品牌、设备ROM版本、不同ROM厂家、不同尺寸等）&lt;/li&gt;
+&lt;li&gt;不同app版本兼容性&lt;/li&gt;
+&lt;li&gt;网络兼容性（移动网络、不同运营商网络、WIFI、弱网、断网等）&lt;/li&gt;
+&lt;li&gt;第三方软件兼容性（输入法软件、蓝牙软件等）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&quot;升级测试&quot;&gt;&lt;a href=&quot;#升级测试&quot; class=&quot;headerlink&quot; title=&quot;升级测试&quot;&gt;&lt;/a&gt;升级测试&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;全新安装/卸载测试（apk安装/卸载、应用市场软件内安装/卸载等）&lt;/li&gt;
+&lt;li&gt;增量/全量升级测试（数字签名测试、跨版本升级等）&lt;/li&gt;
+&lt;li&gt;系统资源不足时测试（低电量、断电、硬盘空间不足、内存不足等）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&quot;接口测试&quot;&gt;&lt;a href=&quot;#接口测试&quot; class=&quot;headerlink&quot; title=&quot;接口测试&quot;&gt;&lt;/a&gt;接口测试&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;数据正确性测试（按接口文档和数据库存储的数据进行计算后验证）&lt;/li&gt;
+&lt;li&gt;网络连通性（DNS异常、client断网、server端超时、server端异常、client签名证书异常等）&lt;/li&gt;
+&lt;li&gt;数据流量测试（是否有超大数据包传递等）&lt;/li&gt;
+&lt;li&gt;数据安全性（数据传输是否加密或混淆等）&lt;/li&gt;
+&lt;li&gt;调用方安全性（接口调用方是否鉴权、是否被模拟回调等）&lt;/li&gt;
+&lt;li&gt;系统时间篡改对功能的影响&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&quot;UI测试&quot;&gt;&lt;a href=&quot;#UI测试&quot; class=&quot;headerlink&quot; title=&quot;UI测试&quot;&gt;&lt;/a&gt;UI测试&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;界面测试（UI布局、界面颜色、风格统一性、字体大小、提示文案位置、界面返回路径等）&lt;/li&gt;
+&lt;li&gt;内容测试（文案内容、错别字、版权、专利、隐私内容、敏感词、敏感图片等）&lt;/li&gt;
+&lt;li&gt;横竖屏切换、前后台切换等&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&quot;交互测试&quot;&gt;&lt;a href=&quot;#交互测试&quot; class=&quot;headerlink&quot; title=&quot;交互测试&quot;&gt;&lt;/a&gt;交互测试&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;app中断测试（来电话、来短信、低电量、待机、插拔数据线、插拔耳机、断网、闹钟，日历提醒，蓝牙提醒等）&lt;/li&gt;
+&lt;li&gt;多个app争夺系统资源时对app的影响（声道播放、相机等）&lt;/li&gt;
+&lt;li&gt;用户打扰测试（push通知是否在免打扰时段内通知、push通知关闭状态下是否依然通知等）&lt;/li&gt;
+&lt;li&gt;长时间使用、长时间后台等&lt;/li&gt;
+&lt;li&gt;手势测试（单指滑动，单指单击，单指双击，单指长按，单指缩放，多指点击等）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&quot;缓存量测试&quot;&gt;&lt;a href=&quot;#缓存量测试&quot; class=&quot;headerlink&quot; title=&quot;缓存量测试&quot;&gt;&lt;/a&gt;缓存量测试&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;第一次使用时存入缓存大量数据对app的影响&lt;/li&gt;
+&lt;li&gt;日常使用时更新缓存大量数据对app的影响&lt;/li&gt;
+&lt;li&gt;重新安装保存原缓存的大量缓存数据更新对app的影响&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&quot;安全性测试&quot;&gt;&lt;a href=&quot;#安全性测试&quot; class=&quot;headerlink&quot; title=&quot;安全性测试&quot;&gt;&lt;/a&gt;安全性测试&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;数据安全（是否加密传输、关键数据是否容易被篡改等）&lt;/li&gt;
+&lt;li&gt;证书安全（SSL证书、SSL密钥等）&lt;/li&gt;
+&lt;li&gt;临时目录数据、缓存数据是否安全存储不被恶意读取&lt;/li&gt;
+&lt;li&gt;软件权限安全性（扣费风险、隐私泄露风险、非法授权访问等）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&quot;性能测试（测试工具：LR、NeoLoad、ApacheBench、jmeter、http-load等）&quot;&gt;&lt;a href=&quot;#性能测试（测试工具：LR、NeoLoad、ApacheBench、jmeter、http-load等）&quot; class=&quot;headerlink&quot; title=&quot;性能测试（测试工具：LR、NeoLoad、ApacheBench、jmeter、http_load等）&quot;&gt;&lt;/a&gt;性能测试（测试工具：LR、NeoLoad、ApacheBench、jmeter、http_load等）&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;极限测试（在各种边界压力情况下，如电池、存储、网速等，验证App是否能正确响应）&lt;/li&gt;
+&lt;li&gt;响应能力测试（测试各功能的响应时间要求）&lt;/li&gt;
+&lt;li&gt;压力测试（反复/长期操作下、系统资源是否占用正常）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&quot;自动化测试（工具：Selenium、Appium、Watir、Katalon-Studio、Monkey-Test等）&quot;&gt;&lt;a href=&quot;#自动化测试（工具：Selenium、Appium、Watir、Katalon-Studio、Monkey-Test等）&quot; class=&quot;headerlink&quot; title=&quot;自动化测试（工具：Selenium、Appium、Watir、Katalon Studio、Monkey Test等）&quot;&gt;&lt;/a&gt;自动化测试（工具：Selenium、Appium、Watir、Katalon Studio、Monkey Test等）&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;通过编写语言脚本对功能或接口进行自动化调用，减少人力测试成本。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;观点仅代表自己，期待你的留言。&lt;/em&gt;&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;功能性测试&quot;&gt;&lt;a href=&quot;#功能性测试&quot; class=&quot;headerlink&quot; title=&quot;功能性测试&quot;&gt;&lt;/a&gt;功能性测试&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;需求功能完成度测试（业务逻辑、功能点等）&lt;/li&gt;
+&lt;li&gt;值类型测试&lt;/li&gt;
+&lt;li&gt;值乱码测试（特
+    
+    </summary>
+    
+    
+      <category term="原创" scheme="http://www.wujianjun.org/tags/%E5%8E%9F%E5%88%9B/"/>
+    
+  </entry>
   
   <entry>
     <title>SpringBoot（一）</title>
@@ -1392,37 +1478,6 @@
     
     
       <category term="原创" scheme="http://www.wujianjun.org/tags/%E5%8E%9F%E5%88%9B/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>问题分析 之 no transaction is in progress</title>
-    <link href="http://www.wujianjun.org/2017/07/21/no-transaction/"/>
-    <id>http://www.wujianjun.org/2017/07/21/no-transaction/</id>
-    <published>2017-07-21T09:55:05.000Z</published>
-    <updated>2018-12-17T09:59:52.579Z</updated>
-    
-    <content type="html">&lt;h2 id=&quot;问题现象&quot;&gt;&lt;a href=&quot;#问题现象&quot; class=&quot;headerlink&quot; title=&quot;问题现象&quot;&gt;&lt;/a&gt;问题现象&lt;/h2&gt;&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;javax.persistence.TransactionRequiredException: no transaction is in progress&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	at org.hibernate.ejb.AbstractEntityManagerImpl.flush(AbstractEntityManagerImpl.java:&lt;span class=&quot;number&quot;&gt;301&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:&lt;span class=&quot;number&quot;&gt;39&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:&lt;span class=&quot;number&quot;&gt;25&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	at java.lang.reflect.Method.invoke(Method.java:&lt;span class=&quot;number&quot;&gt;597&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	at org.springframework.orm.jpa.ExtendedEntityManagerCreator$ExtendedEntityManagerInvocationHandler.invoke(ExtendedEntityManagerCreator.java:&lt;span class=&quot;number&quot;&gt;365&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	at $Proxy34.flush(Unknown Source)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:&lt;span class=&quot;number&quot;&gt;39&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:&lt;span class=&quot;number&quot;&gt;25&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	at java.lang.reflect.Method.invoke(Method.java:&lt;span class=&quot;number&quot;&gt;597&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	at org.springframework.orm.jpa.SharedEntityManagerCreator$SharedEntityManagerInvocationHandler.invoke(SharedEntityManagerCreator.java:&lt;span class=&quot;number&quot;&gt;240&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	at $Proxy34.flush(Unknown Source)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  ... &lt;span class=&quot;number&quot;&gt;53&lt;/span&gt; more&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;h2 id=&quot;示例代码-Proxy&quot;&gt;&lt;a href=&quot;#示例代码-Proxy&quot; class=&quot;headerlink&quot; title=&quot;示例代码 - Proxy&quot;&gt;&lt;/a&gt;示例代码 - Proxy&lt;/h2&gt;&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;classA&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; doA &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.doB();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;meta&quot;&gt;@Transaction&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; doB&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;// do save or update&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;&lt;strong&gt;问题分析：&lt;/strong&gt;&lt;br&gt;如上代码段，由于doB为对象内方法，而Spring事务的开启依赖到AOP（Proxy），在doA方法调用doB方法时，&lt;br&gt;由于是对象内的方法调用，造成doB方法的@Transaction不会被Proxy对象代理，进而造成Transaction失效。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;解决方法：&lt;/strong&gt;&lt;br&gt;&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;ClassA&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; ClassB classB;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;doA&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    classB.doB();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;ClassB&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;meta&quot;&gt;@Transaction&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;doB&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;// do save or update&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;将需要事务的方法doB通过Proxy进行代理，doA在使用时则是通过Spring开启事务的代理进行的调用。&lt;/p&gt;
-&lt;hr&gt;
-&lt;p&gt;&lt;em&gt;观点仅代表自己，期待你的留言。&lt;/em&gt;&lt;/p&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;问题现象&quot;&gt;&lt;a href=&quot;#问题现象&quot; class=&quot;headerlink&quot; title=&quot;问题现象&quot;&gt;&lt;/a&gt;问题现象&lt;/h2&gt;&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre
-    
-    </summary>
-    
-    
-      <category term="原创" scheme="http://www.wujianjun.org/tags/%E5%8E%9F%E5%88%9B/"/>
-    
-      <category term="spring" scheme="http://www.wujianjun.org/tags/spring/"/>
-    
-      <category term="transaction" scheme="http://www.wujianjun.org/tags/transaction/"/>
     
   </entry>
   

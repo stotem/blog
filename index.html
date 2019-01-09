@@ -226,6 +226,132 @@ var _hmt = _hmt || [];
 
       <div class="body-wrap">
   
+    <article id="post-software-test-point" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2019/01/08/software-test-point/" class="article-date">
+  	<time datetime="2019-01-08T09:06:36.000Z" itemprop="datePublished">2019-01-08</time>
+</a>
+      <div class="analysis-container">
+	<i class="fa fa-line-chart"></i>
+	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
+</div>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/01/08/software-test-point/">软件测试点汇总</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+              
+        <h2 id="功能性测试"><a href="#功能性测试" class="headerlink" title="功能性测试"></a>功能性测试</h2><ol>
+<li>需求功能完成度测试（业务逻辑、功能点等）</li>
+<li>值类型测试</li>
+<li>值乱码测试（特殊字符、表情符等）</li>
+<li>值边界测试</li>
+<li>关联功能测试</li>
+<li>请求重复提交/请求中断测试（快速重复提交请求、发起请求后dismiss功能界面等）</li>
+<li>运行速度测试（app启动、页面切换等）</li>
+<li>程序异常测试</li>
+<li>场景回滚测试</li>
+</ol>
+<h2 id="兼容性测试"><a href="#兼容性测试" class="headerlink" title="兼容性测试"></a>兼容性测试</h2><ol>
+<li>不同设备兼容性（分辨率、设备品牌、设备ROM版本、不同ROM厂家、不同尺寸等）</li>
+<li>不同app版本兼容性</li>
+<li>网络兼容性（移动网络、不同运营商网络、WIFI、弱网、断网等）</li>
+<li>第三方软件兼容性（输入法软件、蓝牙软件等）</li>
+</ol>
+<h2 id="升级测试"><a href="#升级测试" class="headerlink" title="升级测试"></a>升级测试</h2><ol>
+<li>全新安装/卸载测试（apk安装/卸载、应用市场软件内安装/卸载等）</li>
+<li>增量/全量升级测试（数字签名测试、跨版本升级等）</li>
+<li>系统资源不足时测试（低电量、断电、硬盘空间不足、内存不足等）</li>
+</ol>
+<h2 id="接口测试"><a href="#接口测试" class="headerlink" title="接口测试"></a>接口测试</h2><ol>
+<li>数据正确性测试（按接口文档和数据库存储的数据进行计算后验证）</li>
+<li>网络连通性（DNS异常、client断网、server端超时、server端异常、client签名证书异常等）</li>
+<li>数据流量测试（是否有超大数据包传递等）</li>
+<li>数据安全性（数据传输是否加密或混淆等）</li>
+<li>调用方安全性（接口调用方是否鉴权、是否被模拟回调等）</li>
+<li>系统时间篡改对功能的影响</li>
+</ol>
+<h2 id="UI测试"><a href="#UI测试" class="headerlink" title="UI测试"></a>UI测试</h2><ol>
+<li>界面测试（UI布局、界面颜色、风格统一性、字体大小、提示文案位置、界面返回路径等）</li>
+<li>内容测试（文案内容、错别字、版权、专利、隐私内容、敏感词、敏感图片等）</li>
+<li>横竖屏切换、前后台切换等</li>
+</ol>
+<h2 id="交互测试"><a href="#交互测试" class="headerlink" title="交互测试"></a>交互测试</h2><ol>
+<li>app中断测试（来电话、来短信、低电量、待机、插拔数据线、插拔耳机、断网、闹钟，日历提醒，蓝牙提醒等）</li>
+<li>多个app争夺系统资源时对app的影响（声道播放、相机等）</li>
+<li>用户打扰测试（push通知是否在免打扰时段内通知、push通知关闭状态下是否依然通知等）</li>
+<li>长时间使用、长时间后台等</li>
+<li>手势测试（单指滑动，单指单击，单指双击，单指长按，单指缩放，多指点击等）</li>
+</ol>
+<h2 id="缓存量测试"><a href="#缓存量测试" class="headerlink" title="缓存量测试"></a>缓存量测试</h2><ol>
+<li>第一次使用时存入缓存大量数据对app的影响</li>
+<li>日常使用时更新缓存大量数据对app的影响</li>
+<li>重新安装保存原缓存的大量缓存数据更新对app的影响</li>
+</ol>
+<h2 id="安全性测试"><a href="#安全性测试" class="headerlink" title="安全性测试"></a>安全性测试</h2><ol>
+<li>数据安全（是否加密传输、关键数据是否容易被篡改等）</li>
+<li>证书安全（SSL证书、SSL密钥等）</li>
+<li>临时目录数据、缓存数据是否安全存储不被恶意读取</li>
+<li>软件权限安全性（扣费风险、隐私泄露风险、非法授权访问等）</li>
+</ol>
+<h2 id="性能测试（测试工具：LR、NeoLoad、ApacheBench、jmeter、http-load等）"><a href="#性能测试（测试工具：LR、NeoLoad、ApacheBench、jmeter、http-load等）" class="headerlink" title="性能测试（测试工具：LR、NeoLoad、ApacheBench、jmeter、http_load等）"></a>性能测试（测试工具：LR、NeoLoad、ApacheBench、jmeter、http_load等）</h2><ol>
+<li>极限测试（在各种边界压力情况下，如电池、存储、网速等，验证App是否能正确响应）</li>
+<li>响应能力测试（测试各功能的响应时间要求）</li>
+<li>压力测试（反复/长期操作下、系统资源是否占用正常）</li>
+</ol>
+<h2 id="自动化测试（工具：Selenium、Appium、Watir、Katalon-Studio、Monkey-Test等）"><a href="#自动化测试（工具：Selenium、Appium、Watir、Katalon-Studio、Monkey-Test等）" class="headerlink" title="自动化测试（工具：Selenium、Appium、Watir、Katalon Studio、Monkey Test等）"></a>自动化测试（工具：Selenium、Appium、Watir、Katalon Studio、Monkey Test等）</h2><ol>
+<li>通过编写语言脚本对功能或接口进行自动化调用，减少人力测试成本。</li>
+</ol>
+<hr>
+<p><em>观点仅代表自己，期待你的留言。</em></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+
+
+  
     <article id="post-springboot-step1" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -928,84 +1054,6 @@ var _hmt = _hmt || [];
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rocketmq/">rocketmq</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-java-script-engine" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2018/07/18/java-script-engine/" class="article-date">
-  	<time datetime="2018-07-18T08:45:12.000Z" itemprop="datePublished">2018-07-18</time>
-</a>
-      <div class="analysis-container">
-	<i class="fa fa-line-chart"></i>
-	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
-</div>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/07/18/java-script-engine/">Java Script Engine</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-              
-        <h2 id="Java-Script-Engine"><a href="#Java-Script-Engine" class="headerlink" title="Java Script Engine"></a>Java Script Engine</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] agrs)</span> <span class="keyword">throws</span> ScriptException </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> ScriptEngine javascriptEngine = <span class="keyword">new</span> ScriptEngineManager().getEngineByName(<span class="string">"javascript"</span>);</span><br><span class="line">    <span class="keyword">final</span> Bindings globalBindings = javascriptEngine.getBindings(ScriptContext.GLOBAL_SCOPE);</span><br><span class="line">    globalBindings.put(<span class="string">"a"</span>, <span class="number">5</span>);</span><br><span class="line">    System.out.println(<span class="string">"-------Engine bindings scope--------------"</span>);</span><br><span class="line">    <span class="keyword">final</span> Bindings javascriptEngineBindings = javascriptEngine.getBindings(ScriptContext.ENGINE_SCOPE);</span><br><span class="line">    javascriptEngineBindings.put(<span class="string">"x"</span>, <span class="number">20</span>);</span><br><span class="line">    javascriptEngineBindings.put(<span class="string">"y"</span>, <span class="number">20.4</span>);</span><br><span class="line">    javascriptEngineBindings.put(<span class="string">"z"</span>, <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">final</span> String[] scriptArray = &#123;<span class="string">"x*y+z"</span>, <span class="string">"x*(y+z)"</span>, <span class="string">"a+x*(y+z)"</span>&#125;;</span><br><span class="line">    eval(scriptArray, javascriptEngine);</span><br><span class="line"></span><br><span class="line">    System.out.println(<span class="string">"-------Local bindings scope--------------"</span>);</span><br><span class="line">    <span class="keyword">final</span> Bindings localBinding = javascriptEngine.createBindings();</span><br><span class="line">    localBinding.put(<span class="string">"x"</span>, <span class="number">2</span>);</span><br><span class="line">    localBinding.put(<span class="string">"y"</span>, <span class="number">3</span>);</span><br><span class="line">    localBinding.put(<span class="string">"z"</span>, <span class="number">1</span>);</span><br><span class="line">    eval(scriptArray, javascriptEngine, localBinding);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">eval</span><span class="params">(String[] scriptArray, ScriptEngine javascriptEngine)</span> <span class="keyword">throws</span> ScriptException </span>&#123;</span><br><span class="line">    Bindings aBindings = javascriptEngine.getBindings(ScriptContext.GLOBAL_SCOPE);</span><br><span class="line">    <span class="keyword">for</span> (String key : aBindings.keySet()) &#123;</span><br><span class="line">        System.out.println(<span class="string">"Args (Global bindings scope) &gt; "</span> + key + <span class="string">"="</span> + aBindings.get(key));</span><br><span class="line">    &#125;</span><br><span class="line">    aBindings = javascriptEngine.getBindings(ScriptContext.ENGINE_SCOPE);</span><br><span class="line">    <span class="keyword">for</span> (String key : aBindings.keySet()) &#123;</span><br><span class="line">        System.out.println(<span class="string">"Args (Engine bindings scope) &gt; "</span> + key + <span class="string">"="</span> + aBindings.get(key));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (String script : scriptArray) &#123;</span><br><span class="line">        System.out.println(<span class="string">"script &gt; "</span> + script + <span class="string">" = "</span> + javascriptEngine.eval(script));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">eval</span><span class="params">(String[] scriptArray, ScriptEngine javascriptEngine, Bindings localBinding)</span> <span class="keyword">throws</span> ScriptException </span>&#123;</span><br><span class="line">    Bindings aBindings = javascriptEngine.getBindings(ScriptContext.GLOBAL_SCOPE);</span><br><span class="line">    <span class="keyword">for</span> (String key : aBindings.keySet()) &#123;</span><br><span class="line">        System.out.println(<span class="string">"Args (Global bindings scope) &gt; "</span> + key + <span class="string">"="</span> + aBindings.get(key));</span><br><span class="line">    &#125;</span><br><span class="line">    aBindings = javascriptEngine.getBindings(ScriptContext.ENGINE_SCOPE);</span><br><span class="line">    <span class="keyword">for</span> (String key : aBindings.keySet()) &#123;</span><br><span class="line">        System.out.println(<span class="string">"Args (Engine bindings scope) &gt; "</span> + key + <span class="string">"="</span> + aBindings.get(key));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (String s : localBinding.keySet()) &#123;</span><br><span class="line">        System.out.println(<span class="string">"Args (Local bindings scope) &gt; "</span> + s + <span class="string">"="</span> + aBindings.get(s));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (String script : scriptArray) &#123;</span><br><span class="line">        System.out.println(<span class="string">"script &gt; "</span> + script + <span class="string">" = "</span> + javascriptEngine.eval(script, localBinding));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>输出结果：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">-------Engine bindings scope--------------</span><br><span class="line">Args (Global bindings scope) &gt; a=5</span><br><span class="line">Args (Engine bindings scope) &gt; z=1</span><br><span class="line">Args (Engine bindings scope) &gt; y=20.4</span><br><span class="line">Args (Engine bindings scope) &gt; x=20</span><br><span class="line">script &gt; x*y+z = 409.0</span><br><span class="line">script &gt; x*(y+z) = 428.0</span><br><span class="line">script &gt; a+x*(y+z) = 433.0</span><br><span class="line">-------Local bindings scope--------------</span><br><span class="line">Args (Global bindings scope) &gt; a=5</span><br><span class="line">Args (Engine bindings scope) &gt; println=sun.org.mozilla.javascript.internal.InterpretedFunction@45a23f67</span><br><span class="line">Args (Engine bindings scope) &gt; context=javax.script.SimpleScriptContext@1ef0a6e8</span><br><span class="line">Args (Engine bindings scope) &gt; z=1</span><br><span class="line">Args (Engine bindings scope) &gt; print=sun.org.mozilla.javascript.internal.InterpretedFunction@495dd936</span><br><span class="line">Args (Engine bindings scope) &gt; y=20.4</span><br><span class="line">Args (Engine bindings scope) &gt; x=20</span><br><span class="line">Args (Local bindings scope) &gt; z=1</span><br><span class="line">Args (Local bindings scope) &gt; y=20.4</span><br><span class="line">Args (Local bindings scope) &gt; x=20</span><br><span class="line">script &gt; x*y+z = 7.0</span><br><span class="line">script &gt; x*(y+z) = 8.0</span><br><span class="line">script &gt; a+x*(y+z) = 13.0</span><br><span class="line"></span><br><span class="line">Process finished with exit code 0</span><br></pre></td></tr></table></figure></p>
-<p><strong>Bindings变量的有效范围</strong></p>
-<ol>
-<li>Global对应到ScriptEngineFactory，通过<code>scriptEngine.getBindings(ScriptContext.GLOBAL_SCOPE)</code>获得。</li>
-<li>Engine对应到ScriptEngine，通过<code>scriptEngine.getBindings(ScriptContext.ENGINE_SCOPE)</code>获得。</li>
-<li>Local Binding每一次执行script，通过<code>scriptEngine.createBindings()</code>获得。</li>
-</ol>
-<p><strong>使用场景适用于</strong></p>
-<ol>
-<li>规则引擎</li>
-<li>流程流转条件判定</li>
-</ol>
-<hr>
-<p><em>观点仅代表自己，期待你的留言。</em></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li></ul>
 	</div>
 
       

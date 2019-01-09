@@ -226,6 +226,84 @@ var _hmt = _hmt || [];
 
       <div class="body-wrap">
   
+    <article id="post-java-script-engine" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/07/18/java-script-engine/" class="article-date">
+  	<time datetime="2018-07-18T08:45:12.000Z" itemprop="datePublished">2018-07-18</time>
+</a>
+      <div class="analysis-container">
+	<i class="fa fa-line-chart"></i>
+	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
+</div>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/07/18/java-script-engine/">Java Script Engine</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+              
+        <h2 id="Java-Script-Engine"><a href="#Java-Script-Engine" class="headerlink" title="Java Script Engine"></a>Java Script Engine</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] agrs)</span> <span class="keyword">throws</span> ScriptException </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> ScriptEngine javascriptEngine = <span class="keyword">new</span> ScriptEngineManager().getEngineByName(<span class="string">"javascript"</span>);</span><br><span class="line">    <span class="keyword">final</span> Bindings globalBindings = javascriptEngine.getBindings(ScriptContext.GLOBAL_SCOPE);</span><br><span class="line">    globalBindings.put(<span class="string">"a"</span>, <span class="number">5</span>);</span><br><span class="line">    System.out.println(<span class="string">"-------Engine bindings scope--------------"</span>);</span><br><span class="line">    <span class="keyword">final</span> Bindings javascriptEngineBindings = javascriptEngine.getBindings(ScriptContext.ENGINE_SCOPE);</span><br><span class="line">    javascriptEngineBindings.put(<span class="string">"x"</span>, <span class="number">20</span>);</span><br><span class="line">    javascriptEngineBindings.put(<span class="string">"y"</span>, <span class="number">20.4</span>);</span><br><span class="line">    javascriptEngineBindings.put(<span class="string">"z"</span>, <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">final</span> String[] scriptArray = &#123;<span class="string">"x*y+z"</span>, <span class="string">"x*(y+z)"</span>, <span class="string">"a+x*(y+z)"</span>&#125;;</span><br><span class="line">    eval(scriptArray, javascriptEngine);</span><br><span class="line"></span><br><span class="line">    System.out.println(<span class="string">"-------Local bindings scope--------------"</span>);</span><br><span class="line">    <span class="keyword">final</span> Bindings localBinding = javascriptEngine.createBindings();</span><br><span class="line">    localBinding.put(<span class="string">"x"</span>, <span class="number">2</span>);</span><br><span class="line">    localBinding.put(<span class="string">"y"</span>, <span class="number">3</span>);</span><br><span class="line">    localBinding.put(<span class="string">"z"</span>, <span class="number">1</span>);</span><br><span class="line">    eval(scriptArray, javascriptEngine, localBinding);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">eval</span><span class="params">(String[] scriptArray, ScriptEngine javascriptEngine)</span> <span class="keyword">throws</span> ScriptException </span>&#123;</span><br><span class="line">    Bindings aBindings = javascriptEngine.getBindings(ScriptContext.GLOBAL_SCOPE);</span><br><span class="line">    <span class="keyword">for</span> (String key : aBindings.keySet()) &#123;</span><br><span class="line">        System.out.println(<span class="string">"Args (Global bindings scope) &gt; "</span> + key + <span class="string">"="</span> + aBindings.get(key));</span><br><span class="line">    &#125;</span><br><span class="line">    aBindings = javascriptEngine.getBindings(ScriptContext.ENGINE_SCOPE);</span><br><span class="line">    <span class="keyword">for</span> (String key : aBindings.keySet()) &#123;</span><br><span class="line">        System.out.println(<span class="string">"Args (Engine bindings scope) &gt; "</span> + key + <span class="string">"="</span> + aBindings.get(key));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (String script : scriptArray) &#123;</span><br><span class="line">        System.out.println(<span class="string">"script &gt; "</span> + script + <span class="string">" = "</span> + javascriptEngine.eval(script));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">eval</span><span class="params">(String[] scriptArray, ScriptEngine javascriptEngine, Bindings localBinding)</span> <span class="keyword">throws</span> ScriptException </span>&#123;</span><br><span class="line">    Bindings aBindings = javascriptEngine.getBindings(ScriptContext.GLOBAL_SCOPE);</span><br><span class="line">    <span class="keyword">for</span> (String key : aBindings.keySet()) &#123;</span><br><span class="line">        System.out.println(<span class="string">"Args (Global bindings scope) &gt; "</span> + key + <span class="string">"="</span> + aBindings.get(key));</span><br><span class="line">    &#125;</span><br><span class="line">    aBindings = javascriptEngine.getBindings(ScriptContext.ENGINE_SCOPE);</span><br><span class="line">    <span class="keyword">for</span> (String key : aBindings.keySet()) &#123;</span><br><span class="line">        System.out.println(<span class="string">"Args (Engine bindings scope) &gt; "</span> + key + <span class="string">"="</span> + aBindings.get(key));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (String s : localBinding.keySet()) &#123;</span><br><span class="line">        System.out.println(<span class="string">"Args (Local bindings scope) &gt; "</span> + s + <span class="string">"="</span> + aBindings.get(s));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (String script : scriptArray) &#123;</span><br><span class="line">        System.out.println(<span class="string">"script &gt; "</span> + script + <span class="string">" = "</span> + javascriptEngine.eval(script, localBinding));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出结果：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">-------Engine bindings scope--------------</span><br><span class="line">Args (Global bindings scope) &gt; a=5</span><br><span class="line">Args (Engine bindings scope) &gt; z=1</span><br><span class="line">Args (Engine bindings scope) &gt; y=20.4</span><br><span class="line">Args (Engine bindings scope) &gt; x=20</span><br><span class="line">script &gt; x*y+z = 409.0</span><br><span class="line">script &gt; x*(y+z) = 428.0</span><br><span class="line">script &gt; a+x*(y+z) = 433.0</span><br><span class="line">-------Local bindings scope--------------</span><br><span class="line">Args (Global bindings scope) &gt; a=5</span><br><span class="line">Args (Engine bindings scope) &gt; println=sun.org.mozilla.javascript.internal.InterpretedFunction@45a23f67</span><br><span class="line">Args (Engine bindings scope) &gt; context=javax.script.SimpleScriptContext@1ef0a6e8</span><br><span class="line">Args (Engine bindings scope) &gt; z=1</span><br><span class="line">Args (Engine bindings scope) &gt; print=sun.org.mozilla.javascript.internal.InterpretedFunction@495dd936</span><br><span class="line">Args (Engine bindings scope) &gt; y=20.4</span><br><span class="line">Args (Engine bindings scope) &gt; x=20</span><br><span class="line">Args (Local bindings scope) &gt; z=1</span><br><span class="line">Args (Local bindings scope) &gt; y=20.4</span><br><span class="line">Args (Local bindings scope) &gt; x=20</span><br><span class="line">script &gt; x*y+z = 7.0</span><br><span class="line">script &gt; x*(y+z) = 8.0</span><br><span class="line">script &gt; a+x*(y+z) = 13.0</span><br><span class="line"></span><br><span class="line">Process finished with exit code 0</span><br></pre></td></tr></table></figure></p>
+<p><strong>Bindings变量的有效范围</strong></p>
+<ol>
+<li>Global对应到ScriptEngineFactory，通过<code>scriptEngine.getBindings(ScriptContext.GLOBAL_SCOPE)</code>获得。</li>
+<li>Engine对应到ScriptEngine，通过<code>scriptEngine.getBindings(ScriptContext.ENGINE_SCOPE)</code>获得。</li>
+<li>Local Binding每一次执行script，通过<code>scriptEngine.createBindings()</code>获得。</li>
+</ol>
+<p><strong>使用场景适用于</strong></p>
+<ol>
+<li>规则引擎</li>
+<li>流程流转条件判定</li>
+</ol>
+<hr>
+<p><em>观点仅代表自己，期待你的留言。</em></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+
+
+  
     <article id="post-redis-advanced" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -1569,76 +1647,6 @@ var _hmt = _hmt || [];
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-no-transaction" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/07/21/no-transaction/" class="article-date">
-  	<time datetime="2017-07-21T09:55:05.000Z" itemprop="datePublished">2017-07-21</time>
-</a>
-      <div class="analysis-container">
-	<i class="fa fa-line-chart"></i>
-	已阅读<span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span> 次
-</div>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/07/21/no-transaction/">问题分析 之 no transaction is in progress</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-              
-        <h2 id="问题现象"><a href="#问题现象" class="headerlink" title="问题现象"></a>问题现象</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">javax.persistence.TransactionRequiredException: no transaction is in progress</span><br><span class="line">	at org.hibernate.ejb.AbstractEntityManagerImpl.flush(AbstractEntityManagerImpl.java:<span class="number">301</span>)</span><br><span class="line">	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)</span><br><span class="line">	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:<span class="number">39</span>)</span><br><span class="line">	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:<span class="number">25</span>)</span><br><span class="line">	at java.lang.reflect.Method.invoke(Method.java:<span class="number">597</span>)</span><br><span class="line">	at org.springframework.orm.jpa.ExtendedEntityManagerCreator$ExtendedEntityManagerInvocationHandler.invoke(ExtendedEntityManagerCreator.java:<span class="number">365</span>)</span><br><span class="line">	at $Proxy34.flush(Unknown Source)</span><br><span class="line">	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)</span><br><span class="line">	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:<span class="number">39</span>)</span><br><span class="line">	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:<span class="number">25</span>)</span><br><span class="line">	at java.lang.reflect.Method.invoke(Method.java:<span class="number">597</span>)</span><br><span class="line">	at org.springframework.orm.jpa.SharedEntityManagerCreator$SharedEntityManagerInvocationHandler.invoke(SharedEntityManagerCreator.java:<span class="number">240</span>)</span><br><span class="line">	at $Proxy34.flush(Unknown Source)</span><br><span class="line">  ... <span class="number">53</span> more</span><br></pre></td></tr></table></figure>
-<h2 id="示例代码-Proxy"><a href="#示例代码-Proxy" class="headerlink" title="示例代码 - Proxy"></a>示例代码 - Proxy</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">classA</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> doA &#123;</span><br><span class="line">    <span class="keyword">this</span>.doB();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Transaction</span></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">void</span> doB&#123;</span><br><span class="line">    <span class="comment">// do save or update</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>问题分析：</strong><br>如上代码段，由于doB为对象内方法，而Spring事务的开启依赖到AOP（Proxy），在doA方法调用doB方法时，<br>由于是对象内的方法调用，造成doB方法的@Transaction不会被Proxy对象代理，进而造成Transaction失效。</p>
-<p><strong>解决方法：</strong><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ClassA</span> </span>&#123;</span><br><span class="line">  <span class="keyword">private</span> ClassB classB;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doA</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    classB.doB();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ClassB</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@Transaction</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doB</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// do save or update</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>将需要事务的方法doB通过Proxy进行代理，doA在使用时则是通过Spring开启事务的代理进行的调用。</p>
-<hr>
-<p><em>观点仅代表自己，期待你的留言。</em></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spring/">spring</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/transaction/">transaction</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/原创/">原创</a></li></ul>
 	</div>
 
       
