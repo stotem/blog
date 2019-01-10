@@ -97,8 +97,17 @@ public class A {
   private String name;
 }
 ```
+六. spring-boot-starter-actuator实现应用运行状态监控
+* 设置`management.endpoint.<id>.enabled=true/false`(id是endpoint的id)来完成一个endpoint的开启和关闭
+* 自定义检测指标：实现HealthIndicator接口或继承AbstractHealthIndicator类
+* 可通过Spring Security或Shiro来保障Actuator Endpoints的安全
+* 设置`management.endpoint.health.show-details=always`则可查看详细的应用健康信息
 
-六. 编译生成jar包程序（默认包类型）
+七、框架接口
+* CommandLineRunner、ApplicationRunner接口在容器启动成功后的Spring框架加载前回调（类似开机自启动），适合初始读取资源或加载通讯证书等
+
+## 打包
+一. 编译生成jar包程序（默认包类型）
 ```xml
 <packaging>jar</packaging>
 <build>
@@ -112,7 +121,7 @@ public class A {
 ```
 `输出:` 生成带tomcat-plugin的package.jar，通过java -jar package.jar运行。
 
-七. 编译生成war包程序
+二. 编译生成war包程序
 ```xml
 <!--1. 更改package类型-->
 <packaging>war</packaging>
@@ -144,6 +153,30 @@ public class ClientApplication extends SpringBootServletInitializer  {
 ```
 `输出:` 生成package.war，将war放入到tomcat或其它的支持java运行的服务器中运行。
 
+三. appassembler-maven-plugin生成跨平台启动脚本
+```xml
+<plugin>
+	<groupId>org.codehaus.mojo</groupId>
+	<artifactId>appassembler-maven-plugin</artifactId>
+</plugin>
+```
+执行 `mvn package appassembler:assemble`完成脚本的生成
+优点:
+* jar包分散容易管理
+* 编译发布代码速度快
+* 可配置jvm相关启动参数
+* 日志管理
+* shell启动，停止、重启方便
+
+四、docker-maven-plugin生成docker使用包
+__优点:__
+* 减少Dockerfile编写
+* 增强代码一致性
+* 编译部署方便
+* 快速运维。
+__缺点：__
+* 编译后包比较大
+* 无法替换局部jar文件
 
 -----
 
