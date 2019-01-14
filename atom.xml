@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.wujianjun.org/"/>
-  <updated>2019-01-09T09:55:31.874Z</updated>
+  <updated>2019-01-14T10:52:55.085Z</updated>
   <id>http://www.wujianjun.org/</id>
   
   <author>
@@ -14,6 +14,49 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>springcloud各组件目标</title>
+    <link href="http://www.wujianjun.org/2019/01/14/springcloud-step1/"/>
+    <id>http://www.wujianjun.org/2019/01/14/springcloud-step1/</id>
+    <published>2019-01-14T10:42:37.000Z</published>
+    <updated>2019-01-14T10:52:55.085Z</updated>
+    
+    <content type="html">&lt;h2 id=&quot;软件架构发展史&quot;&gt;&lt;a href=&quot;#软件架构发展史&quot; class=&quot;headerlink&quot; title=&quot;软件架构发展史&quot;&gt;&lt;/a&gt;软件架构发展史&lt;/h2&gt;&lt;p&gt;1、单体架构&lt;br&gt;部署形式：一个应用、一个DB、一个WebServer&lt;br&gt;优点：快速、灵活、技术要求低&lt;br&gt;缺点：升级迭代难、业务支撑能力弱、部署扩展性差&lt;/p&gt;
+&lt;p&gt;2、SOA&lt;br&gt;部署形式：多个分布式应用集群部署、统一DB/按业务拆分DB、多个WebServer&lt;br&gt;优点：业务模块内部高内聚，业务模块之间低耦合、业务模块目标清晰、模块升级服务独立、针对业务洪峰可通过水平扩展来支撑&lt;br&gt;缺点：ESB（企业服务总线）职责过多（职责：统一服务管理、协议转换、消息转换、消息路由服务监控等）&lt;/p&gt;
+&lt;p&gt;3、微服务（比SOA组件化和服务化更彻底）&lt;br&gt;部署形式：多个分布式应用集群部署、多个服务模块DB、多个WebServer&lt;br&gt;优点：在SOA优点之上增加开发语言和数据库类型的多样化支持、服务治理职责更为单一&lt;br&gt;缺点：事务问题成为必须要解决的问题、系统复杂度增高&lt;br&gt;与SOA区别：去掉ESB的大一统职责组件，将大一统职责组件进行拆分，组件职责进一步细化。&lt;/p&gt;
+&lt;h2 id=&quot;springcloud组件&quot;&gt;&lt;a href=&quot;#springcloud组件&quot; class=&quot;headerlink&quot; title=&quot;springcloud组件&quot;&gt;&lt;/a&gt;springcloud组件&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;Eureka&lt;/code&gt;负责服务的注册与发现，很好将各服务连接起来&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Hystrix&lt;/code&gt; 负责监控服务之间的调用情况，连续多次失败进行熔断保护。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Hystrix dashboard+Turbine&lt;/code&gt; 负责监控 Hystrix的熔断情况，并给予图形化的展示&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Spring Cloud Config&lt;/code&gt; 提供了统一的配置中心服务&lt;/li&gt;
+&lt;li&gt;当配置文件发生变化的时候，&lt;code&gt;Spring Cloud Bus&lt;/code&gt; 负责通知各服务去获取最新的配置信息&lt;/li&gt;
+&lt;li&gt;所有对外的请求和服务，我们都通过&lt;code&gt;Zuul&lt;/code&gt;来进行转发，起到API网关的作用&lt;/li&gt;
+&lt;li&gt;监控我们使用&lt;code&gt;Sleuth+Zipkin+springAdmin&lt;/code&gt;将所有的请求数据及路径记录下来&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;Eureka（服务中心）&quot;&gt;&lt;a href=&quot;#Eureka（服务中心）&quot; class=&quot;headerlink&quot; title=&quot;Eureka（服务中心）&quot;&gt;&lt;/a&gt;Eureka（服务中心）&lt;/h3&gt;&lt;p&gt;Eureka是Netflix开源的一款提供服务注册和发现的产品。完成服务注册、负载均衡和故障转移的功能。&lt;/p&gt;
+&lt;h3 id=&quot;Hystrix（服务熔断-故障隔离）&quot;&gt;&lt;a href=&quot;#Hystrix（服务熔断-故障隔离）&quot; class=&quot;headerlink&quot; title=&quot;Hystrix（服务熔断/故障隔离）&quot;&gt;&lt;/a&gt;Hystrix（服务熔断/故障隔离）&lt;/h3&gt;&lt;p&gt;避免一个服务故障导致调用该服务的其它N个服务等待引起级联故障而造成服务雪崩（服务雪崩效应是一种因“服务提供者”的不可用导致“服务消费者”的不可用,并将不可用逐渐放大的过程。）&lt;br&gt;针对故障服务Hystrix会间隔时间进行检查，如果服务恢复将继续提供服务。&lt;/p&gt;
+&lt;h3 id=&quot;Hystrix-dashboard-Turbine-监控工具&quot;&gt;&lt;a href=&quot;#Hystrix-dashboard-Turbine-监控工具&quot; class=&quot;headerlink&quot; title=&quot;Hystrix-dashboard+Turbine (监控工具)&quot;&gt;&lt;/a&gt;Hystrix-dashboard+Turbine (监控工具)&lt;/h3&gt;&lt;p&gt;Hystrix-dashboard是针对Hystrix进行实时监控的管理工具，能展示Hystrix Command的请求响应时间, 请求成功率等数据。添加Turbine工具则能同时展示多个服务信息。&lt;/p&gt;
+&lt;h3 id=&quot;Spring-Cloud-Config-配置中心&quot;&gt;&lt;a href=&quot;#Spring-Cloud-Config-配置中心&quot; class=&quot;headerlink&quot; title=&quot;Spring Cloud Config (配置中心)&quot;&gt;&lt;/a&gt;Spring Cloud Config (配置中心)&lt;/h3&gt;&lt;p&gt;将服务的配置信息服务化，通过Config Client连接到Config Server进行获取，通过手动Refresh可完成在服务的运行期间重新加载配置更新。&lt;/p&gt;
+&lt;h3 id=&quot;Spring-Cloud-Bus（广播指令）&quot;&gt;&lt;a href=&quot;#Spring-Cloud-Bus（广播指令）&quot; class=&quot;headerlink&quot; title=&quot;Spring Cloud Bus（广播指令）&quot;&gt;&lt;/a&gt;Spring Cloud Bus（广播指令）&lt;/h3&gt;&lt;p&gt;Spring Cloud Bus通过轻量消息代理连接各个分布的服务节点。可通过它广播消息指令到任一服务节点。比如与Spring Cloud Config配合使用自动识别配置变化，可通过该组件通知服务节点自动Refresh完成配置的更新。&lt;/p&gt;
+&lt;h3 id=&quot;Zuul-服务网关&quot;&gt;&lt;a href=&quot;#Zuul-服务网关&quot; class=&quot;headerlink&quot; title=&quot;Zuul (服务网关)&quot;&gt;&lt;/a&gt;Zuul (服务网关)&lt;/h3&gt;&lt;p&gt;Zuul是Netflix出品的一个基于JVM路由和服务端的负载均衡器。提供对服务节点动态路由、监控、弹性、安全等服务。&lt;/p&gt;
+&lt;h3 id=&quot;Spring-Cloud-Sleuth-Zipkin-springAdmin-（消息链路跟踪）&quot;&gt;&lt;a href=&quot;#Spring-Cloud-Sleuth-Zipkin-springAdmin-（消息链路跟踪）&quot; class=&quot;headerlink&quot; title=&quot;Spring Cloud Sleuth+Zipkin+springAdmin （消息链路跟踪）&quot;&gt;&lt;/a&gt;Spring Cloud Sleuth+Zipkin+springAdmin （消息链路跟踪）&lt;/h3&gt;&lt;p&gt;随着服务的越来越多，对调用链的分析会越来越复杂。系统的架构改进需要监控服务和服务之间通讯的各项指标达成情况如（服务间调用关系、调用链、各服务消耗时间等）。Zipkin是Twitter的一个开源项目，允许开发者收集 Twitter 各个服务上的监控数据，并提供查询接口。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;观点仅代表自己，期待你的留言。&lt;/em&gt;&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;软件架构发展史&quot;&gt;&lt;a href=&quot;#软件架构发展史&quot; class=&quot;headerlink&quot; title=&quot;软件架构发展史&quot;&gt;&lt;/a&gt;软件架构发展史&lt;/h2&gt;&lt;p&gt;1、单体架构&lt;br&gt;部署形式：一个应用、一个DB、一个WebServer&lt;br&gt;优点：快速、灵活、技
+    
+    </summary>
+    
+    
+      <category term="原创" scheme="http://www.wujianjun.org/tags/%E5%8E%9F%E5%88%9B/"/>
+    
+      <category term="springcloud" scheme="http://www.wujianjun.org/tags/springcloud/"/>
+    
+  </entry>
   
   <entry>
     <title>软件测试点汇总</title>
@@ -1481,32 +1524,6 @@
     
     
       <category term="转载" scheme="http://www.wujianjun.org/tags/%E8%BD%AC%E8%BD%BD/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>多标识位存储优化方案</title>
-    <link href="http://www.wujianjun.org/2017/08/24/store-flag-bit/"/>
-    <id>http://www.wujianjun.org/2017/08/24/store-flag-bit/</id>
-    <published>2017-08-24T11:08:28.000Z</published>
-    <updated>2018-12-17T09:59:51.378Z</updated>
-    
-    <content type="html">&lt;h2 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h2&gt;&lt;p&gt;在做程序开发的过程中常常会遇到数据的标识位（取值为”是”与”否”）需要进行存储，&lt;br&gt;如神马专车系统消息中心中的一个场景：新建一个消息需要勾选发送对象，可选的对象有：司机，下单人，乘车人。&lt;br&gt;最常见的Mysql存储方式为一个消息表中包含三个字段sendDriver,sendUser,sendPassenger&lt;br&gt;按用户新建消息所勾选的情况，依次存储到数据表中并在后续的业务中直接获取值进行对比。&lt;/p&gt;
-&lt;h2 id=&quot;优化方案&quot;&gt;&lt;a href=&quot;#优化方案&quot; class=&quot;headerlink&quot; title=&quot;优化方案&quot;&gt;&lt;/a&gt;优化方案&lt;/h2&gt;&lt;p&gt;利用”与或非”的运算可将这多个标识符存储到一个字段中。&lt;br&gt;实例如下：&lt;br&gt;按业务这里有三个标识符需要存储，因此可以定义一个长度为3的二进行序列：000，从左至右第一位表示司机，第二位表示下单人，第三位表示乘车人。&lt;br&gt;那么，如果只需要发送给司机则可标识为100的二进行序列，如果下单人也需要通知，则可标识为110的二进行序列，依次，如果都需要通知则为111的二进制序列。&lt;br&gt;存储的值则为二进行制序列对应的十进制即可，当需要判断时，则可采用”与”运算符进行判定。&lt;/p&gt;
-&lt;p&gt;示例Java代码如下：&lt;br&gt;&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;29&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;30&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;byte&lt;/span&gt; NOTIFY_PASSENGER = &lt;span class=&quot;number&quot;&gt;0B001&lt;/span&gt;; &lt;span class=&quot;comment&quot;&gt;//二进制为001&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;byte&lt;/span&gt; NOTIFY_SUBSCRIBER = &lt;span class=&quot;number&quot;&gt;0B010&lt;/span&gt;; &lt;span class=&quot;comment&quot;&gt;//二进制为010&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;final&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;byte&lt;/span&gt; NOTIFY_DRIVER = &lt;span class=&quot;number&quot;&gt;0B100&lt;/span&gt;; &lt;span class=&quot;comment&quot;&gt;//二进制为100&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; * 获取需要存储的值则为notifyFlag&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; */&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;byte&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;getStoreValue&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;keyword&quot;&gt;byte&lt;/span&gt; notifyFlag = &lt;span class=&quot;number&quot;&gt;0B000&lt;/span&gt;; &lt;span class=&quot;comment&quot;&gt;//二进制为000&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (request.isNotifyDriver()) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      notifyFlag |= NOTIFY_DRIVER;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (request.isNotifyPassenger()) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      notifyFlag |= NOTIFY_PASSENGER;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt; (request.isNotifySubscriber()) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    notifyFlag |= NOTIFY_SUBSCRIBER;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; notifyFlag;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;/**&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; * 判断是否需要通知&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; * &lt;span class=&quot;doctag&quot;&gt;@param&lt;/span&gt; notifyTarget 预计需要通知的目标&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; * &lt;span class=&quot;doctag&quot;&gt;@return&lt;/span&gt; true-需要通知，false-不需要通知&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; */&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;boolean&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;isNotify&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;keyword&quot;&gt;byte&lt;/span&gt; notifyTarget)&lt;/span&gt; &lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;keyword&quot;&gt;byte&lt;/span&gt; notifyFlag = &lt;span class=&quot;number&quot;&gt;0B111&lt;/span&gt;;&lt;span class=&quot;comment&quot;&gt;//二进制为111 , 从数据库取出&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; notifyFlag &amp;amp; notifyTarget == notifyTarget;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;在Java中byte的最大值为：127，二进行为0B1111111, 足够标识七个标识位!&lt;/p&gt;
-&lt;hr&gt;
-&lt;p&gt;&lt;em&gt;观点仅代表自己，期待你的留言。&lt;/em&gt;&lt;/p&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h2&gt;&lt;p&gt;在做程序开发的过程中常常会遇到数据的标识位（取值为”是”与”否”）需要进行存储，&lt;br&gt;如神马专车系统消息中心中的一个场景：新建一个消息需要
-    
-    </summary>
-    
-    
-      <category term="原创" scheme="http://www.wujianjun.org/tags/%E5%8E%9F%E5%88%9B/"/>
     
   </entry>
   
