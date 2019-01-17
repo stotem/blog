@@ -28,16 +28,22 @@ date: 2019-01-14 18:42:37
 
 ## springcloud组件
 
-* `Eureka`负责服务的注册与发现，很好将各服务连接起来
+* `Eureka` 负责服务的注册与发现，很好将各服务连接起来。通过`feign`简化接口调用方式。
 * `Hystrix` 负责监控服务之间的调用情况，连续多次失败进行熔断保护。
 * `Hystrix dashboard+Turbine` 负责监控 Hystrix的熔断情况，并给予图形化的展示
 * `Spring Cloud Config` 提供了统一的配置中心服务
 * 当配置文件发生变化的时候，`Spring Cloud Bus` 负责通知各服务去获取最新的配置信息
-* 所有对外的请求和服务，我们都通过`Zuul`来进行转发，起到API网关的作用
+* 所有对外的请求和服务，我们都通过`Spring Cloud Gateway`来进行转发，起到API网关的作用
 * 监控我们使用`Sleuth+Zipkin+springAdmin`将所有的请求数据及路径记录下来
 
 ### Eureka（服务中心）
 Eureka是Netflix开源的一款提供服务注册和发现的产品。完成服务注册、负载均衡和故障转移的功能。
+依赖spring-cloud-starter-eureka
+同质化产品：Consul、Feature、zookeeper、etcd等
+
+### Feign（HTTP客户端）
+Feign是一个声明式的伪Http客户端，它使得写Http客户端变得更简单。Feign默认集成了Ribbon，并和Eureka结合，默认实现了负载均衡的效果。
+依赖spring-cloud-starter-feign
 
 ### Hystrix（服务熔断/故障隔离）
 避免一个服务故障导致调用该服务的其它N个服务等待引起级联故障而造成服务雪崩（服务雪崩效应是一种因“服务提供者”的不可用导致“服务消费者”的不可用,并将不可用逐渐放大的过程。）
@@ -52,8 +58,9 @@ Hystrix-dashboard是针对Hystrix进行实时监控的管理工具，能展示Hy
 ### Spring Cloud Bus（广播指令）
 Spring Cloud Bus通过轻量消息代理连接各个分布的服务节点。可通过它广播消息指令到任一服务节点。比如与Spring Cloud Config配合使用自动识别配置变化，可通过该组件通知服务节点自动Refresh完成配置的更新。
 
-### Zuul (服务网关)
-Zuul是Netflix出品的一个基于JVM路由和服务端的负载均衡器。提供对服务节点动态路由、监控、弹性、安全等服务。
+### Spring Cloud Gateway (服务网关)
+基于SpringFramework5和SpringBoot2实现了动态路由、HTTP请求的路由匹配、过滤器可以修改下游HTTP请求和HTTP响应等功能。
+同质化产品：Zuul、Linkerd等
 
 ### Spring Cloud Sleuth+Zipkin+springAdmin （消息链路跟踪）
 随着服务的越来越多，对调用链的分析会越来越复杂。系统的架构改进需要监控服务和服务之间通讯的各项指标达成情况如（服务间调用关系、调用链、各服务消耗时间等）。Zipkin是Twitter的一个开源项目，允许开发者收集 Twitter 各个服务上的监控数据，并提供查询接口。
