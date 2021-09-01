@@ -48,7 +48,8 @@ duoshuo: false #cnvip
 uyan: false
 #是否开启云标签
 tagcloud: true
-
+#是否开启副标
+subtitle: true
 #是否开启友情链接
 #不开启——
 #friends: false
