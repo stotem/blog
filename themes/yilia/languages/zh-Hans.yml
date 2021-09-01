@@ -29,6 +29,10 @@ page:
   totally: 共有
   tags: 标签
 
+pageable:
+  prev_text: 上一页
+  next_text: 下一页
+
 footer:
   powered: "由 %s 强力驱动"
   theme: 主题

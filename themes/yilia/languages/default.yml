@@ -29,6 +29,10 @@ page:
   totally: Totally
   tags: tags
 
+pageable:
+  prev_text: Prev
+  next_text: Next
+
 footer:
   powered: "Powered by %s"
   theme: Theme
