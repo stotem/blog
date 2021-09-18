@@ -567,6 +567,7 @@ public class StreamTest {
 sorted，中间操作。有两种排序：
 1. sorted()：自然排序，流中元素需实现Comparable接口
 2. sorted(Comparator com)：Comparator排序器自定义排序
+
 案例：将员工按工资由高到低（工资一样则按年龄由大到小）排序
 ```
 public class StreamTest {
