@@ -80,7 +80,7 @@ where <option> is one of:
 * jmap -histo pid >mem.txt #打印比较简单的各个有多少个对象占了多少内存的信息，一般重定向的文件
 * jmap -dump:format=b,file=mem.dat pid #将内存使用的详细情况输出到mem.dat 文件
   通过`jhat -port 7000 mem.dat`可以将mem.dat的内容以web的方式暴露到网络，访问`http://ip-server:7000`查看。
-  
+
 针对内存泄漏这一问题，可以通过查看堆内存中存活对象实例及所占内存数查到对象是否一直被占用导致不能被GC回收。
 如：
 ```
@@ -121,8 +121,8 @@ where <option> is one of:
 
 __附 - jmap输出中class name非自定义类的说明：__
 
-|BaseType Character     |Type           |Interpretation 
-|---------------------------------------------------------
+|BaseType Character     |Type           |Interpretation
+|:- |:- |:- 
 |B 						|byte 			|signed byte
 |C 						|char        	|Unicode character
 |D 						|double			|double-precision floating-point value

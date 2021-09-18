@@ -41,7 +41,7 @@ __解决方法：__需要解决以上问题，需要在进行锁设值时将惟�
 如：
 
 |客户端A（ID为SYSA）								|Redis 																		| 客户端B（ID为SYSB）
-|--------------------------------------------------------------------------------------------------------------------------------------------------------
+|:- |:- |:- 
 | 获取到锁（SET dist_lock SYSA NX PX 30000)		| 																			|
 | 进行其它的业务操作。。。							| master发生故障，slave被提升为NewMaster(未将master中dist_lock复制到NewMaster) 	|
 | 												| 																			| 获取到锁（SET dist_lock SYSB NX PX 30000）
@@ -66,7 +66,7 @@ Redis实现分布式队列主要实现是通过`有序集合`实现，通过ZADD
 ## 另外的选择
 _Java库：_其实也在使用[redisson](https://github.com/mrniko/redisson)来实现分布式锁。它封装了针对Redis各种操作的分布式实现。
 
-其它语言可参照官网文章: http://redis.io/topics/distlock?cm_mc_uid=77610277652214581184982&cm_mc_sid_50200000=1464593765 
+其它语言可参照官网文章: http://redis.io/topics/distlock?cm_mc_uid=77610277652214581184982&cm_mc_sid_50200000=1464593765
 
 -----
 
