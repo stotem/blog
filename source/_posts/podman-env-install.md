@@ -1,5 +1,5 @@
 ---
-title: ubuntu下podman环境搭建
+title: podman系列之ubuntu下podman环境搭建
 tags:
   - 原创
   - podman
@@ -37,12 +37,15 @@ wujianjun@wujianjun-work:~$ sudo apt -y install podman
 速度有点慢。。。
 
 ## 设置国内镜像源
+由于访问速度慢，可为默认的docker.io添加加速镜像（如果后续自己搭建私服，可将镜像地址设置为私服，则每次pull时会将镜像在私服上保存一份）。
+详细配置如下：
 ```
 wujianjun@wujianjun-work:~$ vi /etc/containers/registries.conf 后面增加
 `
 [[registry]]
-prefix = "docker.io"
-location = "hub-mirror.c.163.com"
+prefix = "docker.io" #需要加速的镜像地址
+location = "hub-mirror.c.163.com" #加速器地址，可以为私服地址
+insecure = true #支持加速器地址使用http进行访问
 `
 wujianjun@wujianjun-work:~$ sudo systemctl restart podman
 ```
