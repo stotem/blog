@@ -1,12 +1,13 @@
 ---
-title: podman系列之Nexus3私服搭建与使用
+title: Podman系列之Nexus3私服搭建与使用
 tags:
   - 原创
-  - podman
+  - Podman
 keywords:
-  - podman
+  - Podman
   - manifest unknown
   - invalid status code from registry 403
+  - server gave HTTP response to HTTPS client
 date: 2021-09-27 11:42:20
 ---
 
@@ -175,6 +176,15 @@ Error: initializing source docker://myredis:v1.0.0: reading manifest v1.0.0 in 1
 ```
 根因分析：由于tag为v1.0.0的myredis镜像没有找到
 
+3. 未开启http访问
+```bash
+wujianjun@wujianjun-work:~$ podman pull myredis:1.0.0
+✔ docker.io/library/myredis:v1.0.0
+Trying to pull docker.io/library/myredis:1.0.0...
+  Get https://10.84.102.90:7791/v2/: http: server gave HTTP response to HTTPS client
+Error: error pulling image "10.84.102.90:7791/library/myredis": unable to pull 10.84.102.90:7791/library/myredis: unable to pull image: Error initializing source docker://10.84.102.90:7791/library/myredis:1.0.0: error pinging docker registry 10.84.102.90:7791: Get https://10.84.102.90:7791/v2/: http: server gave HTTP response to HTTPS client
+```
+根因分析：由于在注册私服地址时没有开启`insecure = true`
 
 -----
 
