@@ -15,15 +15,15 @@ date: 2021-09-27 13:51:42
 
 1. Linux下开启Podman REST API service
 ```bash
-gigatech-linux@gigatech-linux:~$ podman system service -t 0 tcp:0.0.0.0:2375 &
-gigatech-linux@gigatech-linux:~$ podman --remote info
+wujianjun@wujianjun-work:~$ podman system service -t 0 tcp:0.0.0.0:2375 &
+wujianjun@wujianjun-work:~$ podman --remote info
 host:
   arch: amd64
   buildahVersion: 1.22.3
   cgroupControllers: []
   cgroupManager: cgroupfs
   cgroupVersion: v1
-gigatech-linux@gigatech-linux:~$ podman system connection list #查看当前机器远程连接的列表
+wujianjun@wujianjun-work:~$ podman system connection list #查看当前机器远程连接的列表
 ```
 接下来MacOS或Windows就可以通过tcp://host:2375进行连接了
 
