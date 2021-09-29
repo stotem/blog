@@ -33,7 +33,8 @@ animate: true
 open_in_new: false
 
 # Miscellaneous
-google_analytics: ''
+google_analytics: true
+baidu_analytics: true
 favicon: /favicon.png
 
 #你的头像url
