@@ -41,7 +41,7 @@
 						</div>
 						<%}%>
 					</div>
-					
+
 				</div>
 				<div class="tips-box hide">
 					<div class="tips-arrow"></div>
@@ -77,11 +77,11 @@
 						</div>
 						<div>
 							<i class="fa fa-line-chart"></i>
-							<%= __('counter.hits.sitepv') %><span id="busuanzi_value_site_pv"><i class="fa fa-spinner fa-spin"></i></span> <%= __('counter.hits.unit') %>
+							<%= __('counter.hits.sitepv') %><span id=“busuanzi_container_site_pv”><span id="busuanzi_value_site_pv"><i class="fa fa-spinner fa-spin"></i></span></span> <%= __('counter.hits.unit') %>
 						</div>
 					</nav>
 				</section>
-				
+
 				<%if(theme.tagcloud){%>
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
@@ -89,7 +89,7 @@
 					</div>
 				</section>
 				<%}%>
-				
+
 				<%if(theme.friends && theme.friends.length != 0){%>
 				<section class="switch-part switch-part3">
 					<div id="js-friends">
@@ -111,6 +111,6 @@
 				<%}%>
 			</div>
 		</div>
-		
-	</header>				
+
+	</header>
 </div>
