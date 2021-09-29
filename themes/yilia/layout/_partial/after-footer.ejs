@@ -18,15 +18,6 @@
 <%- js('js/require-2.1.6,jquery-1.9.1.min') %>
 <%- js('js/main') %>
 
-<script>
-(function(){
-    var bp = document.createElement('script');
-    bp.src = '//push.zhanzhang.baidu.com/push.js';
-    var s = document.getElementsByTagName("script")[0];
-    s.parentNode.insertBefore(bp, s);
-})();
-</script>
-<%- partial('baidu-analytics') %>
 <%- partial('google-analytics') %>
 <% if (theme.mathjax){ %>
 <%- partial('mathjax') %>
