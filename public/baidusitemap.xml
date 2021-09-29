@@ -1,0 +1,1626 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2021/09/28/podman-dockerfile-maven-plugin/</loc>
+    <lastmod>2021-09-28T10:43:29.187Z</lastmod>
+    <data>
+        <display>
+        <title>Podman系列之通过Maven插件dockerfile-maven-plugin完成镜像打包</title>
+        <pubTime>2021-09-28T10:35:30.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+        <tag>podman </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2021/09/27/podman-ideaj-docker-plugin/</loc>
+    <lastmod>2021-09-28T10:36:47.639Z</lastmod>
+    <data>
+        <display>
+        <title>Podman系列之通过docker插件完成研发机镜像创建和运行</title>
+        <pubTime>2021-09-27T05:51:42.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+        <tag>Podman </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2021/09/27/podman-private-svr/</loc>
+    <lastmod>2021-09-28T08:26:16.938Z</lastmod>
+    <data>
+        <display>
+        <title>Podman系列之Nexus3私服搭建与使用</title>
+        <pubTime>2021-09-27T03:42:20.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+        <tag>Podman </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2021/09/03/podman-env-install/</loc>
+    <lastmod>2021-09-27T03:46:41.296Z</lastmod>
+    <data>
+        <display>
+        <title>podman系列之ubuntu下podman环境搭建</title>
+        <pubTime>2021-09-03T14:33:31.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+        <tag>podman </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2021/09/18/java8-stream/</loc>
+    <lastmod>2021-09-18T05:19:58.729Z</lastmod>
+    <data>
+        <display>
+        <title>Java8 Stream之实例玩转集合的筛选、归约、分组、聚合</title>
+        <pubTime>2021-09-18T03:11:57.000Z</pubTime>
+        
+        <tag>转载 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2016/03/18/linux-strace/</loc>
+    <lastmod>2021-09-18T05:13:56.724Z</lastmod>
+    <data>
+        <display>
+        <title>linux-strace跟踪运行中进程对系统资源的访问</title>
+        <pubTime>2016-03-18T07:40:02.000Z</pubTime>
+        
+        <tag>转载 </tag>
+         
+        <tag>linux </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2016/04/13/string-format/</loc>
+    <lastmod>2021-09-18T03:05:32.967Z</lastmod>
+    <data>
+        <display>
+        <title>String.format详解</title>
+        <pubTime>2016-04-13T08:02:59.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+        <tag>Java </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2016/05/27/transaction-isolation-levels/</loc>
+    <lastmod>2021-09-18T03:05:28.371Z</lastmod>
+    <data>
+        <display>
+        <title>数据库事务隔离级别与并发事务控制（悲观锁与乐观锁）</title>
+        <pubTime>2016-05-27T13:34:55.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2016/05/30/mysql-lock-transaction/</loc>
+    <lastmod>2021-09-18T03:05:18.704Z</lastmod>
+    <data>
+        <display>
+        <title>关于MariaDB事务阻塞等待及锁的实验笔记</title>
+        <pubTime>2016-05-30T10:00:50.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2018/04/04/mq-rocketmq-manuals/</loc>
+    <lastmod>2021-09-18T03:04:39.241Z</lastmod>
+    <data>
+        <display>
+        <title>RocketMQ使用指南及参数详解</title>
+        <pubTime>2018-04-04T09:58:58.000Z</pubTime>
+        
+        <tag>转载 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2016/09/21/jvm-tools-jmap/</loc>
+    <lastmod>2021-09-18T03:03:59.590Z</lastmod>
+    <data>
+        <display>
+        <title>jvm查内存泄漏利器 - jmap</title>
+        <pubTime>2016-09-21T06:21:51.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2016/05/31/distributed-redis-locked-queue/</loc>
+    <lastmod>2021-09-18T03:03:41.855Z</lastmod>
+    <data>
+        <display>
+        <title>Redis实现分布式锁和分布式队列</title>
+        <pubTime>2016-05-31T03:56:20.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+        <tag>Redis </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2016/03/29/ios-load-initialize/</loc>
+    <lastmod>2021-09-18T03:02:52.742Z</lastmod>
+    <data>
+        <display>
+        <title>NSObject的+load与+initialize方法的区别</title>
+        <pubTime>2016-03-29T07:42:47.000Z</pubTime>
+        
+        <tag>转载 </tag>
+         
+        <tag>iOS </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2017/09/05/cron-expression/</loc>
+    <lastmod>2021-09-18T03:02:35.814Z</lastmod>
+    <data>
+        <display>
+        <title>Cron表达式说明</title>
+        <pubTime>2017-09-05T12:48:08.000Z</pubTime>
+        
+        <tag>转载 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2021/09/02/linux-remote/</loc>
+    <lastmod>2021-09-02T11:33:21.283Z</lastmod>
+    <data>
+        <display>
+        <title>内网linux远程访问</title>
+        <pubTime>2021-09-02T11:09:51.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2021/09/02/code-findbugs-plugin/</loc>
+    <lastmod>2021-09-02T07:16:13.713Z</lastmod>
+    <data>
+        <display>
+        <title>FindbugsMaven插件集成生成html报告</title>
+        <pubTime>2021-09-02T07:09:40.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2021/08/26/bussiness-operate-target/</loc>
+    <lastmod>2021-09-01T02:12:45.512Z</lastmod>
+    <data>
+        <display>
+        <title>业务运营之运营指标</title>
+        <pubTime>2021-08-26T13:04:02.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2021/08/26/bussiness-operate/</loc>
+    <lastmod>2021-09-01T02:12:41.921Z</lastmod>
+    <data>
+        <display>
+        <title>业务运营之会员制</title>
+        <pubTime>2021-08-26T13:04:02.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2021/08/26/system-main-fn/</loc>
+    <lastmod>2021-09-01T02:11:45.297Z</lastmod>
+    <data>
+        <display>
+        <title>系统组成部分</title>
+        <pubTime>2021-08-26T02:10:29.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2021/08/28/bussiness-market-plan/</loc>
+    <lastmod>2021-09-01T02:09:45.384Z</lastmod>
+    <data>
+        <display>
+        <title>运营之活动策划</title>
+        <pubTime>2021-08-28T00:57:29.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2021/07/30/linux-crontab/</loc>
+    <lastmod>2021-09-01T02:03:15.528Z</lastmod>
+    <data>
+        <display>
+        <title>Linux定时任务之crontab</title>
+        <pubTime>2021-07-30T04:01:55.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2021/07/04/bigdata-data-governance/</loc>
+    <lastmod>2021-09-01T02:01:15.369Z</lastmod>
+    <data>
+        <display>
+        <title>大数据之数据治理</title>
+        <pubTime>2021-07-04T03:59:42.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+        <tag>大数据 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2021/03/31/data-wh/</loc>
+    <lastmod>2021-09-01T01:59:14.533Z</lastmod>
+    <data>
+        <display>
+        <title>数据仓库</title>
+        <pubTime>2021-03-31T01:57:16.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+        <tag>大数据 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2020/11/02/tech-company/</loc>
+    <lastmod>2021-09-01T01:57:06.619Z</lastmod>
+    <data>
+        <display>
+        <title>科技公司</title>
+        <pubTime>2020-11-02T06:55:47.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2020/06/01/architecture-optimize/</loc>
+    <lastmod>2021-09-01T01:54:40.645Z</lastmod>
+    <data>
+        <display>
+        <title>架构优化</title>
+        <pubTime>2020-06-01T00:34:27.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+        <tag>转载 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2020/06/08/demand-source/</loc>
+    <lastmod>2021-09-01T01:49:12.876Z</lastmod>
+    <data>
+        <display>
+        <title>产品需求来源</title>
+        <pubTime>2020-06-08T00:48:36.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2020/05/04/nginx-log-config/</loc>
+    <lastmod>2021-09-01T01:40:17.385Z</lastmod>
+    <data>
+        <display>
+        <title>nginx日志打印详解</title>
+        <pubTime>2020-05-04T02:18:42.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+    
+  <url>
+    <loc>http://www.wujianjun.org/2017/09/18/transaction-distributed/</loc>
+    <lastmod>2021-08-31T14:23:11.553Z</lastmod>
+    <data>
+        <display>
+        <title>分布式下数据事务</title>
+        <pubTime>2017-09-18T07:13:57.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+        <tag>总结 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2017/07/21/transaction-mark-rollbackonly/</loc>
+    <lastmod>2021-08-31T14:23:11.553Z</lastmod>
+    <data>
+        <display>
+        <title>问题分析 之 Transaction marked as rollbackOnly</title>
+        <pubTime>2017-07-21T09:01:27.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+        <tag>spring </tag>
+         
+        <tag>Transaction </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2016/06/03/zookeeper-note/</loc>
+    <lastmod>2021-08-31T14:23:11.553Z</lastmod>
+    <data>
+        <display>
+        <title>Zookeeper学习笔记</title>
+        <pubTime>2016-06-03T10:32:58.000Z</pubTime>
+        
+        <tag>关键笔记 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2016/03/10/started/</loc>
+    <lastmod>2021-08-31T14:23:11.552Z</lastmod>
+    <data>
+        <display>
+        <title>博客站开写啦</title>
+        <pubTime>2016-03-10T08:46:19.000Z</pubTime>
+        
+        <tag>随笔 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2017/08/24/store-flag-bit/</loc>
+    <lastmod>2021-08-31T14:23:11.552Z</lastmod>
+    <data>
+        <display>
+        <title>多标识位存储优化方案</title>
+        <pubTime>2017-08-24T11:08:28.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2017/10/18/thinkpad-battery-limit/</loc>
+    <lastmod>2021-08-31T14:23:11.552Z</lastmod>
+    <data>
+        <display>
+        <title>ubuntu下thinkpad电池阀设置（待验证）</title>
+        <pubTime>2017-10-18T08:04:47.000Z</pubTime>
+        
+        <tag>笔记 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2016/03/17/tomcat-redis-session/</loc>
+    <lastmod>2021-08-31T14:23:11.552Z</lastmod>
+    <data>
+        <display>
+        <title>Nginx+tomcat+redis集群之session共享</title>
+        <pubTime>2016-03-17T03:32:15.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+        <tag>Nginx </tag>
+         
+        <tag>tomcat </tag>
+         
+        <tag>redis </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2019/01/07/springboot-step1/</loc>
+    <lastmod>2021-08-31T14:23:11.551Z</lastmod>
+    <data>
+        <display>
+        <title>SpringBoot（一）</title>
+        <pubTime>2019-01-07T08:44:15.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2019/01/14/springcloud-step1/</loc>
+    <lastmod>2021-08-31T14:23:11.551Z</lastmod>
+    <data>
+        <display>
+        <title>springcloud各组件目标</title>
+        <pubTime>2019-01-14T10:42:37.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+        <tag>springcloud </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2016/07/19/spring-compositeCacheManager/</loc>
+    <lastmod>2021-08-31T14:23:11.550Z</lastmod>
+    <data>
+        <display>
+        <title>妙用Spring中的CompositeCacheManager</title>
+        <pubTime>2016-07-19T08:47:23.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2016/06/30/spring-aop-annotation/</loc>
+    <lastmod>2021-08-31T14:23:11.550Z</lastmod>
+    <data>
+        <display>
+        <title>Spring-AOP实现之注解</title>
+        <pubTime>2016-06-30T07:29:18.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2017/07/18/spring-initializingbean/</loc>
+    <lastmod>2021-08-31T14:23:11.550Z</lastmod>
+    <data>
+        <display>
+        <title>Spring InitializingBean趟坑笔记</title>
+        <pubTime>2017-07-18T09:59:12.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2016/08/29/spring-core-interface/</loc>
+    <lastmod>2021-08-31T14:23:11.550Z</lastmod>
+    <data>
+        <display>
+        <title>Spring ApplicationContext与常用接口笔记</title>
+        <pubTime>2016-08-29T03:17:18.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2016/06/29/spring-mutiview/</loc>
+    <lastmod>2021-08-31T14:23:11.550Z</lastmod>
+    <data>
+        <display>
+        <title>Spring多视图配置及源码剖析</title>
+        <pubTime>2016-06-29T07:56:16.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2016/03/21/php-fpm/</loc>
+    <lastmod>2021-08-31T14:23:11.549Z</lastmod>
+    <data>
+        <display>
+        <title>Nginx+php-fpm替代apache服务器</title>
+        <pubTime>2016-03-21T07:01:31.000Z</pubTime>
+        
+        <tag>转载 </tag>
+         
+        <tag>Nginx </tag>
+         
+        <tag>php-fpm </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2018/04/10/redis-advanced/</loc>
+    <lastmod>2021-08-31T14:23:11.549Z</lastmod>
+    <data>
+        <display>
+        <title>redis进阶</title>
+        <pubTime>2018-04-10T08:30:13.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2016/05/31/redis-cluster-note/</loc>
+    <lastmod>2021-08-31T14:23:11.549Z</lastmod>
+    <data>
+        <display>
+        <title>Redis集群备注</title>
+        <pubTime>2016-05-31T10:16:13.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+        <tag>Redis </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2018/10/24/shiro-restful-api-session/</loc>
+    <lastmod>2021-08-31T14:23:11.549Z</lastmod>
+    <data>
+        <display>
+        <title>Shiro完成RestfulApi的会话保持实例</title>
+        <pubTime>2018-10-24T07:00:30.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+        <tag>shiro </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2018/12/25/redis-data-type/</loc>
+    <lastmod>2021-08-31T14:23:11.549Z</lastmod>
+    <data>
+        <display>
+        <title>Redis数据类型特点</title>
+        <pubTime>2018-12-25T14:49:58.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2018/08/30/shiro-smscode-auth/</loc>
+    <lastmod>2021-08-31T14:23:11.549Z</lastmod>
+    <data>
+        <display>
+        <title>Shiro完成短信验证码登录的实例</title>
+        <pubTime>2018-08-30T09:44:47.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+        <tag>shiro </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2019/01/08/software-test-point/</loc>
+    <lastmod>2021-08-31T14:23:11.549Z</lastmod>
+    <data>
+        <display>
+        <title>软件测试点汇总</title>
+        <pubTime>2019-01-08T09:06:36.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2017/10/15/nginx-rtmp-obs/</loc>
+    <lastmod>2021-08-31T14:23:11.548Z</lastmod>
+    <data>
+        <display>
+        <title>Linux下通过nginx实现直播间功能的实验</title>
+        <pubTime>2017-10-15T03:07:14.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+        <tag>nginx + obs </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2016/03/16/nginx-upgrade/</loc>
+    <lastmod>2021-08-31T14:23:11.548Z</lastmod>
+    <data>
+        <display>
+        <title>Nginx不停止服务下升级与Nginx服务监控</title>
+        <pubTime>2016-03-16T03:29:07.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+        <tag>Nginx </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2016/03/18/nginx-upstream-jvm-route/</loc>
+    <lastmod>2021-08-31T14:23:11.548Z</lastmod>
+    <data>
+        <display>
+        <title>Nginx+tomcat+redis集群之session跟踪（nginx_upstream_jvm_route）</title>
+        <pubTime>2016-03-18T01:35:55.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+        <tag>Nginx </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2017/07/21/no-transaction/</loc>
+    <lastmod>2021-08-31T14:23:11.548Z</lastmod>
+    <data>
+        <display>
+        <title>问题分析 之 no transaction is in progress</title>
+        <pubTime>2017-07-21T09:55:05.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+        <tag>spring </tag>
+         
+        <tag>transaction </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2016/05/26/os-port-forward/</loc>
+    <lastmod>2021-08-31T14:23:11.548Z</lastmod>
+    <data>
+        <display>
+        <title>使用端口转发解决80端口使用问题</title>
+        <pubTime>2016-05-26T03:07:35.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+        <tag>操作系统 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2018/04/04/mq-rocketmq-module/</loc>
+    <lastmod>2021-08-31T14:23:11.547Z</lastmod>
+    <data>
+        <display>
+        <title>RocketMQ各组件特性和HA集群方案</title>
+        <pubTime>2018-04-04T08:58:58.000Z</pubTime>
+        
+        <tag>转载 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2017/07/07/multi-process-read/</loc>
+    <lastmod>2021-08-31T14:23:11.547Z</lastmod>
+    <data>
+        <display>
+        <title>分布式系统下并发读取不重复数据</title>
+        <pubTime>2017-07-07T02:02:57.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+        <tag>分布式 </tag>
+         
+        <tag>多进程 </tag>
+         
+        <tag>并发 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2016/03/14/nginx-install/</loc>
+    <lastmod>2021-08-31T14:23:11.547Z</lastmod>
+    <data>
+        <display>
+        <title>Nginx在CentOS7上源码编译安装</title>
+        <pubTime>2016-03-14T03:32:15.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+        <tag>Nginx </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2016/03/18/nginx-muti-domain/</loc>
+    <lastmod>2021-08-31T14:23:11.547Z</lastmod>
+    <data>
+        <display>
+        <title>Nginx反向代理多个域名</title>
+        <pubTime>2016-03-18T08:43:49.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+        <tag>Nginx </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2016/05/26/maven-deploy/</loc>
+    <lastmod>2021-08-31T14:23:11.546Z</lastmod>
+    <data>
+        <display>
+        <title>Maven应用远程部署</title>
+        <pubTime>2016-05-26T08:51:51.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+        <tag>Maven </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2016/05/26/maven-profile/</loc>
+    <lastmod>2021-08-31T14:23:11.546Z</lastmod>
+    <data>
+        <display>
+        <title>Maven应用发布之不同环境不同配置的实现</title>
+        <pubTime>2016-05-26T08:15:01.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+        <tag>Maven </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2016/06/12/maven-source-doc/</loc>
+    <lastmod>2021-08-31T14:23:11.546Z</lastmod>
+    <data>
+        <display>
+        <title>Maven打包source与javadoc</title>
+        <pubTime>2016-06-12T10:30:13.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2018/08/22/module-multi-rocketmq/</loc>
+    <lastmod>2021-08-31T14:23:11.546Z</lastmod>
+    <data>
+        <display>
+        <title>同一微服务连接多套RocketMQ集群</title>
+        <pubTime>2018-08-22T03:11:03.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+        <tag>rocketmq </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2016/09/22/jvm-tools-jstat/</loc>
+    <lastmod>2021-08-31T14:23:11.545Z</lastmod>
+    <data>
+        <display>
+        <title>查看jvm堆内GC情况利器 - jstat</title>
+        <pubTime>2016-09-22T09:30:09.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2016/10/09/linux-autostart/</loc>
+    <lastmod>2021-08-31T14:23:11.545Z</lastmod>
+    <data>
+        <display>
+        <title>Linux开机自动启动Tomcat应用</title>
+        <pubTime>2016-10-09T10:43:51.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2018/09/10/linux-cmd-notes/</loc>
+    <lastmod>2021-08-31T14:23:11.545Z</lastmod>
+    <data>
+        <display>
+        <title>Linux常用命令备注（nslookup,find,grep,sed,awk）</title>
+        <pubTime>2018-09-10T07:09:20.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2016/03/30/ios-sendmsg/</loc>
+    <lastmod>2021-08-31T14:23:11.544Z</lastmod>
+    <data>
+        <display>
+        <title>Effective Objective-C 理解消息传递机制</title>
+        <pubTime>2016-03-30T08:44:25.000Z</pubTime>
+        
+        <tag>转载 </tag>
+         
+        <tag>iOS </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2018/07/18/java-script-engine/</loc>
+    <lastmod>2021-08-31T14:23:11.544Z</lastmod>
+    <data>
+        <display>
+        <title>Java Script Engine</title>
+        <pubTime>2018-07-18T08:45:12.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2016/03/30/ios-msg-transfer/</loc>
+    <lastmod>2021-08-31T14:23:11.543Z</lastmod>
+    <data>
+        <display>
+        <title>iOS开发过程中几种消息传递机制的理解</title>
+        <pubTime>2016-03-30T09:39:24.000Z</pubTime>
+        
+        <tag>转载 </tag>
+         
+        <tag>iOS </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2016/04/07/ios-mvvm/</loc>
+    <lastmod>2021-08-31T14:23:11.543Z</lastmod>
+    <data>
+        <display>
+        <title>iOS开发MVVM理解与总结</title>
+        <pubTime>2016-04-07T10:14:40.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+        <tag>iOS </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2016/04/01/ios-muti-task/</loc>
+    <lastmod>2021-08-31T14:23:11.543Z</lastmod>
+    <data>
+        <display>
+        <title>iOS 7 的多任务</title>
+        <pubTime>2016-04-01T10:05:52.000Z</pubTime>
+        
+        <tag>转载 </tag>
+         
+        <tag>iOS </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2016/03/22/ios-layoutsubviews/</loc>
+    <lastmod>2021-08-31T14:23:11.542Z</lastmod>
+    <data>
+        <display>
+        <title>UIView的layoutSubviews和drawRect</title>
+        <pubTime>2016-03-22T03:35:23.000Z</pubTime>
+        
+        <tag>转载 </tag>
+         
+        <tag>iOS </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2016/03/29/ios-loadview/</loc>
+    <lastmod>2021-08-31T14:23:11.542Z</lastmod>
+    <data>
+        <display>
+        <title>iOS中UIViewController初始化过程及LoadView默认实现</title>
+        <pubTime>2016-03-29T07:41:52.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+        <tag>iOS </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2016/04/05/ios-local-notification/</loc>
+    <lastmod>2021-08-31T14:23:11.542Z</lastmod>
+    <data>
+        <display>
+        <title>iOS 本地通知</title>
+        <pubTime>2016-04-05T07:16:53.000Z</pubTime>
+        
+        <tag>转载 </tag>
+         
+        <tag>iOS </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2016/07/12/google-pagination-note/</loc>
+    <lastmod>2021-08-31T14:23:11.541Z</lastmod>
+    <data>
+        <display>
+        <title>类Google分页算法</title>
+        <pubTime>2016-07-12T08:08:37.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2016/03/21/header-version/</loc>
+    <lastmod>2021-08-31T14:23:11.541Z</lastmod>
+    <data>
+        <display>
+        <title>开放平台Api的版本控制方案</title>
+        <pubTime>2016-03-21T09:02:06.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2018/09/13/https-cr-demo/</loc>
+    <lastmod>2021-08-31T14:23:11.541Z</lastmod>
+    <data>
+        <display>
+        <title>使用openssl与keytool完成https配置实例（转）</title>
+        <pubTime>2018-09-13T02:37:12.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+        <tag>https </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2018/09/11/https-flow/</loc>
+    <lastmod>2021-08-31T14:23:11.541Z</lastmod>
+    <data>
+        <display>
+        <title>https交互流程</title>
+        <pubTime>2018-09-11T10:46:47.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2016/03/24/ios-hitTest/</loc>
+    <lastmod>2021-08-31T14:23:11.541Z</lastmod>
+    <data>
+        <display>
+        <title>iOS-hitTest:withEvent与pointInside:withEvent</title>
+        <pubTime>2016-03-24T02:45:13.000Z</pubTime>
+        
+        <tag>转载 </tag>
+         
+        <tag>iOS </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2017/10/27/dtcs-seq/</loc>
+    <lastmod>2021-08-31T14:23:11.540Z</lastmod>
+    <data>
+        <display>
+        <title>分布式事务最终一致性解决方案-DTCS</title>
+        <pubTime>2017-10-27T14:57:55.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+        <tag>分布式事务 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2016/08/22/ggcode-lib/</loc>
+    <lastmod>2021-08-31T14:23:11.540Z</lastmod>
+    <data>
+        <display>
+        <title>工具_源代码生成器GGCode</title>
+        <pubTime>2016-08-22T10:15:58.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2016/03/11/e-bussiness-architecture/</loc>
+    <lastmod>2021-08-31T14:23:11.540Z</lastmod>
+    <data>
+        <display>
+        <title>关于电商系统业务模块猜想</title>
+        <pubTime>2016-03-11T07:30:07.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+        <tag>电商 </tag>
+         
+        <tag>架构 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2016/04/15/docker-cmd-summarize/</loc>
+    <lastmod>2021-08-31T14:23:11.539Z</lastmod>
+    <data>
+        <display>
+        <title>docker常用命令总结</title>
+        <pubTime>2016-04-15T02:54:54.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+        <tag>Docker </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2016/04/18/docker-data-network/</loc>
+    <lastmod>2021-08-31T14:23:11.539Z</lastmod>
+    <data>
+        <display>
+        <title>docker数据卷与网络配置</title>
+        <pubTime>2016-04-18T03:33:08.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+        <tag>Docker </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2016/04/19/docker-dockerfile/</loc>
+    <lastmod>2021-08-31T14:23:11.539Z</lastmod>
+    <data>
+        <display>
+        <title>docker-dockerfile</title>
+        <pubTime>2016-04-19T02:30:45.000Z</pubTime>
+        
+        <tag>转载 </tag>
+         
+        <tag>Docker </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2016/04/06/docker-install-issue/</loc>
+    <lastmod>2021-08-31T14:23:11.539Z</lastmod>
+    <data>
+        <display>
+        <title>Docker安装问题汇总</title>
+        <pubTime>2016-04-06T01:55:49.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+        <tag>Docker </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2016/09/01/china-city-data/</loc>
+    <lastmod>2021-08-31T14:23:11.538Z</lastmod>
+    <data>
+        <display>
+        <title>中国城市信息数据库</title>
+        <pubTime>2016-09-01T10:27:21.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2016/08/16/cas-attribute/</loc>
+    <lastmod>2021-08-31T14:23:11.537Z</lastmod>
+    <data>
+        <display>
+        <title>开源SSO项目cas认证返回更多的attribute信息</title>
+        <pubTime>2016-08-16T10:41:39.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2016/08/17/cas-shiro-auth-flow/</loc>
+    <lastmod>2021-08-31T14:23:11.537Z</lastmod>
+    <data>
+        <display>
+        <title>Shiro与Cas集成后的登录流程时序图</title>
+        <pubTime>2016-08-17T08:44:13.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2018/08/24/cdt-java/</loc>
+    <lastmod>2021-08-31T14:23:11.537Z</lastmod>
+    <data>
+        <display>
+        <title>Java对中国夏令时的展示</title>
+        <pubTime>2018-08-24T11:14:57.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+        <tag>cdt </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://www.wujianjun.org/2017/06/29/airport-terminal-code/</loc>
+    <lastmod>2021-08-31T14:23:11.536Z</lastmod>
+    <data>
+        <display>
+        <title>机场航站楼三字码四字码信息数据库</title>
+        <pubTime>2017-06-29T09:23:50.000Z</pubTime>
+        
+        <tag>原创 </tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+</urlset>
