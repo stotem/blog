@@ -5,33 +5,38 @@ tags:
   - podman
 keywords:
   - docker
-  - podman
+  - podman 安装
 date: 2021-09-03 22:33:31
 ---
 
 ## Linux环境信息
 ```
 wujianjun@wujianjun-work:~$ cat /etc/os-release
+PRETTY_NAME="Ubuntu 22.04.1 LTS"
 NAME="Ubuntu"
-VERSION="20.04.3 LTS (Focal Fossa)"
+VERSION_ID="22.04"
+VERSION="22.04.1 LTS (Jammy Jellyfish)"
+VERSION_CODENAME=jammy
 ID=ubuntu
 ID_LIKE=debian
-PRETTY_NAME="Ubuntu 20.04.3 LTS"
-VERSION_ID="20.04"
 HOME_URL="https://www.ubuntu.com/"
 SUPPORT_URL="https://help.ubuntu.com/"
 BUG_REPORT_URL="https://bugs.launchpad.net/ubuntu/"
 PRIVACY_POLICY_URL="https://www.ubuntu.com/legal/terms-and-policies/privacy-policy"
-VERSION_CODENAME=focal
-UBUNTU_CODENAME=focal
+UBUNTU_CODENAME=jammy
 ```
 
 ## 安装podman
 ```
-wujianjun@wujianjun-work:~$ echo "deb https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_20.04/ /" | sudo tee /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list
-wujianjun@wujianjun-work:~$ curl -L "https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_20.04/Release.key" | sudo apt-key add -
-wujianjun@wujianjun-work:~$ sudo apt update
-wujianjun@wujianjun-work:~$ sudo apt -y upgrade
+wujianjun@wujianjun-work:~$ sudo mkdir -p /etc/apt/keyrings
+wujianjun@wujianjun-work:~$ curl -fsSL https://download.opensuse.org/repositories/devel:kubic:libcontainers:unstable/xUbuntu_$(lsb_release -rs)/Release.key \
+  | gpg --dearmor \
+  | sudo tee /etc/apt/keyrings/devel_kubic_libcontainers_unstable.gpg > /dev/null
+wujianjun@wujianjun-work:~$ echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/devel_kubic_libcontainers_unstable.gpg] \
+    https://download.opensuse.org/repositories/devel:kubic:libcontainers:unstable/xUbuntu_$(lsb_release -rs)/ /" \
+  | sudo tee /etc/apt/sources.list.d/devel:kubic:libcontainers:unstable.list > /dev/null
+wujianjun@wujianjun-work:~$ sudo apt update && sudo apt -y upgrade
 wujianjun@wujianjun-work:~$ sudo apt -y install podman
 ```
 速度有点慢。。。
@@ -52,7 +57,7 @@ wujianjun@wujianjun-work:~$ sudo systemctl restart podman
 
 ## 开机自己podman
 ```
-wujianjun@wujianjun-work:~$ sudo systemctl start podman
+wujianjun@wujianjun-work:~$ sudo systemctl enable podman
 ```
 
 ## 验证安装版本

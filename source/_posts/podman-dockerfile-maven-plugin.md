@@ -68,6 +68,7 @@ docker.io/adoptopenjdk/openjdk8                x86_64-ubuntu-jre8u292-b10  48b3b
 ```
 DOCKER_HOST="tcp://host:2375"
 ```
+`注意：`macOS添加环境变量时不同于其他unix或类unix系统（默认使用bash，因此在.bash_profile中设置环境变量）；macOS的terminal默认使用的是zsh，在.zshrc中进行配置。
 
 附插件官网地址： https://github.com/spotify/dockerfile-maven
 

@@ -15,7 +15,25 @@ date: 2021-09-27 13:51:42
 
 1. Linux下开启Podman REST API service
 ```bash
-wujianjun@wujianjun-work:~$ podman system service -t 0 tcp:0.0.0.0:2375 &
+wujianjun@wujianjun-work:~$ vi /lib/systemd/system/podman.service #增加‘tcp:0.0.0.0:2375 --time=0’开启tcp监听
+[Unit]
+Description=Podman API Service
+Requires=podman.socket
+After=podman.socket
+Documentation=man:podman-system-service(1)
+StartLimitIntervalSec=0
+
+[Service]
+Delegate=true
+Type=exec
+KillMode=process
+Environment=LOGGING="--log-level=info"
+ExecStart=/usr/bin/podman $LOGGING system service tcp:0.0.0.0:2375 --time=0
+
+[Install]
+WantedBy=default.target
+wujianjun@wujianjun-work:~$ systemctl daemon-reload
+wujianjun@wujianjun-work:~$ sudo systemctl restart podman
 wujianjun@wujianjun-work:~$ podman --remote info
 host:
   arch: amd64
@@ -26,6 +44,7 @@ host:
 wujianjun@wujianjun-work:~$ podman system connection list #查看当前机器远程连接的列表
 ```
 接下来MacOS或Windows就可以通过tcp://host:2375进行连接了
+MacOS下加入远程访问 `wujianjun@wujianjun-work ~ % podman system connection add ubuntu tcp://10.84.102.X:2375`
 
 2. 通过Ideaj下Docker Plug-in完成远程连接
 
