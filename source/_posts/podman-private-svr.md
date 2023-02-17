@@ -31,6 +31,53 @@ Nexus的仓库分三类
 `配置权限`
 ![realms](/images/docker-realms.png)
 
+`国内镜像站`
+ - https://hub-mirror.c.163.com
+ - https://registry-1.docker.io
+
+ 
+## Nginx反向代理docker仓库
+```
+upstream nexus_docker_group {
+    server 10.84.102.90:7793;
+}
+upstream nexus_docker_hosted {
+    server 10.84.102.90:7792;
+}
+server {
+    listen 80;
+    server_name mirror.docker.com;
+
+    access_log logs/docker_mirror.log;
+
+    client_max_body_size 0;
+    # required to avoid HTTP 411: see Issue #1486 (https://github.com/docker/docker/issues/1486)
+    chunked_transfer_encoding on;
+    # 设置默认使用推送代理
+    set $upstream "nexus_docker_hosted";
+    # 当请求是GET，也就是拉取镜像的时候，这里改为拉取代理，如此便解决了拉取和推送的端口统一
+    if ( $request_method ~* 'GET') {
+        set $upstream "nexus_docker_group";
+    }
+    # 只有本地仓库才支持搜索，所以将搜索请求转发到本地仓库，否则出现500报错
+    if ($request_uri ~ '/search') {
+        set $upstream "nexus_docker_group";
+    }
+    location / {
+        proxy_pass http://$upstream;
+        proxy_set_header Host $http_host;
+        proxy_connect_timeout 3600;
+        proxy_send_timeout 3600;
+        proxy_read_timeout 3600;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_buffering off;
+        proxy_request_buffering off;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto http;
+    }
+}
+```
+
 ## podman客户端配置
 
 1. 注册私服
@@ -38,26 +85,9 @@ Nexus的仓库分三类
 ```bash
 wujianjun@wujianjun-work:~$ vi /etc/containers/registries.conf
 `
-unqualified-search-registries = ["docker.io", "quay.io"]
-#更改docker.io镜像加速器为私服统一访问地址
+unqualified-search-registries = ["mirror.docker.com"]
 [[registry]]
-prefix = "docker.io"
-location = "10.84.102.90:7791"
-insecure = true
-#更改quay.io镜像加速器为私服统一访问地址
-[[registry]]
-prefix = "quay.io"
-location = "10.84.102.90:7791"
-insecure = true
-#注册group访问地址
-[[registry]]
-prefix = "10.84.102.90:7791"
-location = "10.84.102.90:7791"
-insecure = true
-#注册hosted上传地址
-[[registry]]
-prefix = "10.84.102.90:7792"
-location = "10.84.102.90:7792"
+location = "mirror.docker.com"
 insecure = true
 `
 ```
@@ -79,7 +109,7 @@ wujianjun@wujianjun-work:~$ sudo systemctl restart podman
 ```bash
 wujianjun@wujianjun-work:~$ podman pull redis:latest
 Resolved "redis" as an alias (/home/wujianjun/.cache/containers/short-name-aliases.conf)
-Trying to pull docker.io/library/redis:latest...
+Trying to pull mirror.docker.com/library/redis:latest...
 Getting image source signatures
 Copying blob a330b6cecb98 skipped: already exists  
 Copying blob 4f9efe5b47a5 done  
@@ -97,8 +127,8 @@ Storing signatures
 2. 推送到私服
 
 ```bash
-wujianjun@wujianjun-work:~$ podman tag redis 10.84.102.90:7792/library/myredis:1.0.0
-wujianjun@wujianjun-work:~$ podman push 10.84.102.90:7792/library/myredis:1.0.0
+wujianjun@wujianjun-work:~$ podman tag redis mirror.docker.com/library/myredis:1.0.0
+wujianjun@wujianjun-work:~$ podman push mirror.docker.com/library/myredis:1.0.0
 Getting image source signatures
 Copying blob be5818ef2907 done  
 Copying blob c54e0c16ea22 done  
@@ -110,15 +140,13 @@ Copying config 02c7f20544 done
 Writing manifest to image destination
 Storing signatures
 ```
-注意：这里要通过7792的docker-hosted上传地址进行自有镜像的上传。`library`是指镜像的basePath（这里与docker.io/的镜像保持统一便于直接拉于自上传的镜像）
-此时再去私服上可以看到myredis镜像已经可以查看到了。
 
 3. 从私服拉取
 
 ```bash
 wujianjun@wujianjun-work:~$ podman pull myredis:1.0.0
-✔ docker.io/library/myredis:1.0.0
-Trying to pull docker.io/library/myredis:1.0.0...
+✔ mirror.docker.com/library/myredis:1.0.0
+Trying to pull mirror.docker.com/library/myredis:1.0.0...
 Getting image source signatures
 Copying blob dec078b46822 skipped: already exists  
 Copying blob c10395c8d924 done  
@@ -132,7 +160,7 @@ Storing signatures
 02c7f2054405dadaf295fac7281034e998646996e9768e65a78f90af62218be3
 wujianjun@wujianjun-work:~$ podman images
 REPOSITORY                      TAG         IMAGE ID      CREATED      SIZE
-docker.io/library/myredis       1.0.0       02c7f2054405  3 weeks ago  109 MB
+mirror.docker.com/library/myredis       1.0.0       02c7f2054405  3 weeks ago  109 MB
 ```
 
 ## 常见问题
@@ -140,15 +168,14 @@ docker.io/library/myredis       1.0.0       02c7f2054405  3 weeks ago  109 MB
 ```bash
 wujianjun@wujianjun-work:~$ podman pull redis:latest
 Resolved "redis" as an alias (/home/wujianjun/.cache/containers/short-name-aliases.conf)
-Trying to pull docker.io/library/redis:latest...
+Trying to pull mirror.docker.com/library/redis:latest...
 Error: initializing source docker://redis:latest: Requesting bear token: invalid status code from registry 403 (Forbidden)
-wujianjun@wujianjun-work:~$ podman login 10.84.102.90:7791
-Username: de^Cwujianjun@wujianjun-work:~$ podman login -u developer 10.84.102.90:7791
+wujianjun@wujianjun-work:~$ podman login -u developer mirror.docker.com
 Password:
 Login Succeeded!
 wujianjun@wujianjun-work:~$ podman pull redis:latest
 Resolved "redis" as an alias (/home/wujianjun/.cache/containers/short-name-aliases.conf)
-Trying to pull docker.io/library/redis:latest...
+Trying to pull mirror.docker.com/library/redis:latest...
 Getting image source signatures
 Copying blob a330b6cecb98 skipped: already exists  
 Copying blob 4f9efe5b47a5 done  
@@ -163,26 +190,26 @@ Storing signatures
 wujianjun@wujianjun-work:~$
 wujianjun@wujianjun-work:~$ podman images
 REPOSITORY                      TAG         IMAGE ID      CREATED      SIZE
-docker.io/library/redis         latest      02c7f2054405  3 weeks ago  109 MB
+mirror.docker.com/library/redis         latest      02c7f2054405  3 weeks ago  109 MB
 ```
 根因分析：由于未登录私服故返回403的错误，已登录的信息会保存在`/run/user/1000/containers/auth.json`文件中
 
 2. tag没有对应
 ```bash
 wujianjun@wujianjun-work:~$ podman pull myredis:v1.0.0
-✔ docker.io/library/myredis:v1.0.0
-Trying to pull docker.io/library/myredis:v1.0.0...
-Error: initializing source docker://myredis:v1.0.0: reading manifest v1.0.0 in 10.84.102.90:7791/library/myredis: manifest unknown: manifest unknown
+✔ mirror.docker.com/library/myredis:v1.0.0
+Trying to pull mirror.docker.com/library/myredis:v1.0.0...
+Error: initializing source docker://myredis:v1.0.0: reading manifest v1.0.0 in mirror.docker.com/library/myredis: manifest unknown: manifest unknown
 ```
 根因分析：由于tag为v1.0.0的myredis镜像没有找到
 
 3. 未开启http访问
 ```bash
 wujianjun@wujianjun-work:~$ podman pull myredis:1.0.0
-✔ docker.io/library/myredis:v1.0.0
-Trying to pull docker.io/library/myredis:1.0.0...
-  Get https://10.84.102.90:7791/v2/: http: server gave HTTP response to HTTPS client
-Error: error pulling image "10.84.102.90:7791/library/myredis": unable to pull 10.84.102.90:7791/library/myredis: unable to pull image: Error initializing source docker://10.84.102.90:7791/library/myredis:1.0.0: error pinging docker registry 10.84.102.90:7791: Get https://10.84.102.90:7791/v2/: http: server gave HTTP response to HTTPS client
+✔ mirror.docker.com/library/myredis:v1.0.0
+Trying to pull mirror.docker.com/library/myredis:1.0.0...
+  Get https://mirror.docker.com/v2/: http: server gave HTTP response to HTTPS client
+Error: error pulling image "mirror.docker.com/library/myredis": unable to pull mirror.docker.com/library/myredis: unable to pull image: Error initializing source docker://mirror.docker.com/library/myredis:1.0.0: error pinging docker registry mirror.docker.com: Get https://mirror.docker.com/v2/: http: server gave HTTP response to HTTPS client
 ```
 根因分析：由于在注册私服地址时没有开启`insecure = true`
 
