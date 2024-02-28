@@ -3,6 +3,9 @@ title: docker数据卷与网络配置
 tags:
   - Docker
   - 原创
+keywords:
+  - Docker
+  - 网络配置
 date: 2016-04-18 11:33:08
 ---
 
@@ -14,7 +17,7 @@ $ sudo docker run -d -P --name web -v /src/webapp:/opt/webapp:ro training/webapp
 ```
 ## 创建数据卷
 在用 `docker run` 命令的时候，使用 `-v` 标记来创建一个数据卷并挂载到容器里。在一次 run 中多次使用可以挂载多个数据卷。
-示例： 
+示例：
 ```
 $ sudo docker run -d -P --name web -v /webapp training/webapp python app.py
 ```
