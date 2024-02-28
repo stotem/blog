@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>iOS 本地通知 | 建均笔记</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="为了提高用户的关注度，我们经常会推送一些新的内容给用户。ios中主要有两种推送，一种是远程通知，一种是本地通知，远程通知是和服务器端配合完成的，这里暂不说明，这篇文章主要说下本地通知。本地通知是在ios4.0之后添加的，但是在ios8之后，在设置通知之前，需要先对通知进行注册，注册需要的通知类型，否则收不到响应类型的通知消息。 1234567891011&#x2F;&#x2F;ios8需要注册推送if ([UIApp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS 本地通知">
+<meta property="og:url" content="http://www.uto.ink/2016/04/05/ios-local-notification/index.html">
+<meta property="og:site_name" content="建均笔记">
+<meta property="og:description" content="为了提高用户的关注度，我们经常会推送一些新的内容给用户。ios中主要有两种推送，一种是远程通知，一种是本地通知，远程通知是和服务器端配合完成的，这里暂不说明，这篇文章主要说下本地通知。本地通知是在ios4.0之后添加的，但是在ios8之后，在设置通知之前，需要先对通知进行注册，注册需要的通知类型，否则收不到响应类型的通知消息。 1234567891011&#x2F;&#x2F;ios8需要注册推送if ([UIApp">
+<meta property="og:locale">
+<meta property="article:published_time" content="2016-04-05T07:16:53.000Z">
+<meta property="article:modified_time" content="2024-02-28T06:35:25.246Z">
+<meta property="article:author" content="建均笔记">
+<meta property="article:tag" content="转载">
+<meta property="article:tag" content="iOS">
+<meta name="twitter:card" content="summary">
+  
+  <meta name="keywords" content="建均笔记">
+  
+  
+    <link rel="alternative" href="/atom.xml" title="建均笔记" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<script>
+(function(){
+    var bp = document.createElement('script');
+    bp.src = '//push.zhanzhang.baidu.com/push.js';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+<!-- baidu Analytics -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?b5a8646d4b9e56cf6ef835a8e416f147";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!-- End baidu Analytics -->
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css" />
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="/img/avatar.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">建均笔记</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">不积跬步 无以至千里</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+					</div>
+
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="/about">关于我</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/stotem" title="github">github</a>
+					        
+								<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+					        
+								<a class="mail" target="_blank" href="mailto:china.wujianjun@icloud.com" title="mail">mail</a>
+					        
+						</div>
+						<div>
+							<i class="fa fa-line-chart"></i>
+							本站访问量<span id=“busuanzi_container_site_pv”><span id="busuanzi_value_site_pv"><i class="fa fa-spinner fa-spin"></i></span></span> 次
+						</div>
+					</nav>
+				</section>
+
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Docker/" style="font-size: 15.71px;">Docker</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/Maven/" style="font-size: 11.43px;">Maven</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Nginx/" style="font-size: 15.71px;">Nginx</a> <a href="/tags/OpenVPN/" style="font-size: 12.86px;">OpenVPN</a> <a href="/tags/Podman/" style="font-size: 11.43px;">Podman</a> <a href="/tags/Redis/" style="font-size: 11.43px;">Redis</a> <a href="/tags/Transaction/" style="font-size: 10px;">Transaction</a> <a href="/tags/cdt/" style="font-size: 10px;">cdt</a> <a href="/tags/https/" style="font-size: 10px;">https</a> <a href="/tags/iOS/" style="font-size: 17.14px;">iOS</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/nginx-obs/" style="font-size: 10px;">nginx + obs</a> <a href="/tags/php-fpm/" style="font-size: 10px;">php-fpm</a> <a href="/tags/podman/" style="font-size: 14.29px;">podman</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/rocketmq/" style="font-size: 10px;">rocketmq</a> <a href="/tags/shiro/" style="font-size: 11.43px;">shiro</a> <a href="/tags/spring/" style="font-size: 11.43px;">spring</a> <a href="/tags/springcloud/" style="font-size: 10px;">springcloud</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/transaction/" style="font-size: 10px;">transaction</a> <a href="/tags/%E5%85%B3%E9%94%AE%E7%AC%94%E8%AE%B0/" style="font-size: 10px;">关键笔记</a> <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" style="font-size: 10px;">分布式</a> <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/" style="font-size: 10px;">分布式事务</a> <a href="/tags/%E5%8E%9F%E5%88%9B/" style="font-size: 20px;">原创</a> <a href="/tags/%E5%A4%9A%E8%BF%9B%E7%A8%8B/" style="font-size: 10px;">多进程</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" style="font-size: 11.43px;">大数据</a> <a href="/tags/%E5%B9%B6%E5%8F%91/" style="font-size: 10px;">并发</a> <a href="/tags/%E6%80%BB%E7%BB%93/" style="font-size: 10px;">总结</a> <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 10px;">操作系统</a> <a href="/tags/%E6%9E%B6%E6%9E%84/" style="font-size: 10px;">架构</a> <a href="/tags/%E7%94%B5%E5%95%86/" style="font-size: 10px;">电商</a> <a href="/tags/%E7%AC%94%E8%AE%B0/" style="font-size: 10px;">笔记</a> <a href="/tags/%E8%BD%AC%E8%BD%BD/" style="font-size: 18.57px;">转载</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 10px;">随笔</a>
+					</div>
+				</section>
+				
+
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://andylee1988.github.io">andylee1988的博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://devtll.github.io">devtll的博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://esnake0.github.io">esnake0的博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.shaofan.org">少凡的独立博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.csdn.net/liuguofeng719?viewmode=list">guofeng的博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://witchan.com">WitChan的技术博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.csdn.net/kelanq">kelanQ的博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://chenxinyu.work">IT古书</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://8tool.club">KnowledgeBase</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://cherrycheng.top">cherrycheng</a><br />
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+
+	</header>
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">建均笔记</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+			
+				<img lazy-src="/img/avatar.jpg" class="js-avatar">
+			
+			</div>
+			<hgroup>
+			  <h1 class="header-author">建均笔记</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">不积跬步 无以至千里</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/about">关于我</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/stotem" title="github">github</a>
+			        
+						<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+			        
+						<a class="mail" target="_blank" href="mailto:china.wujianjun@icloud.com" title="mail">mail</a>
+			        
+				</div>
+				<div style="text-align: center;">
+					<i class="fa fa-line-chart"></i>
+					本站访问量<span id=“busuanzi_container_site_pv”><span id="busuanzi_value_site_pv"><i class="fa fa-spinner fa-spin"></i></span></span> 次
+				</div>
+			</nav>
+		</header>
+	</div>
+</nav>
+
+      <div class="body-wrap"><article id="post-ios-local-notification" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/04/05/ios-local-notification/" class="article-date">
+  	<time datetime="2016-04-05T07:16:53.000Z" itemprop="datePublished">2016-04-05</time>
+</a>
+      <div class="analysis-container">
+	<i class="fa fa-line-chart"></i>
+	已阅读<span id=“busuanzi_container_page_pv”><span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span></span> 次
+</div>
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      iOS 本地通知
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/" rel="tag">iOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%BD%AC%E8%BD%BD/" rel="tag">转载</a></li></ul>
+	</div>
+
+        
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+              
+                       
+             <div id="toc" class="article-toc">
+             <h2>文章目录</h2>
+                 
+             </div>
+             <script type="text/javascript">
+               var _article = document.getElementsByClassName('article')[0];
+               <!-- setTimeout("_article.style.marginRight = '211px'",0);  -->
+               setTimeout("_article.className += ' article2'",0); 
+               setTimeout("document.getElementById('toc').style.right = '15px'", 0);                
+             </script>
+           
+         
+        <p>为了提高用户的关注度，我们经常会推送一些新的内容给用户。ios中主要有两种推送，一种是远程通知，一种是本地通知，远程通知是和服务器端配合完成的，这里暂不说明，这篇文章主要说下本地通知。<br>本地通知是在ios4.0之后添加的，但是在ios8之后，在设置通知之前，需要先对通知进行注册，注册需要的通知类型，否则收不到响应类型的通知消息。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//ios8需要注册推送</span></span><br><span class="line"><span class="keyword">if</span> ([<span class="built_in">UIApplication</span> instancesRespondToSelector:<span class="keyword">@selector</span>(registerUserNotificationSettings:)])&#123;</span><br><span class="line">    <span class="comment">//通知类型</span></span><br><span class="line">    <span class="built_in">UIUserNotificationType</span> types = <span class="built_in">UIUserNotificationTypeBadge</span> |</span><br><span class="line">    <span class="built_in">UIUserNotificationTypeSound</span> | <span class="built_in">UIUserNotificationTypeAlert</span>;</span><br><span class="line">    <span class="comment">//设置通知类型和动画</span></span><br><span class="line">    <span class="built_in">UIUserNotificationSettings</span> *mySettings =</span><br><span class="line">    [<span class="built_in">UIUserNotificationSettings</span> settingsForTypes:types categories:<span class="literal">nil</span>];</span><br><span class="line">    <span class="comment">//注册</span></span><br><span class="line">    [[<span class="built_in">UIApplication</span> sharedApplication] registerUserNotificationSettings:mySettings];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上边注册了Icon角标，声音，和警告通知，当程序第一次调用<code>registerUserNotificationSettings</code>的时候，程序会询问用户是否允许程序发送通知，在用户选择之后(不管是同意与否)，程序会异步调用<code>- (void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)</code>函数。所有的注册类型都会可通过<code>currentUserNotificationSettings</code>变量获得。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">UILocalNotification</span> *notification = [[<span class="built_in">UILocalNotification</span> alloc] init];</span><br><span class="line"><span class="keyword">if</span> (notification) &#123;</span><br><span class="line">    <span class="comment">//设置时区</span></span><br><span class="line">    notification.timeZone=[<span class="built_in">NSTimeZone</span> defaultTimeZone];</span><br><span class="line">    <span class="comment">//设置推送的时间点</span></span><br><span class="line">    <span class="built_in">NSDateFormatter</span> *formatter = [[<span class="built_in">NSDateFormatter</span> alloc] init];</span><br><span class="line">    [formatter setDateFormat:<span class="string">@&quot;HH:mm:ss&quot;</span>];</span><br><span class="line">    <span class="built_in">NSDate</span> *date = [formatter dateFromString:<span class="string">@&quot;09:00:00&quot;</span>];</span><br><span class="line">    notification.fireDate=date;</span><br><span class="line">    <span class="comment">//通知重复提示的单位，可以是天、周、月</span></span><br><span class="line">    notification.repeatInterval = kCFCalendarUnitDay;</span><br><span class="line">    <span class="comment">//推送的内容</span></span><br><span class="line">    notification.alertBody = <span class="string">@&quot;this is a notificaiton&quot;</span>;</span><br><span class="line">    <span class="comment">//推送声音</span></span><br><span class="line">    notification.soundName = <span class="built_in">UILocalNotificationDefaultSoundName</span>;</span><br><span class="line">    <span class="comment">//应用右上角红色图标数字</span></span><br><span class="line">    notification.applicationIconBadgeNumber = <span class="number">1</span>;</span><br><span class="line">    <span class="comment">//自定义信息</span></span><br><span class="line">    <span class="built_in">NSDictionary</span> *infoDict = [<span class="built_in">NSDictionary</span> dictionaryWithObject:<span class="string">@&quot;two&quot;</span> forKey:<span class="string">@&quot;one&quot;</span>];</span><br><span class="line">    notification.userInfo = infoDict;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">UIApplication</span> *app = [<span class="built_in">UIApplication</span> sharedApplication];</span><br><span class="line">[app scheduleLocalNotification:notification];</span><br></pre></td></tr></table></figure>
+<p>本地通知是通过<code>UILocalNotification</code>类来完成的，首先需要通过fireDate设置通知的时间点，还可设置通知的内容，声音，角标数等。除此之外，用户还可通过userInfo设置自定义数据。具体可参考<a target="_blank" rel="noopener" href="https://developer.apple.com/library/ios/documentation/iPhone/Reference/UILocalNotification_Class/index.html#//apple_ref/occ/cl/UILocalNotification">UILocalNotification官方文档</a><br>当程序正在运行时，收到通知时，会调用<code>application:didReceiveLocalNotification</code>方法。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)application:(<span class="built_in">UIApplication</span> *)application didReceiveLocalNotification:(<span class="built_in">UILocalNotification</span> *)notification</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">NSDictionary</span> *infoDict = notification.userInfo;</span><br><span class="line">    <span class="built_in">NSString</span> *str = [infoDict objectForKey:<span class="string">@&quot;one&quot;</span>];</span><br><span class="line">    <span class="keyword">if</span> ([str isEqualToString:<span class="string">@&quot;two&quot;</span>]) &#123;</span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@&quot;--------yes  equal&quot;</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@&quot;--------no &quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>取消通知时，可以使用<code>cancelLocalNotification</code>取消具体某个通知或者通过<code>cancelAllLocalNotifications</code>取消全部通知。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[[<span class="built_in">UIApplication</span> sharedApplication] cancelAllLocalNotifications];</span><br></pre></td></tr></table></figure>
+<p>如果我们添加了角标，在通知之后，角标会一直存在，当需要取消角标时，可利用下边语句</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[[<span class="built_in">UIApplication</span> sharedApplication] setApplicationIconBadgeNumber:<span class="number">0</span>];</span><br></pre></td></tr></table></figure>
+<p>从ios8开始，通知添加了通知动作事件，如果有注意到，我们上边的进行注册的时候categories赋值为nil，此变量就是用来添加动作事件的。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//ios8需要注册推送</span></span><br><span class="line"><span class="keyword">if</span> ([<span class="built_in">UIApplication</span> instancesRespondToSelector:<span class="keyword">@selector</span>(registerUserNotificationSettings:)])&#123;</span><br><span class="line">    <span class="built_in">UIMutableUserNotificationAction</span> *acceptAction =</span><br><span class="line">    [[<span class="built_in">UIMutableUserNotificationAction</span> alloc] init];</span><br><span class="line">    acceptAction.identifier = <span class="string">@&quot;accept_action&quot;</span>; <span class="comment">//ID</span></span><br><span class="line">    acceptAction.title = <span class="string">@&quot;Accept&quot;</span>;             <span class="comment">//按钮内容</span></span><br><span class="line">    acceptAction.activationMode = <span class="built_in">UIUserNotificationActivationModeBackground</span>;</span><br><span class="line">    acceptAction.destructive = <span class="literal">NO</span>;</span><br><span class="line">    acceptAction.authenticationRequired = <span class="literal">NO</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">UIMutableUserNotificationAction</span> *cancelAction =</span><br><span class="line">    [[<span class="built_in">UIMutableUserNotificationAction</span> alloc] init];</span><br><span class="line">    cancelAction.identifier = <span class="string">@&quot;cancel_action&quot;</span>;</span><br><span class="line">    cancelAction.title=<span class="string">@&quot;Cancel&quot;</span>;</span><br><span class="line">    cancelAction.activationMode = <span class="built_in">UIUserNotificationActivationModeBackground</span>;</span><br><span class="line">    cancelAction.destructive = <span class="literal">NO</span>;</span><br><span class="line">    cancelAction.authenticationRequired = <span class="literal">NO</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// First create the category</span></span><br><span class="line">    <span class="built_in">UIMutableUserNotificationCategory</span> *inviteCategory =</span><br><span class="line">    [[<span class="built_in">UIMutableUserNotificationCategory</span> alloc] init];</span><br><span class="line">    inviteCategory.identifier = <span class="string">@&quot;INVITE_CATEGORY&quot;</span>;</span><br><span class="line">    [inviteCategory setActions:@[acceptAction, cancelAction]</span><br><span class="line">                    forContext:<span class="built_in">UIUserNotificationActionContextDefault</span>];</span><br><span class="line">    <span class="built_in">NSSet</span> *categories = [<span class="built_in">NSSet</span> setWithObject:inviteCategory];</span><br><span class="line"></span><br><span class="line">    <span class="comment">//通知类型</span></span><br><span class="line">    <span class="built_in">UIUserNotificationType</span> types = <span class="built_in">UIUserNotificationTypeBadge</span> |</span><br><span class="line">    <span class="built_in">UIUserNotificationTypeSound</span> | <span class="built_in">UIUserNotificationTypeAlert</span>;</span><br><span class="line">    <span class="built_in">UIUserNotificationSettings</span> *mySettings =</span><br><span class="line">    [<span class="built_in">UIUserNotificationSettings</span> settingsForTypes:types categories:categories];</span><br><span class="line">    <span class="comment">//注册</span></span><br><span class="line">    [[<span class="built_in">UIApplication</span> sharedApplication] registerUserNotificationSettings:mySettings];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">UILocalNotification</span> *notification = [[<span class="built_in">UILocalNotification</span> alloc] init];</span><br><span class="line"><span class="keyword">if</span> (notification) &#123;</span><br><span class="line">    <span class="comment">//时区</span></span><br><span class="line">    notification.timeZone=[<span class="built_in">NSTimeZone</span> defaultTimeZone];</span><br><span class="line">    <span class="built_in">NSDateFormatter</span> *formatter = [[<span class="built_in">NSDateFormatter</span> alloc] init];</span><br><span class="line">    [formatter setDateFormat:<span class="string">@&quot;ss&quot;</span>];</span><br><span class="line">    <span class="built_in">NSDate</span> *date = [formatter dateFromString:<span class="string">@&quot;10&quot;</span>];</span><br><span class="line">    notification.alertBody = <span class="string">@&quot;haha&quot;</span>;</span><br><span class="line">    notification.fireDate=date;</span><br><span class="line">    <span class="comment">//通知重复提示的单位，可以是天、周、月</span></span><br><span class="line">    notification.repeatInterval = kCFCalendarUnitMinute;</span><br><span class="line">    <span class="comment">//推送声音</span></span><br><span class="line">    notification.soundName = <span class="built_in">UILocalNotificationDefaultSoundName</span>;</span><br><span class="line">    <span class="comment">//应用右上角红色图标数字</span></span><br><span class="line">    notification.applicationIconBadgeNumber = <span class="number">1</span>;</span><br><span class="line">    notification.category = <span class="string">@&quot;INVITE_CATEGORY&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">NSDictionary</span> *infoDict = [<span class="built_in">NSDictionary</span> dictionaryWithObject:<span class="string">@&quot;two&quot;</span> forKey:<span class="string">@&quot;one&quot;</span>];</span><br><span class="line">    notification.userInfo = infoDict;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">UIApplication</span> *app = [<span class="built_in">UIApplication</span> sharedApplication];</span><br><span class="line">[app scheduleLocalNotification:notification];</span><br></pre></td></tr></table></figure>
+<p>以上就是一个动作的事件的注册过程，其中用到了<code>UIMutableUserNotificationAction</code>和<code>UIMutableUserNotificationCategory</code>具体用法可参考官方文档<br><a target="_blank" rel="noopener" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIMutableUserNotificationAction_class/index.html#//apple_ref/occ/cl/UIMutableUserNotificationAction">UIMutableUserNotificationAction</a><br><a target="_blank" rel="noopener" href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIMutableUserNotificationCategory_class/index.html#//apple_ref/occ/cl/UIMutableUserNotificationCategory">UIMutableUserNotificationCategory</a><br>这两个类，注册完之后，特别需要主意，要在本地通知中进行设置，否则没有效果。值为注册时category指定的ID</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">notification.category = <span class="string">@&quot;INVITE_CATEGORY&quot;</span>;</span><br></pre></td></tr></table></figure>
+<p>这样当我们收到通知，下拉一下就可看到动作事件，有事件，就有事件的回调函数</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)application:(<span class="built_in">UIApplication</span> *)application handleActionWithIdentifier:(<span class="built_in">NSString</span> *)identifier forLocalNotification:(<span class="built_in">UILocalNotification</span> *)notification completionHandler:(<span class="keyword">void</span> (^)())completionHandler</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> ([identifier isEqualToString:<span class="string">@&quot;accept_action&quot;</span>]) &#123;</span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@&quot;-----accept action&quot;</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> ([identifier isEqualToString:<span class="string">@&quot;cancel_action&quot;</span>]) &#123;</span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@&quot;-----cancel action&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (completionHandler) &#123;</span><br><span class="line">        completionHandler();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过id我们就可以区分不同的动作，然后对其进行相应处理，最后调用<code>completionHandler()</code>;</p>
+<hr>
+<p><em>观点仅代表自己，期待你的留言。</em><br><a target="_blank" rel="noopener" href="http://zuolun.me/blog/2015/01/08/ios-ben-di-tui-song/">http://zuolun.me/blog/2015/01/08/ios-ben-di-tui-song/</a></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/04/06/docker-install-issue/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          Docker安装问题汇总
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/04/01/ios-muti-task/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">iOS 7 的多任务</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+    <a class="jiathis_button_twitter"></a>
+    <a class="jiathis_button_plus"></a> 
+    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+
+
+
+
+
+<section id="comments">
+  <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'blogcnvip'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2024 建均笔记
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+
+<script src="/js/require-2.1.6,jquery-1.9.1.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'true', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+
+<link href="//cdn.bootcss.com/highlight.js/8.0/styles/tomorrow-night-bright.min.css" rel="stylesheet">  
+<script src="//cdn.bootcss.com/highlight.js/8.0/highlight.min.js"></script>  
+<script> 
+jQuery('td.code pre').each(function(i, block) {
+  hljs.highlightBlock(block);
+});
+</script>
+
+
+  </div>
+</body>
+</html>

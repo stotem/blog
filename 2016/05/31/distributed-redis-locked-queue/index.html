@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>Redis实现分布式锁和分布式队列 | 建均笔记</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="分布式锁通过Redis做分布式系统的共享内存实现方案中，可以实现分布式锁的功能。实现方法就是用 SET NX 命令设置一个设定了存活周期 TTL 的 Key 来获取锁，通过删除 Key 来释放锁，通过存活周期来保证避免死锁。如：SET resource_name my_random_value NX PX 30000  注：  SET key value [EX seconds] [PX mill">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis实现分布式锁和分布式队列">
+<meta property="og:url" content="http://www.uto.ink/2016/05/31/distributed-redis-locked-queue/index.html">
+<meta property="og:site_name" content="建均笔记">
+<meta property="og:description" content="分布式锁通过Redis做分布式系统的共享内存实现方案中，可以实现分布式锁的功能。实现方法就是用 SET NX 命令设置一个设定了存活周期 TTL 的 Key 来获取锁，通过删除 Key 来释放锁，通过存活周期来保证避免死锁。如：SET resource_name my_random_value NX PX 30000  注：  SET key value [EX seconds] [PX mill">
+<meta property="og:locale">
+<meta property="article:published_time" content="2016-05-31T03:56:20.000Z">
+<meta property="article:modified_time" content="2024-02-28T06:35:25.245Z">
+<meta property="article:author" content="建均笔记">
+<meta property="article:tag" content="原创">
+<meta property="article:tag" content="Redis">
+<meta name="twitter:card" content="summary">
+  
+  <meta name="keywords" content="Redis,分布式锁,分布式队列">
+  
+  
+    <link rel="alternative" href="/atom.xml" title="建均笔记" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<script>
+(function(){
+    var bp = document.createElement('script');
+    bp.src = '//push.zhanzhang.baidu.com/push.js';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+<!-- baidu Analytics -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?b5a8646d4b9e56cf6ef835a8e416f147";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!-- End baidu Analytics -->
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css" />
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="/img/avatar.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">建均笔记</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">不积跬步 无以至千里</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+					</div>
+
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="/about">关于我</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/stotem" title="github">github</a>
+					        
+								<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+					        
+								<a class="mail" target="_blank" href="mailto:china.wujianjun@icloud.com" title="mail">mail</a>
+					        
+						</div>
+						<div>
+							<i class="fa fa-line-chart"></i>
+							本站访问量<span id=“busuanzi_container_site_pv”><span id="busuanzi_value_site_pv"><i class="fa fa-spinner fa-spin"></i></span></span> 次
+						</div>
+					</nav>
+				</section>
+
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Docker/" style="font-size: 15.71px;">Docker</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/Maven/" style="font-size: 11.43px;">Maven</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Nginx/" style="font-size: 15.71px;">Nginx</a> <a href="/tags/OpenVPN/" style="font-size: 12.86px;">OpenVPN</a> <a href="/tags/Podman/" style="font-size: 11.43px;">Podman</a> <a href="/tags/Redis/" style="font-size: 11.43px;">Redis</a> <a href="/tags/Transaction/" style="font-size: 10px;">Transaction</a> <a href="/tags/cdt/" style="font-size: 10px;">cdt</a> <a href="/tags/https/" style="font-size: 10px;">https</a> <a href="/tags/iOS/" style="font-size: 17.14px;">iOS</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/nginx-obs/" style="font-size: 10px;">nginx + obs</a> <a href="/tags/php-fpm/" style="font-size: 10px;">php-fpm</a> <a href="/tags/podman/" style="font-size: 14.29px;">podman</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/rocketmq/" style="font-size: 10px;">rocketmq</a> <a href="/tags/shiro/" style="font-size: 11.43px;">shiro</a> <a href="/tags/spring/" style="font-size: 11.43px;">spring</a> <a href="/tags/springcloud/" style="font-size: 10px;">springcloud</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/transaction/" style="font-size: 10px;">transaction</a> <a href="/tags/%E5%85%B3%E9%94%AE%E7%AC%94%E8%AE%B0/" style="font-size: 10px;">关键笔记</a> <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" style="font-size: 10px;">分布式</a> <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/" style="font-size: 10px;">分布式事务</a> <a href="/tags/%E5%8E%9F%E5%88%9B/" style="font-size: 20px;">原创</a> <a href="/tags/%E5%A4%9A%E8%BF%9B%E7%A8%8B/" style="font-size: 10px;">多进程</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" style="font-size: 11.43px;">大数据</a> <a href="/tags/%E5%B9%B6%E5%8F%91/" style="font-size: 10px;">并发</a> <a href="/tags/%E6%80%BB%E7%BB%93/" style="font-size: 10px;">总结</a> <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 10px;">操作系统</a> <a href="/tags/%E6%9E%B6%E6%9E%84/" style="font-size: 10px;">架构</a> <a href="/tags/%E7%94%B5%E5%95%86/" style="font-size: 10px;">电商</a> <a href="/tags/%E7%AC%94%E8%AE%B0/" style="font-size: 10px;">笔记</a> <a href="/tags/%E8%BD%AC%E8%BD%BD/" style="font-size: 18.57px;">转载</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 10px;">随笔</a>
+					</div>
+				</section>
+				
+
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://andylee1988.github.io">andylee1988的博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://devtll.github.io">devtll的博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://esnake0.github.io">esnake0的博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.shaofan.org">少凡的独立博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.csdn.net/liuguofeng719?viewmode=list">guofeng的博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://witchan.com">WitChan的技术博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.csdn.net/kelanq">kelanQ的博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://chenxinyu.work">IT古书</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://8tool.club">KnowledgeBase</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://cherrycheng.top">cherrycheng</a><br />
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+
+	</header>
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">建均笔记</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+			
+				<img lazy-src="/img/avatar.jpg" class="js-avatar">
+			
+			</div>
+			<hgroup>
+			  <h1 class="header-author">建均笔记</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">不积跬步 无以至千里</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/about">关于我</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/stotem" title="github">github</a>
+			        
+						<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+			        
+						<a class="mail" target="_blank" href="mailto:china.wujianjun@icloud.com" title="mail">mail</a>
+			        
+				</div>
+				<div style="text-align: center;">
+					<i class="fa fa-line-chart"></i>
+					本站访问量<span id=“busuanzi_container_site_pv”><span id="busuanzi_value_site_pv"><i class="fa fa-spinner fa-spin"></i></span></span> 次
+				</div>
+			</nav>
+		</header>
+	</div>
+</nav>
+
+      <div class="body-wrap"><article id="post-distributed-redis-locked-queue" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/05/31/distributed-redis-locked-queue/" class="article-date">
+  	<time datetime="2016-05-31T03:56:20.000Z" itemprop="datePublished">2016-05-31</time>
+</a>
+      <div class="analysis-container">
+	<i class="fa fa-line-chart"></i>
+	已阅读<span id=“busuanzi_container_page_pv”><span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span></span> 次
+</div>
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Redis实现分布式锁和分布式队列
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Redis/" rel="tag">Redis</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%8E%9F%E5%88%9B/" rel="tag">原创</a></li></ul>
+	</div>
+
+        
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+              
+                       
+             <div id="toc" class="article-toc">
+             <h2>文章目录</h2>
+               <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81"><span class="toc-number">1.</span> <span class="toc-text">分布式锁</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E9%98%9F%E5%88%97"><span class="toc-number">2.</span> <span class="toc-text">分布式队列</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%A6%E5%A4%96%E7%9A%84%E9%80%89%E6%8B%A9"><span class="toc-number">3.</span> <span class="toc-text">另外的选择</span></a></li></ol>  
+             </div>
+             <script type="text/javascript">
+               var _article = document.getElementsByClassName('article')[0];
+               <!-- setTimeout("_article.style.marginRight = '211px'",0);  -->
+               setTimeout("_article.className += ' article2'",0); 
+               setTimeout("document.getElementById('toc').style.right = '15px'", 0);                
+             </script>
+           
+         
+        <h2 id="分布式锁"><a href="#分布式锁" class="headerlink" title="分布式锁"></a>分布式锁</h2><p>通过Redis做分布式系统的共享内存实现方案中，可以实现分布式锁的功能。实现方法就是用 SET NX 命令设置一个设定了存活周期 TTL 的 Key 来获取锁，通过删除 Key 来释放锁，通过存活周期来保证避免死锁。<br>如：<code>SET resource_name my_random_value NX PX 30000</code></p>
+<p> <em>注：</em></p>
+<hr>
+<p><code>SET key value [EX seconds] [PX milliseconds] [NX|XX]</code><br>从2.6.12版本开始，redis为SET命令增加了一系列选项:</p>
+<ul>
+<li>EX seconds – Set the specified expire time, in seconds.</li>
+<li>PX milliseconds – Set the specified expire time, in milliseconds.</li>
+<li>NX – Only set the key if it does not already exist.</li>
+<li>XX – Only set the key if it already exist.</li>
+<li>EX seconds – 设置键key的过期时间，单位时秒</li>
+<li>PX milliseconds – 设置键key的过期时间，单位时毫秒</li>
+<li>NX – 只有键key不存在的时候才会设置key的值</li>
+<li>XX – 只有键key存在的时候才会设置key的值</li>
+</ul>
+<p>但，以上简单方案存在一个单点故障的风险。在master/slave环境下，当：</p>
+<ol>
+<li>客户端A获取到锁.</li>
+<li>master节点在将 key 复制到 slave 节点之前崩溃了</li>
+<li>此时，slave节点被提升为master节点.</li>
+<li>客户端 B 从新的 master 节点获得了锁(而这个锁实际上已经由客户端 A 所持有)，导致了系统中有两个客户端在同一时间段内持有同一个互斥锁，破坏了互斥锁的安全性。</li>
+</ol>
+<p>__解决方法：__需要解决以上问题，需要在进行锁设值时将惟一标识系统的ID做为value一同存储到Redis中，在完成所有的操作后，进行解锁时取出Redis内存储的value进行比对，<br>如果锁key对应的value还是当前系统的ID,那么表示当前锁目前只被当前系统所持有，反之，则表示锁被其它的系统抢占，那么需要回滚所有的操作。</p>
+<p>如：</p>
+<table>
+<thead>
+<tr>
+<th align="left">客户端A（ID为SYSA）</th>
+<th align="left">Redis</th>
+<th align="left">客户端B（ID为SYSB）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">获取到锁（SET dist_lock SYSA NX PX 30000)</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">进行其它的业务操作。。。</td>
+<td align="left">master发生故障，slave被提升为NewMaster(未将master中dist_lock复制到NewMaster)</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">获取到锁（SET dist_lock SYSB NX PX 30000）</td>
+</tr>
+<tr>
+<td align="left">解锁 (get dist_lock，对value进行判定，为SYSA则执行解锁，否则回滚业务)</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">解锁 (get dist_lock，对value进行判定，为SYSB则执行解锁，否则回滚业务)</td>
+</tr>
+</tbody></table>
+<h2 id="分布式队列"><a href="#分布式队列" class="headerlink" title="分布式队列"></a>分布式队列</h2><p>Redis实现分布式队列主要实现是通过<code>有序集合</code>实现，通过ZADD向集合内添加元素，同时添加多个元素时为事务处理（不存在部分成功部分失败的情况）</p>
+<p> <em>注：</em></p>
+<hr>
+<p><code>ZADD key [NX|XX] [CH] [INCR] score member [score member ...]</code><br>从3.0.2版本开始，增加以下选项：</p>
+<ul>
+<li>XX: Only update elements that already exist. Never add elements.</li>
+<li>NX: Don’t update already existing elements. Always add new elements.</li>
+<li>CH: Modify the return value from the number of new elements added, to the total number of elements changed (CH is an abbreviation of changed). Changed elements are new elements added and elements already existing for which the score was updated. So elements specified in the command line having the same score as they had in the past are not counted. Note: normally the return value of ZADD only counts the number of new elements added.</li>
+<li>INCR: When this option is specified ZADD acts like ZINCRBY. Only one score-element pair can be specified in this mode.</li>
+</ul>
+<h2 id="另外的选择"><a href="#另外的选择" class="headerlink" title="另外的选择"></a>另外的选择</h2><p>_Java库：_其实也在使用<a target="_blank" rel="noopener" href="https://github.com/mrniko/redisson">redisson</a>来实现分布式锁。它封装了针对Redis各种操作的分布式实现。</p>
+<p>其它语言可参照官网文章: <a target="_blank" rel="noopener" href="http://redis.io/topics/distlock?cm_mc_uid=77610277652214581184982&amp;cm_mc_sid_50200000=1464593765">http://redis.io/topics/distlock?cm_mc_uid=77610277652214581184982&amp;cm_mc_sid_50200000=1464593765</a></p>
+<hr>
+<p><em>观点仅代表自己，期待你的留言。</em></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/05/31/redis-cluster-note/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          Redis集群备注
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/05/30/mysql-lock-transaction/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">关于MariaDB事务阻塞等待及锁的实验笔记</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+    <a class="jiathis_button_twitter"></a>
+    <a class="jiathis_button_plus"></a> 
+    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+
+
+
+
+
+<section id="comments">
+  <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'blogcnvip'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2024 建均笔记
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+
+<script src="/js/require-2.1.6,jquery-1.9.1.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'true', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+
+<link href="//cdn.bootcss.com/highlight.js/8.0/styles/tomorrow-night-bright.min.css" rel="stylesheet">  
+<script src="//cdn.bootcss.com/highlight.js/8.0/highlight.min.js"></script>  
+<script> 
+jQuery('td.code pre').each(function(i, block) {
+  hljs.highlightBlock(block);
+});
+</script>
+
+
+  </div>
+</body>
+</html>

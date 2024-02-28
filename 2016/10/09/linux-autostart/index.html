@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>Linux开机自动启动Tomcat应用 | 建均笔记</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="前言刚过国庆长假，工作机房断电，重回工作岗位发现N多的应用需要手动启动。感觉烦燥？so.. 配置linux开机自启动 配置在_&#x2F;etc&#x2F;rc.local_文件末尾增加以下内容 1234567891011#!&#x2F;bin&#x2F;sh## This script will be executed *after* all the other init scripts.# You can put your own">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux开机自动启动Tomcat应用">
+<meta property="og:url" content="http://www.uto.ink/2016/10/09/linux-autostart/index.html">
+<meta property="og:site_name" content="建均笔记">
+<meta property="og:description" content="前言刚过国庆长假，工作机房断电，重回工作岗位发现N多的应用需要手动启动。感觉烦燥？so.. 配置linux开机自启动 配置在_&#x2F;etc&#x2F;rc.local_文件末尾增加以下内容 1234567891011#!&#x2F;bin&#x2F;sh## This script will be executed *after* all the other init scripts.# You can put your own">
+<meta property="og:locale">
+<meta property="article:published_time" content="2016-10-09T10:43:51.000Z">
+<meta property="article:modified_time" content="2024-02-28T06:35:25.247Z">
+<meta property="article:author" content="建均笔记">
+<meta property="article:tag" content="原创">
+<meta name="twitter:card" content="summary">
+  
+  <meta name="keywords" content="建均笔记">
+  
+  
+    <link rel="alternative" href="/atom.xml" title="建均笔记" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<script>
+(function(){
+    var bp = document.createElement('script');
+    bp.src = '//push.zhanzhang.baidu.com/push.js';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+<!-- baidu Analytics -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?b5a8646d4b9e56cf6ef835a8e416f147";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!-- End baidu Analytics -->
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css" />
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="/img/avatar.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">建均笔记</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">不积跬步 无以至千里</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+					</div>
+
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="/about">关于我</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/stotem" title="github">github</a>
+					        
+								<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+					        
+								<a class="mail" target="_blank" href="mailto:china.wujianjun@icloud.com" title="mail">mail</a>
+					        
+						</div>
+						<div>
+							<i class="fa fa-line-chart"></i>
+							本站访问量<span id=“busuanzi_container_site_pv”><span id="busuanzi_value_site_pv"><i class="fa fa-spinner fa-spin"></i></span></span> 次
+						</div>
+					</nav>
+				</section>
+
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Docker/" style="font-size: 15.71px;">Docker</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/Maven/" style="font-size: 11.43px;">Maven</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Nginx/" style="font-size: 15.71px;">Nginx</a> <a href="/tags/OpenVPN/" style="font-size: 12.86px;">OpenVPN</a> <a href="/tags/Podman/" style="font-size: 11.43px;">Podman</a> <a href="/tags/Redis/" style="font-size: 11.43px;">Redis</a> <a href="/tags/Transaction/" style="font-size: 10px;">Transaction</a> <a href="/tags/cdt/" style="font-size: 10px;">cdt</a> <a href="/tags/https/" style="font-size: 10px;">https</a> <a href="/tags/iOS/" style="font-size: 17.14px;">iOS</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/nginx-obs/" style="font-size: 10px;">nginx + obs</a> <a href="/tags/php-fpm/" style="font-size: 10px;">php-fpm</a> <a href="/tags/podman/" style="font-size: 14.29px;">podman</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/rocketmq/" style="font-size: 10px;">rocketmq</a> <a href="/tags/shiro/" style="font-size: 11.43px;">shiro</a> <a href="/tags/spring/" style="font-size: 11.43px;">spring</a> <a href="/tags/springcloud/" style="font-size: 10px;">springcloud</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/transaction/" style="font-size: 10px;">transaction</a> <a href="/tags/%E5%85%B3%E9%94%AE%E7%AC%94%E8%AE%B0/" style="font-size: 10px;">关键笔记</a> <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" style="font-size: 10px;">分布式</a> <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/" style="font-size: 10px;">分布式事务</a> <a href="/tags/%E5%8E%9F%E5%88%9B/" style="font-size: 20px;">原创</a> <a href="/tags/%E5%A4%9A%E8%BF%9B%E7%A8%8B/" style="font-size: 10px;">多进程</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" style="font-size: 11.43px;">大数据</a> <a href="/tags/%E5%B9%B6%E5%8F%91/" style="font-size: 10px;">并发</a> <a href="/tags/%E6%80%BB%E7%BB%93/" style="font-size: 10px;">总结</a> <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 10px;">操作系统</a> <a href="/tags/%E6%9E%B6%E6%9E%84/" style="font-size: 10px;">架构</a> <a href="/tags/%E7%94%B5%E5%95%86/" style="font-size: 10px;">电商</a> <a href="/tags/%E7%AC%94%E8%AE%B0/" style="font-size: 10px;">笔记</a> <a href="/tags/%E8%BD%AC%E8%BD%BD/" style="font-size: 18.57px;">转载</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 10px;">随笔</a>
+					</div>
+				</section>
+				
+
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://andylee1988.github.io">andylee1988的博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://devtll.github.io">devtll的博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://esnake0.github.io">esnake0的博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.shaofan.org">少凡的独立博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.csdn.net/liuguofeng719?viewmode=list">guofeng的博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://witchan.com">WitChan的技术博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.csdn.net/kelanq">kelanQ的博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://chenxinyu.work">IT古书</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://8tool.club">KnowledgeBase</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://cherrycheng.top">cherrycheng</a><br />
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+
+	</header>
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">建均笔记</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+			
+				<img lazy-src="/img/avatar.jpg" class="js-avatar">
+			
+			</div>
+			<hgroup>
+			  <h1 class="header-author">建均笔记</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">不积跬步 无以至千里</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/about">关于我</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/stotem" title="github">github</a>
+			        
+						<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+			        
+						<a class="mail" target="_blank" href="mailto:china.wujianjun@icloud.com" title="mail">mail</a>
+			        
+				</div>
+				<div style="text-align: center;">
+					<i class="fa fa-line-chart"></i>
+					本站访问量<span id=“busuanzi_container_site_pv”><span id="busuanzi_value_site_pv"><i class="fa fa-spinner fa-spin"></i></span></span> 次
+				</div>
+			</nav>
+		</header>
+	</div>
+</nav>
+
+      <div class="body-wrap"><article id="post-linux-autostart" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/10/09/linux-autostart/" class="article-date">
+  	<time datetime="2016-10-09T10:43:51.000Z" itemprop="datePublished">2016-10-09</time>
+</a>
+      <div class="analysis-container">
+	<i class="fa fa-line-chart"></i>
+	已阅读<span id=“busuanzi_container_page_pv”><span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span></span> 次
+</div>
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Linux开机自动启动Tomcat应用
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%8E%9F%E5%88%9B/" rel="tag">原创</a></li></ul>
+	</div>
+
+        
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+              
+                       
+             <div id="toc" class="article-toc">
+             <h2>文章目录</h2>
+               <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE"><span class="toc-number">2.</span> <span class="toc-text">配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E5%AE%83"><span class="toc-number">3.</span> <span class="toc-text">其它</span></a></li></ol>  
+             </div>
+             <script type="text/javascript">
+               var _article = document.getElementsByClassName('article')[0];
+               <!-- setTimeout("_article.style.marginRight = '211px'",0);  -->
+               setTimeout("_article.className += ' article2'",0); 
+               setTimeout("document.getElementById('toc').style.right = '15px'", 0);                
+             </script>
+           
+         
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>刚过国庆长假，工作机房断电，重回工作岗位发现N多的应用需要手动启动。感觉烦燥？<br>so.. 配置linux开机自启动</p>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p>在_/etc/rc.local_文件末尾增加以下内容</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/sh</span><br><span class="line">#</span><br><span class="line"># This script will be executed *after* all the other init scripts.</span><br><span class="line"># You can put your own initialization stuff in here if you don&#x27;t</span><br><span class="line"># want to do the full Sys V style init stuff.</span><br><span class="line"></span><br><span class="line">O_Path=`pwd`</span><br><span class="line">cd /myapps/servers/apache-tomcat-6.0.43/bin/</span><br><span class="line">sh startup.sh</span><br><span class="line">cd $O_Path</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>需要注意以下几点：</strong></p>
+<ul>
+<li>检查startup.sh是否已授执行权限，如果没有，执行<code>chmod +x /myapps/servers/apache-tomcat-6.0.43/bin/startup.sh</code></li>
+<li>所需要执行的shell文件不能带参数。</li>
+</ul>
+<p>经过以上配置则可以通过<code>sudo reboot</code>进行验证。当Linux重启成功后，可通过__/var/log/boot.log__来查看开机时的日志输出。</p>
+<h2 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h2><p><code>who -r</code> 查看开机级别</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">who --help</span><br><span class="line">用法：who [选项]... [ 文件 | 参数1 参数2 ]</span><br><span class="line">显示当前已登录的用户信息。</span><br><span class="line"></span><br><span class="line">  -a, --all		等于-b -d --login -p -r -t -T -u 选项的组合</span><br><span class="line">  -b, --boot		上次系统启动时间</span><br><span class="line">  -d, --dead		显示已死的进程</span><br><span class="line">  -H, --heading	输出头部的标题列</span><br><span class="line">  -l，--login		显示系统登录进程</span><br><span class="line">      --lookup		尝试通过 DNS 查验主机名</span><br><span class="line">  -m			只面对和标准输入有直接交互的主机和用户</span><br><span class="line">  -p, --process	显示由 init 进程衍生的活动进程</span><br><span class="line">  -q, --count		列出所有已登录用户的登录名与用户数量</span><br><span class="line">  -r, --runlevel	显示当前的运行级别</span><br><span class="line">  -s, --short		只显示名称、线路和时间(默认)</span><br><span class="line">  -T, -w, --mesg	用+，- 或 ? 标注用户消息状态</span><br><span class="line">  -u, --users		列出已登录的用户</span><br><span class="line">      --message	等于-T</span><br><span class="line">      --writable	等于-T</span><br><span class="line">      --help		显示此帮助信息并退出</span><br><span class="line">      --version		显示版本信息并退出</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p><em>观点仅代表自己，期待你的留言。</em></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/06/29/airport-terminal-code/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          机场航站楼三字码四字码信息数据库
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/09/22/jvm-tools-jstat/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">查看jvm堆内GC情况利器 - jstat</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+    <a class="jiathis_button_twitter"></a>
+    <a class="jiathis_button_plus"></a> 
+    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+
+
+
+
+
+<section id="comments">
+  <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'blogcnvip'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2024 建均笔记
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+
+<script src="/js/require-2.1.6,jquery-1.9.1.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'true', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+
+<link href="//cdn.bootcss.com/highlight.js/8.0/styles/tomorrow-night-bright.min.css" rel="stylesheet">  
+<script src="//cdn.bootcss.com/highlight.js/8.0/highlight.min.js"></script>  
+<script> 
+jQuery('td.code pre').each(function(i, block) {
+  hljs.highlightBlock(block);
+});
+</script>
+
+
+  </div>
+</body>
+</html>

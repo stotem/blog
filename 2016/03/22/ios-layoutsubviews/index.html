@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>UIView的layoutSubviews和drawRect | 建均笔记</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="UIView的setNeedsDisplay和setNeedsLayout方法。首先两个方法都是异步执行的。setNeedsDisplay会调用自动调用drawRect方法，这样可以拿到UIGraphicsGetCurrentContext，就可以画画了。而setNeedsLayout会默认调用layoutSubViews，就可以处理子视图中的一些数据。综上两个方法都是异步执行的，layoutSu">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UIView的layoutSubviews和drawRect">
+<meta property="og:url" content="http://www.uto.ink/2016/03/22/ios-layoutsubviews/index.html">
+<meta property="og:site_name" content="建均笔记">
+<meta property="og:description" content="UIView的setNeedsDisplay和setNeedsLayout方法。首先两个方法都是异步执行的。setNeedsDisplay会调用自动调用drawRect方法，这样可以拿到UIGraphicsGetCurrentContext，就可以画画了。而setNeedsLayout会默认调用layoutSubViews，就可以处理子视图中的一些数据。综上两个方法都是异步执行的，layoutSu">
+<meta property="og:locale">
+<meta property="article:published_time" content="2016-03-22T03:35:23.000Z">
+<meta property="article:modified_time" content="2024-02-28T06:35:25.246Z">
+<meta property="article:author" content="建均笔记">
+<meta property="article:tag" content="转载">
+<meta property="article:tag" content="iOS">
+<meta name="twitter:card" content="summary">
+  
+  <meta name="keywords" content="建均笔记">
+  
+  
+    <link rel="alternative" href="/atom.xml" title="建均笔记" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<script>
+(function(){
+    var bp = document.createElement('script');
+    bp.src = '//push.zhanzhang.baidu.com/push.js';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+<!-- baidu Analytics -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?b5a8646d4b9e56cf6ef835a8e416f147";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!-- End baidu Analytics -->
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css" />
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="/img/avatar.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">建均笔记</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">不积跬步 无以至千里</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+					</div>
+
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="/about">关于我</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/stotem" title="github">github</a>
+					        
+								<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+					        
+								<a class="mail" target="_blank" href="mailto:china.wujianjun@icloud.com" title="mail">mail</a>
+					        
+						</div>
+						<div>
+							<i class="fa fa-line-chart"></i>
+							本站访问量<span id=“busuanzi_container_site_pv”><span id="busuanzi_value_site_pv"><i class="fa fa-spinner fa-spin"></i></span></span> 次
+						</div>
+					</nav>
+				</section>
+
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Docker/" style="font-size: 15.71px;">Docker</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/Maven/" style="font-size: 11.43px;">Maven</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Nginx/" style="font-size: 15.71px;">Nginx</a> <a href="/tags/OpenVPN/" style="font-size: 12.86px;">OpenVPN</a> <a href="/tags/Podman/" style="font-size: 11.43px;">Podman</a> <a href="/tags/Redis/" style="font-size: 11.43px;">Redis</a> <a href="/tags/Transaction/" style="font-size: 10px;">Transaction</a> <a href="/tags/cdt/" style="font-size: 10px;">cdt</a> <a href="/tags/https/" style="font-size: 10px;">https</a> <a href="/tags/iOS/" style="font-size: 17.14px;">iOS</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/nginx-obs/" style="font-size: 10px;">nginx + obs</a> <a href="/tags/php-fpm/" style="font-size: 10px;">php-fpm</a> <a href="/tags/podman/" style="font-size: 14.29px;">podman</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/rocketmq/" style="font-size: 10px;">rocketmq</a> <a href="/tags/shiro/" style="font-size: 11.43px;">shiro</a> <a href="/tags/spring/" style="font-size: 11.43px;">spring</a> <a href="/tags/springcloud/" style="font-size: 10px;">springcloud</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/transaction/" style="font-size: 10px;">transaction</a> <a href="/tags/%E5%85%B3%E9%94%AE%E7%AC%94%E8%AE%B0/" style="font-size: 10px;">关键笔记</a> <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" style="font-size: 10px;">分布式</a> <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/" style="font-size: 10px;">分布式事务</a> <a href="/tags/%E5%8E%9F%E5%88%9B/" style="font-size: 20px;">原创</a> <a href="/tags/%E5%A4%9A%E8%BF%9B%E7%A8%8B/" style="font-size: 10px;">多进程</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" style="font-size: 11.43px;">大数据</a> <a href="/tags/%E5%B9%B6%E5%8F%91/" style="font-size: 10px;">并发</a> <a href="/tags/%E6%80%BB%E7%BB%93/" style="font-size: 10px;">总结</a> <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 10px;">操作系统</a> <a href="/tags/%E6%9E%B6%E6%9E%84/" style="font-size: 10px;">架构</a> <a href="/tags/%E7%94%B5%E5%95%86/" style="font-size: 10px;">电商</a> <a href="/tags/%E7%AC%94%E8%AE%B0/" style="font-size: 10px;">笔记</a> <a href="/tags/%E8%BD%AC%E8%BD%BD/" style="font-size: 18.57px;">转载</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 10px;">随笔</a>
+					</div>
+				</section>
+				
+
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://andylee1988.github.io">andylee1988的博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://devtll.github.io">devtll的博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://esnake0.github.io">esnake0的博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.shaofan.org">少凡的独立博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.csdn.net/liuguofeng719?viewmode=list">guofeng的博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://witchan.com">WitChan的技术博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.csdn.net/kelanq">kelanQ的博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://chenxinyu.work">IT古书</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://8tool.club">KnowledgeBase</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://cherrycheng.top">cherrycheng</a><br />
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+
+	</header>
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">建均笔记</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+			
+				<img lazy-src="/img/avatar.jpg" class="js-avatar">
+			
+			</div>
+			<hgroup>
+			  <h1 class="header-author">建均笔记</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">不积跬步 无以至千里</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/about">关于我</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/stotem" title="github">github</a>
+			        
+						<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+			        
+						<a class="mail" target="_blank" href="mailto:china.wujianjun@icloud.com" title="mail">mail</a>
+			        
+				</div>
+				<div style="text-align: center;">
+					<i class="fa fa-line-chart"></i>
+					本站访问量<span id=“busuanzi_container_site_pv”><span id="busuanzi_value_site_pv"><i class="fa fa-spinner fa-spin"></i></span></span> 次
+				</div>
+			</nav>
+		</header>
+	</div>
+</nav>
+
+      <div class="body-wrap"><article id="post-ios-layoutsubviews" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/03/22/ios-layoutsubviews/" class="article-date">
+  	<time datetime="2016-03-22T03:35:23.000Z" itemprop="datePublished">2016-03-22</time>
+</a>
+      <div class="analysis-container">
+	<i class="fa fa-line-chart"></i>
+	已阅读<span id=“busuanzi_container_page_pv”><span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span></span> 次
+</div>
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      UIView的layoutSubviews和drawRect
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/" rel="tag">iOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%BD%AC%E8%BD%BD/" rel="tag">转载</a></li></ul>
+	</div>
+
+        
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+              
+                       
+             <div id="toc" class="article-toc">
+             <h2>文章目录</h2>
+               <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%80%E3%80%81layoutSubviews%E5%9C%A8%E4%BB%A5%E4%B8%8B%E6%83%85%E5%86%B5%E4%B8%8B%E4%BC%9A%E8%A2%AB%E8%B0%83%E7%94%A8%EF%BC%9A"><span class="toc-number">1.</span> <span class="toc-text">一、layoutSubviews在以下情况下会被调用：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%8C%E3%80%81drawRect%E5%9C%A8%E4%BB%A5%E4%B8%8B%E6%83%85%E5%86%B5%E4%B8%8B%E4%BC%9A%E8%A2%AB%E8%B0%83%E7%94%A8%EF%BC%9A"><span class="toc-number">2.</span> <span class="toc-text">二、drawRect在以下情况下会被调用：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%89%E3%80%81layoutSubviews%E5%AF%B9subviews%E9%87%8D%E6%96%B0%E5%B8%83%E5%B1%80"><span class="toc-number">3.</span> <span class="toc-text">三、layoutSubviews对subviews重新布局</span></a></li></ol>  
+             </div>
+             <script type="text/javascript">
+               var _article = document.getElementsByClassName('article')[0];
+               <!-- setTimeout("_article.style.marginRight = '211px'",0);  -->
+               setTimeout("_article.className += ' article2'",0); 
+               setTimeout("document.getElementById('toc').style.right = '15px'", 0);                
+             </script>
+           
+         
+        <p>UIView的setNeedsDisplay和setNeedsLayout方法。首先两个方法都是异步执行的。setNeedsDisplay会调用自动调用drawRect方法，这样可以拿到UIGraphicsGetCurrentContext，就可以画画了。而setNeedsLayout会默认调用layoutSubViews，就可以处理子视图中的一些数据。<br>综上两个方法都是异步执行的，layoutSubviews方便数据计算，drawRect方便视图重绘。</p>
+<p>先大概看下ios layout机制相关的这几个方法：</p>
+<ul>
+<li>(CGSize)sizeThatFits:(CGSize)size</li>
+<li>(void)sizeToFit<br>——————-</li>
+<li>(void)layoutSubviews</li>
+<li>(void)layoutIfNeeded</li>
+<li>(void)setNeedsLayout<br>——————–</li>
+<li>(void)setNeedsDisplay</li>
+<li>(void)drawRect</li>
+</ul>
+<h4 id="一、layoutSubviews在以下情况下会被调用："><a href="#一、layoutSubviews在以下情况下会被调用：" class="headerlink" title="一、layoutSubviews在以下情况下会被调用："></a>一、layoutSubviews在以下情况下会被调用：</h4><p>1、init初始化不会触发layoutSubviews。<br>2、addSubview会触发layoutSubviews。<br>3、设置view的Frame会触发layoutSubviews，当然前提是frame的值设置前后发生了变化。<br>4、滚动一个UIScrollView会触发layoutSubviews。<br>5、旋转Screen会触发父UIView上的layoutSubviews事件。<br>6、改变一个UIView大小的时候也会触发父UIView上的layoutSubviews事件。<br>7、直接调用setLayoutSubviews。<br>8、直接调用setNeedsLayout。<br>在苹果的官方文档中强调:You should override this method only if the autoresizing behaviors of the subviews do not offer the behavior you want.<br>layoutSubviews, 当我们在某个类的内部调整子视图位置时，需要调用。<br>反过来的意思就是说：如果你想要在外部设置subviews的位置，就不要重写。</p>
+<p> 刷新子对象布局<br>-layoutSubviews方法：这个方法，默认没有做任何事情，需要子类进行重写<br>-setNeedsLayout方法： 标记为需要重新布局，异步调用layoutIfNeeded刷新布局，不立即刷新，但layoutSubviews一定会被调用<br>-layoutIfNeeded方法：如果，有需要刷新的标记，立即调用layoutSubviews进行布局（如果没有标记，不会调用layoutSubviews）<br>如果要立即刷新，要先调用[view setNeedsLayout]，把标记设为需要布局，然后马上调用[view layoutIfNeeded]，实现布局<br>在视图第一次显示之前，标记总是“需要刷新”的，可以直接调用[view layoutIfNeeded]</p>
+<h4 id="二、drawRect在以下情况下会被调用："><a href="#二、drawRect在以下情况下会被调用：" class="headerlink" title="二、drawRect在以下情况下会被调用："></a>二、drawRect在以下情况下会被调用：</h4><p>1、如果在UIView初始化时没有设置rect大小，将直接导致drawRect不被自动调用。drawRect 掉用是在Controller-&gt;loadView, Controller-&gt;viewDidLoad 两方法之后掉用的.所以不用担心在 控制器中,这些View的drawRect就开始画了.这样可以在控制器中设置一些值给View(如果这些View draw的时候需要用到某些变量 值).<br>2、该方法在调用sizeToFit后被调用，所以可以先调用sizeToFit计算出size。然后系统自动调用drawRect:方法。<br>sizeToFit会自动调用sizeThatFits方法；<br>sizeToFit不应该在子类中被重写，应该重写sizeThatFits<br>sizeThatFits传入的参数是receiver当前的size，返回一个适合的size<br>sizeToFit可以被手动直接调用<br>sizeToFit和sizeThatFits方法都没有递归，对subviews也不负责，只负责自己<br>3、通过设置contentMode属性值为UIViewContentModeRedraw。那么将在每次设置或更改frame的时候自动调用drawRect:。<br>4、直接调用setNeedsDisplay，或者setNeedsDisplayInRect:触发drawRect:，但是有个前提条件是rect不能为0。<br>-setNeedsDisplay方法：标记为需要重绘，异步调用drawRect<br>-setNeedsDisplayInRect:(CGRect)invalidRect方法：标记为需要局部重绘<br>以上1,2推荐；而3,4不提倡</p>
+<p>drawRect方法使用注意点：<br>1、 若使用UIView绘图，只能在drawRect：方法中获取相应的contextRef并绘图。如果在其他方法中获取将获取到一个invalidate 的ref并且不能用于画图。drawRect：方法不能手动显示调用，必须通过调用setNeedsDisplay 或 者 setNeedsDisplayInRect，让系统自动调该方法。<br>2、若使用calayer绘图，只能在drawInContext: 中（类似鱼drawRect）绘制，或者在delegate中的相应方法绘制。同样也是调用setNeedDisplay等间接调用以上方法<br>3、若要实时画图，不能使用gestureRecognizer，只能使用touchbegan等方法来掉用setNeedsDisplay实时刷新屏幕</p>
+<h4 id="三、layoutSubviews对subviews重新布局"><a href="#三、layoutSubviews对subviews重新布局" class="headerlink" title="三、layoutSubviews对subviews重新布局"></a>三、layoutSubviews对subviews重新布局</h4><p>layoutSubviews方法调用先于drawRect<br>setNeedsLayout在receiver标上一个需要被重新布局的标记，在系统runloop的下一个周期自动调用layoutSubviews<br>layoutIfNeeded方法如其名，UIKit会判断该receiver是否需要layout.根据Apple官方文档,layoutIfNeeded方法应该是这样的<br>layoutIfNeeded遍历的不是superview链，应该是subviews链<br>drawRect是对receiver的重绘，能获得context<br>setNeedDisplay在receiver标上一个需要被重新绘图的标记，在下一个draw周期自动重绘，iphone device的刷新频率是60hz，也就是1/60秒后重绘</p>
+<hr>
+<p>原地址：<a target="_blank" rel="noopener" href="http://justsee.iteye.com/blog/1886463">http://justsee.iteye.com/blog/1886463</a></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/03/24/ios-hitTest/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          iOS-hitTest:withEvent与pointInside:withEvent
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/03/21/header-version/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">开放平台Api的版本控制方案</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+    <a class="jiathis_button_twitter"></a>
+    <a class="jiathis_button_plus"></a> 
+    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+
+
+
+
+
+<section id="comments">
+  <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'blogcnvip'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2024 建均笔记
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+
+<script src="/js/require-2.1.6,jquery-1.9.1.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'true', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+
+<link href="//cdn.bootcss.com/highlight.js/8.0/styles/tomorrow-night-bright.min.css" rel="stylesheet">  
+<script src="//cdn.bootcss.com/highlight.js/8.0/highlight.min.js"></script>  
+<script> 
+jQuery('td.code pre').each(function(i, block) {
+  hljs.highlightBlock(block);
+});
+</script>
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>String.format详解 | 建均笔记</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="String类的format()方法用于创建格式化的字符串以及连接多个字符串对象。熟悉C语言的同学应该记得C语言的sprintf()方法，两者有类似之处。format()方法有两种重载形式。format(String format, Object… args) 新字符串使用本地语言环境，制定字符串格式和参数生成格式化的新字符串。 format(Locale locale, String forma">
+<meta property="og:type" content="article">
+<meta property="og:title" content="String.format详解">
+<meta property="og:url" content="http://www.uto.ink/2016/04/13/string-format/index.html">
+<meta property="og:site_name" content="建均笔记">
+<meta property="og:description" content="String类的format()方法用于创建格式化的字符串以及连接多个字符串对象。熟悉C语言的同学应该记得C语言的sprintf()方法，两者有类似之处。format()方法有两种重载形式。format(String format, Object… args) 新字符串使用本地语言环境，制定字符串格式和参数生成格式化的新字符串。 format(Locale locale, String forma">
+<meta property="og:locale">
+<meta property="article:published_time" content="2016-04-13T08:02:59.000Z">
+<meta property="article:modified_time" content="2024-02-28T06:35:25.251Z">
+<meta property="article:author" content="建均笔记">
+<meta property="article:tag" content="原创">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+  
+  <meta name="keywords" content="建均笔记">
+  
+  
+    <link rel="alternative" href="/atom.xml" title="建均笔记" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<script>
+(function(){
+    var bp = document.createElement('script');
+    bp.src = '//push.zhanzhang.baidu.com/push.js';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+<!-- baidu Analytics -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?b5a8646d4b9e56cf6ef835a8e416f147";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!-- End baidu Analytics -->
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css" />
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="/img/avatar.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">建均笔记</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">不积跬步 无以至千里</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+					</div>
+
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="/about">关于我</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/stotem" title="github">github</a>
+					        
+								<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+					        
+								<a class="mail" target="_blank" href="mailto:china.wujianjun@icloud.com" title="mail">mail</a>
+					        
+						</div>
+						<div>
+							<i class="fa fa-line-chart"></i>
+							本站访问量<span id=“busuanzi_container_site_pv”><span id="busuanzi_value_site_pv"><i class="fa fa-spinner fa-spin"></i></span></span> 次
+						</div>
+					</nav>
+				</section>
+
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Docker/" style="font-size: 15.71px;">Docker</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/Maven/" style="font-size: 11.43px;">Maven</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Nginx/" style="font-size: 15.71px;">Nginx</a> <a href="/tags/OpenVPN/" style="font-size: 12.86px;">OpenVPN</a> <a href="/tags/Podman/" style="font-size: 11.43px;">Podman</a> <a href="/tags/Redis/" style="font-size: 11.43px;">Redis</a> <a href="/tags/Transaction/" style="font-size: 10px;">Transaction</a> <a href="/tags/cdt/" style="font-size: 10px;">cdt</a> <a href="/tags/https/" style="font-size: 10px;">https</a> <a href="/tags/iOS/" style="font-size: 17.14px;">iOS</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/nginx-obs/" style="font-size: 10px;">nginx + obs</a> <a href="/tags/php-fpm/" style="font-size: 10px;">php-fpm</a> <a href="/tags/podman/" style="font-size: 14.29px;">podman</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/rocketmq/" style="font-size: 10px;">rocketmq</a> <a href="/tags/shiro/" style="font-size: 11.43px;">shiro</a> <a href="/tags/spring/" style="font-size: 11.43px;">spring</a> <a href="/tags/springcloud/" style="font-size: 10px;">springcloud</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/transaction/" style="font-size: 10px;">transaction</a> <a href="/tags/%E5%85%B3%E9%94%AE%E7%AC%94%E8%AE%B0/" style="font-size: 10px;">关键笔记</a> <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" style="font-size: 10px;">分布式</a> <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/" style="font-size: 10px;">分布式事务</a> <a href="/tags/%E5%8E%9F%E5%88%9B/" style="font-size: 20px;">原创</a> <a href="/tags/%E5%A4%9A%E8%BF%9B%E7%A8%8B/" style="font-size: 10px;">多进程</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" style="font-size: 11.43px;">大数据</a> <a href="/tags/%E5%B9%B6%E5%8F%91/" style="font-size: 10px;">并发</a> <a href="/tags/%E6%80%BB%E7%BB%93/" style="font-size: 10px;">总结</a> <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 10px;">操作系统</a> <a href="/tags/%E6%9E%B6%E6%9E%84/" style="font-size: 10px;">架构</a> <a href="/tags/%E7%94%B5%E5%95%86/" style="font-size: 10px;">电商</a> <a href="/tags/%E7%AC%94%E8%AE%B0/" style="font-size: 10px;">笔记</a> <a href="/tags/%E8%BD%AC%E8%BD%BD/" style="font-size: 18.57px;">转载</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 10px;">随笔</a>
+					</div>
+				</section>
+				
+
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://andylee1988.github.io">andylee1988的博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://devtll.github.io">devtll的博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://esnake0.github.io">esnake0的博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.shaofan.org">少凡的独立博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.csdn.net/liuguofeng719?viewmode=list">guofeng的博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://witchan.com">WitChan的技术博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.csdn.net/kelanq">kelanQ的博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://chenxinyu.work">IT古书</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://8tool.club">KnowledgeBase</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://cherrycheng.top">cherrycheng</a><br />
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+
+	</header>
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">建均笔记</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+			
+				<img lazy-src="/img/avatar.jpg" class="js-avatar">
+			
+			</div>
+			<hgroup>
+			  <h1 class="header-author">建均笔记</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">不积跬步 无以至千里</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/about">关于我</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/stotem" title="github">github</a>
+			        
+						<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+			        
+						<a class="mail" target="_blank" href="mailto:china.wujianjun@icloud.com" title="mail">mail</a>
+			        
+				</div>
+				<div style="text-align: center;">
+					<i class="fa fa-line-chart"></i>
+					本站访问量<span id=“busuanzi_container_site_pv”><span id="busuanzi_value_site_pv"><i class="fa fa-spinner fa-spin"></i></span></span> 次
+				</div>
+			</nav>
+		</header>
+	</div>
+</nav>
+
+      <div class="body-wrap"><article id="post-string-format" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/04/13/string-format/" class="article-date">
+  	<time datetime="2016-04-13T08:02:59.000Z" itemprop="datePublished">2016-04-13</time>
+</a>
+      <div class="analysis-container">
+	<i class="fa fa-line-chart"></i>
+	已阅读<span id=“busuanzi_container_page_pv”><span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span></span> 次
+</div>
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      String.format详解
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%8E%9F%E5%88%9B/" rel="tag">原创</a></li></ul>
+	</div>
+
+        
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+              
+                       
+             <div id="toc" class="article-toc">
+             <h2>文章目录</h2>
+               <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%84%E7%B1%BB%E5%9E%8B%E7%9A%84%E6%A0%BC%E5%BC%8F%E5%8C%96"><span class="toc-number">1.</span> <span class="toc-text">常规类型的格式化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%97%A5%E6%9C%9F%E5%92%8C%E4%BA%8B%E4%BB%B6%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%A0%BC%E5%BC%8F%E5%8C%96"><span class="toc-number">2.</span> <span class="toc-text">日期和事件字符串格式化</span></a></li></ol>  
+             </div>
+             <script type="text/javascript">
+               var _article = document.getElementsByClassName('article')[0];
+               <!-- setTimeout("_article.style.marginRight = '211px'",0);  -->
+               setTimeout("_article.className += ' article2'",0); 
+               setTimeout("document.getElementById('toc').style.right = '15px'", 0);                
+             </script>
+           
+         
+        <p>String类的format()方法用于创建格式化的字符串以及连接多个字符串对象。熟悉C语言的同学应该记得C语言的sprintf()方法，两者有类似之处。format()方法有两种重载形式。<br>format(String format, Object… args) 新字符串使用本地语言环境，制定字符串格式和参数生成格式化的新字符串。</p>
+<p>format(Locale locale, String format, Object… args) 使用指定的语言环境，制定字符串格式和参数生成格式化的字符串。</p>
+<h2 id="常规类型的格式化"><a href="#常规类型的格式化" class="headerlink" title="常规类型的格式化"></a>常规类型的格式化</h2><table>
+<thead>
+<tr>
+<th align="left">转换符</th>
+<th align="left">说明</th>
+<th align="left">示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">%s</td>
+<td align="left">字符串类型</td>
+<td align="left">“mingrisoft”</td>
+</tr>
+<tr>
+<td align="left">%c</td>
+<td align="left">字符类型</td>
+<td align="left">‘m’</td>
+</tr>
+<tr>
+<td align="left">%b</td>
+<td align="left">布尔类型</td>
+<td align="left">true</td>
+</tr>
+<tr>
+<td align="left">%d</td>
+<td align="left">整数类型（十进制）</td>
+<td align="left">99</td>
+</tr>
+<tr>
+<td align="left">%x</td>
+<td align="left">整数类型（十六进制）</td>
+<td align="left">FF</td>
+</tr>
+<tr>
+<td align="left">%o</td>
+<td align="left">整数类型（八进制）</td>
+<td align="left">77</td>
+</tr>
+<tr>
+<td align="left">%f</td>
+<td align="left">浮点类型</td>
+<td align="left">99.99</td>
+</tr>
+<tr>
+<td align="left">%a</td>
+<td align="left">十六进制浮点类型</td>
+<td align="left">FF.35AE</td>
+</tr>
+<tr>
+<td align="left">%e</td>
+<td align="left">指数类型</td>
+<td align="left">9.38e+5</td>
+</tr>
+<tr>
+<td align="left">%g</td>
+<td align="left">通用浮点类型（f和e类型中较短的）</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">%h</td>
+<td align="left">散列码</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">%%</td>
+<td align="left">百分比类型</td>
+<td align="left">％</td>
+</tr>
+<tr>
+<td align="left">%n</td>
+<td align="left">换行符</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td align="left">%tx</td>
+<td align="left">日期与时间类型（x代表不同的日期与时间转换符）</td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<p>测试代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) &#123;  </span><br><span class="line">    String str=null;  </span><br><span class="line">    str=String.format(&quot;Hi,%s&quot;, &quot;王力&quot;);  </span><br><span class="line">    System.out.println(str);  </span><br><span class="line">    str=String.format(&quot;Hi,%s:%s.%s&quot;, &quot;王南&quot;,&quot;王力&quot;,&quot;王张&quot;);            </span><br><span class="line">    System.out.println(str);                           </span><br><span class="line">    System.out.printf(&quot;字母a的大写是：%c %n&quot;, &#x27;A&#x27;);  </span><br><span class="line">    System.out.printf(&quot;3&gt;7的结果是：%b %n&quot;, 3&gt;7);  </span><br><span class="line">    System.out.printf(&quot;100的一半是：%d %n&quot;, 100/2);  </span><br><span class="line">    System.out.printf(&quot;100的16进制数是：%x %n&quot;, 100);  </span><br><span class="line">    System.out.printf(&quot;100的8进制数是：%o %n&quot;, 100);  </span><br><span class="line">    System.out.printf(&quot;50元的书打8.5折扣是：%f 元%n&quot;, 50*0.85);  </span><br><span class="line">    System.out.printf(&quot;上面价格的16进制数是：%a %n&quot;, 50*0.85);  </span><br><span class="line">    System.out.printf(&quot;上面价格的指数表示：%e %n&quot;, 50*0.85);  </span><br><span class="line">    System.out.printf(&quot;上面价格的指数和浮点数结果的长度较短的是：%g %n&quot;, 50*0.85);  </span><br><span class="line">    System.out.printf(&quot;上面的折扣是%d%% %n&quot;, 85);  </span><br><span class="line">    System.out.printf(&quot;字母A的散列码是：%h %n&quot;, &#x27;A&#x27;);  </span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
+<p>输出结果:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Hi,王力  </span><br><span class="line">Hi,王南:王力.王张  </span><br><span class="line">字母a的大写是：A   </span><br><span class="line">3&gt;7的结果是：false   </span><br><span class="line">100的一半是：50   </span><br><span class="line">100的16进制数是：64   </span><br><span class="line">100的8进制数是：144   </span><br><span class="line">50元的书打8.5折扣是：42.500000 元  </span><br><span class="line">上面价格的16进制数是：0x1.54p5   </span><br><span class="line">上面价格的指数表示：4.250000e+01   </span><br><span class="line">上面价格的指数和浮点数结果的长度较短的是：42.5000   </span><br><span class="line">上面的折扣是85%   </span><br><span class="line">字母A的散列码是：41  </span><br></pre></td></tr></table></figure>
+<p>搭配转换符的标志，如图所示:</p>
+<table>
+<thead>
+<tr>
+<th align="left">标志</th>
+<th align="left">说明</th>
+<th align="left">示例</th>
+<th align="left">结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">+</td>
+<td align="left">为正数或者负数添加符号</td>
+<td align="left">(“%+d”,15)</td>
+<td align="left">+15</td>
+</tr>
+<tr>
+<td align="left">−</td>
+<td align="left">左对齐</td>
+<td align="left">(“%-5d”,15)</td>
+<td align="left">15</td>
+</tr>
+<tr>
+<td align="left">0</td>
+<td align="left">数字前面补0</td>
+<td align="left">(“%04d”, 99)</td>
+<td align="left">0099</td>
+</tr>
+<tr>
+<td align="left">空格</td>
+<td align="left">在整数之前添加指定数量的空格</td>
+<td align="left">(“% 4d”, 99)</td>
+<td align="left">99</td>
+</tr>
+<tr>
+<td align="left">,</td>
+<td align="left">以“,”对数字分组</td>
+<td align="left">(“%,f”, 9999.99)</td>
+<td align="left">9,999.990000</td>
+</tr>
+<tr>
+<td align="left">(</td>
+<td align="left">使用括号包含负数</td>
+<td align="left">(“%(f”, -99.99)</td>
+<td align="left">(99.990000)</td>
+</tr>
+<tr>
+<td align="left">#</td>
+<td align="left">如果是浮点数则包含小数点，如果是16进制或8进制则添加0x或0</td>
+<td align="left">(“%#x”, 99)</td>
+<td align="left">0x63</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">(“%#o”, 99)</td>
+<td align="left">0143</td>
+</tr>
+<tr>
+<td align="left">&lt;</td>
+<td align="left">格式化前一个转换符所描述的参数</td>
+<td align="left">(“%f和%&lt;3.2f”, 99.45)</td>
+<td align="left">99.450000和99.45</td>
+</tr>
+<tr>
+<td align="left">$</td>
+<td align="left">被格式化的参数索引</td>
+<td align="left">(“%1$d,%2$s”, 99,”abc”)</td>
+<td align="left">99,abc</td>
+</tr>
+<tr>
+<td align="left">测试代码：</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) &#123;  </span><br><span class="line">    String str=null;  </span><br><span class="line">    //$使用  </span><br><span class="line">    str=String.format(&quot;格式参数$的使用：%1$d,%2$s&quot;, 99,&quot;abc&quot;);             </span><br><span class="line">    System.out.println(str);                       </span><br><span class="line">    //+使用  </span><br><span class="line">    System.out.printf(&quot;显示正负数的符号：%+d与%d%n&quot;, 99,-99);  </span><br><span class="line">    //补O使用  </span><br><span class="line">    System.out.printf(&quot;最牛的编号是：%03d%n&quot;, 7);  </span><br><span class="line">    //空格使用  </span><br><span class="line">    System.out.printf(&quot;Tab键的效果是：% 8d%n&quot;, 7);  </span><br><span class="line">    //.使用  </span><br><span class="line">    System.out.printf(&quot;整数分组的效果是：%,d%n&quot;, 9989997);  </span><br><span class="line">    //空格和小数点后面个数  </span><br><span class="line">    System.out.printf(&quot;一本书的价格是：% 50.5f元%n&quot;, 49.8);  </span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
+<p>输出结果:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">格式参数$的使用：99,abc  </span><br><span class="line">显示正负数的符号：+99与-99  </span><br><span class="line">最牛的编号是：007  </span><br><span class="line">Tab键的效果是：       7  </span><br><span class="line">整数分组的效果是：9,989,997  </span><br><span class="line">一本书的价格是：                                          49.80000元</span><br></pre></td></tr></table></figure>
+
+<h2 id="日期和事件字符串格式化"><a href="#日期和事件字符串格式化" class="headerlink" title="日期和事件字符串格式化"></a>日期和事件字符串格式化</h2><p>在程序界面中经常需要显示时间和日期，但是其显示的 格式经常不尽人意，需要编写大量的代码经过各种算法才得到理想的日期与时间格式。字符串格式中还有%tx转换符没有详细介绍，它是专门用来格式化日期和时 间的。%tx转换符中的x代表另外的处理日期和时间格式的转换符，它们的组合能够将日期和时间格式化成多种格式。</p>
+<p>常见日期和时间组合的格式，如表所示。</p>
+<table>
+<thead>
+<tr>
+<th align="left">转换符</th>
+<th align="left">说明</th>
+<th align="left">示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">c</td>
+<td align="left">包括全部日期和时间信息</td>
+<td align="left">星期六 十月 27 14:21:20 CST 2007</td>
+</tr>
+<tr>
+<td align="left">F</td>
+<td align="left">“年-月-日”格式</td>
+<td align="left">2007-10-27</td>
+</tr>
+<tr>
+<td align="left">D</td>
+<td align="left">“月/日/年”格式</td>
+<td align="left">10/27/07</td>
+</tr>
+<tr>
+<td align="left">r</td>
+<td align="left">“HH:MM:SS PM”格式（12时制）</td>
+<td align="left">02:25:51 下午</td>
+</tr>
+<tr>
+<td align="left">T</td>
+<td align="left">“HH:MM:SS”格式（24时制）</td>
+<td align="left">14:28:16</td>
+</tr>
+<tr>
+<td align="left">R</td>
+<td align="left">“HH:MM”格式（24时制）</td>
+<td align="left">14:28</td>
+</tr>
+</tbody></table>
+<p>测试代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) &#123;  </span><br><span class="line">    Date date=new Date();                                  </span><br><span class="line">    //c的使用  </span><br><span class="line">    System.out.printf(&quot;全部日期和时间信息：%tc%n&quot;,date);          </span><br><span class="line">    //f的使用  </span><br><span class="line">    System.out.printf(&quot;年-月-日格式：%tF%n&quot;,date);  </span><br><span class="line">    //d的使用  </span><br><span class="line">    System.out.printf(&quot;月/日/年格式：%tD%n&quot;,date);  </span><br><span class="line">    //r的使用  </span><br><span class="line">    System.out.printf(&quot;HH:MM:SS PM格式（12时制）：%tr%n&quot;,date);  </span><br><span class="line">    //t的使用  </span><br><span class="line">    System.out.printf(&quot;HH:MM:SS格式（24时制）：%tT%n&quot;,date);  </span><br><span class="line">    //R的使用  </span><br><span class="line">    System.out.printf(&quot;HH:MM格式（24时制）：%tR&quot;,date);  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">全部日期和时间信息：星期一 九月 10 10:43:36 CST 2012  </span><br><span class="line">年-月-日格式：2012-09-10  </span><br><span class="line">月/日/年格式：09/10/12  </span><br><span class="line">HH:MM:SS PM格式（12时制）：10:43:36 上午  </span><br><span class="line">HH:MM:SS格式（24时制）：10:43:36  </span><br><span class="line">HH:MM格式（24时制）：10:43  </span><br></pre></td></tr></table></figure>
+<p>定义日期格式的转换符可以使日期通过指定的转换符生成新字符串。这些日期转换符如图所示。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) &#123;  </span><br><span class="line">    Date date=new Date();                                      </span><br><span class="line">    //b的使用，月份简称  </span><br><span class="line">    String str=String.format(Locale.US,&quot;英文月份简称：%tb&quot;,date);       </span><br><span class="line">    System.out.println(str);                                                                              </span><br><span class="line">    System.out.printf(&quot;本地月份简称：%tb%n&quot;,date);  </span><br><span class="line">    //B的使用，月份全称  </span><br><span class="line">    str=String.format(Locale.US,&quot;英文月份全称：%tB&quot;,date);  </span><br><span class="line">    System.out.println(str);  </span><br><span class="line">    System.out.printf(&quot;本地月份全称：%tB%n&quot;,date);  </span><br><span class="line">    //a的使用，星期简称  </span><br><span class="line">    str=String.format(Locale.US,&quot;英文星期的简称：%ta&quot;,date);  </span><br><span class="line">    System.out.println(str);  </span><br><span class="line">    //A的使用，星期全称  </span><br><span class="line">    System.out.printf(&quot;本地星期的简称：%tA%n&quot;,date);  </span><br><span class="line">    //C的使用，年前两位  </span><br><span class="line">    System.out.printf(&quot;年的前两位数字（不足两位前面补0）：%tC%n&quot;,date);  </span><br><span class="line">    //y的使用，年后两位  </span><br><span class="line">    System.out.printf(&quot;年的后两位数字（不足两位前面补0）：%ty%n&quot;,date);  </span><br><span class="line">    //j的使用，一年的天数  </span><br><span class="line">    System.out.printf(&quot;一年中的天数（即年的第几天）：%tj%n&quot;,date);  </span><br><span class="line">    //m的使用，月份  </span><br><span class="line">    System.out.printf(&quot;两位数字的月份（不足两位前面补0）：%tm%n&quot;,date);  </span><br><span class="line">    //d的使用，日（二位，不够补零）  </span><br><span class="line">    System.out.printf(&quot;两位数字的日（不足两位前面补0）：%td%n&quot;,date);  </span><br><span class="line">    //e的使用，日（一位不补零）  </span><br><span class="line">    System.out.printf(&quot;月份的日（前面不补0）：%te&quot;,date);  </span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
+<p>输出结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">英文月份简称：Sep  </span><br><span class="line">本地月份简称：九月  </span><br><span class="line">英文月份全称：September  </span><br><span class="line">本地月份全称：九月  </span><br><span class="line">英文星期的简称：Mon  </span><br><span class="line">本地星期的简称：星期一  </span><br><span class="line">年的前两位数字（不足两位前面补0）：20  </span><br><span class="line">年的后两位数字（不足两位前面补0）：12  </span><br><span class="line">一年中的天数（即年的第几天）：254  </span><br><span class="line">两位数字的月份（不足两位前面补0）：09  </span><br><span class="line">两位数字的日（不足两位前面补0）：10  </span><br><span class="line">月份的日（前面不补0）：10  </span><br></pre></td></tr></table></figure>
+<p>和日期格式转换符相比，时间格式的转换符要更多、更精确。它可以将时间格式化成时、分、秒甚至时毫秒等单位。格式化时间字符串的转换符如图所示。</p>
+<table>
+<thead>
+<tr>
+<th align="left">转换符</th>
+<th align="left">说明</th>
+<th align="left">示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">H</td>
+<td align="left">2位数字24时制的小时（不足2位前面补0）</td>
+<td align="left">15</td>
+</tr>
+<tr>
+<td align="left">I</td>
+<td align="left">2位数字12时制的小时（不足2位前面补0）</td>
+<td align="left">03</td>
+</tr>
+<tr>
+<td align="left">k</td>
+<td align="left">2位数字24时制的小时（前面不补0）</td>
+<td align="left">15</td>
+</tr>
+<tr>
+<td align="left">l</td>
+<td align="left">2位数字12时制的小时（前面不补0）</td>
+<td align="left">3</td>
+</tr>
+<tr>
+<td align="left">M</td>
+<td align="left">2位数字的分钟（不足2位前面补0）</td>
+<td align="left">03</td>
+</tr>
+<tr>
+<td align="left">S</td>
+<td align="left">2位数字的秒（不足2位前面补0）</td>
+<td align="left">09</td>
+</tr>
+<tr>
+<td align="left">L</td>
+<td align="left">3位数字的毫秒（不足3位前面补0）</td>
+<td align="left">015</td>
+</tr>
+<tr>
+<td align="left">N</td>
+<td align="left">9位数字的毫秒数（不足9位前面补0）</td>
+<td align="left">562000000</td>
+</tr>
+<tr>
+<td align="left">p</td>
+<td align="left">小写字母的上午或下午标记</td>
+<td align="left">中：下午</td>
+</tr>
+<tr>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left">英：pm</td>
+</tr>
+<tr>
+<td align="left">z</td>
+<td align="left">相对于GMT的RFC822时区的偏移量</td>
+<td align="left">+0800</td>
+</tr>
+<tr>
+<td align="left">Z</td>
+<td align="left">时区缩写字符串</td>
+<td align="left">CST</td>
+</tr>
+<tr>
+<td align="left">s</td>
+<td align="left">1970-1-1 00:00:00 到现在所经过的秒数</td>
+<td align="left">1193468128</td>
+</tr>
+<tr>
+<td align="left">Q</td>
+<td align="left">1970-1-1 00:00:00 到现在所经过的毫秒数</td>
+<td align="left">1193468128984</td>
+</tr>
+<tr>
+<td align="left">示例：</td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+</tbody></table>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args) &#123;  </span><br><span class="line">    Date date = new Date();  </span><br><span class="line">    //H的使用  </span><br><span class="line">    System.out.printf(&quot;2位数字24时制的小时（不足2位前面补0）:%tH%n&quot;, date);  </span><br><span class="line">    //I的使用  </span><br><span class="line">    System.out.printf(&quot;2位数字12时制的小时（不足2位前面补0）:%tI%n&quot;, date);  </span><br><span class="line">    //k的使用  </span><br><span class="line">    System.out.printf(&quot;2位数字24时制的小时（前面不补0）:%tk%n&quot;, date);  </span><br><span class="line">    //l的使用  </span><br><span class="line">    System.out.printf(&quot;2位数字12时制的小时（前面不补0）:%tl%n&quot;, date);  </span><br><span class="line">    //M的使用  </span><br><span class="line">    System.out.printf(&quot;2位数字的分钟（不足2位前面补0）:%tM%n&quot;, date);  </span><br><span class="line">    //S的使用  </span><br><span class="line">    System.out.printf(&quot;2位数字的秒（不足2位前面补0）:%tS%n&quot;, date);  </span><br><span class="line">    //L的使用  </span><br><span class="line">    System.out.printf(&quot;3位数字的毫秒（不足3位前面补0）:%tL%n&quot;, date);  </span><br><span class="line">    //N的使用  </span><br><span class="line">    System.out.printf(&quot;9位数字的毫秒数（不足9位前面补0）:%tN%n&quot;, date);  </span><br><span class="line">    //p的使用  </span><br><span class="line">    String str = String.format(Locale.US, &quot;小写字母的上午或下午标记(英)：%tp&quot;, date);  </span><br><span class="line">    System.out.println(str);   </span><br><span class="line">    System.out.printf(&quot;小写字母的上午或下午标记（中）：%tp%n&quot;, date);  </span><br><span class="line">    //z的使用  </span><br><span class="line">    System.out.printf(&quot;相对于GMT的RFC822时区的偏移量:%tz%n&quot;, date);  </span><br><span class="line">    //Z的使用  </span><br><span class="line">    System.out.printf(&quot;时区缩写字符串:%tZ%n&quot;, date);  </span><br><span class="line">    //s的使用  </span><br><span class="line">    System.out.printf(&quot;1970-1-1 00:00:00 到现在所经过的秒数：%ts%n&quot;, date);  </span><br><span class="line">    //Q的使用  </span><br><span class="line">    System.out.printf(&quot;1970-1-1 00:00:00 到现在所经过的毫秒数：%tQ%n&quot;, date);  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出结果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">2位数字24时制的小时（不足2位前面补0）:11  </span><br><span class="line">2位数字12时制的小时（不足2位前面补0）:11  </span><br><span class="line">2位数字24时制的小时（前面不补0）:11  </span><br><span class="line">2位数字12时制的小时（前面不补0）:11  </span><br><span class="line">2位数字的分钟（不足2位前面补0）:03  </span><br><span class="line">2位数字的秒（不足2位前面补0）:52  </span><br><span class="line">3位数字的毫秒（不足3位前面补0）:773  </span><br><span class="line">9位数字的毫秒数（不足9位前面补0）:773000000  </span><br><span class="line">小写字母的上午或下午标记(英)：am  </span><br><span class="line">小写字母的上午或下午标记（中）：上午  </span><br><span class="line">相对于GMT的RFC822时区的偏移量:+0800  </span><br><span class="line">时区缩写字符串:CST  </span><br><span class="line">1970-1-1 00:00:00 到现在所经过的秒数：1347246232  </span><br><span class="line">1970-1-1 00:00:00 到现在所经过的毫秒数：1347246232773  </span><br></pre></td></tr></table></figure>
+
+<hr>
+<p><em>观点仅代表自己，期待你的留言。</em></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/04/15/docker-cmd-summarize/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          docker常用命令总结
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/04/07/ios-mvvm/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">iOS开发MVVM理解与总结</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+    <a class="jiathis_button_twitter"></a>
+    <a class="jiathis_button_plus"></a> 
+    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+
+
+
+
+
+<section id="comments">
+  <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'blogcnvip'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2024 建均笔记
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+
+<script src="/js/require-2.1.6,jquery-1.9.1.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'true', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+
+<link href="//cdn.bootcss.com/highlight.js/8.0/styles/tomorrow-night-bright.min.css" rel="stylesheet">  
+<script src="//cdn.bootcss.com/highlight.js/8.0/highlight.min.js"></script>  
+<script> 
+jQuery('td.code pre').each(function(i, block) {
+  hljs.highlightBlock(block);
+});
+</script>
+
+
+  </div>
+</body>
+</html>

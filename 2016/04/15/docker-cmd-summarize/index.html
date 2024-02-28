@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>docker常用命令总结 | 建均笔记</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="docker pull说明：获取网络镜像到本地 123456789 [root@localhost ~]# docker pull --helpUsage:	docker pull [OPTIONS] NAME[:TAG|@DIGEST]Pull an image or a repository from a registry  -a, --all-tags                  Do">
+<meta property="og:type" content="article">
+<meta property="og:title" content="docker常用命令总结">
+<meta property="og:url" content="http://www.uto.ink/2016/04/15/docker-cmd-summarize/index.html">
+<meta property="og:site_name" content="建均笔记">
+<meta property="og:description" content="docker pull说明：获取网络镜像到本地 123456789 [root@localhost ~]# docker pull --helpUsage:	docker pull [OPTIONS] NAME[:TAG|@DIGEST]Pull an image or a repository from a registry  -a, --all-tags                  Do">
+<meta property="og:locale">
+<meta property="article:published_time" content="2016-04-15T02:54:54.000Z">
+<meta property="article:modified_time" content="2024-02-28T06:35:25.245Z">
+<meta property="article:author" content="建均笔记">
+<meta property="article:tag" content="原创">
+<meta property="article:tag" content="Docker">
+<meta name="twitter:card" content="summary">
+  
+  <meta name="keywords" content="建均笔记">
+  
+  
+    <link rel="alternative" href="/atom.xml" title="建均笔记" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<script>
+(function(){
+    var bp = document.createElement('script');
+    bp.src = '//push.zhanzhang.baidu.com/push.js';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+<!-- baidu Analytics -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?b5a8646d4b9e56cf6ef835a8e416f147";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!-- End baidu Analytics -->
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css" />
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="/img/avatar.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">建均笔记</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">不积跬步 无以至千里</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+					</div>
+
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="/about">关于我</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/stotem" title="github">github</a>
+					        
+								<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+					        
+								<a class="mail" target="_blank" href="mailto:china.wujianjun@icloud.com" title="mail">mail</a>
+					        
+						</div>
+						<div>
+							<i class="fa fa-line-chart"></i>
+							本站访问量<span id=“busuanzi_container_site_pv”><span id="busuanzi_value_site_pv"><i class="fa fa-spinner fa-spin"></i></span></span> 次
+						</div>
+					</nav>
+				</section>
+
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Docker/" style="font-size: 15.71px;">Docker</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/Maven/" style="font-size: 11.43px;">Maven</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Nginx/" style="font-size: 15.71px;">Nginx</a> <a href="/tags/OpenVPN/" style="font-size: 12.86px;">OpenVPN</a> <a href="/tags/Podman/" style="font-size: 11.43px;">Podman</a> <a href="/tags/Redis/" style="font-size: 11.43px;">Redis</a> <a href="/tags/Transaction/" style="font-size: 10px;">Transaction</a> <a href="/tags/cdt/" style="font-size: 10px;">cdt</a> <a href="/tags/https/" style="font-size: 10px;">https</a> <a href="/tags/iOS/" style="font-size: 17.14px;">iOS</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/nginx-obs/" style="font-size: 10px;">nginx + obs</a> <a href="/tags/php-fpm/" style="font-size: 10px;">php-fpm</a> <a href="/tags/podman/" style="font-size: 14.29px;">podman</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/rocketmq/" style="font-size: 10px;">rocketmq</a> <a href="/tags/shiro/" style="font-size: 11.43px;">shiro</a> <a href="/tags/spring/" style="font-size: 11.43px;">spring</a> <a href="/tags/springcloud/" style="font-size: 10px;">springcloud</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/transaction/" style="font-size: 10px;">transaction</a> <a href="/tags/%E5%85%B3%E9%94%AE%E7%AC%94%E8%AE%B0/" style="font-size: 10px;">关键笔记</a> <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" style="font-size: 10px;">分布式</a> <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/" style="font-size: 10px;">分布式事务</a> <a href="/tags/%E5%8E%9F%E5%88%9B/" style="font-size: 20px;">原创</a> <a href="/tags/%E5%A4%9A%E8%BF%9B%E7%A8%8B/" style="font-size: 10px;">多进程</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" style="font-size: 11.43px;">大数据</a> <a href="/tags/%E5%B9%B6%E5%8F%91/" style="font-size: 10px;">并发</a> <a href="/tags/%E6%80%BB%E7%BB%93/" style="font-size: 10px;">总结</a> <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 10px;">操作系统</a> <a href="/tags/%E6%9E%B6%E6%9E%84/" style="font-size: 10px;">架构</a> <a href="/tags/%E7%94%B5%E5%95%86/" style="font-size: 10px;">电商</a> <a href="/tags/%E7%AC%94%E8%AE%B0/" style="font-size: 10px;">笔记</a> <a href="/tags/%E8%BD%AC%E8%BD%BD/" style="font-size: 18.57px;">转载</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 10px;">随笔</a>
+					</div>
+				</section>
+				
+
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://andylee1988.github.io">andylee1988的博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://devtll.github.io">devtll的博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://esnake0.github.io">esnake0的博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.shaofan.org">少凡的独立博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.csdn.net/liuguofeng719?viewmode=list">guofeng的博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://witchan.com">WitChan的技术博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.csdn.net/kelanq">kelanQ的博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://chenxinyu.work">IT古书</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://8tool.club">KnowledgeBase</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://cherrycheng.top">cherrycheng</a><br />
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+
+	</header>
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">建均笔记</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+			
+				<img lazy-src="/img/avatar.jpg" class="js-avatar">
+			
+			</div>
+			<hgroup>
+			  <h1 class="header-author">建均笔记</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">不积跬步 无以至千里</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/about">关于我</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/stotem" title="github">github</a>
+			        
+						<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+			        
+						<a class="mail" target="_blank" href="mailto:china.wujianjun@icloud.com" title="mail">mail</a>
+			        
+				</div>
+				<div style="text-align: center;">
+					<i class="fa fa-line-chart"></i>
+					本站访问量<span id=“busuanzi_container_site_pv”><span id="busuanzi_value_site_pv"><i class="fa fa-spinner fa-spin"></i></span></span> 次
+				</div>
+			</nav>
+		</header>
+	</div>
+</nav>
+
+      <div class="body-wrap"><article id="post-docker-cmd-summarize" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/04/15/docker-cmd-summarize/" class="article-date">
+  	<time datetime="2016-04-15T02:54:54.000Z" itemprop="datePublished">2016-04-15</time>
+</a>
+      <div class="analysis-container">
+	<i class="fa fa-line-chart"></i>
+	已阅读<span id=“busuanzi_container_page_pv”><span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span></span> 次
+</div>
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      docker常用命令总结
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Docker/" rel="tag">Docker</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%8E%9F%E5%88%9B/" rel="tag">原创</a></li></ul>
+	</div>
+
+        
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+              
+                       
+             <div id="toc" class="article-toc">
+             <h2>文章目录</h2>
+               <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#docker-pull"><span class="toc-number">1.</span> <span class="toc-text">docker pull</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#docker-images"><span class="toc-number">2.</span> <span class="toc-text">docker images</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#docker-run"><span class="toc-number">3.</span> <span class="toc-text">docker run</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#docker-logs"><span class="toc-number">4.</span> <span class="toc-text">docker logs</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#docker-stop"><span class="toc-number">5.</span> <span class="toc-text">docker stop</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#docker-start"><span class="toc-number">6.</span> <span class="toc-text">docker start</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#docker-restart"><span class="toc-number">7.</span> <span class="toc-text">docker restart</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#docker-attach"><span class="toc-number">8.</span> <span class="toc-text">docker attach</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#docker-commit"><span class="toc-number">9.</span> <span class="toc-text">docker commit</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#docker-tag"><span class="toc-number">10.</span> <span class="toc-text">docker tag</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#docker-push"><span class="toc-number">11.</span> <span class="toc-text">docker push</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#docker-save"><span class="toc-number">12.</span> <span class="toc-text">docker save</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#docker-load"><span class="toc-number">13.</span> <span class="toc-text">docker load</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#docker-ps"><span class="toc-number">14.</span> <span class="toc-text">docker ps</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#docker-export"><span class="toc-number">15.</span> <span class="toc-text">docker export</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#docker-import"><span class="toc-number">16.</span> <span class="toc-text">docker import</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#docker-rm"><span class="toc-number">17.</span> <span class="toc-text">docker rm</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#docker-rmi"><span class="toc-number">18.</span> <span class="toc-text">docker rmi</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#docker-inspect"><span class="toc-number">19.</span> <span class="toc-text">docker inspect</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#docker-port"><span class="toc-number">20.</span> <span class="toc-text">docker port</span></a></li></ol>  
+             </div>
+             <script type="text/javascript">
+               var _article = document.getElementsByClassName('article')[0];
+               <!-- setTimeout("_article.style.marginRight = '211px'",0);  -->
+               setTimeout("_article.className += ' article2'",0); 
+               setTimeout("document.getElementById('toc').style.right = '15px'", 0);                
+             </script>
+           
+         
+        <h3 id="docker-pull"><a href="#docker-pull" class="headerlink" title="docker pull"></a>docker pull</h3><p><code>说明：</code>获取网络镜像到本地<br> <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"> [root@localhost ~]# docker pull --help</span><br><span class="line"></span><br><span class="line">Usage:	docker pull [OPTIONS] NAME[:TAG|@DIGEST]</span><br><span class="line"></span><br><span class="line">Pull an image or a repository from a registry</span><br><span class="line"></span><br><span class="line">  -a, --all-tags                  Download all tagged images in the repository</span><br><span class="line">  --disable-content-trust=true    Skip image verification</span><br><span class="line">  --help                          Print usage</span><br></pre></td></tr></table></figure><br>当不指定TAG时，默认为：latest<br>示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# sudo docker pull ubuntu:12.04</span><br><span class="line">[root@localhost ~]# docker pull registry.hub.docker.com/ubuntu:12.04</span><br></pre></td></tr></table></figure>
+<h3 id="docker-images"><a href="#docker-images" class="headerlink" title="docker images"></a>docker images</h3><p><code>说明：</code>显示本地已有的镜像</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# docker images --help</span><br><span class="line"></span><br><span class="line">Usage:	docker images [OPTIONS] [REPOSITORY[:TAG]]</span><br><span class="line"></span><br><span class="line">List images</span><br><span class="line"></span><br><span class="line">  -a, --all          Show all images (default hides intermediate images)</span><br><span class="line">  --digests          Show digests</span><br><span class="line">  -f, --filter=[]    Filter output based on conditions provided</span><br><span class="line">  --format           Pretty-print images using a Go template</span><br><span class="line">  --help             Print usage</span><br><span class="line">  --no-trunc         Don&#x27;t truncate output</span><br><span class="line">  -q, --quiet        Only show numeric IDs</span><br></pre></td></tr></table></figure>
+<p>镜像的 <code>ID</code> 唯一标识了镜像。</p>
+<h3 id="docker-run"><a href="#docker-run" class="headerlink" title="docker run"></a>docker run</h3><p><code>说明：</code>使用已下载到本地的镜像启动一个新容器</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# docker run --help</span><br><span class="line"></span><br><span class="line">Usage:	docker run [OPTIONS] IMAGE [COMMAND] [ARG...]</span><br><span class="line"></span><br><span class="line">Run a command in a new container</span><br><span class="line"></span><br><span class="line">  -a, --attach=[]                 Attach to STDIN, STDOUT or STDERR</span><br><span class="line">  --add-host=[]                   Add a custom host-to-IP mapping (host:ip)</span><br><span class="line">  --blkio-weight                  Block IO (relative weight), between 10 and 1000</span><br><span class="line">  --blkio-weight-device=[]        Block IO weight (relative device weight)</span><br><span class="line">  --cpu-shares                    CPU shares (relative weight)</span><br><span class="line">  --cap-add=[]                    Add Linux capabilities</span><br><span class="line">  --cap-drop=[]                   Drop Linux capabilities</span><br><span class="line">  --cgroup-parent                 Optional parent cgroup for the container</span><br><span class="line">  --cidfile                       Write the container ID to the file</span><br><span class="line">  --cpu-period                    Limit CPU CFS (Completely Fair Scheduler) period</span><br><span class="line">  --cpu-quota                     Limit CPU CFS (Completely Fair Scheduler) quota</span><br><span class="line">  --cpuset-cpus                   CPUs in which to allow execution (0-3, 0,1)</span><br><span class="line">  --cpuset-mems                   MEMs in which to allow execution (0-3, 0,1)</span><br><span class="line">  -d, --detach                    Run container in background and print container ID</span><br><span class="line">  --detach-keys                   Override the key sequence for detaching a container</span><br><span class="line">  --device=[]                     Add a host device to the container</span><br><span class="line">  --device-read-bps=[]            Limit read rate (bytes per second) from a device</span><br><span class="line">  --device-read-iops=[]           Limit read rate (IO per second) from a device</span><br><span class="line">  --device-write-bps=[]           Limit write rate (bytes per second) to a device</span><br><span class="line">  --device-write-iops=[]          Limit write rate (IO per second) to a device</span><br><span class="line">  --disable-content-trust=true    Skip image verification</span><br><span class="line">  --dns=[]                        Set custom DNS servers</span><br><span class="line">  --dns-opt=[]                    Set DNS options</span><br><span class="line">  --dns-search=[]                 Set custom DNS search domains</span><br><span class="line">  -e, --env=[]                    Set environment variables</span><br><span class="line">  --entrypoint                    Overwrite the default ENTRYPOINT of the image</span><br><span class="line">  --env-file=[]                   Read in a file of environment variables</span><br><span class="line">  --expose=[]                     Expose a port or a range of ports</span><br><span class="line">  --group-add=[]                  Add additional groups to join</span><br><span class="line">  -h, --hostname                  Container host name</span><br><span class="line">  --help                          Print usage</span><br><span class="line">  -i, --interactive               Keep STDIN open even if not attached</span><br><span class="line">  --ip                            Container IPv4 address (e.g. 172.30.100.104)</span><br><span class="line">  --ip6                           Container IPv6 address (e.g. 2001:db8::33)</span><br><span class="line">  --ipc                           IPC namespace to use</span><br><span class="line">  --isolation                     Container isolation level</span><br><span class="line">  --kernel-memory                 Kernel memory limit</span><br><span class="line">  -l, --label=[]                  Set meta data on a container</span><br><span class="line">  --label-file=[]                 Read in a line delimited file of labels</span><br><span class="line">  --link=[]                       Add link to another container</span><br><span class="line">  --log-driver                    Logging driver for container</span><br><span class="line">  --log-opt=[]                    Log driver options</span><br><span class="line">  -m, --memory                    Memory limit</span><br><span class="line">  --mac-address                   Container MAC address (e.g. 92:d0:c6:0a:29:33)</span><br><span class="line">  --memory-reservation            Memory soft limit</span><br><span class="line">  --memory-swap                   Swap limit equal to memory plus swap: &#x27;-1&#x27; to enable unlimited swap</span><br><span class="line">  --memory-swappiness=-1          Tune container memory swappiness (0 to 100)</span><br><span class="line">  --name                          Assign a name to the container</span><br><span class="line">  --net=default                   Connect a container to a network</span><br><span class="line">  --net-alias=[]                  Add network-scoped alias for the container</span><br><span class="line">  --oom-kill-disable              Disable OOM Killer</span><br><span class="line">  --oom-score-adj                 Tune host&#x27;s OOM preferences (-1000 to 1000)</span><br><span class="line">  -P, --publish-all               Publish all exposed ports to random ports</span><br><span class="line">  -p, --publish=[]                Publish a container&#x27;s port(s) to the host</span><br><span class="line">  --pid                           PID namespace to use</span><br><span class="line">  --privileged                    Give extended privileges to this container</span><br><span class="line">  --read-only                     Mount the container&#x27;s root filesystem as read only</span><br><span class="line">  --restart=no                    Restart policy to apply when a container exits</span><br><span class="line">  --rm                            Automatically remove the container when it exits</span><br><span class="line">  --security-opt=[]               Security Options</span><br><span class="line">  --shm-size                      Size of /dev/shm, default value is 64MB</span><br><span class="line">  --sig-proxy=true                Proxy received signals to the process</span><br><span class="line">  --stop-signal=SIGTERM           Signal to stop a container, SIGTERM by default</span><br><span class="line">  -t, --tty                       Allocate a pseudo-TTY</span><br><span class="line">  --tmpfs=[]                      Mount a tmpfs directory</span><br><span class="line">  -u, --user                      Username or UID (format: &lt;name|uid&gt;[:&lt;group|gid&gt;])</span><br><span class="line">  --ulimit=[]                     Ulimit options</span><br><span class="line">  --uts                           UTS namespace to use</span><br><span class="line">  -v, --volume=[]                 Bind mount a volume</span><br><span class="line">  --volume-driver                 Optional volume driver for the container</span><br><span class="line">  --volumes-from=[]               Mount volumes from the specified container(s)</span><br><span class="line">  -w, --workdir                   Working directory inside the container</span><br></pre></td></tr></table></figure>
+<p><code>IMAGE</code>可以为镜像名或者镜像ID。<br>示例： </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo docker run -t -i ouruser/sinatra:v2 /bin/bash</span><br><span class="line">sudo docker run -d ubuntu:14.04 /bin/sh -c &quot;while true; do echo hello world; sleep 1; done&quot; #守护态运行</span><br></pre></td></tr></table></figure>
+
+<p>在执行 docker run 的时候如果添加 –rm 标记，则容器在终止后会立刻删除。注意，–rm 和 -d 参数不能同时使用。</p>
+<h3 id="docker-logs"><a href="#docker-logs" class="headerlink" title="docker logs"></a>docker logs</h3><p><code>说明：</code>获取容器输出的信息，适用于守护态运行docker容器。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# docker logs --help</span><br><span class="line"></span><br><span class="line">Usage:	docker logs [OPTIONS] CONTAINER</span><br><span class="line"></span><br><span class="line">Fetch the logs of a container</span><br><span class="line"></span><br><span class="line">  -f, --follow        Follow log output</span><br><span class="line">  --help              Print usage</span><br><span class="line">  --since             Show logs since timestamp</span><br><span class="line">  -t, --timestamps    Show timestamps</span><br><span class="line">  --tail=all          Number of lines to show from the end of the logs</span><br></pre></td></tr></table></figure>
+<h3 id="docker-stop"><a href="#docker-stop" class="headerlink" title="docker stop"></a>docker stop</h3><p><code>说明：</code>停止一个正在启动的容器。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# docker stop --help</span><br><span class="line"></span><br><span class="line">Usage:	docker stop [OPTIONS] CONTAINER [CONTAINER...]</span><br><span class="line"></span><br><span class="line">Stop a running container.</span><br><span class="line">Sending SIGTERM and then SIGKILL after a grace period</span><br><span class="line"></span><br><span class="line">  --help             Print usage</span><br><span class="line">  -t, --time=10      Seconds to wait for stop before killing it</span><br></pre></td></tr></table></figure>
+<h3 id="docker-start"><a href="#docker-start" class="headerlink" title="docker start"></a>docker start</h3><p><code>说明：</code>启动一个已经停止的容器。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# docker start --help</span><br><span class="line"></span><br><span class="line">Usage:	docker start [OPTIONS] CONTAINER [CONTAINER...]</span><br><span class="line"></span><br><span class="line">Start one or more stopped containers</span><br><span class="line"></span><br><span class="line">  -a, --attach         Attach STDOUT/STDERR and forward signals</span><br><span class="line">  --detach-keys        Override the key sequence for detaching a container</span><br><span class="line">  --help               Print usage</span><br><span class="line">  -i, --interactive    Attach container&#x27;s STDIN</span><br></pre></td></tr></table></figure>
+<h3 id="docker-restart"><a href="#docker-restart" class="headerlink" title="docker restart"></a>docker restart</h3><p><code>说明：</code>将一个运行态的容器终止，然后再重新启动它。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# docker restart --help</span><br><span class="line"></span><br><span class="line">Usage:	docker restart [OPTIONS] CONTAINER [CONTAINER...]</span><br><span class="line"></span><br><span class="line">Restart a container</span><br><span class="line"></span><br><span class="line">  --help             Print usage</span><br><span class="line">  -t, --time=10      Seconds to wait for stop before killing the container</span><br></pre></td></tr></table></figure>
+<h3 id="docker-attach"><a href="#docker-attach" class="headerlink" title="docker attach"></a>docker attach</h3><p><code>说明：</code>在使用 -d 参数时，容器启动后会进入后台。 某些时候需要进入容器进行操作就可以用它。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# docker attach --help</span><br><span class="line"></span><br><span class="line">Usage:	docker attach [OPTIONS] CONTAINER</span><br><span class="line"></span><br><span class="line">Attach to a running container</span><br><span class="line"></span><br><span class="line">  --detach-keys       Override the key sequence for detaching a container</span><br><span class="line">  --help              Print usage</span><br><span class="line">  --no-stdin          Do not attach STDIN</span><br><span class="line">  --sig-proxy=true    Proxy all received signals to the process</span><br></pre></td></tr></table></figure>
+
+<h3 id="docker-commit"><a href="#docker-commit" class="headerlink" title="docker commit"></a>docker commit</h3><p><code>说明：</code>将修改后的容器提交保存为一个新的镜像。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# docker commit --help</span><br><span class="line"></span><br><span class="line">Usage:	docker commit [OPTIONS] CONTAINER [REPOSITORY[:TAG]]</span><br><span class="line"></span><br><span class="line">Create a new image from a container&#x27;s changes</span><br><span class="line"></span><br><span class="line">  -a, --author        Author (e.g., &quot;John Hannibal Smith &lt;hannibal@a-team.com&gt;&quot;)</span><br><span class="line">  -c, --change=[]     Apply Dockerfile instruction to the created image</span><br><span class="line">  --help              Print usage</span><br><span class="line">  -m, --message       Commit message</span><br><span class="line">  -p, --pause=true    Pause container during commit</span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo docker commit -m &quot;Added json gem&quot; -a &quot;Docker Newbee&quot; 0b2616b0e5a8 ouruser/sinatra:v2</span><br><span class="line">4f177bd27a9ff0f6dc2a830403925b5360bfe0b93d476f7fc3231110e7f71b1c</span><br></pre></td></tr></table></figure>
+<h3 id="docker-tag"><a href="#docker-tag" class="headerlink" title="docker tag"></a>docker tag</h3><p><code>说明:</code>修改镜像标签</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# docker tag --help</span><br><span class="line"></span><br><span class="line">Usage:	docker tag [OPTIONS] IMAGE[:TAG] [REGISTRYHOST/][USERNAME/]NAME[:TAG]</span><br><span class="line"></span><br><span class="line">Tag an image into a repository</span><br><span class="line"></span><br><span class="line">  --help             Print usage</span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker tag 5db5f8471261 ouruser/sinatra:devel #将5db5f8471261的镜像tag更改为devel</span><br></pre></td></tr></table></figure>
+<h3 id="docker-push"><a href="#docker-push" class="headerlink" title="docker push"></a>docker push</h3><p><code>说明:</code>自己创建的本地镜像上传到远程仓库中来共享。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# docker push --help</span><br><span class="line"></span><br><span class="line">Usage:	docker push [OPTIONS] NAME[:TAG]</span><br><span class="line"></span><br><span class="line">Push an image or a repository to a registry</span><br><span class="line"></span><br><span class="line">  --disable-content-trust=true    Skip image signing</span><br><span class="line">  --help                          Print usage</span><br></pre></td></tr></table></figure>
+<h3 id="docker-save"><a href="#docker-save" class="headerlink" title="docker save"></a>docker save</h3><p><code>说明:</code>将镜像导出成本地文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# docker save --help</span><br><span class="line"></span><br><span class="line">Usage:	docker save [OPTIONS] IMAGE [IMAGE...]</span><br><span class="line"></span><br><span class="line">Save an image(s) to a tar archive (streamed to STDOUT by default)</span><br><span class="line"></span><br><span class="line">  --help             Print usage</span><br><span class="line">  -o, --output       Write to a file, instead of STDOUT</span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# docker save -o ubuntu_14.04.tar ubuntu:14.04</span><br></pre></td></tr></table></figure>
+<h3 id="docker-load"><a href="#docker-load" class="headerlink" title="docker load"></a>docker load</h3><p><code>说明:</code>将镜像本地文件加载成为本地镜像</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# docker load --help</span><br><span class="line"></span><br><span class="line">Usage:	docker load [OPTIONS]</span><br><span class="line"></span><br><span class="line">Load an image from a tar archive or STDIN</span><br><span class="line"></span><br><span class="line">  --help             Print usage</span><br><span class="line">  -i, --input        Read from a tar archive file, instead of STDIN</span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# docker load --input ubuntu_14.04.tar</span><br></pre></td></tr></table></figure>
+<h3 id="docker-ps"><a href="#docker-ps" class="headerlink" title="docker ps"></a>docker ps</h3><p><code>说明：</code>列出对应的容器</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# docker ps --help</span><br><span class="line"></span><br><span class="line">Usage:	docker ps [OPTIONS]</span><br><span class="line"></span><br><span class="line">List containers</span><br><span class="line"></span><br><span class="line">  -a, --all          Show all containers (default shows just running)</span><br><span class="line">  -f, --filter=[]    Filter output based on conditions provided</span><br><span class="line">  --format           Pretty-print containers using a Go template</span><br><span class="line">  --help             Print usage</span><br><span class="line">  -l, --latest       Show the latest created container (includes all states)</span><br><span class="line">  -n=-1              Show n last created containers (includes all states)</span><br><span class="line">  --no-trunc         Don&#x27;t truncate output</span><br><span class="line">  -q, --quiet        Only display numeric IDs</span><br><span class="line">  -s, --size         Display total file sizes</span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# docker ps -a</span><br></pre></td></tr></table></figure>
+<h3 id="docker-export"><a href="#docker-export" class="headerlink" title="docker export"></a>docker export</h3><p><code>说明：</code>导出本地某个容器为快照文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# docker export --help</span><br><span class="line"></span><br><span class="line">Usage:	docker export [OPTIONS] CONTAINER</span><br><span class="line"></span><br><span class="line">Export a container&#x27;s filesystem as a tar archive</span><br><span class="line"></span><br><span class="line">  --help             Print usage</span><br><span class="line">  -o, --output       Write to a file, instead of STDOUT</span><br></pre></td></tr></table></figure>
+<h3 id="docker-import"><a href="#docker-import" class="headerlink" title="docker import"></a>docker import</h3><p><code>说明：</code>将容器快照文件导入为本地容器或者本地镜像。与<code>docker load</code>的区别在于容器快照文件将丢弃所有的历史记录和元数据信息,而镜像存储文件将保存完整记录，体积也要大。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# docker import --help</span><br><span class="line"></span><br><span class="line">Usage:	docker import [OPTIONS] file|URL|- [REPOSITORY[:TAG]]</span><br><span class="line"></span><br><span class="line">Import the contents from a tarball to create a filesystem image</span><br><span class="line"></span><br><span class="line">  -c, --change=[]    Apply Dockerfile instruction to the created image</span><br><span class="line">  --help             Print usage</span><br><span class="line">  -m, --message      Set commit message for imported image</span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# cat ubuntu.tar | sudo docker import - test/ubuntu:v1.0</span><br></pre></td></tr></table></figure>
+<h3 id="docker-rm"><a href="#docker-rm" class="headerlink" title="docker rm"></a>docker rm</h3><p><code>说明：</code>移除容器</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# docker rm --help</span><br><span class="line"></span><br><span class="line">Usage:	docker rm [OPTIONS] CONTAINER [CONTAINER...]</span><br><span class="line"></span><br><span class="line">Remove one or more containers</span><br><span class="line"></span><br><span class="line">  -f, --force        Force the removal of a running container (uses SIGKILL)</span><br><span class="line">  --help             Print usage</span><br><span class="line">  -l, --link         Remove the specified link</span><br><span class="line">  -v, --volumes      Remove the volumes associated with the container</span><br></pre></td></tr></table></figure>
+<p>示例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# docker rm $(docker ps -a -q) #清理所有处于终止状态的容器</span><br></pre></td></tr></table></figure>
+<h3 id="docker-rmi"><a href="#docker-rmi" class="headerlink" title="docker rmi"></a>docker rmi</h3><p><code>说明:</code>移除本地镜像，移出前需要先移除到镜像对应的容器。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# docker rmi --help</span><br><span class="line"></span><br><span class="line">Usage:	docker rmi [OPTIONS] IMAGE [IMAGE...]</span><br><span class="line"></span><br><span class="line">Remove one or more images</span><br><span class="line"></span><br><span class="line">  -f, --force        Force removal of the image</span><br><span class="line">  --help             Print usage</span><br><span class="line">  --no-prune         Do not delete untagged parents</span><br></pre></td></tr></table></figure>
+
+<p>清理所有未打过标签的本地镜像：<code>docker rmi $(docker images -q -f &quot;dangling=true&quot;)</code></p>
+<h3 id="docker-inspect"><a href="#docker-inspect" class="headerlink" title="docker inspect"></a>docker inspect</h3><p><code>说明:</code>查看容器或者镜像的详情信息。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# docker inspect --help</span><br><span class="line"></span><br><span class="line">Usage:	docker inspect [OPTIONS] CONTAINER|IMAGE [CONTAINER|IMAGE...]</span><br><span class="line"></span><br><span class="line">Return low-level information on a container or image</span><br><span class="line"></span><br><span class="line">  -f, --format       Format the output using the given go template</span><br><span class="line">  --help             Print usage</span><br><span class="line">  -s, --size         Display total file sizes if the type is container</span><br><span class="line">  --type             Return JSON for specified type, (e.g image or container)</span><br></pre></td></tr></table></figure>
+<h3 id="docker-port"><a href="#docker-port" class="headerlink" title="docker port"></a>docker port</h3><p><code>说明：</code>来查看当前映射的端口配置，也可以查看到绑定的地址。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# docker port --help</span><br><span class="line"></span><br><span class="line">Usage:  docker port [OPTIONS] CONTAINER [PRIVATE_PORT[/PROTO]]</span><br><span class="line"></span><br><span class="line">List port mappings or a specific mapping for the CONTAINER</span><br><span class="line"></span><br><span class="line">  --help             Print usage</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p><em>观点仅代表自己，期待你的留言。</em></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/04/18/docker-data-network/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          docker数据卷与网络配置
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/04/13/string-format/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">String.format详解</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+    <a class="jiathis_button_twitter"></a>
+    <a class="jiathis_button_plus"></a> 
+    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+
+
+
+
+
+<section id="comments">
+  <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'blogcnvip'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2024 建均笔记
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+
+<script src="/js/require-2.1.6,jquery-1.9.1.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'true', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+
+<link href="//cdn.bootcss.com/highlight.js/8.0/styles/tomorrow-night-bright.min.css" rel="stylesheet">  
+<script src="//cdn.bootcss.com/highlight.js/8.0/highlight.min.js"></script>  
+<script> 
+jQuery('td.code pre').each(function(i, block) {
+  hljs.highlightBlock(block);
+});
+</script>
+
+
+  </div>
+</body>
+</html>

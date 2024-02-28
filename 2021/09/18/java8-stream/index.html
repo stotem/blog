@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>Java8 Stream之实例玩转集合的筛选、归约、分组、聚合 | 建均笔记</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="功能全景 Stream概述Java 8 是一个非常成功的版本，这个版本新增的Stream，配合同版本出现的 Lambda ，给我们操作集合（Collection）提供了极大的便利。 那么什么是Stream？  Stream将要处理的元素集合看作一种流，在流的过程中，借助Stream API对流中的元素进行操作，比如：筛选、排序、聚合等。  Stream可以由数组或集合创建，对流的操作分为两种：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java8 Stream之实例玩转集合的筛选、归约、分组、聚合">
+<meta property="og:url" content="http://www.uto.ink/2021/09/18/java8-stream/index.html">
+<meta property="og:site_name" content="建均笔记">
+<meta property="og:description" content="功能全景 Stream概述Java 8 是一个非常成功的版本，这个版本新增的Stream，配合同版本出现的 Lambda ，给我们操作集合（Collection）提供了极大的便利。 那么什么是Stream？  Stream将要处理的元素集合看作一种流，在流的过程中，借助Stream API对流中的元素进行操作，比如：筛选、排序、聚合等。  Stream可以由数组或集合创建，对流的操作分为两种：">
+<meta property="og:locale">
+<meta property="og:image" content="http://www.uto.ink/images/java-stream-1.png">
+<meta property="og:image" content="http://www.uto.ink/images/java-stream-2.png">
+<meta property="article:published_time" content="2021-09-18T03:11:57.000Z">
+<meta property="article:modified_time" content="2024-02-28T06:35:25.247Z">
+<meta property="article:author" content="建均笔记">
+<meta property="article:tag" content="转载">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://www.uto.ink/images/java-stream-1.png">
+  
+  <meta name="keywords" content="建均笔记">
+  
+  
+    <link rel="alternative" href="/atom.xml" title="建均笔记" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<script>
+(function(){
+    var bp = document.createElement('script');
+    bp.src = '//push.zhanzhang.baidu.com/push.js';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+<!-- baidu Analytics -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?b5a8646d4b9e56cf6ef835a8e416f147";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!-- End baidu Analytics -->
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css" />
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="/img/avatar.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">建均笔记</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">不积跬步 无以至千里</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+					</div>
+
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="/about">关于我</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/stotem" title="github">github</a>
+					        
+								<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+					        
+								<a class="mail" target="_blank" href="mailto:china.wujianjun@icloud.com" title="mail">mail</a>
+					        
+						</div>
+						<div>
+							<i class="fa fa-line-chart"></i>
+							本站访问量<span id=“busuanzi_container_site_pv”><span id="busuanzi_value_site_pv"><i class="fa fa-spinner fa-spin"></i></span></span> 次
+						</div>
+					</nav>
+				</section>
+
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Docker/" style="font-size: 15.71px;">Docker</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/Maven/" style="font-size: 11.43px;">Maven</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Nginx/" style="font-size: 15.71px;">Nginx</a> <a href="/tags/OpenVPN/" style="font-size: 12.86px;">OpenVPN</a> <a href="/tags/Podman/" style="font-size: 11.43px;">Podman</a> <a href="/tags/Redis/" style="font-size: 11.43px;">Redis</a> <a href="/tags/Transaction/" style="font-size: 10px;">Transaction</a> <a href="/tags/cdt/" style="font-size: 10px;">cdt</a> <a href="/tags/https/" style="font-size: 10px;">https</a> <a href="/tags/iOS/" style="font-size: 17.14px;">iOS</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/nginx-obs/" style="font-size: 10px;">nginx + obs</a> <a href="/tags/php-fpm/" style="font-size: 10px;">php-fpm</a> <a href="/tags/podman/" style="font-size: 14.29px;">podman</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/rocketmq/" style="font-size: 10px;">rocketmq</a> <a href="/tags/shiro/" style="font-size: 11.43px;">shiro</a> <a href="/tags/spring/" style="font-size: 11.43px;">spring</a> <a href="/tags/springcloud/" style="font-size: 10px;">springcloud</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/transaction/" style="font-size: 10px;">transaction</a> <a href="/tags/%E5%85%B3%E9%94%AE%E7%AC%94%E8%AE%B0/" style="font-size: 10px;">关键笔记</a> <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" style="font-size: 10px;">分布式</a> <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/" style="font-size: 10px;">分布式事务</a> <a href="/tags/%E5%8E%9F%E5%88%9B/" style="font-size: 20px;">原创</a> <a href="/tags/%E5%A4%9A%E8%BF%9B%E7%A8%8B/" style="font-size: 10px;">多进程</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" style="font-size: 11.43px;">大数据</a> <a href="/tags/%E5%B9%B6%E5%8F%91/" style="font-size: 10px;">并发</a> <a href="/tags/%E6%80%BB%E7%BB%93/" style="font-size: 10px;">总结</a> <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 10px;">操作系统</a> <a href="/tags/%E6%9E%B6%E6%9E%84/" style="font-size: 10px;">架构</a> <a href="/tags/%E7%94%B5%E5%95%86/" style="font-size: 10px;">电商</a> <a href="/tags/%E7%AC%94%E8%AE%B0/" style="font-size: 10px;">笔记</a> <a href="/tags/%E8%BD%AC%E8%BD%BD/" style="font-size: 18.57px;">转载</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 10px;">随笔</a>
+					</div>
+				</section>
+				
+
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://andylee1988.github.io">andylee1988的博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://devtll.github.io">devtll的博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://esnake0.github.io">esnake0的博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.shaofan.org">少凡的独立博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.csdn.net/liuguofeng719?viewmode=list">guofeng的博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://witchan.com">WitChan的技术博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.csdn.net/kelanq">kelanQ的博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://chenxinyu.work">IT古书</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://8tool.club">KnowledgeBase</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://cherrycheng.top">cherrycheng</a><br />
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+
+	</header>
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">建均笔记</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+			
+				<img lazy-src="/img/avatar.jpg" class="js-avatar">
+			
+			</div>
+			<hgroup>
+			  <h1 class="header-author">建均笔记</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">不积跬步 无以至千里</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/about">关于我</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/stotem" title="github">github</a>
+			        
+						<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+			        
+						<a class="mail" target="_blank" href="mailto:china.wujianjun@icloud.com" title="mail">mail</a>
+			        
+				</div>
+				<div style="text-align: center;">
+					<i class="fa fa-line-chart"></i>
+					本站访问量<span id=“busuanzi_container_site_pv”><span id="busuanzi_value_site_pv"><i class="fa fa-spinner fa-spin"></i></span></span> 次
+				</div>
+			</nav>
+		</header>
+	</div>
+</nav>
+
+      <div class="body-wrap"><article id="post-java8-stream" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2021/09/18/java8-stream/" class="article-date">
+  	<time datetime="2021-09-18T03:11:57.000Z" itemprop="datePublished">2021-09-18</time>
+</a>
+      <div class="analysis-container">
+	<i class="fa fa-line-chart"></i>
+	已阅读<span id=“busuanzi_container_page_pv”><span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span></span> 次
+</div>
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Java8 Stream之实例玩转集合的筛选、归约、分组、聚合
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%BD%AC%E8%BD%BD/" rel="tag">转载</a></li></ul>
+	</div>
+
+        
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+              
+                       
+             <div id="toc" class="article-toc">
+             <h2>文章目录</h2>
+               <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8A%9F%E8%83%BD%E5%85%A8%E6%99%AF"><span class="toc-number">1.</span> <span class="toc-text">功能全景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Stream%E6%A6%82%E8%BF%B0"><span class="toc-number">2.</span> <span class="toc-text">Stream概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Stream%E7%9A%84%E5%88%9B%E5%BB%BA"><span class="toc-number">3.</span> <span class="toc-text">Stream的创建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Stream%E5%8F%AF%E4%BB%A5%E9%80%9A%E8%BF%87%E9%9B%86%E5%90%88%E6%95%B0%E7%BB%84%E5%88%9B%E5%BB%BA%E3%80%82"><span class="toc-number">3.1.</span> <span class="toc-text">Stream可以通过集合数组创建。</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Stream%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-number">4.</span> <span class="toc-text">Stream的使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%81%8D%E5%8E%86-%E5%8C%B9%E9%85%8D%EF%BC%88foreach-find-match%EF%BC%89"><span class="toc-number">4.1.</span> <span class="toc-text">遍历&#x2F;匹配（foreach&#x2F;find&#x2F;match）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AD%9B%E9%80%89%EF%BC%88filter%EF%BC%89"><span class="toc-number">4.2.</span> <span class="toc-text">筛选（filter）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%81%9A%E5%90%88%EF%BC%88max-min-count"><span class="toc-number">4.3.</span> <span class="toc-text">聚合（max&#x2F;min&#x2F;count)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%98%A0%E5%B0%84-map-flatMap"><span class="toc-number">4.4.</span> <span class="toc-text">映射(map&#x2F;flatMap)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BD%92%E7%BA%A6-reduce"><span class="toc-number">4.5.</span> <span class="toc-text">归约(reduce)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%94%B6%E9%9B%86-collect"><span class="toc-number">4.6.</span> <span class="toc-text">收集(collect)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BD%92%E9%9B%86-toList-toSet-toMap"><span class="toc-number">4.6.1.</span> <span class="toc-text">归集(toList&#x2F;toSet&#x2F;toMap)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%9F%E8%AE%A1-count-averaging"><span class="toc-number">4.6.2.</span> <span class="toc-text">统计(count&#x2F;averaging)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%86%E7%BB%84-partitioningBy-groupingBy"><span class="toc-number">4.6.3.</span> <span class="toc-text">分组(partitioningBy&#x2F;groupingBy)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%8E%A5%E5%90%88-joining"><span class="toc-number">4.6.4.</span> <span class="toc-text">接合(joining)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BD%92%E7%BA%A6-reducing"><span class="toc-number">4.6.5.</span> <span class="toc-text">归约(reducing)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%92%E5%BA%8F-sorted"><span class="toc-number">4.7.</span> <span class="toc-text">排序(sorted)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%90%E5%8F%96-%E7%BB%84%E5%90%88"><span class="toc-number">4.8.</span> <span class="toc-text">提取&#x2F;组合</span></a></li></ol></li></ol>  
+             </div>
+             <script type="text/javascript">
+               var _article = document.getElementsByClassName('article')[0];
+               <!-- setTimeout("_article.style.marginRight = '211px'",0);  -->
+               setTimeout("_article.className += ' article2'",0); 
+               setTimeout("document.getElementById('toc').style.right = '15px'", 0);                
+             </script>
+           
+         
+        <h2 id="功能全景"><a href="#功能全景" class="headerlink" title="功能全景"></a>功能全景</h2><p><img src="/images/java-stream-1.png" alt="Java8Stream全景"></p>
+<h2 id="Stream概述"><a href="#Stream概述" class="headerlink" title="Stream概述"></a>Stream概述</h2><p>Java 8 是一个非常成功的版本，这个版本新增的<code>Stream</code>，配合同版本出现的 <code>Lambda</code> ，给我们操作集合（Collection）提供了极大的便利。</p>
+<p>那么什么是<code>Stream</code>？</p>
+<blockquote>
+<p>Stream将要处理的元素集合看作一种流，在流的过程中，借助Stream API对流中的元素进行操作，比如：筛选、排序、聚合等。</p>
+</blockquote>
+<p>Stream可以由数组或集合创建，对流的操作分为两种：</p>
+<ol>
+<li>中间操作，每次返回一个新的流，可以有多个。</li>
+<li>终端操作，每个流只能进行一次终端操作，终端操作结束后流无法再次使用。终端操作会产生一个新的集合或值。</li>
+</ol>
+<p>另外，Stream有几个特性：</p>
+<ol>
+<li>stream不存储数据，而是按照特定的规则对数据进行计算，一般会输出结果。</li>
+<li>stream不会改变数据源，通常情况下会产生一个新的集合或一个值。</li>
+<li>stream具有延迟执行特性，只有调用终端操作时，中间操作才会执行。</li>
+</ol>
+<h2 id="Stream的创建"><a href="#Stream的创建" class="headerlink" title="Stream的创建"></a>Stream的创建</h2><h3 id="Stream可以通过集合数组创建。"><a href="#Stream可以通过集合数组创建。" class="headerlink" title="Stream可以通过集合数组创建。"></a>Stream可以通过集合数组创建。</h3><ol>
+<li>通过 java.util.Collection.stream()方法用集合创建流</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">List&lt;String&gt; list = Arrays.asList(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;);</span><br><span class="line">// 创建一个顺序流</span><br><span class="line">Stream&lt;String&gt; stream = list.stream();</span><br><span class="line">// 创建一个并行流</span><br><span class="line">Stream&lt;String&gt; parallelStream = list.parallelStream();</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>使用java.util.Arrays.stream(T[] array)方法用数组创建流</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">int[] array=&#123;1,3,5,6,8&#125;;</span><br><span class="line">IntStream stream = Arrays.stream(array);</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>使用Stream的静态方法：of()、iterate()、generate()</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Stream&lt;Integer&gt; stream = Stream.of(1, 2, 3, 4, 5, 6);</span><br><span class="line"></span><br><span class="line">Stream&lt;Integer&gt; stream2 = Stream.iterate(0, (x) -&gt; x + 3).limit(4);</span><br><span class="line">stream2.forEach(System.out::println);</span><br><span class="line"></span><br><span class="line">Stream&lt;Double&gt; stream3 = Stream.generate(Math::random).limit(3);</span><br><span class="line">stream3.forEach(System.out::println);</span><br></pre></td></tr></table></figure>
+
+<p><strong>stream和parallelStream的简单区分</strong></p>
+<p>stream是顺序流，由主线程按顺序对流执行操作。</p>
+<p>parallelStream是并行流，内部以多线程并行执行的方式对流进行操作，但前提是流中的数据处理没有顺序要求。例如筛选集合中的奇数，两者的处理不同之处：</p>
+<p><img src="/images/java-stream-2.png" alt="stream和parallelStream"></p>
+<p>如果流中的数据量足够大，并行流可以加快处速度。</p>
+<p>除了直接创建并行流，还可以通过parallel()把顺序流转换成并行流：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Optional&lt;Integer&gt; findFirst = list.stream().parallel().filter(x-&gt;x&gt;6).findFirst();</span><br></pre></td></tr></table></figure>
+
+<h2 id="Stream的使用"><a href="#Stream的使用" class="headerlink" title="Stream的使用"></a>Stream的使用</h2><p>在使用stream之前，先理解一个概念：Optional。</p>
+<blockquote>
+<p>Optional类是一个可以为null的容器对象。如果值存在则isPresent()方法会返回true，调用get()方法会返回该对象。 更详细说明请见：菜鸟教程Java 8 Optional类</p>
+</blockquote>
+<p>案例使用的员工类</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Person&gt; personList = new ArrayList&lt;Person&gt;();</span><br><span class="line">personList.add(new Person(&quot;Tom&quot;, 8900, &quot;male&quot;, &quot;New York&quot;));</span><br><span class="line">personList.add(new Person(&quot;Jack&quot;, 7000, &quot;male&quot;, &quot;Washington&quot;));</span><br><span class="line">personList.add(new Person(&quot;Lily&quot;, 7800, &quot;female&quot;, &quot;Washington&quot;));</span><br><span class="line">personList.add(new Person(&quot;Anni&quot;, 8200, &quot;female&quot;, &quot;New York&quot;));</span><br><span class="line">personList.add(new Person(&quot;Owen&quot;, 9500, &quot;male&quot;, &quot;New York&quot;));</span><br><span class="line">personList.add(new Person(&quot;Alisa&quot;, 7900, &quot;female&quot;, &quot;New York&quot;));</span><br><span class="line"></span><br><span class="line">class Person &#123;</span><br><span class="line">    private String name;  // 姓名</span><br><span class="line">    private int salary; // 薪资</span><br><span class="line">    private int age; // 年龄</span><br><span class="line">    private String sex; //性别</span><br><span class="line">    private String area;  // 地区</span><br><span class="line"></span><br><span class="line">    // 构造方法</span><br><span class="line">    public Person(String name, int salary, int age,String sex,String area) &#123;</span><br><span class="line">        this.name = name;</span><br><span class="line">        this.salary = salary;</span><br><span class="line">        this.age = age;</span><br><span class="line">        this.sex = sex;</span><br><span class="line">        this.area = area;</span><br><span class="line">    &#125;</span><br><span class="line">    // 省略了get和set，请自行添加</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="遍历-匹配（foreach-find-match）"><a href="#遍历-匹配（foreach-find-match）" class="headerlink" title="遍历/匹配（foreach/find/match）"></a>遍历/匹配（foreach/find/match）</h3><p>Stream也是支持类似集合的遍历和匹配元素的，只是Stream中的元素是以Optional类型存在的。Stream的遍历、匹配非常简单。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">// import已省略，请自行添加，后面代码亦是</span><br><span class="line">public class StreamTest &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        List&lt;Integer&gt; list = Arrays.asList(7, 6, 9, 3, 8, 2, 1);</span><br><span class="line"></span><br><span class="line">        // 遍历输出符合条件的元素</span><br><span class="line">        list.stream().filter(x -&gt; x &gt; 6).forEach(System.out::println);</span><br><span class="line">        // 匹配第一个</span><br><span class="line">        Optional&lt;Integer&gt; findFirst = list.stream().filter(x -&gt; x &gt; 6).findFirst();</span><br><span class="line">        // 匹配任意（适用于并行流）</span><br><span class="line">        Optional&lt;Integer&gt; findAny = list.parallelStream().filter(x -&gt; x &gt; 6).findAny();</span><br><span class="line">        // 是否包含符合特定条件的元素</span><br><span class="line">        boolean anyMatch = list.stream().anyMatch(x -&gt; x &lt; 6);</span><br><span class="line">        System.out.println(&quot;匹配第一个值：&quot; + findFirst.get());</span><br><span class="line">        System.out.println(&quot;匹配任意一个值：&quot; + findAny.get());</span><br><span class="line">        System.out.println(&quot;是否存在大于6的值：&quot; + anyMatch);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="筛选（filter）"><a href="#筛选（filter）" class="headerlink" title="筛选（filter）"></a>筛选（filter）</h3><p>筛选，是按照一定的规则校验流中的元素，将符合条件的元素提取到新的流中的操作。</p>
+<ul>
+<li><p>案例一：筛选出Integer集合中大于7的元素，并打印出来</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public class StreamTest &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        List&lt;Integer&gt; list = Arrays.asList(6, 7, 3, 8, 1, 2, 9);</span><br><span class="line">        Stream&lt;Integer&gt; stream = list.stream();</span><br><span class="line">        stream.filter(x -&gt; x &gt; 7).forEach(System.out::println);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<blockquote>
+<p>8 9</p>
+</blockquote>
+</li>
+<li><p>案例二： 筛选员工中工资高于8000的人，并形成新的集合。 形成新集合依赖collect（收集），后文有详细介绍。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">public class StreamTest &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        List&lt;Person&gt; personList = new ArrayList&lt;Person&gt;();</span><br><span class="line">        personList.add(new Person(&quot;Tom&quot;, 8900, 23, &quot;male&quot;, &quot;New York&quot;));</span><br><span class="line">        personList.add(new Person(&quot;Jack&quot;, 7000, 25, &quot;male&quot;, &quot;Washington&quot;));</span><br><span class="line">        personList.add(new Person(&quot;Lily&quot;, 7800, 21, &quot;female&quot;, &quot;Washington&quot;));</span><br><span class="line">        personList.add(new Person(&quot;Anni&quot;, 8200, 24, &quot;female&quot;, &quot;New York&quot;));</span><br><span class="line">        personList.add(new Person(&quot;Owen&quot;, 9500, 25, &quot;male&quot;, &quot;New York&quot;));</span><br><span class="line">        personList.add(new Person(&quot;Alisa&quot;, 7900, 26, &quot;female&quot;, &quot;New York&quot;));</span><br><span class="line"></span><br><span class="line">        List&lt;String&gt; fiterList = personList.stream().filter(x -&gt; x.getSalary() &gt; 8000).map(Person::getName)</span><br><span class="line">                .collect(Collectors.toList());</span><br><span class="line">        System.out.print(&quot;高于8000的员工姓名：&quot; + fiterList);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<blockquote>
+<p>高于8000的员工姓名：[Tom, Anni, Owen]</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="聚合（max-min-count"><a href="#聚合（max-min-count" class="headerlink" title="聚合（max/min/count)"></a>聚合（max/min/count)</h3><p>max、min、count这些字眼你一定不陌生，没错，在mysql中我们常用它们进行数据统计。Java stream中也引入了这些概念和用法，极大地方便了我们对集合、数组的数据统计工作。</p>
+<ul>
+<li><p>案例一：获取String集合中最长的元素。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public class StreamTest &#123;</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		List&lt;String&gt; list = Arrays.asList(&quot;adnm&quot;, &quot;admmt&quot;, &quot;pot&quot;, &quot;xbangd&quot;, &quot;weoujgsd&quot;);</span><br><span class="line"></span><br><span class="line">		Optional&lt;String&gt; max = list.stream().max(Comparator.comparing(String::length));</span><br><span class="line">		System.out.println(&quot;最长的字符串：&quot; + max.get());</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<blockquote>
+<p>最长的字符串：weoujgsd</p>
+</blockquote>
+</li>
+<li><p>案例二：获取Integer集合中的最大值。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">public class StreamTest &#123;</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		List&lt;Integer&gt; list = Arrays.asList(7, 6, 9, 4, 11, 6);</span><br><span class="line"></span><br><span class="line">		// 自然排序</span><br><span class="line">		Optional&lt;Integer&gt; max = list.stream().max(Integer::compareTo);</span><br><span class="line">		// 自定义排序</span><br><span class="line">		Optional&lt;Integer&gt; max2 = list.stream().max(new Comparator&lt;Integer&gt;() &#123;</span><br><span class="line">			@Override</span><br><span class="line">			public int compare(Integer o1, Integer o2) &#123;</span><br><span class="line">				return o1.compareTo(o2);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;);</span><br><span class="line">		System.out.println(&quot;自然排序的最大值：&quot; + max.get());</span><br><span class="line">		System.out.println(&quot;自定义排序的最大值：&quot; + max2.get());</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<blockquote>
+<p>自然排序的最大值：11</p>
+<p>自定义排序的最大值：11</p>
+</blockquote>
+</li>
+<li><p>案例三：获取员工工资最高的人。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public class StreamTest &#123;</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		List&lt;Person&gt; personList = new ArrayList&lt;Person&gt;();</span><br><span class="line">		personList.add(new Person(&quot;Tom&quot;, 8900, 23, &quot;male&quot;, &quot;New York&quot;));</span><br><span class="line">		personList.add(new Person(&quot;Jack&quot;, 7000, 25, &quot;male&quot;, &quot;Washington&quot;));</span><br><span class="line">		personList.add(new Person(&quot;Lily&quot;, 7800, 21, &quot;female&quot;, &quot;Washington&quot;));</span><br><span class="line">		personList.add(new Person(&quot;Anni&quot;, 8200, 24, &quot;female&quot;, &quot;New York&quot;));</span><br><span class="line">		personList.add(new Person(&quot;Owen&quot;, 9500, 25, &quot;male&quot;, &quot;New York&quot;));</span><br><span class="line">		personList.add(new Person(&quot;Alisa&quot;, 7900, 26, &quot;female&quot;, &quot;New York&quot;));</span><br><span class="line"></span><br><span class="line">		Optional&lt;Person&gt; max = personList.stream().max(Comparator.comparingInt(Person::getSalary));</span><br><span class="line">		System.out.println(&quot;员工工资最大值：&quot; + max.get().getSalary());</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<blockquote>
+<p>员工工资最大值：9500</p>
+</blockquote>
+</li>
+<li><p>案例四：计算Integer集合中大于6的元素的个数。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public class StreamTest &#123;</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		List&lt;Integer&gt; list = Arrays.asList(7, 6, 4, 8, 2, 11, 9);</span><br><span class="line"></span><br><span class="line">		long count = list.stream().filter(x -&gt; x &gt; 6).count();</span><br><span class="line">		System.out.println(&quot;list中大于6的元素个数：&quot; + count);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<blockquote>
+<p>list中大于6的元素个数：4</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="映射-map-flatMap"><a href="#映射-map-flatMap" class="headerlink" title="映射(map/flatMap)"></a>映射(map/flatMap)</h3><p>映射，可以将一个流的元素按照一定的映射规则映射到另一个流中。分为map和flatMap：</p>
+<ol>
+<li>map：接收一个函数作为参数，该函数会被应用到每个元素上，并将其映射成一个新的元素。</li>
+<li>flatMap：接收一个函数作为参数，将流中的每个值都换成另一个流，然后把所有流连接成一个流。</li>
+</ol>
+<ul>
+<li><p>案例一：英文字符串数组的元素全部改为大写。整数数组每个元素+3。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">public class StreamTest &#123;</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		String[] strArr = &#123; &quot;abcd&quot;, &quot;bcdd&quot;, &quot;defde&quot;, &quot;fTr&quot; &#125;;</span><br><span class="line">		List&lt;String&gt; strList = Arrays.stream(strArr).map(String::toUpperCase).collect(Collectors.toList());</span><br><span class="line"></span><br><span class="line">		List&lt;Integer&gt; intList = Arrays.asList(1, 3, 5, 7, 9, 11);</span><br><span class="line">		List&lt;Integer&gt; intListNew = intList.stream().map(x -&gt; x + 3).collect(Collectors.toList());</span><br><span class="line"></span><br><span class="line">		System.out.println(&quot;每个元素大写：&quot; + strList);</span><br><span class="line">		System.out.println(&quot;每个元素+3：&quot; + intListNew);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<blockquote>
+<p>每个元素大写：[ABCD, BCDD, DEFDE, FTR]</p>
+<p>每个元素+3：[4, 6, 8, 10, 12, 14]</p>
+</blockquote>
+</li>
+<li><p>案例二：将员工的薪资全部增加1000</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">public class StreamTest &#123;</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		List&lt;Person&gt; personList = new ArrayList&lt;Person&gt;();</span><br><span class="line">		personList.add(new Person(&quot;Tom&quot;, 8900, 23, &quot;male&quot;, &quot;New York&quot;));</span><br><span class="line">		personList.add(new Person(&quot;Jack&quot;, 7000, 25, &quot;male&quot;, &quot;Washington&quot;));</span><br><span class="line">		personList.add(new Person(&quot;Lily&quot;, 7800, 21, &quot;female&quot;, &quot;Washington&quot;));</span><br><span class="line">		personList.add(new Person(&quot;Anni&quot;, 8200, 24, &quot;female&quot;, &quot;New York&quot;));</span><br><span class="line">		personList.add(new Person(&quot;Owen&quot;, 9500, 25, &quot;male&quot;, &quot;New York&quot;));</span><br><span class="line">		personList.add(new Person(&quot;Alisa&quot;, 7900, 26, &quot;female&quot;, &quot;New York&quot;));</span><br><span class="line"></span><br><span class="line">		// 不改变原来员工集合的方式</span><br><span class="line">		List&lt;Person&gt; personListNew = personList.stream().map(person -&gt; &#123;</span><br><span class="line">			Person personNew = new Person(person.getName(), 0, 0, null, null);</span><br><span class="line">			personNew.setSalary(person.getSalary() + 10000);</span><br><span class="line">			return personNew;</span><br><span class="line">		&#125;).collect(Collectors.toList());</span><br><span class="line">		System.out.println(&quot;一次改动前：&quot; + personList.get(0).getName() + &quot;--&gt;&quot; + personList.get(0).getSalary());</span><br><span class="line">		System.out.println(&quot;一次改动后：&quot; + personListNew.get(0).getName() + &quot;--&gt;&quot; + personListNew.get(0).getSalary());</span><br><span class="line"></span><br><span class="line">		// 改变原来员工集合的方式</span><br><span class="line">		List&lt;Person&gt; personListNew2 = personList.stream().map(person -&gt; &#123;</span><br><span class="line">			person.setSalary(person.getSalary() + 10000);</span><br><span class="line">			return person;</span><br><span class="line">		&#125;).collect(Collectors.toList());</span><br><span class="line">		System.out.println(&quot;二次改动前：&quot; + personList.get(0).getName() + &quot;--&gt;&quot; + personListNew.get(0).getSalary());</span><br><span class="line">		System.out.println(&quot;二次改动后：&quot; + personListNew2.get(0).getName() + &quot;--&gt;&quot; + personListNew.get(0).getSalary());</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<blockquote>
+<p>一次改动前：Tom–&gt;8900</p>
+<p>一次改动后：Tom–&gt;18900</p>
+<p>二次改动前：Tom–&gt;18900</p>
+<p>二次改动后：Tom–&gt;18900</p>
+</blockquote>
+</li>
+<li><p>案例三：将两个字符数组合并成一个新的字符数组。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public class StreamTest &#123;</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		List&lt;String&gt; list = Arrays.asList(&quot;m,k,l,a&quot;, &quot;1,3,5,7&quot;);</span><br><span class="line">		List&lt;String&gt; listNew = list.stream().flatMap(s -&gt; &#123;</span><br><span class="line">			// 将每个元素转换成一个stream</span><br><span class="line">			String[] split = s.split(&quot;,&quot;);</span><br><span class="line">			Stream&lt;String&gt; s2 = Arrays.stream(split);</span><br><span class="line">			return s2;</span><br><span class="line">		&#125;).collect(Collectors.toList());</span><br><span class="line"></span><br><span class="line">		System.out.println(&quot;处理前的集合：&quot; + list);</span><br><span class="line">		System.out.println(&quot;处理后的集合：&quot; + listNew);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<blockquote>
+<p>处理前的集合：[m-k-l-a, 1-3-5]</p>
+<p>处理后的集合：[m, k, l, a, 1, 3, 5]</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="归约-reduce"><a href="#归约-reduce" class="headerlink" title="归约(reduce)"></a>归约(reduce)</h3><p>归约，也称缩减，顾名思义，是把一个流缩减成一个值，能实现对集合求和、求乘积和求最值操作。</p>
+<ul>
+<li><p>案例一：求Integer集合的元素之和、乘积和最大值。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">public class StreamTest &#123;</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		List&lt;Integer&gt; list = Arrays.asList(1, 3, 2, 8, 11, 4);</span><br><span class="line">		// 求和方式1</span><br><span class="line">		Optional&lt;Integer&gt; sum = list.stream().reduce((x, y) -&gt; x + y);</span><br><span class="line">		// 求和方式2</span><br><span class="line">		Optional&lt;Integer&gt; sum2 = list.stream().reduce(Integer::sum);</span><br><span class="line">		// 求和方式3</span><br><span class="line">		Integer sum3 = list.stream().reduce(0, Integer::sum);</span><br><span class="line"></span><br><span class="line">		// 求乘积</span><br><span class="line">		Optional&lt;Integer&gt; product = list.stream().reduce((x, y) -&gt; x * y);</span><br><span class="line"></span><br><span class="line">		// 求最大值方式1</span><br><span class="line">		Optional&lt;Integer&gt; max = list.stream().reduce((x, y) -&gt; x &gt; y ? x : y);</span><br><span class="line">		// 求最大值写法2</span><br><span class="line">		Integer max2 = list.stream().reduce(1, Integer::max);</span><br><span class="line"></span><br><span class="line">		System.out.println(&quot;list求和：&quot; + sum.get() + &quot;,&quot; + sum2.get() + &quot;,&quot; + sum3);</span><br><span class="line">		System.out.println(&quot;list求积：&quot; + product.get());</span><br><span class="line">		System.out.println(&quot;list求和：&quot; + max.get() + &quot;,&quot; + max2);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<blockquote>
+<p>list求和：29,29,29</p>
+<p>list求积：2112</p>
+<p>list求和：11,11</p>
+</blockquote>
+</li>
+<li><p>案例二：求所有员工的工资之和和最高工资。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">public class StreamTest &#123;</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		List&lt;Person&gt; personList = new ArrayList&lt;Person&gt;();</span><br><span class="line">		personList.add(new Person(&quot;Tom&quot;, 8900, 23, &quot;male&quot;, &quot;New York&quot;));</span><br><span class="line">		personList.add(new Person(&quot;Jack&quot;, 7000, 25, &quot;male&quot;, &quot;Washington&quot;));</span><br><span class="line">		personList.add(new Person(&quot;Lily&quot;, 7800, 21, &quot;female&quot;, &quot;Washington&quot;));</span><br><span class="line">		personList.add(new Person(&quot;Anni&quot;, 8200, 24, &quot;female&quot;, &quot;New York&quot;));</span><br><span class="line">		personList.add(new Person(&quot;Owen&quot;, 9500, 25, &quot;male&quot;, &quot;New York&quot;));</span><br><span class="line">		personList.add(new Person(&quot;Alisa&quot;, 7900, 26, &quot;female&quot;, &quot;New York&quot;));</span><br><span class="line"></span><br><span class="line">		// 求工资之和方式1：</span><br><span class="line">		Optional&lt;Integer&gt; sumSalary = personList.stream().map(Person::getSalary).reduce(Integer::sum);</span><br><span class="line">		// 求工资之和方式2：</span><br><span class="line">		Integer sumSalary2 = personList.stream().reduce(0, (sum, p) -&gt; sum += p.getSalary(),</span><br><span class="line">				(sum1, sum2) -&gt; sum1 + sum2);</span><br><span class="line">		// 求工资之和方式3：</span><br><span class="line">		Integer sumSalary3 = personList.stream().reduce(0, (sum, p) -&gt; sum += p.getSalary(), Integer::sum);</span><br><span class="line"></span><br><span class="line">		// 求最高工资方式1：</span><br><span class="line">		Integer maxSalary = personList.stream().reduce(0, (max, p) -&gt; max &gt; p.getSalary() ? max : p.getSalary(),</span><br><span class="line">				Integer::max);</span><br><span class="line">		// 求最高工资方式2：</span><br><span class="line">		Integer maxSalary2 = personList.stream().reduce(0, (max, p) -&gt; max &gt; p.getSalary() ? max : p.getSalary(),</span><br><span class="line">				(max1, max2) -&gt; max1 &gt; max2 ? max1 : max2);</span><br><span class="line"></span><br><span class="line">		System.out.println(&quot;工资之和：&quot; + sumSalary.get() + &quot;,&quot; + sumSalary2 + &quot;,&quot; + sumSalary3);</span><br><span class="line">		System.out.println(&quot;最高工资：&quot; + maxSalary + &quot;,&quot; + maxSalary2);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<blockquote>
+<p>工资之和：49300,49300,49300</p>
+<p>最高工资：9500,9500</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="收集-collect"><a href="#收集-collect" class="headerlink" title="收集(collect)"></a>收集(collect)</h3><p>collect，收集，可以说是内容最繁多、功能最丰富的部分了。从字面上去理解，就是把一个流收集起来，最终可以是收集成一个值也可以收集成一个新的集合。</p>
+<blockquote>
+<p>collect主要依赖java.util.stream.Collectors类内置的静态方法。</p>
+</blockquote>
+<h4 id="归集-toList-toSet-toMap"><a href="#归集-toList-toSet-toMap" class="headerlink" title="归集(toList/toSet/toMap)"></a>归集(toList/toSet/toMap)</h4><p>因为流不存储数据，那么在流中的数据完成处理后，需要将流中的数据重新归集到新的集合里。toList、toSet和toMap比较常用，另外还有toCollection、toConcurrentMap等复杂一些的用法。</p>
+<p>下面用一个案例演示toList、toSet和toMap：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">public class StreamTest &#123;</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		List&lt;Integer&gt; list = Arrays.asList(1, 6, 3, 4, 6, 7, 9, 6, 20);</span><br><span class="line">		List&lt;Integer&gt; listNew = list.stream().filter(x -&gt; x % 2 == 0).collect(Collectors.toList());</span><br><span class="line">		Set&lt;Integer&gt; set = list.stream().filter(x -&gt; x % 2 == 0).collect(Collectors.toSet());</span><br><span class="line"></span><br><span class="line">		List&lt;Person&gt; personList = new ArrayList&lt;Person&gt;();</span><br><span class="line">		personList.add(new Person(&quot;Tom&quot;, 8900, 23, &quot;male&quot;, &quot;New York&quot;));</span><br><span class="line">		personList.add(new Person(&quot;Jack&quot;, 7000, 25, &quot;male&quot;, &quot;Washington&quot;));</span><br><span class="line">		personList.add(new Person(&quot;Lily&quot;, 7800, 21, &quot;female&quot;, &quot;Washington&quot;));</span><br><span class="line">		personList.add(new Person(&quot;Anni&quot;, 8200, 24, &quot;female&quot;, &quot;New York&quot;));</span><br><span class="line"></span><br><span class="line">		Map&lt;?, Person&gt; map = personList.stream().filter(p -&gt; p.getSalary() &gt; 8000)</span><br><span class="line">				.collect(Collectors.toMap(Person::getName, p -&gt; p));</span><br><span class="line">		System.out.println(&quot;toList:&quot; + listNew);</span><br><span class="line">		System.out.println(&quot;toSet:&quot; + set);</span><br><span class="line">		System.out.println(&quot;toMap:&quot; + map);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<blockquote>
+<p>toList：[6, 4, 6, 6, 20]</p>
+<p>toSet：[4, 20, 6]</p>
+<p>toMap：{Tom=mutest.Person@5fd0d5ae, Anni=mutest.Person@2d98a335}</p>
+</blockquote>
+<h4 id="统计-count-averaging"><a href="#统计-count-averaging" class="headerlink" title="统计(count/averaging)"></a>统计(count/averaging)</h4><p>Collectors提供了一系列用于数据统计的静态方法：</p>
+<ol>
+<li>计数：count</li>
+<li>平均值：averagingInt、averagingLong、averagingDouble</li>
+<li>最值：maxBy、minBy</li>
+<li>求和：summingInt、summingLong、summingDouble</li>
+<li>统计以上所有：summarizingInt、summarizingLong、summarizingDouble</li>
+</ol>
+<p>案例：统计员工人数、平均工资、工资总额、最高工资。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">public class StreamTest &#123;</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		List&lt;Person&gt; personList = new ArrayList&lt;Person&gt;();</span><br><span class="line">		personList.add(new Person(&quot;Tom&quot;, 8900, 23, &quot;male&quot;, &quot;New York&quot;));</span><br><span class="line">		personList.add(new Person(&quot;Jack&quot;, 7000, 25, &quot;male&quot;, &quot;Washington&quot;));</span><br><span class="line">		personList.add(new Person(&quot;Lily&quot;, 7800, 21, &quot;female&quot;, &quot;Washington&quot;));</span><br><span class="line"></span><br><span class="line">		// 求总数</span><br><span class="line">		Long count = personList.stream().collect(Collectors.counting());</span><br><span class="line">		// 求平均工资</span><br><span class="line">		Double average = personList.stream().collect(Collectors.averagingDouble(Person::getSalary));</span><br><span class="line">		// 求最高工资</span><br><span class="line">		Optional&lt;Integer&gt; max = personList.stream().map(Person::getSalary).collect(Collectors.maxBy(Integer::compare));</span><br><span class="line">		// 求工资之和</span><br><span class="line">		Integer sum = personList.stream().collect(Collectors.summingInt(Person::getSalary));</span><br><span class="line">		// 一次性统计所有信息</span><br><span class="line">		DoubleSummaryStatistics collect = personList.stream().collect(Collectors.summarizingDouble(Person::getSalary));</span><br><span class="line"></span><br><span class="line">		System.out.println(&quot;员工总数：&quot; + count);</span><br><span class="line">		System.out.println(&quot;员工平均工资：&quot; + average);</span><br><span class="line">		System.out.println(&quot;员工工资总和：&quot; + sum);</span><br><span class="line">		System.out.println(&quot;员工工资所有统计：&quot; + collect);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<blockquote>
+<p>员工总数：3</p>
+<p>员工平均工资：7900.0</p>
+<p>员工工资总和：23700</p>
+<p>员工工资所有统计：DoubleSummaryStatistics{count=3, sum=23700.000000,min=7000.000000, average=7900.000000, max=8900.000000}</p>
+</blockquote>
+<h4 id="分组-partitioningBy-groupingBy"><a href="#分组-partitioningBy-groupingBy" class="headerlink" title="分组(partitioningBy/groupingBy)"></a>分组(partitioningBy/groupingBy)</h4><ol>
+<li>分区：将stream按条件分为两个Map，比如员工按薪资是否高于8000分为两部分。</li>
+<li>分组：将集合分为多个Map，比如员工按性别分组。有单级分组和多级分组。</li>
+</ol>
+<p>案例：将员工按薪资是否高于8000分为两部分；将员工按性别和地区分组</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">public class StreamTest &#123;</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		List&lt;Person&gt; personList = new ArrayList&lt;Person&gt;();</span><br><span class="line">		personList.add(new Person(&quot;Tom&quot;, 8900, &quot;male&quot;, &quot;New York&quot;));</span><br><span class="line">		personList.add(new Person(&quot;Jack&quot;, 7000, &quot;male&quot;, &quot;Washington&quot;));</span><br><span class="line">		personList.add(new Person(&quot;Lily&quot;, 7800, &quot;female&quot;, &quot;Washington&quot;));</span><br><span class="line">		personList.add(new Person(&quot;Anni&quot;, 8200, &quot;female&quot;, &quot;New York&quot;));</span><br><span class="line">		personList.add(new Person(&quot;Owen&quot;, 9500, &quot;male&quot;, &quot;New York&quot;));</span><br><span class="line">		personList.add(new Person(&quot;Alisa&quot;, 7900, &quot;female&quot;, &quot;New York&quot;));</span><br><span class="line"></span><br><span class="line">		// 将员工按薪资是否高于8000分组</span><br><span class="line">        Map&lt;Boolean, List&lt;Person&gt;&gt; part = personList.stream().collect(Collectors.partitioningBy(x -&gt; x.getSalary() &gt; 8000));</span><br><span class="line">        // 将员工按性别分组</span><br><span class="line">        Map&lt;String, List&lt;Person&gt;&gt; group = personList.stream().collect(Collectors.groupingBy(Person::getSex));</span><br><span class="line">        // 将员工先按性别分组，再按地区分组</span><br><span class="line">        Map&lt;String, Map&lt;String, List&lt;Person&gt;&gt;&gt; group2 = personList.stream().collect(Collectors.groupingBy(Person::getSex, Collectors.groupingBy(Person::getArea)));</span><br><span class="line">        System.out.println(&quot;员工按薪资是否大于8000分组情况：&quot; + part);</span><br><span class="line">        System.out.println(&quot;员工按性别分组情况：&quot; + group);</span><br><span class="line">        System.out.println(&quot;员工按性别、地区：&quot; + group2);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<blockquote>
+<p>员工按薪资是否大于8000分组情况：{false=[mutest.Person@2d98a335, mutest.Person@16b98e56, mutest.Person@7ef20235], true=[mutest.Person@27d6c5e0, mutest.Person@4f3f5b24, mutest.Person@15aeb7ab]}</p>
+<p>员工按性别分组情况：{female=[mutest.Person@16b98e56, mutest.Person@4f3f5b24, mutest.Person@7ef20235], male=[mutest.Person@27d6c5e0, mutest.Person@2d98a335, mutest.Person@15aeb7ab]}</p>
+<p>员工按性别、地区：{female={New York=[mutest.Person@4f3f5b24, mutest.Person@7ef20235], Washington=[mutest.Person@16b98e56]}, male={New York=[mutest.Person@27d6c5e0, mutest.Person@15aeb7ab], Washington=[mutest.Person@2d98a335]}}</p>
+</blockquote>
+<h4 id="接合-joining"><a href="#接合-joining" class="headerlink" title="接合(joining)"></a>接合(joining)</h4><p>joining可以将stream中的元素用特定的连接符（没有的话，则直接连接）连接成一个字符串。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public class StreamTest &#123;</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		List&lt;Person&gt; personList = new ArrayList&lt;Person&gt;();</span><br><span class="line">		personList.add(new Person(&quot;Tom&quot;, 8900, 23, &quot;male&quot;, &quot;New York&quot;));</span><br><span class="line">		personList.add(new Person(&quot;Jack&quot;, 7000, 25, &quot;male&quot;, &quot;Washington&quot;));</span><br><span class="line">		personList.add(new Person(&quot;Lily&quot;, 7800, 21, &quot;female&quot;, &quot;Washington&quot;));</span><br><span class="line"></span><br><span class="line">		String names = personList.stream().map(p -&gt; p.getName()).collect(Collectors.joining(&quot;,&quot;));</span><br><span class="line">		System.out.println(&quot;所有员工的姓名：&quot; + names);</span><br><span class="line">		List&lt;String&gt; list = Arrays.asList(&quot;A&quot;, &quot;B&quot;, &quot;C&quot;);</span><br><span class="line">		String string = list.stream().collect(Collectors.joining(&quot;-&quot;));</span><br><span class="line">		System.out.println(&quot;拼接后的字符串：&quot; + string);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<blockquote>
+<p>所有员工的姓名：Tom,Jack,Lily</p>
+<p>拼接后的字符串：A-B-C</p>
+</blockquote>
+<h4 id="归约-reducing"><a href="#归约-reducing" class="headerlink" title="归约(reducing)"></a>归约(reducing)</h4><p>Collectors类提供的reducing方法，相比于stream本身的reduce方法，增加了对自定义归约的支持。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">public class StreamTest &#123;</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		List&lt;Person&gt; personList = new ArrayList&lt;Person&gt;();</span><br><span class="line">		personList.add(new Person(&quot;Tom&quot;, 8900, 23, &quot;male&quot;, &quot;New York&quot;));</span><br><span class="line">		personList.add(new Person(&quot;Jack&quot;, 7000, 25, &quot;male&quot;, &quot;Washington&quot;));</span><br><span class="line">		personList.add(new Person(&quot;Lily&quot;, 7800, 21, &quot;female&quot;, &quot;Washington&quot;));</span><br><span class="line"></span><br><span class="line">		// 每个员工减去起征点后的薪资之和（这个例子并不严谨，但一时没想到好的例子）</span><br><span class="line">		Integer sum = personList.stream().collect(Collectors.reducing(0, Person::getSalary, (i, j) -&gt; (i + j - 5000)));</span><br><span class="line">		System.out.println(&quot;员工扣税薪资总和：&quot; + sum);</span><br><span class="line"></span><br><span class="line">		// stream的reduce</span><br><span class="line">		Optional&lt;Integer&gt; sum2 = personList.stream().map(Person::getSalary).reduce(Integer::sum);</span><br><span class="line">		System.out.println(&quot;员工薪资总和：&quot; + sum2.get());</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<blockquote>
+<p>员工扣税薪资总和：8700</p>
+<p>员工薪资总和：23700</p>
+</blockquote>
+<h3 id="排序-sorted"><a href="#排序-sorted" class="headerlink" title="排序(sorted)"></a>排序(sorted)</h3><p>sorted，中间操作。有两种排序：</p>
+<ol>
+<li>sorted()：自然排序，流中元素需实现Comparable接口</li>
+<li>sorted(Comparator com)：Comparator排序器自定义排序</li>
+</ol>
+<p>案例：将员工按工资由高到低（工资一样则按年龄由大到小）排序</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">public class StreamTest &#123;</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		List&lt;Person&gt; personList = new ArrayList&lt;Person&gt;();</span><br><span class="line"></span><br><span class="line">		personList.add(new Person(&quot;Sherry&quot;, 9000, 24, &quot;female&quot;, &quot;New York&quot;));</span><br><span class="line">		personList.add(new Person(&quot;Tom&quot;, 8900, 22, &quot;male&quot;, &quot;Washington&quot;));</span><br><span class="line">		personList.add(new Person(&quot;Jack&quot;, 9000, 25, &quot;male&quot;, &quot;Washington&quot;));</span><br><span class="line">		personList.add(new Person(&quot;Lily&quot;, 8800, 26, &quot;male&quot;, &quot;New York&quot;));</span><br><span class="line">		personList.add(new Person(&quot;Alisa&quot;, 9000, 26, &quot;female&quot;, &quot;New York&quot;));</span><br><span class="line"></span><br><span class="line">		// 按工资升序排序（自然排序）</span><br><span class="line">		List&lt;String&gt; newList = personList.stream().sorted(Comparator.comparing(Person::getSalary)).map(Person::getName)</span><br><span class="line">				.collect(Collectors.toList());</span><br><span class="line">		// 按工资倒序排序</span><br><span class="line">		List&lt;String&gt; newList2 = personList.stream().sorted(Comparator.comparing(Person::getSalary).reversed())</span><br><span class="line">				.map(Person::getName).collect(Collectors.toList());</span><br><span class="line">		// 先按工资再按年龄升序排序</span><br><span class="line">		List&lt;String&gt; newList3 = personList.stream()</span><br><span class="line">				.sorted(Comparator.comparing(Person::getSalary).thenComparing(Person::getAge)).map(Person::getName)</span><br><span class="line">				.collect(Collectors.toList());</span><br><span class="line">		// 先按工资再按年龄自定义排序（降序）</span><br><span class="line">		List&lt;String&gt; newList4 = personList.stream().sorted((p1, p2) -&gt; &#123;</span><br><span class="line">			if (p1.getSalary() == p2.getSalary()) &#123;</span><br><span class="line">				return p2.getAge() - p1.getAge();</span><br><span class="line">			&#125; else &#123;</span><br><span class="line">				return p2.getSalary() - p1.getSalary();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;).map(Person::getName).collect(Collectors.toList());</span><br><span class="line"></span><br><span class="line">		System.out.println(&quot;按工资升序排序：&quot; + newList);</span><br><span class="line">		System.out.println(&quot;按工资降序排序：&quot; + newList2);</span><br><span class="line">		System.out.println(&quot;先按工资再按年龄升序排序：&quot; + newList3);</span><br><span class="line">		System.out.println(&quot;先按工资再按年龄自定义降序排序：&quot; + newList4);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<blockquote>
+<p>按工资升序排序：[Lily, Tom, Sherry, Jack, Alisa]</p>
+<p>按工资降序排序：[Sherry, Jack, Alisa, Tom, Lily]</p>
+<p>先按工资再按年龄升序排序：[Lily, Tom, Sherry, Jack, Alisa]</p>
+<p>先按工资再按年龄自定义降序排序：[Alisa, Jack, Sherry, Tom, Lily]</p>
+</blockquote>
+<h3 id="提取-组合"><a href="#提取-组合" class="headerlink" title="提取/组合"></a>提取/组合</h3><p>流也可以进行合并、去重、限制、跳过等操作。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">public class StreamTest &#123;</span><br><span class="line">	public static void main(String[] args) &#123;</span><br><span class="line">		String[] arr1 = &#123; &quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot; &#125;;</span><br><span class="line">		String[] arr2 = &#123; &quot;d&quot;, &quot;e&quot;, &quot;f&quot;, &quot;g&quot; &#125;;</span><br><span class="line"></span><br><span class="line">		Stream&lt;String&gt; stream1 = Stream.of(arr1);</span><br><span class="line">		Stream&lt;String&gt; stream2 = Stream.of(arr2);</span><br><span class="line">		// concat:合并两个流 distinct：去重</span><br><span class="line">		List&lt;String&gt; newList = Stream.concat(stream1, stream2).distinct().collect(Collectors.toList());</span><br><span class="line">		// limit：限制从流中获得前n个数据</span><br><span class="line">		List&lt;Integer&gt; collect = Stream.iterate(1, x -&gt; x + 2).limit(10).collect(Collectors.toList());</span><br><span class="line">		// skip：跳过前n个数据</span><br><span class="line">		List&lt;Integer&gt; collect2 = Stream.iterate(1, x -&gt; x + 2).skip(1).limit(5).collect(Collectors.toList());</span><br><span class="line"></span><br><span class="line">		System.out.println(&quot;流合并：&quot; + newList);</span><br><span class="line">		System.out.println(&quot;limit：&quot; + collect);</span><br><span class="line">		System.out.println(&quot;skip：&quot; + collect2);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<blockquote>
+<p>流合并：[a, b, c, d, e, f, g]</p>
+<p>limit：[1, 3, 5, 7, 9, 11, 13, 15, 17, 19]</p>
+<p>skip：[3, 5, 7, 9, 11]</p>
+</blockquote>
+<hr>
+<p>转载自 <a target="_blank" rel="noopener" href="https://blog.csdn.net/mu_wind/article/details/109516995">https://blog.csdn.net/mu_wind/article/details/109516995</a></p>
+<p><em>观点仅代表自己，期待你的留言。</em></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/09/27/podman-private-svr/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          Podman系列之Nexus3私服搭建与使用
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/09/03/podman-env-install/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">podman系列之ubuntu下podman环境搭建</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+    <a class="jiathis_button_twitter"></a>
+    <a class="jiathis_button_plus"></a> 
+    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+
+
+
+
+
+<section id="comments">
+  <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'blogcnvip'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2024 建均笔记
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+
+<script src="/js/require-2.1.6,jquery-1.9.1.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'true', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+
+<link href="//cdn.bootcss.com/highlight.js/8.0/styles/tomorrow-night-bright.min.css" rel="stylesheet">  
+<script src="//cdn.bootcss.com/highlight.js/8.0/highlight.min.js"></script>  
+<script> 
+jQuery('td.code pre').each(function(i, block) {
+  hljs.highlightBlock(block);
+});
+</script>
+
+
+  </div>
+</body>
+</html>

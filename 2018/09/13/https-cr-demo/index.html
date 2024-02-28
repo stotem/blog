@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>使用openssl与keytool完成https配置实例（转） | 建均笔记</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="keytool单向认证实例1) 为服务器生成证书1wujianjun@smzc ~ $ keytool -genkey -keyalg RSA -dname &quot;cn&#x3D;127.0.0.1,ou&#x3D;inspur,o&#x3D;none,l&#x3D;shandong,st&#x3D;jinan,c&#x3D;cn&quot; -alias server -keypass 111111 -keystore server.keystor">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用openssl与keytool完成https配置实例（转）">
+<meta property="og:url" content="http://www.uto.ink/2018/09/13/https-cr-demo/index.html">
+<meta property="og:site_name" content="建均笔记">
+<meta property="og:description" content="keytool单向认证实例1) 为服务器生成证书1wujianjun@smzc ~ $ keytool -genkey -keyalg RSA -dname &quot;cn&#x3D;127.0.0.1,ou&#x3D;inspur,o&#x3D;none,l&#x3D;shandong,st&#x3D;jinan,c&#x3D;cn&quot; -alias server -keypass 111111 -keystore server.keystor">
+<meta property="og:locale">
+<meta property="article:published_time" content="2018-09-13T02:37:12.000Z">
+<meta property="article:modified_time" content="2024-02-28T06:35:25.246Z">
+<meta property="article:author" content="建均笔记">
+<meta property="article:tag" content="原创">
+<meta property="article:tag" content="https">
+<meta name="twitter:card" content="summary">
+  
+  <meta name="keywords" content="https,keytool,openssl">
+  
+  
+    <link rel="alternative" href="/atom.xml" title="建均笔记" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<script>
+(function(){
+    var bp = document.createElement('script');
+    bp.src = '//push.zhanzhang.baidu.com/push.js';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+<!-- baidu Analytics -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?b5a8646d4b9e56cf6ef835a8e416f147";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<!-- End baidu Analytics -->
+
+
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css" />
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="/img/avatar.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">建均笔记</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">不积跬步 无以至千里</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+					</div>
+
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="/about">关于我</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/stotem" title="github">github</a>
+					        
+								<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+					        
+								<a class="mail" target="_blank" href="mailto:china.wujianjun@icloud.com" title="mail">mail</a>
+					        
+						</div>
+						<div>
+							<i class="fa fa-line-chart"></i>
+							本站访问量<span id=“busuanzi_container_site_pv”><span id="busuanzi_value_site_pv"><i class="fa fa-spinner fa-spin"></i></span></span> 次
+						</div>
+					</nav>
+				</section>
+
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Docker/" style="font-size: 15.71px;">Docker</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/Maven/" style="font-size: 11.43px;">Maven</a> <a href="/tags/MySQL/" style="font-size: 10px;">MySQL</a> <a href="/tags/Nginx/" style="font-size: 15.71px;">Nginx</a> <a href="/tags/OpenVPN/" style="font-size: 12.86px;">OpenVPN</a> <a href="/tags/Podman/" style="font-size: 11.43px;">Podman</a> <a href="/tags/Redis/" style="font-size: 11.43px;">Redis</a> <a href="/tags/Transaction/" style="font-size: 10px;">Transaction</a> <a href="/tags/cdt/" style="font-size: 10px;">cdt</a> <a href="/tags/https/" style="font-size: 10px;">https</a> <a href="/tags/iOS/" style="font-size: 17.14px;">iOS</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/nginx-obs/" style="font-size: 10px;">nginx + obs</a> <a href="/tags/php-fpm/" style="font-size: 10px;">php-fpm</a> <a href="/tags/podman/" style="font-size: 14.29px;">podman</a> <a href="/tags/redis/" style="font-size: 10px;">redis</a> <a href="/tags/rocketmq/" style="font-size: 10px;">rocketmq</a> <a href="/tags/shiro/" style="font-size: 11.43px;">shiro</a> <a href="/tags/spring/" style="font-size: 11.43px;">spring</a> <a href="/tags/springcloud/" style="font-size: 10px;">springcloud</a> <a href="/tags/tomcat/" style="font-size: 10px;">tomcat</a> <a href="/tags/transaction/" style="font-size: 10px;">transaction</a> <a href="/tags/%E5%85%B3%E9%94%AE%E7%AC%94%E8%AE%B0/" style="font-size: 10px;">关键笔记</a> <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F/" style="font-size: 10px;">分布式</a> <a href="/tags/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BA%8B%E5%8A%A1/" style="font-size: 10px;">分布式事务</a> <a href="/tags/%E5%8E%9F%E5%88%9B/" style="font-size: 20px;">原创</a> <a href="/tags/%E5%A4%9A%E8%BF%9B%E7%A8%8B/" style="font-size: 10px;">多进程</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" style="font-size: 11.43px;">大数据</a> <a href="/tags/%E5%B9%B6%E5%8F%91/" style="font-size: 10px;">并发</a> <a href="/tags/%E6%80%BB%E7%BB%93/" style="font-size: 10px;">总结</a> <a href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" style="font-size: 10px;">操作系统</a> <a href="/tags/%E6%9E%B6%E6%9E%84/" style="font-size: 10px;">架构</a> <a href="/tags/%E7%94%B5%E5%95%86/" style="font-size: 10px;">电商</a> <a href="/tags/%E7%AC%94%E8%AE%B0/" style="font-size: 10px;">笔记</a> <a href="/tags/%E8%BD%AC%E8%BD%BD/" style="font-size: 18.57px;">转载</a> <a href="/tags/%E9%9A%8F%E7%AC%94/" style="font-size: 10px;">随笔</a>
+					</div>
+				</section>
+				
+
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://andylee1988.github.io">andylee1988的博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://devtll.github.io">devtll的博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://esnake0.github.io">esnake0的博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.shaofan.org">少凡的独立博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.csdn.net/liuguofeng719?viewmode=list">guofeng的博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://witchan.com">WitChan的技术博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://blog.csdn.net/kelanq">kelanQ的博客</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://chenxinyu.work">IT古书</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://8tool.club">KnowledgeBase</a><br />
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://cherrycheng.top">cherrycheng</a><br />
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+
+	</header>
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">建均笔记</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+			
+				<img lazy-src="/img/avatar.jpg" class="js-avatar">
+			
+			</div>
+			<hgroup>
+			  <h1 class="header-author">建均笔记</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">不积跬步 无以至千里</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/about">关于我</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/stotem" title="github">github</a>
+			        
+						<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
+			        
+						<a class="mail" target="_blank" href="mailto:china.wujianjun@icloud.com" title="mail">mail</a>
+			        
+				</div>
+				<div style="text-align: center;">
+					<i class="fa fa-line-chart"></i>
+					本站访问量<span id=“busuanzi_container_site_pv”><span id="busuanzi_value_site_pv"><i class="fa fa-spinner fa-spin"></i></span></span> 次
+				</div>
+			</nav>
+		</header>
+	</div>
+</nav>
+
+      <div class="body-wrap"><article id="post-https-cr-demo" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/09/13/https-cr-demo/" class="article-date">
+  	<time datetime="2018-09-13T02:37:12.000Z" itemprop="datePublished">2018-09-13</time>
+</a>
+      <div class="analysis-container">
+	<i class="fa fa-line-chart"></i>
+	已阅读<span id=“busuanzi_container_page_pv”><span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span></span> 次
+</div>
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      使用openssl与keytool完成https配置实例（转）
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/https/" rel="tag">https</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%8E%9F%E5%88%9B/" rel="tag">原创</a></li></ul>
+	</div>
+
+        
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+              
+                       
+             <div id="toc" class="article-toc">
+             <h2>文章目录</h2>
+               <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#keytool%E5%8D%95%E5%90%91%E8%AE%A4%E8%AF%81%E5%AE%9E%E4%BE%8B"><span class="toc-number">1.</span> <span class="toc-text">keytool单向认证实例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E4%B8%BA%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%94%9F%E6%88%90%E8%AF%81%E4%B9%A6"><span class="toc-number">1.1.</span> <span class="toc-text">1) 为服务器生成证书</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E7%94%9F%E6%88%90csr"><span class="toc-number">1.2.</span> <span class="toc-text">2) 生成csr</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E7%94%9F%E6%88%90cer"><span class="toc-number">1.3.</span> <span class="toc-text">3) 生成cer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-tomcat%E9%85%8D%E7%BD%AEssl"><span class="toc-number">1.4.</span> <span class="toc-text">4) tomcat配置ssl</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="toc-number">1.5.</span> <span class="toc-text">5) 常见问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#openssl%E5%8F%8C%E5%90%91%E8%AE%A4%E8%AF%81%E5%AE%9E%E4%BE%8B"><span class="toc-number">2.</span> <span class="toc-text">openssl双向认证实例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%A8%A1%E6%8B%9FCA%E7%94%9F%E6%88%90%E8%AF%81%E4%B9%A6"><span class="toc-number">2.1.</span> <span class="toc-text">1) 模拟CA生成证书</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E7%94%9F%E6%88%90Server%E8%AF%81%E4%B9%A6"><span class="toc-number">2.2.</span> <span class="toc-text">2) 生成Server证书</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E7%94%9F%E6%88%90Clinet%E8%AF%81%E4%B9%A6"><span class="toc-number">2.3.</span> <span class="toc-text">3) 生成Clinet证书</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E6%A0%B9%E6%8D%AECA%E8%AF%81%E4%B9%A6%E7%94%9F%E6%88%90jks%E6%96%87%E4%BB%B6"><span class="toc-number">2.4.</span> <span class="toc-text">4) 根据CA证书生成jks文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE%EF%BC%88tomcat6%E7%A4%BA%E4%BE%8B%EF%BC%89"><span class="toc-number">2.5.</span> <span class="toc-text">5) 服务器配置（tomcat6示例）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E5%AF%BC%E5%85%A5%E8%AF%81%E4%B9%A6-IE%E7%A4%BA%E4%BE%8B"><span class="toc-number">2.6.</span> <span class="toc-text">6) 导入证书(IE示例)</span></a></li></ol></li></ol>  
+             </div>
+             <script type="text/javascript">
+               var _article = document.getElementsByClassName('article')[0];
+               <!-- setTimeout("_article.style.marginRight = '211px'",0);  -->
+               setTimeout("_article.className += ' article2'",0); 
+               setTimeout("document.getElementById('toc').style.right = '15px'", 0);                
+             </script>
+           
+         
+        <h2 id="keytool单向认证实例"><a href="#keytool单向认证实例" class="headerlink" title="keytool单向认证实例"></a>keytool单向认证实例</h2><h3 id="1-为服务器生成证书"><a href="#1-为服务器生成证书" class="headerlink" title="1) 为服务器生成证书"></a>1) 为服务器生成证书</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wujianjun@smzc ~ $ keytool -genkey -keyalg RSA -dname <span class="string">&quot;cn=127.0.0.1,ou=inspur,o=none,l=shandong,st=jinan,c=cn&quot;</span> -<span class="built_in">alias</span> server -keypass 111111 -keystore server.keystore -storepass 111111 -validity 3650</span><br></pre></td></tr></table></figure>
+<p><em>注：cn=127.0.0.1配置的是服务器IP</em></p>
+<h3 id="2-生成csr"><a href="#2-生成csr" class="headerlink" title="2) 生成csr"></a>2) 生成csr</h3><p>生成csr文件用于提交CA认证生成证书使用。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wujianjun@smzc ~ $ keytool -certReq -<span class="built_in">alias</span> server -keystore server.keystore -file ca.csr</span><br></pre></td></tr></table></figure>
+<h3 id="3-生成cer"><a href="#3-生成cer" class="headerlink" title="3) 生成cer"></a>3) 生成cer</h3><p>这个ca.cer是为了解决不信任时要导入的</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wujianjun@smzc ~ $ keytool -<span class="built_in">export</span> -<span class="built_in">alias</span> server -keystore server.keystore -file ca.cer -storepass 111111</span><br></pre></td></tr></table></figure>
+<h3 id="4-tomcat配置ssl"><a href="#4-tomcat配置ssl" class="headerlink" title="4) tomcat配置ssl"></a>4) tomcat配置ssl</h3><p>clientAuth=”false”代表单向认证，配置如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Connector</span> <span class="attr">SSLEnabled</span>=<span class="string">&quot;true&quot;</span> <span class="attr">clientAuth</span>=<span class="string">&quot;false&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">maxThreads</span>=<span class="string">&quot;150&quot;</span> <span class="attr">port</span>=<span class="string">&quot;8443&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">protocol</span>=<span class="string">&quot;org.apache.coyote.http11.Http11Protocol&quot;</span>或者<span class="attr">HTTP</span>/<span class="attr">1.1</span></span></span><br><span class="line"><span class="tag">        <span class="attr">scheme</span>=<span class="string">&quot;https&quot;</span> <span class="attr">secure</span>=<span class="string">&quot;true&quot;</span> <span class="attr">sslProtocol</span>=<span class="string">&quot;TLS&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">keystoreFile</span>=<span class="string">&quot;/home/server.keystore&quot;</span> <span class="attr">keystorePass</span>=<span class="string">&quot;111111&quot;</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<p><em>注: Http11Protocol支持HTTP/1.1协议，是http1.1协议的ProtocolHandler实现。</em></p>
+<h3 id="5-常见问题"><a href="#5-常见问题" class="headerlink" title="5) 常见问题"></a>5) 常见问题</h3><ul>
+<li><strong>服务器的证书不受信任</strong><br>解决方法：<br>1、选择“继续前往（不安全）”，也能访问，但是此时就是以普通的HTTP方式进行信息传输了。<br>2、选择生成的<code>ca.cer</code>文件，将证书存储在 <strong>“受信任的证书颁发机构”</strong> ，就可以通过HTTPS正常访问了。</li>
+<li><strong>程序访问Https异常</strong><br><strong>sun.security.validator.ValidatorException: PKIX path building failed…</strong><br>需要将生成的证书(ca.cer ) 导入到jdk中<br>执行以下命令：<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wujianjun@smzc ~ $ keytool -import -<span class="built_in">alias</span> tomcatsso -file <span class="string">&quot;ca.cer&quot;</span> -keystore <span class="string">&quot;D:\java\jdk1.6.0_11\jre\lib\security\cacerts&quot;</span> -storepass changeit</span><br></pre></td></tr></table></figure>
+<em>其中<code>changeit</code>是jre默认的密码。</em><br>__No subject alternative names present__，请在生成keystore 注意CN必须要为域名（或机器名称)例如 localhost 不能为IP 。<br>__No name matching localhost found__，表示你生成keystore CN的名称和你访问的名称不一致。</li>
+</ul>
+<h2 id="openssl双向认证实例"><a href="#openssl双向认证实例" class="headerlink" title="openssl双向认证实例"></a>openssl双向认证实例</h2><p><em>Linux环境下，在home下建立out32dll目录，在此目录下建立ca、client、server三个文件夹。以下命令均在out32dll目录下执行。</em></p>
+<h3 id="1-模拟CA生成证书"><a href="#1-模拟CA生成证书" class="headerlink" title="1) 模拟CA生成证书"></a>1) 模拟CA生成证书</h3><ul>
+<li>创建私钥<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wujianjun@smzc ~/out32dll $ openssl genrsa -out ca/ca-key.pem 1024</span><br></pre></td></tr></table></figure></li>
+<li>创建证书请求<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wujianjun@smzc ~/out32dll $ openssl req -new -out ca/ca-req.csr -key ca/ca-key.pem</span><br></pre></td></tr></table></figure></li>
+<li>自签署证书<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wujianjun@smzc ~/out32dll $ openssl x509 -req -<span class="keyword">in</span> ca/ca-req.csr -out ca/ca-cert.pem -signkey ca/ca-key.pem -days 3650</span><br></pre></td></tr></table></figure></li>
+<li>将证书导出成浏览器支持的.p12格式 (供浏览器不受信任时导入)<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wujianjun@smzc ~/out32dll $ openssl pkcs12 -<span class="built_in">export</span> -clcerts -<span class="keyword">in</span> ca/ca-cert.pem -inkey ca/ca-key.pem -out ca/ca.p12</span><br></pre></td></tr></table></figure>
+<em>密码：111111</em><h3 id="2-生成Server证书"><a href="#2-生成Server证书" class="headerlink" title="2) 生成Server证书"></a>2) 生成Server证书</h3></li>
+<li>创建私钥<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wujianjun@smzc ~/out32dll $ openssl genrsa -out server/server-key.pem 1024</span><br></pre></td></tr></table></figure></li>
+<li>创建Server证书请求<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wujianjun@smzc ~/out32dll $ openssl req -new -out server/server-req.csr -key server/server-key.pem</span><br></pre></td></tr></table></figure></li>
+<li>使用CA证书签署Server证书<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wujianjun@smzc ~/out32dll $ openssl x509 -req -<span class="keyword">in</span> server/server-req.csr -out server/server-cert.pem -signkey server/server-key.pem -CA ca/ca-cert.pem -CAkey ca/ca-key.pem -CAcreateserial -days 3650</span><br></pre></td></tr></table></figure></li>
+<li>将证书导出成浏览器支持的.p12格式<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wujianjun@smzc ~/out32dll $ openssl pkcs12 -<span class="built_in">export</span> -clcerts -<span class="keyword">in</span> server/server-cert.pem -inkey server/server-key.pem -out server/server.p12</span><br></pre></td></tr></table></figure>
+<em>密码：111111</em><h3 id="3-生成Clinet证书"><a href="#3-生成Clinet证书" class="headerlink" title="3) 生成Clinet证书"></a>3) 生成Clinet证书</h3></li>
+<li>创建私钥<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wujianjun@smzc ~/out32dll $ openssl genrsa -out client/client-key.pem 1024</span><br></pre></td></tr></table></figure></li>
+<li>创建Client证书请求<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wujianjun@smzc ~/out32dll $ openssl req -new -out client/client-req.csr -key client/client-key.pem</span><br></pre></td></tr></table></figure></li>
+<li>使用CA证书签署Client证书<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wujianjun@smzc ~/out32dll $ openssl x509 -req -<span class="keyword">in</span> client/client-req.csr -out client/client-cert.pem -signkey client/client-key.pem -CA ca/ca-cert.pem -CAkey ca/ca-key.pem -CAcreateserial -days 3650  </span><br></pre></td></tr></table></figure></li>
+<li>将证书导出成浏览器支持的.p12格式<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wujianjun@smzc ~/out32dll $ openssl pkcs12 -<span class="built_in">export</span> -clcerts -<span class="keyword">in</span> client/client-cert.pem -inkey client/client-key.pem -out client/client.p12</span><br></pre></td></tr></table></figure>
+<em>密码：111111</em><h3 id="4-根据CA证书生成jks文件"><a href="#4-根据CA证书生成jks文件" class="headerlink" title="4) 根据CA证书生成jks文件"></a>4) 根据CA证书生成jks文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wujianjun@smzc ~/out32dll $ keytool -keystore truststore.jks -keypass 222222 -storepass 222222 -<span class="built_in">alias</span> ca -import -trustcacerts -file /home/out32dll/ca/ca-cert.pem</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="5-服务器配置（tomcat6示例）"><a href="#5-服务器配置（tomcat6示例）" class="headerlink" title="5) 服务器配置（tomcat6示例）"></a>5) 服务器配置（tomcat6示例）</h3><p>修改conf/server.xml。 将keystoreFile、truststoreFile的路径填写为正确的放置路径。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Connector</span> <span class="attr">port</span>=<span class="string">&quot;8443&quot;</span> <span class="attr">protocol</span>=<span class="string">&quot;HTTP/1.1&quot;</span> <span class="attr">SSLEnabled</span>=<span class="string">&quot;true&quot;</span></span></span><br><span class="line"><span class="tag">                <span class="attr">maxThreads</span>=<span class="string">&quot;150&quot;</span> <span class="attr">scheme</span>=<span class="string">&quot;https&quot;</span> <span class="attr">secure</span>=<span class="string">&quot;true&quot;</span></span></span><br><span class="line"><span class="tag">                <span class="attr">clientAuth</span>=<span class="string">&quot;true&quot;</span> <span class="attr">sslProtocol</span>=<span class="string">&quot;TLS&quot;</span></span></span><br><span class="line"><span class="tag">                <span class="attr">keystoreFile</span>=<span class="string">&quot;/home/out32dll/server/server.p12&quot;</span> <span class="attr">keystorePass</span>=<span class="string">&quot;111111&quot;</span>  <span class="attr">keystoreType</span>=<span class="string">&quot;PKCS12&quot;</span></span></span><br><span class="line"><span class="tag">                <span class="attr">truststoreFile</span>=<span class="string">&quot;/home/out32dll/truststore.jks&quot;</span> <span class="attr">truststorePass</span>=<span class="string">&quot;222222&quot;</span> <span class="attr">truststoreType</span>=<span class="string">&quot;JKS&quot;</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="6-导入证书-IE示例"><a href="#6-导入证书-IE示例" class="headerlink" title="6) 导入证书(IE示例)"></a>6) 导入证书(IE示例)</h3><p>将ca.p12，client.p12分别导入到IE中去（打开IE-&gt;Internet选项-&gt;内容-&gt;证书）。 ca.p12导入至 受信任的根证书颁发机构，client.p12导入至个人。<br><em>进行浏览器访问双向Https时会弹出客户端证书供选择</em></p>
+<hr>
+<p><em>观点仅代表自己，期待你的留言。</em></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/10/24/shiro-restful-api-session/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          Shiro完成RestfulApi的会话保持实例
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/09/11/https-flow/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">https交互流程</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+    <a class="jiathis_button_twitter"></a>
+    <a class="jiathis_button_plus"></a> 
+    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+
+
+
+
+
+<section id="comments">
+  <div id="disqus_thread"></div>
+    <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'blogcnvip'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2024 建均笔记
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+
+<script src="/js/require-2.1.6,jquery-1.9.1.min.js"></script>
+
+
+<script src="/js/main.js"></script>
+
+
+
+<!-- Google Analytics -->
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'true', 'auto');
+ga('send', 'pageview');
+
+</script>
+<!-- End Google Analytics -->
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+
+<link href="//cdn.bootcss.com/highlight.js/8.0/styles/tomorrow-night-bright.min.css" rel="stylesheet">  
+<script src="//cdn.bootcss.com/highlight.js/8.0/highlight.min.js"></script>  
+<script> 
+jQuery('td.code pre').each(function(i, block) {
+  hljs.highlightBlock(block);
+});
+</script>
+
+
+  </div>
+</body>
+</html>
