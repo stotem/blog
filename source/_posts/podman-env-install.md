@@ -55,7 +55,7 @@ insecure = true #支持加速器地址使用http进行访问
 wujianjun@wujianjun-work:~$ sudo systemctl restart podman
 ```
 
-## 开机自己podman
+## 开机自启podman
 ```
 wujianjun@wujianjun-work:~$ sudo systemctl enable podman
 ```
@@ -70,6 +70,15 @@ Built:        Thu Jan  1 00:00:00 1970
 OS/Arch:      linux/amd64
 
 ```
+
+## 安装podman-compose
+```
+wujianjun@wujianjun-work:~$ sudo apt install python3-pip
+wujianjun@wujianjun-work:~$ pip3 install podman-compose
+wujianjun@wujianjun-work:~$ podman-compose --version
+
+```
+
 
 -----
 
