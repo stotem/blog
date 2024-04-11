@@ -144,6 +144,36 @@ kibana ==> http://localhost:5601
 
 elasticsearch ==> http://localhost:9200
 
+## SpringBoot通过logstash-logback-encoder发送日志数据到logstash
+pom.xml增加logstash-logback-encoder依赖
+```
+<dependency>
+    <groupId>net.logstash.logback</groupId>
+    <artifactId>logstash-logback-encoder</artifactId>
+    <version>7.2</version>
+</dependency>
+```
+
+logback-spring.xml增加appender和logger
+```
+<appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+    <!--logstash的服务地址和端口，可以实际情况设置-->
+    <destination>host-logstash.com:1000</destination>
+    <!-- 日志输出编码 -->
+    <encoder charset="UTF-8" class="net.logstash.logback.encoder.LogstashEncoder">
+        <provider class="net.logstash.logback.composite.loggingevent.LoggingEventPatternJsonProvider">
+            <pattern>
+                {"app":"${APP_NAME}","timestamp":"%d{yyyy-MM-dd HH:mm:ss.SSS}","thread":"%thread","level":"%level","traceId":"%X{X-Request-Id}","position":"%logger:%L","message":"%msg","stacktrace":"%exception"}
+            </pattern>
+        </provider>
+    </encoder>
+</appender>
+
+<logger name="com" level="INFO" addtivity="true">
+    <appender-ref ref="LOGSTASH" />
+</logger>
+```
+
 -----
 
 *观点仅代表自己，期待你的留言。*
