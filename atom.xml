@@ -6,7 +6,7 @@
   <link href="http://www.uto.ink/atom.xml" rel="self"/>
   
   <link href="http://www.uto.ink/"/>
-  <updated>2024-02-28T06:45:37.253Z</updated>
+  <updated>2024-04-11T03:38:30.303Z</updated>
   <id>http://www.uto.ink/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>podman-compose系列之ELK搭建</title>
+    <link href="http://www.uto.ink/2024/04/11/podman-elk-install/"/>
+    <id>http://www.uto.ink/2024/04/11/podman-elk-install/</id>
+    <published>2024-04-11T03:18:48.000Z</published>
+    <updated>2024-04-11T03:38:30.303Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="docker-compose增加elasticsearch、logstash和kibana三大组件"><a href="#docker-compose增加elasticsearch、logstash和kibana三大组件" class="headerlink" title="docker-compose增加elasticsearch、logstash和kibana三大组件"></a>docker-compose增加elasticsearch、logstash和kibana三大组件</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">version: &#x27;3.9&#x27;</span><br><span class="line">networks:</span><br><span class="line">  component: &#123;&#125;</span><br><span class="line">services:</span><br><span class="line">  elasticsearch:</span><br><span class="line">    image: elasticsearch:latest</span><br><span class="line">    container_name: elasticsearch</span><br><span class="line">    env_file:</span><br><span class="line">      - ./environment/elasticsearch.env</span><br><span class="line">    networks:</span><br><span class="line">      - component</span><br><span class="line">    ports:</span><br><span class="line">      - 9200:9200</span><br><span class="line">      - 9300:9300</span><br><span class="line">    volumes:</span><br><span class="line">      - ./elasticsearch/data:/usr/share/elasticsearch/data</span><br><span class="line">      - ./elasticsearch/plugins:/usr/share/elasticsearch/plugins</span><br><span class="line">  kibana:</span><br><span class="line">    image: kibana:latest</span><br><span class="line">    container_name: kibana</span><br><span class="line">    env_file:</span><br><span class="line">      - ./environment/kibana.env</span><br><span class="line">    networks:</span><br><span class="line">      - component</span><br><span class="line">    extra_hosts:</span><br><span class="line">      - &quot;elasticsearch:10.84.102.92&quot;</span><br><span class="line">    ports:</span><br><span class="line">      - 5601:5601</span><br><span class="line">  logstash:</span><br><span class="line">    image: logstash:latest</span><br><span class="line">    container_name: logstash</span><br><span class="line">    env_file:</span><br><span class="line">      - ./environment/logstash.env</span><br><span class="line">    networks:</span><br><span class="line">      - component</span><br><span class="line">    ports:</span><br><span class="line">      - 5000:5000</span><br><span class="line">      - 5001:5001</span><br><span class="line">      - 5002:5002</span><br><span class="line">      - 9600:9600</span><br><span class="line">    volumes:</span><br><span class="line">      - ./logstash/config/logstash.yml:/etc/logstash/logstash.yml</span><br><span class="line">      - ./logstash/pipeline/:/usr/share/logstash/pipeline/</span><br></pre></td></tr></table></figure><h2 id="三大组件环境变量设置"><a href="#三大组件环境变量设置" class="headerlink" title="三大组件环境变量设置"></a>三大组件环境变量设置</h2><p>./environment/elasticsearch.env</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">TZ=Asia/Shanghai</span><br><span class="line">discovery.type=single-node</span><br><span class="line">ES_JAVA_OPTS=-Xms512m -Xmx512m</span><br></pre></td></tr></table></figure><p>./environment/kibana.env</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ELASTICSEARCH_HOSTS=&#x27;[&quot;http://host.containers.internal:9200&quot;]&#x27;</span><br></pre></td></tr></table></figure><p>./environment/logstash.env</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">TZ=Asia/Shanghai</span><br></pre></td></tr></table></figure><h2 id="logstash采集配置"><a href="#logstash采集配置" class="headerlink" title="logstash采集配置"></a>logstash采集配置</h2><p>./logstash/config/logstash.yml指定pipeline配置文件目录</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">path.config: /usr/share/logstash/pipeline</span><br></pre></td></tr></table></figure><p>./logstash/pipeline/logstash.conf 配置采集规则</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">input &#123;</span><br><span class="line">  tcp &#123;</span><br><span class="line">    mode =&gt; &quot;server&quot;</span><br><span class="line">    host =&gt; &quot;0.0.0.0&quot;</span><br><span class="line">    port =&gt; 1000</span><br><span class="line">    tags =&gt; [&quot;prod&quot;]</span><br><span class="line">    codec =&gt; json_lines</span><br><span class="line">  &#125;</span><br><span class="line">  tcp &#123;</span><br><span class="line">    mode =&gt; &quot;server&quot;</span><br><span class="line">    host =&gt; &quot;0.0.0.0&quot;</span><br><span class="line">    port =&gt; 1001</span><br><span class="line">    tags =&gt; [&quot;dev&quot;]</span><br><span class="line">    codec =&gt; json_lines</span><br><span class="line">  &#125;</span><br><span class="line">  tcp &#123;</span><br><span class="line">    mode =&gt; &quot;server&quot;</span><br><span class="line">    host =&gt; &quot;0.0.0.0&quot;</span><br><span class="line">    port =&gt; 1002</span><br><span class="line">    tags =&gt; [&quot;test&quot;]</span><br><span class="line">    codec =&gt; json_lines</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output &#123;</span><br><span class="line">  if &quot;prod&quot; in [tags] &#123;</span><br><span class="line">    elasticsearch &#123;</span><br><span class="line">        hosts  =&gt; [&quot;http://host.containers.internal:9200&quot;]</span><br><span class="line">        index  =&gt; &quot;logstash-prod&quot;</span><br><span class="line">        codec  =&gt; &quot;json&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; else if &quot;dev&quot; in [tags] &#123;</span><br><span class="line">    elasticsearch &#123;</span><br><span class="line">        hosts  =&gt; [&quot;http://host.containers.internal:9200&quot;]</span><br><span class="line">        index  =&gt; &quot;logstash-dev&quot;</span><br><span class="line">        codec  =&gt; &quot;json&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; else if &quot;test&quot; in [tags] &#123;</span><br><span class="line">    elasticsearch &#123;</span><br><span class="line">        hosts  =&gt; [&quot;http://host.containers.internal:9200&quot;]</span><br><span class="line">        index  =&gt; &quot;logstash-test&quot;</span><br><span class="line">        codec  =&gt; &quot;json&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  stdout &#123;</span><br><span class="line">    codec =&gt; rubydebug</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><hr><p><em>观点仅代表自己，期待你的留言。</em></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;docker-compose增加elasticsearch、logstash和kibana三大组件&quot;&gt;&lt;a href=&quot;#docker-compose增加elasticsearch、logstash和kibana三大组件&quot; class=&quot;headerlink&quot; t</summary>
+      
+    
+    
+    
+    
+    <category term="原创" scheme="http://www.uto.ink/tags/%E5%8E%9F%E5%88%9B/"/>
+    
+    <category term="podman" scheme="http://www.uto.ink/tags/podman/"/>
+    
+  </entry>
   
   <entry>
     <title>Podman容器开机自启动</title>
@@ -461,32 +485,6 @@
 &lt;ul&gt;
 &lt;li&gt;签到&lt;/li&gt;
 &lt;li&gt;0点、10点、15点限</summary>
-      
-    
-    
-    
-    
-    <category term="原创" scheme="http://www.uto.ink/tags/%E5%8E%9F%E5%88%9B/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>业务运营之运营指标</title>
-    <link href="http://www.uto.ink/2021/08/26/bussiness-operate-target/"/>
-    <id>http://www.uto.ink/2021/08/26/bussiness-operate-target/</id>
-    <published>2021-08-26T13:04:02.000Z</published>
-    <updated>2024-02-28T06:35:25.242Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="业务运营之运营指标"><a href="#业务运营之运营指标" class="headerlink" title="业务运营之运营指标"></a>业务运营之运营指标</h2><ol><li>用户获取</li></ol><ul><li>渠道到达量（曝光量）</li><li>渠道转化率（CPM，CPC，CPS，CPD，CPT等）</li><li>渠道ROI</li><li>日应用下载量</li><li>日新增用户数</li><li>用户获客成本（CAC）</li><li>一次会话用户数</li></ul><ol start="2"><li>用户活跃</li></ol><ul><li>活跃用户（DAU、WAU、MAU）</li><li>PV和UV</li><li>用户会话次数</li><li>用户访问时长</li><li>功能使用率</li></ul><ol start="3"><li>用户留存</li></ol><ul><li>留存率</li><li>用户流失率</li><li>退出率</li></ul><ol start="4"><li>营销</li></ol><ul><li>用户生命周期</li><li>用户生命周期价值</li><li>客户/用户忠诚指数</li><li>客户/用户流失指数</li><li>客户/用户价值指数（RMF模型和PCA模型）</li></ul><ol start="5"><li>传播/活动</li></ol><ul><li>K因子</li><li>病毒传播周期</li><li>用户分享率</li><li>活动曝光量/浏览量</li><li>活动参与率</li></ul><ol start="6"><li>营收</li></ol><ul><li>活跃交易用户数</li><li>GMV</li><li>客单价</li><li>复购率</li><li>退货率</li></ul><hr><p><em>观点仅代表自己，期待你的留言。</em></p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h2 id=&quot;业务运营之运营指标&quot;&gt;&lt;a href=&quot;#业务运营之运营指标&quot; class=&quot;headerlink&quot; title=&quot;业务运营之运营指标&quot;&gt;&lt;/a&gt;业务运营之运营指标&lt;/h2&gt;&lt;ol&gt;
-&lt;li&gt;用户获取&lt;/li&gt;
-&lt;/ol&gt;
-&lt;ul&gt;
-&lt;li&gt;渠道到达量（曝光量）&lt;</summary>
       
     
     
