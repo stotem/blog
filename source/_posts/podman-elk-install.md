@@ -9,6 +9,11 @@ keywords:
 date: 2024-04-11 11:18:48
 ---
 
+## ELK介绍
+E: 指elasticsearch用于数据落盘存储。
+L: 指logstash用于聚合接收日志并将数据存入elasticsearch。
+K: 指kibana，用于界面展示和查询。
+
 ## docker-compose增加elasticsearch、logstash和kibana三大组件
 ```docker-compose.yml
 version: '3.9'
@@ -133,6 +138,11 @@ output {
 }
 ```
 
+## 访问地址
+
+kibana ==> http://localhost:5601
+
+elasticsearch ==> http://localhost:9200
 
 -----
 
