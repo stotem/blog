@@ -154,24 +154,41 @@ pom.xml增加logstash-logback-encoder依赖
 </dependency>
 ```
 
-logback-spring.xml增加appender和logger
+logback-spring.xml增加appender和logger (以控制台输出info及以上级别日志，logstash收集error级别日志为例)
 ```
 <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
     <!--logstash的服务地址和端口，可以实际情况设置-->
     <destination>host-logstash.com:1000</destination>
+    <!-- 日志级别过滤 -->
+    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+        <level>ERROR</level>
+    </filter>
     <!-- 日志输出编码 -->
     <encoder charset="UTF-8" class="net.logstash.logback.encoder.LogstashEncoder">
+        <includeMdc>false</includeMdc>
+        <includeContext>false</includeContext>
         <provider class="net.logstash.logback.composite.loggingevent.LoggingEventPatternJsonProvider">
             <pattern>
-                {"app":"${APP_NAME}","timestamp":"%d{yyyy-MM-dd HH:mm:ss.SSS}","thread":"%thread","level":"%level","traceId":"%X{X-Request-Id}","position":"%logger:%L","message":"%msg","stacktrace":"%exception"}
+                {"app":"${APP_NAME}","level":"%level","traceId":"%X{X-Request-Id}","position":"%logger:%L","message":"%msg"}
             </pattern>
         </provider>
     </encoder>
 </appender>
 
-<logger name="com" level="INFO" addtivity="true">
+<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+        <level>INFO</level>
+    </filter>
+    <encoder>
+        <pattern>[%d{yyyy-MM-dd HH:mm:ss:SSS}][%thread][%logger:%L][%level][%X{X-Request-Id}] - %msg%n</pattern>
+        <charset class="java.nio.charset.Charset">UTF-8</charset>
+    </encoder>
+</appender>
+
+<root level="DEBUG">
+    <appender-ref ref="STDOUT" />
     <appender-ref ref="LOGSTASH" />
-</logger>
+</root>
 ```
 
 -----
