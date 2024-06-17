@@ -21,7 +21,7 @@ networks:
   component: {}
 services:
   elasticsearch:
-    image: elasticsearch:latest
+    image: bitnami/elasticsearch:latest
     container_name: elasticsearch
     env_file:
       - ./environment/elasticsearch.env
@@ -31,35 +31,37 @@ services:
       - 9200:9200
       - 9300:9300
     volumes:
-      - ./elasticsearch/data:/usr/share/elasticsearch/data
-      - ./elasticsearch/plugins:/usr/share/elasticsearch/plugins
+      - ./elasticsearch/data:/bitnami/elasticsearch/data
+      - ./elasticsearch/plugins:/bitnami/elasticsearch/plugins
   kibana:
-    image: kibana:latest
+    image: bitnami/kibana:latest
     container_name: kibana
     env_file:
       - ./environment/kibana.env
     networks:
       - component
     extra_hosts:
-      - "elasticsearch:10.84.102.92"
+      - "elasticsearch:192.168.1.1"
     ports:
       - 5601:5601
   logstash:
-    image: logstash:latest
+    image: bitnami/logstash:latest
     container_name: logstash
     env_file:
       - ./environment/logstash.env
     networks:
       - component
     ports:
-      - 5000:5000
-      - 5001:5001
-      - 5002:5002
+      - 10000:10000
+      - 10001:10001
+      - 10002:10002
       - 9600:9600
     volumes:
-      - ./logstash/config/logstash.yml:/etc/logstash/logstash.yml
-      - ./logstash/pipeline/:/usr/share/logstash/pipeline/
+      - ./logstash/pipeline/:/opt/bitnami/logstash/pipeline/
+      - ./logstash/data/:/opt/bitnami/logstash/data/
 ```
+
+`注意：`将elasticsearch、environment、logstash三个目录设置为1001。(chown -R 1001:1001 elasticsearch environment logstash)
 
 ## 三大组件环境变量设置
 
@@ -67,11 +69,12 @@ services:
 ```
 TZ=Asia/Shanghai
 discovery.type=single-node
+ELASTICSEARCH_ENABLE_REST_TLS=false
 ES_JAVA_OPTS=-Xms512m -Xmx512m
 ```
 ./environment/kibana.env
 ```
-ELASTICSEARCH_HOSTS='["http://host.containers.internal:9200"]'
+
 ```
 ./environment/logstash.env
 ```
