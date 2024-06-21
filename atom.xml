@@ -6,7 +6,7 @@
   <link href="http://www.uto.ink/atom.xml" rel="self"/>
   
   <link href="http://www.uto.ink/"/>
-  <updated>2024-06-17T09:40:01.872Z</updated>
+  <updated>2024-06-21T06:07:04.233Z</updated>
   <id>http://www.uto.ink/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>nginx反向代理无contextPath的应用</title>
+    <link href="http://www.uto.ink/2024/06/21/nginx-proxy-no-context/"/>
+    <id>http://www.uto.ink/2024/06/21/nginx-proxy-no-context/</id>
+    <published>2024-06-21T06:01:23.000Z</published>
+    <updated>2024-06-21T06:07:04.233Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>matabase部署之后没有contextPath，比如源访问地址为：<a href="http://10.84.102.92:3000/">http://10.84.102.92:3000/</a></p><h2 id="nginx代理配置增加location"><a href="#nginx代理配置增加location" class="headerlink" title="nginx代理配置增加location"></a>nginx代理配置增加location</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">location /metabase/ &#123;</span><br><span class="line">    proxy_pass http://10.84.102.92:3000/; # metabase</span><br><span class="line">    proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span><br><span class="line">    proxy_set_header Host $http_host;</span><br><span class="line">    proxy_set_header   X-Forwarded-Host $host;</span><br><span class="line">    proxy_redirect     ~^/(.*)$ /metabase/$1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>则可通过<a href="http://a.c.com/metabase%E6%9D%A5%E8%BF%9B%E8%A1%8C%E8%AE%BF%E9%97%AE%E4%BA%86">http://a.c.com/metabase来进行访问了</a></p><hr><p><em>观点仅代表自己，期待你的留言。</em></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;matabase部署之后没有contextPath，比如源访问地址为：&lt;a href=&quot;http://10.84.102.92:3000/&quot;</summary>
+      
+    
+    
+    
+    
+    <category term="原创" scheme="http://www.uto.ink/tags/%E5%8E%9F%E5%88%9B/"/>
+    
+    <category term="Nginx" scheme="http://www.uto.ink/tags/Nginx/"/>
+    
+  </entry>
   
   <entry>
     <title>podman-compose系列之ELK搭建</title>
@@ -460,31 +484,6 @@
       
     <summary type="html">&lt;h2 id=&quot;maven配置&quot;&gt;&lt;a href=&quot;#maven配置&quot; class=&quot;headerlink&quot; title=&quot;maven配置&quot;&gt;&lt;/a&gt;maven配置&lt;/h2&gt;&lt;p&gt;在pom.xml中加入&lt;/p&gt;
 &lt;figure class=&quot;highlight plaintext</summary>
-      
-    
-    
-    
-    
-    <category term="原创" scheme="http://www.uto.ink/tags/%E5%8E%9F%E5%88%9B/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>运营之活动策划</title>
-    <link href="http://www.uto.ink/2021/08/28/bussiness-market-plan/"/>
-    <id>http://www.uto.ink/2021/08/28/bussiness-market-plan/</id>
-    <published>2021-08-28T00:57:29.000Z</published>
-    <updated>2024-02-28T06:35:25.242Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="运营之活动策划"><a href="#运营之活动策划" class="headerlink" title="运营之活动策划"></a>运营之活动策划</h2><p>日常活动（提升UV、拉新）</p><ul><li>签到</li><li>0点、10点、15点限时兑换、限时秒杀</li><li>抽奖</li><li>会员日专属福利</li><li>邀请码</li><li>虚拟宝贝养成计划<br>业务事件活动（提升复购率）</li><li>消费即返券、消费即返积分</li><li>按消费习惯进行个性推荐<br>热点事件活动（提升UV）</li><li>周年庆</li><li>有奖竞猜</li><li>事件评论、事件转发</li><li>节日</li></ul><hr><p><em>观点仅代表自己，期待你的留言。</em></p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h2 id=&quot;运营之活动策划&quot;&gt;&lt;a href=&quot;#运营之活动策划&quot; class=&quot;headerlink&quot; title=&quot;运营之活动策划&quot;&gt;&lt;/a&gt;运营之活动策划&lt;/h2&gt;&lt;p&gt;日常活动（提升UV、拉新）&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;签到&lt;/li&gt;
-&lt;li&gt;0点、10点、15点限</summary>
       
     
     
