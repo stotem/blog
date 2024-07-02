@@ -6,15 +6,15 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <title>OpenVPN系列三之账号密码认证 | 建均笔记</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="背景基于vpn的敏感性及人员的流动性，要进一步加强访问的安全性。OpenVPN支持配置账号密码认证。 OpenVPN服务端配置修改 增加验证配置 1root@wujianjun-work:~# vi &#x2F;etc&#x2F;openvpn&#x2F;server&#x2F;server.conf 在配置文件末尾增加 1234script-security 3auth-user-pass-verify checkpsw.sh via">
+  <meta name="description" content="背景基于vpn的敏感性及人员的流动性，要进一步加强访问的安全性。OpenVPN支持配置账号密码认证。 OpenVPN服务端配置修改 增加验证配置1root@wujianjun-work:~# vi &#x2F;etc&#x2F;openvpn&#x2F;server&#x2F;server.conf 在配置文件末尾增加1234script-security 3auth-user-pass-verify checkpsw.sh via-e">
 <meta property="og:type" content="article">
 <meta property="og:title" content="OpenVPN系列三之账号密码认证">
 <meta property="og:url" content="http://www.uto.ink/2022/08/04/openvpn-checkpwd/index.html">
 <meta property="og:site_name" content="建均笔记">
-<meta property="og:description" content="背景基于vpn的敏感性及人员的流动性，要进一步加强访问的安全性。OpenVPN支持配置账号密码认证。 OpenVPN服务端配置修改 增加验证配置 1root@wujianjun-work:~# vi &#x2F;etc&#x2F;openvpn&#x2F;server&#x2F;server.conf 在配置文件末尾增加 1234script-security 3auth-user-pass-verify checkpsw.sh via">
+<meta property="og:description" content="背景基于vpn的敏感性及人员的流动性，要进一步加强访问的安全性。OpenVPN支持配置账号密码认证。 OpenVPN服务端配置修改 增加验证配置1root@wujianjun-work:~# vi &#x2F;etc&#x2F;openvpn&#x2F;server&#x2F;server.conf 在配置文件末尾增加1234script-security 3auth-user-pass-verify checkpsw.sh via-e">
 <meta property="og:locale">
 <meta property="article:published_time" content="2022-08-04T06:53:36.000Z">
-<meta property="article:modified_time" content="2024-02-28T06:35:25.249Z">
+<meta property="article:modified_time" content="2024-07-02T02:37:28.087Z">
 <meta property="article:author" content="建均笔记">
 <meta property="article:tag" content="原创">
 <meta property="article:tag" content="OpenVPN">
@@ -295,10 +295,18 @@ var _hmt = _hmt || [];
          
         <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>基于vpn的敏感性及人员的流动性，要进一步加强访问的安全性。OpenVPN支持配置账号密码认证。</p>
 <h2 id="OpenVPN服务端配置修改"><a href="#OpenVPN服务端配置修改" class="headerlink" title="OpenVPN服务端配置修改"></a>OpenVPN服务端配置修改</h2><ol>
-<li><p>增加验证配置</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@wujianjun-work:~# vi /etc/openvpn/server/server.conf</span><br></pre></td></tr></table></figure>
-<p>在配置文件末尾增加</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">script-security 3</span><br><span class="line">auth-user-pass-verify checkpsw.sh via-env</span><br><span class="line">username-as-common-name</span><br><span class="line">client-cert-not-required</span><br></pre></td></tr></table></figure></li>
+<li>增加验证配置<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@wujianjun-work:~# vi /etc/openvpn/server/server.conf</span><br></pre></td></tr></table></figure>
+在配置文件末尾增加<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">script-security 3</span><br><span class="line">auth-user-pass-verify checkpsw.sh via-env</span><br><span class="line">username-as-common-name</span><br><span class="line">client-cert-not-required</span><br></pre></td></tr></table></figure></li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@wujianjun-work:~# vi ~/client_conf/base.conf</span><br></pre></td></tr></table></figure>
+<p>在配置文件”auth SHA256”后增加</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">auth-user-pass</span><br></pre></td></tr></table></figure>
+
+<p>重新生成客户端ovpn文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@wujianjun-work:~# cd ~/client_conf/</span><br><span class="line">root@wujianjun-work:~# ./make_config.sh client</span><br></pre></td></tr></table></figure>
+
+
+<ol start="2">
 <li><p>增加账号验证脚本</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@wujianjun-work:~# vi /etc/openvpn/server/checkpsw.sh</span><br></pre></td></tr></table></figure>
 <p>内容如下：</p>
