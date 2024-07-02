@@ -25,6 +25,21 @@ username-as-common-name
 client-cert-not-required
 ```
 
+```
+root@wujianjun-work:~# vi ~/client_conf/base.conf
+```
+在配置文件"auth SHA256"后增加
+```
+auth-user-pass
+```
+
+重新生成客户端ovpn文件
+```
+root@wujianjun-work:~# cd ~/client_conf/
+root@wujianjun-work:~# ./make_config.sh client
+```
+
+
 2. 增加账号验证脚本
 ```
 root@wujianjun-work:~# vi /etc/openvpn/server/checkpsw.sh
