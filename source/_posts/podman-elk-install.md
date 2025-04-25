@@ -23,6 +23,10 @@ services:
   elasticsearch:
     image: bitnami/elasticsearch:latest
     container_name: elasticsearch
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
     env_file:
       - ./environment/elasticsearch.env
     networks:
@@ -36,6 +40,10 @@ services:
   kibana:
     image: bitnami/kibana:latest
     container_name: kibana
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
     env_file:
       - ./environment/kibana.env
     networks:
@@ -47,6 +55,10 @@ services:
   logstash:
     image: bitnami/logstash:latest
     container_name: logstash
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
     env_file:
       - ./environment/logstash.env
     networks:
